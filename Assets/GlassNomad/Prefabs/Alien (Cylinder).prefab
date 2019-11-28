@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2808216820221156601}
   - component: {fileID: 307403933066171618}
   - component: {fileID: 2707247032260907939}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Alien (Cylinder)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000001
+  m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
@@ -125,3 +125,7 @@ MonoBehaviour:
   rb: {fileID: 2808216820221156601}
   speed: 10
   jumpThrust: 5
+  marineLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  hitDistance: 2
