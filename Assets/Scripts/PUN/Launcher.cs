@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -14,6 +14,16 @@ public class Launcher : MonoBehaviourPunCallbacks
     private string gameVersion = "1";
     // Forces the user to only be connected to a game when they've pressed the connect button.
     private bool isConnection;
+
+
+    #region testvariables
+
+    public Transform playerListPanel;
+    public GameObject playerItemPrefab;
+    public GameObject loadGameButton;
+
+    #endregion
+
 
     // Set to true so all clients have the same scene loaded.
     void Awake()
@@ -36,7 +46,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         // The button has been pressed so we want the user to connect to a room.
         isConnection = true;
-
+        
         // Checks if the client is aleady connected
         if (PhotonNetwork.IsConnected)
         {
@@ -49,6 +59,68 @@ public class Launcher : MonoBehaviourPunCallbacks
             PhotonNetwork.ConnectUsingSettings();
         }
     }
+
+    #region teststuff
+    
+    public override void OnPlayerEnteredRoom(Player other)
+    {
+        Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
+
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient);
+        }
+
+        UpdatePlayerList();
+    }
+
+
+    public override void OnPlayerLeftRoom(Player other)
+    {
+        Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
+
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient);
+        }
+
+        UpdatePlayerList();
+    }
+
+    private void UpdatePlayerList()
+    {
+        for(int i = 0; i < playerListPanel.childCount; i++)
+        {
+            Destroy(playerListPanel.GetChild(i).gameObject);
+
+        }
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            GameObject go = Instantiate(playerItemPrefab, playerListPanel);
+            if (player.IsMasterClient)
+            {
+                Debug.Log("MASTER IN ROOM:: " + player.NickName);
+                go.GetComponentInChildren<Text>().text = "Room owner: " + player.NickName;
+            }
+            else
+            {
+                Debug.Log("PLAYER IN ROOM:: " + player.NickName);
+                go.GetComponentInChildren<Text>().text = player.NickName;
+            }
+        }
+    }
+
+    public void OnLoadGameClick()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("SCN_Blockout");
+        }
+    }
+
+    #endregion
 
     public override void OnConnectedToMaster()
     {
@@ -76,10 +148,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Room joined successfully");
+        progressLabel.SetActive(false);
+
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("SCN_Blockout");
+            loadGameButton.SetActive(true);
         }
+
+        UpdatePlayerList();
     }
 }

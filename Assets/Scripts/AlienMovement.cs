@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -19,8 +20,9 @@ public class AlienMovement : MonoBehaviourPunCallbacks
     private void Start()
     {
         cameraGO = this.GetComponentInChildren<Camera>();
-
+        GetComponentInChildren<Text>().text = PhotonNetwork.NickName;
         playerHeight = GetComponent<Collider>().bounds.extents.y;
+
         if (!photonView.IsMine)
         {
             cameraGO.GetComponent<Camera>().enabled = false;
@@ -38,8 +40,7 @@ public class AlienMovement : MonoBehaviourPunCallbacks
         
         if (Input.GetAxisRaw("Fire1") == 1)
         {
-            Debug.Log("Shoot");
-            Shoot();
+            LightAttack();
         }
     }
 
@@ -78,7 +79,7 @@ public class AlienMovement : MonoBehaviourPunCallbacks
         return Physics.Raycast(transform.position, -Vector3.up, playerHeight + 0.1f);
     }
 
-    private void Shoot()
+    private void LightAttack()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, hitDistance, marineLayerMask))
