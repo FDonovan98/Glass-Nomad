@@ -5,34 +5,25 @@ using Photon.Realtime;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    [SerializeField]
-    private GameObject controlPanel;
-    [SerializeField]
-    private GameObject progressLabel;
+    [SerializeField] private string gameSceneName = "SCN_Blockout"; // Used to change scene when we are join a room.
+    [SerializeField] private GameObject controlPanel = null; // Used to show/hide the play button and input field.
+    [SerializeField] private GameObject progressLabel = null; // Used to display "Connecting..." to once the Connect() funtion is called.
+    [SerializeField] private GameObject playerItemPrefab = null;
+    [SerializeField] private GameObject loadGameButton = null;
+    [SerializeField] private Transform playerListPanel = null;
 
-    private byte maxPlayersPerRoom = 5;
-    private string gameVersion = "1";
-    // Forces the user to only be connected to a game when they've pressed the connect button.
-    private bool isConnection;
-
-
-    #region testvariables
-
-    public Transform playerListPanel;
-    public GameObject playerItemPrefab;
-    public GameObject loadGameButton;
-
-    #endregion
-
-
-    // Set to true so all clients have the same scene loaded.
-    void Awake()
+    private byte maxPlayersPerRoom = 5; // Used to set a limit to the number of players in a room.
+    private string gameVersion = "1"; // Used to separate users from each other by gameVersion.
+    private bool isConnection = false; // Used to stop us from immediately joining the room if we leave it.
+    
+    private void Awake()
     {
+        // Means we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     // Makes sure the correct elements of the UI are visible.
-    void Start()
+    private void Start()
     {
         progressLabel.SetActive(false);
         controlPanel.SetActive(true);
@@ -50,18 +41,57 @@ public class Launcher : MonoBehaviourPunCallbacks
         // Checks if the client is aleady connected
         if (PhotonNetwork.IsConnected)
         {
+            // Attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
             Debug.Log("Connected, joining a random room");
             PhotonNetwork.JoinRandomRoom();
         }
         else
         {
+            // Otherwise, connect to Photon Online Server.
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
         }
     }
 
-    #region teststuff
-    
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to master");
+
+        if (isConnection)
+        {
+            // Try and join a potential existing room, else, we'll be called back with OnJoinRandomFailed().
+            PhotonNetwork.JoinRandomRoom();
+        }
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.LogWarningFormat("Disconnected with reason:" + cause);
+        progressLabel.SetActive(false);
+        controlPanel.SetActive(true);
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        // We failed to join a random room, maybe none exists or they are all full. So we create a new room.
+        Debug.Log("No room found, creating new room");
+        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Room joined successfully");
+        progressLabel.SetActive(false);
+
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            loadGameButton.SetActive(true);
+        }
+
+        UpdatePlayerList();
+    }
+
     public override void OnPlayerEnteredRoom(Player other)
     {
         Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
@@ -116,46 +146,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("SCN_Blockout");
+            PhotonNetwork.LoadLevel(gameSceneName);
         }
-    }
-
-    #endregion
-
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("Connected to master");
-
-        if (isConnection)
-        {
-            PhotonNetwork.JoinRandomRoom();
-        }
-    }
-
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        Debug.LogWarningFormat("Disconnected");
-        progressLabel.SetActive(false);
-        controlPanel.SetActive(true);
-    }
-
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        Debug.Log("No room found, creating new room");
-        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
-    }
-
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("Room joined successfully");
-        progressLabel.SetActive(false);
-
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            loadGameButton.SetActive(true);
-        }
-
-        UpdatePlayerList();
     }
 }
