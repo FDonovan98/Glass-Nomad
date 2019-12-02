@@ -83,7 +83,6 @@ public class AlienMovement : MonoBehaviourPunCallbacks
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, hitDistance, marineLayerMask))
         {
-            Debug.Log("Hit Marine Character");
             hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.red;
         }
         Debug.DrawRay(transform.position, Vector3.forward * 100, Color.red);
