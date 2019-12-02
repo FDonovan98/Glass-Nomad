@@ -11,6 +11,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     private GameObject controlPanel;
     [SerializeField]
     private GameObject progressLabel;
+    [SerializeField]
+    private Object sceneToLoad;
 
     private string gameVersion = "1";
     private bool isConnection;
@@ -74,7 +76,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("SCN_Blockout");
+            PhotonNetwork.LoadLevel(sceneToLoad.name);
         }
     }
 }
