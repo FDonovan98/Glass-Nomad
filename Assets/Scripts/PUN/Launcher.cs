@@ -5,23 +5,23 @@ using Photon.Realtime;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    private byte maxPlayersPerRoom = 5;
-
     [SerializeField]
     private GameObject controlPanel;
     [SerializeField]
     private GameObject progressLabel;
-    [SerializeField]
-    private Object sceneToLoad;
 
+    private byte maxPlayersPerRoom = 5;
     private string gameVersion = "1";
+    // Forces the user to only be connected to a game when they've pressed the connect button.
     private bool isConnection;
 
+    // Set to true so all clients have the same scene loaded.
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
+    // Makes sure the correct elements of the UI are visible.
     void Start()
     {
         progressLabel.SetActive(false);
@@ -30,11 +30,14 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void Connect()
     {
+        // Switches which UI elements are visable.
         progressLabel.SetActive(true);
         controlPanel.SetActive(false);
 
+        // The button has been pressed so we want the user to connect to a room.
         isConnection = true;
 
+        // Checks if the client is aleady connected
         if (PhotonNetwork.IsConnected)
         {
             Debug.Log("Connected, joining a random room");
@@ -76,7 +79,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel(sceneToLoad.name);
+            PhotonNetwork.LoadLevel("SCN_Blockout");
         }
     }
 }
