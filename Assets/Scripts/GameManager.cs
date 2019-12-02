@@ -20,4 +20,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log(newPlayer.NickName + " has joined the game");
     }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.Log(otherPlayer.NickName + " has left the game");
+    }
 }
