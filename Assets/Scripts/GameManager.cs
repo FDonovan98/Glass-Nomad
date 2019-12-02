@@ -6,6 +6,12 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    void Start()
+    {
+        PhotonNetwork.Instantiate("Alien (Cylinder)", new Vector3(0.0f, 1.0f, 0.0f), new Quaternion());
+        Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " players in game");
+    }
+
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
