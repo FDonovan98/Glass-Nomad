@@ -11,15 +11,65 @@ public class Launcher : MonoBehaviourPunCallbacks
     private GameObject controlPanel;
     [SerializeField]
     private GameObject progressLabel;
-    // Start is called before the first frame update
-    void Start()
+
+    private string gameVersion = "1";
+    private bool isConnection;
+
+    void Awake()
     {
-        
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        progressLabel.SetActive(false);
+        controlPanel.SetActive(true);
+    }
+
+    public void Connect()
+    {
+        progressLabel.SetActive(true);
+        controlPanel.SetActive(false);
+
+        isConnection = true;
+
+        if (PhotonNetwork.IsConnected)
+        {
+            Debug.Log("Connected, joining a random room");
+            PhotonNetwork.JoinRandomRoom();
+        }
+        else
+        {
+            PhotonNetwork.GameVersion = gameVersion;
+            PhotonNetwork.ConnectUsingSettings();
+        }
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to master");
+
+        if (isConnection)
+        {
+            PhotonNetwork.JoinRandomRoom();
+        }
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.LogWarningFormat("Disconnected");
+        progressLabel.SetActive(false);
+        controlPanel.SetActive(true);
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        Debug.Log("No room found, creating new room");
+        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Room joined successfully");
     }
 }
