@@ -7,22 +7,26 @@ using Photon.Realtime;
 public class AlienMovement : MonoBehaviourPunCallbacks
 {
 
-    public Rigidbody rb;
+    private Rigidbody rigidBody;
     public int speed = 10;
     public int mouseSensitivity = 1;
     public float jumpThrust = 10;
     public LayerMask marineLayerMask;
     public int hitDistance = 1;
     private float playerHeight;
-    public GameObject cameraGO;
+    private Camera cameraGO;
 
     private void Start()
     {
+        cameraGO = this.GetComponentInChildren<Camera>();
+
         playerHeight = GetComponent<Collider>().bounds.extents.y;
         if (!photonView.IsMine)
         {
             cameraGO.GetComponent<Camera>().enabled = false;
         }
+
+        rigidBody = this.GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -51,7 +55,7 @@ public class AlienMovement : MonoBehaviourPunCallbacks
         float z = Input.GetAxisRaw("Vertical");
 
         Vector3 dir = transform.TransformDirection(new Vector3(x, 0, z) * speed);
-        rb.velocity = dir;
+        rigidBody.velocity = dir;
 
         // Mouse rotation
         float mouseX = Input.GetAxis("Mouse X");
@@ -65,7 +69,7 @@ public class AlienMovement : MonoBehaviourPunCallbacks
 
         if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
         {
-            rb.velocity = Vector2.up * jumpThrust;
+            rigidBody.velocity = Vector2.up * jumpThrust;
         }
     }
 
