@@ -6,7 +6,6 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    public string gameSceneName;
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene(0);
@@ -29,7 +28,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
         }
-        PhotonNetwork.LoadLevel(gameSceneName);
     }
 
     public override void OnPlayerEnteredRoom(Player other)
