@@ -32,14 +32,54 @@ public class AlienMovement : MonoBehaviour
     // Current vertical speed.
     private float verticalSpeed;
     private Collider charCollider;
+    private Rigidbody charRigidbody;
 
     void Start()
     {
-        // Gets the character collider.
+        // Gets the character collider and rigidbody.
         charCollider = this.GetComponent<Collider>();
+        charRigidbody = this.GetComponent<Rigidbody>();
         // Initialises the charNormal to the world normal.
         charNormal = transform.up;
         // Gets the height from the centre of the collider to the ground.
         distGround = charCollider.bounds.extents.y - charCollider.bounds.center.y;
+    }
+
+    void FixedUpdate()
+    {
+        // Calculate and apply force of gravity to char.
+        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
+        charRigidbody.AddForce(gravForce);
+    }
+
+    void Update()
+    {   
+        // Exits Update if the character is mid-jump.
+        if (jumping)
+        {
+            return;
+        }
+
+        // When the jump key is pressed activate either a normal jump or a jump to a wall.
+        if (Input.GetButtonDown("Jump"))
+        {
+            Ray ray;
+            RaycastHit hit;
+
+            // Creates a ray from the current position in the direction the char is facing.
+            ray = new Ray(transform.position, transform.forward);
+
+            // If there is a wall ahead then trigger JumpToWall script.
+            if (Physics.Raycast(ray, out hit, jumpRange))
+            {
+                JumpToWall(hit.point, hit.normal);
+            }
+            // If the player is on the ground then jump up.
+            else if (isGrounded)
+            {
+                charRigidbody.velocity += jumpSpeed * charNormal;
+            }
+        }
+
     }
 }
