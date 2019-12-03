@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class AlienMovement : MonoBehaviourPunCallbacks
+public class AlienController : MonoBehaviourPunCallbacks
 {
 
     private Rigidbody rigidBody;
