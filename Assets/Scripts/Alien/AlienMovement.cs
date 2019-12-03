@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Code initially based on code from here:
 // https://answers.unity.com/questions/155907/basic-movement-walking-on-walls.html
@@ -8,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class AlienMovement : MonoBehaviour
 {
+    public float mosueSensitivity = 10;
     public float movementSpeed = 6;
     // Turn speed is in degrees per second.
     public float turnSpeed = 90; 
@@ -82,15 +81,17 @@ public class AlienMovement : MonoBehaviour
         }
         
         // Gets mouse x and y movement.
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
+        float mouseX = Input.GetAxis("Mouse X") * mosueSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mosueSensitivity;
 
         // Rotates the player model in the x-axis.
         transform.Rotate(new Vector3(0.0f, mouseX, 0.0f));
 
+        // Rotates the camera so it tracks the mouse.
         Camera camera = this.GetComponentInChildren<Camera>();
 
         camera.transform.Rotate(new Vector3(-mouseY, 0.0f, 0.0f));
+
 
 
     }
