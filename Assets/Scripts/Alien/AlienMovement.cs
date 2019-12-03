@@ -14,8 +14,17 @@ public class AlienMovement : MonoBehaviour
     public float gravity = 10;
     // Is the alien in contact with the ground.
     public bool isGrounded;
-    // The initial speed of a jump.
+    // The initial vertical speed of a jump.
     public float jumpSpeed = 10;
     // The range at which to detect a wall to stick to.
     public float jumpRange = 10;
+
+    // The normal of the current surface.
+    private Vector3 surfaceNormal;
+    // The distance of the Alien from the ground.
+    private float distGround;
+    // Flag for if the alien is currently jumping.
+    private bool jumping;
+    // Current vertical speed.
+    private float verticalSpeed;
 }
