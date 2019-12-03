@@ -16,7 +16,7 @@ public class AlienMovement : MonoBehaviour
     public float lerpSpeed = 10;
     public float gravity = 10;
     // Char counts as grounded up to this distance from the ground.
-    public float deltaGround = 0.2f;
+    public float deltaGround = 1.0f;
     // Is the alien in contact with the ground.
     public bool isGrounded;
     // The initial vertical speed of a jump.
