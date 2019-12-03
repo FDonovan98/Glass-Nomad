@@ -38,7 +38,7 @@ public class AlienMovement : MonoBehaviourPunCallbacks
             return;
         }
         
-        if (Input.GetAxisRaw("Fire1") == 1)
+        if (Input.GetButtonDown("Fire1"))
         {
             LightAttack();
         }
@@ -86,6 +86,9 @@ public class AlienMovement : MonoBehaviourPunCallbacks
         {
             hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.red;
         }
+
         Debug.DrawRay(transform.position, Vector3.forward * 100, Color.red);
+        
+        Debug.Log(PhotonNetwork.NickName + " (Alien) did a light attack");
     }
 }
