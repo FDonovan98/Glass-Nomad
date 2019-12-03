@@ -8,10 +8,20 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private string lobbySceneName = "SCN_Launcher"; // Used to change scene when we leave a room.
     private GameObject player; // Used to change the player's name tag, above their head.
-
+    [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero;
+    [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero;
     private void Start()
     {
-        player = PhotonNetwork.Instantiate("Alien (Cylinder)", new Vector3(0.0f, 1.0f, 0.0f), new Quaternion());
+        // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
+        if (PhotonNetwork.IsMasterClient)
+        {
+            player = PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint, new Quaternion());
+        }
+        else
+        {
+            player = PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
+        }
+        
         Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
     }
 
