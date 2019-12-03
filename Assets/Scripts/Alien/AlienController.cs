@@ -13,9 +13,11 @@ public class AlienController : MonoBehaviourPunCallbacks
     [SerializeField] private float jumpThrust = 10;
     [SerializeField] private LayerMask marineLayerMask;
     [SerializeField] private int hitDistance = 1;
+
     public int playerMaxHealth = 50; // Needs to be public as they are accessed by attacking enemies
-    public Image healthSlider = null; // Needs to be public as they are accessed by attacking enemies
+    public GameObject healthSlider = null; // Needs to be public as they are accessed by attacking enemies
     public PlayerHealth healthScript; // Needs to be public as they are accessed by attacking enemies
+
     private Rigidbody rigidBody;
     private float playerHeight;
     private Camera cameraGO;
@@ -23,7 +25,7 @@ public class AlienController : MonoBehaviourPunCallbacks
     private void Start()
     {
         healthScript = new PlayerHealth(maxHealth: playerMaxHealth);
-        healthSlider.fillAmount = 1; // Sets the health slider to full on start.
+        healthSlider.transform.localScale = new Vector3(1,1,1); // Sets the health slider to full on start.
         cameraGO = this.GetComponentInChildren<Camera>();
         // GetComponentInChildren<Text>().text = PhotonNetwork.NickName; // Sets the name tag above the player.
         playerHeight = GetComponent<Collider>().bounds.extents.y;
@@ -42,7 +44,7 @@ public class AlienController : MonoBehaviourPunCallbacks
         {
             return;
         }
-        
+
         if (Input.GetButtonDown("Fire1"))
         {
             LightAttack();
@@ -91,7 +93,7 @@ public class AlienController : MonoBehaviourPunCallbacks
         {
             AlienController hitPlayer = hit.transform.gameObject.GetComponent<AlienController>();
             float newHealth = hitPlayer.healthScript.PlayerHit(damage: 5);
-            hitPlayer.healthSlider.fillAmount = newHealth / hitPlayer.playerMaxHealth; // !!IMPORTANT!! Change this to marine movement/controller script at a later date!!!!
+            hitPlayer.healthSlider.transform.localScale = new Vector3 (newHealth / hitPlayer.playerMaxHealth, 1, 1); // !!IMPORTANT!! Change this to marine movement/controller script at a later date!!!!
         }
 
         Debug.DrawRay(transform.position, cameraGO.transform.forward * 100, Color.red);
