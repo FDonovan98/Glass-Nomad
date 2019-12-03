@@ -8,19 +8,24 @@ using Photon.Realtime;
 public class AlienController : MonoBehaviourPunCallbacks
 {
 
+    [SerializeField] private int speed = 10;
+    [SerializeField] private int mouseSensitivity = 1;
+    [SerializeField] private float jumpThrust = 10;
+    [SerializeField] private LayerMask marineLayerMask;
+    [SerializeField] private int hitDistance = 1;
+    public int playerMaxHealth = 50; // Needs to be public as they are accessed by attacking enemies
+    public Image healthSlider = null; // Needs to be public as they are accessed by attacking enemies
+    public PlayerHealth healthScript; // Needs to be public as they are accessed by attacking enemies
     private Rigidbody rigidBody;
-    public int speed = 10;
-    public int mouseSensitivity = 1;
-    public float jumpThrust = 10;
-    public LayerMask marineLayerMask;
-    public int hitDistance = 1;
     private float playerHeight;
     private Camera cameraGO;
 
     private void Start()
     {
+        healthScript = new PlayerHealth(maxHealth: playerMaxHealth);
+        healthSlider.fillAmount = 1; // Sets the health slider to full on start.
         cameraGO = this.GetComponentInChildren<Camera>();
-        GetComponentInChildren<Text>().text = PhotonNetwork.NickName;
+        // GetComponentInChildren<Text>().text = PhotonNetwork.NickName; // Sets the name tag above the player.
         playerHeight = GetComponent<Collider>().bounds.extents.y;
 
         if (!photonView.IsMine)
@@ -82,12 +87,14 @@ public class AlienController : MonoBehaviourPunCallbacks
     private void LightAttack()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, hitDistance, marineLayerMask))
+        if (Physics.Raycast(transform.position, cameraGO.transform.forward, out hit, hitDistance, marineLayerMask))
         {
-            hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.red;
+            AlienController hitPlayer = hit.transform.gameObject.GetComponent<AlienController>();
+            float newHealth = hitPlayer.healthScript.PlayerHit(damage: 5);
+            hitPlayer.healthSlider.fillAmount = newHealth / hitPlayer.playerMaxHealth; // !!IMPORTANT!! Change this to marine movement/controller script at a later date!!!!
         }
 
-        Debug.DrawRay(transform.position, Vector3.forward * 100, Color.red);
+        Debug.DrawRay(transform.position, cameraGO.transform.forward * 100, Color.red);
         
         Debug.Log(PhotonNetwork.NickName + " (Alien) did a light attack");
     }

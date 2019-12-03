@@ -11,8 +11,16 @@ public class PlayerHealth
         health = maxHealth;
     }
 
-    public void PlayerHit(int damage = 10)
+    public int PlayerHit(int damage = 10)
     {
-        health -= damage;
+        if (health < damage)
+        {
+            health = 0;
+        }
+        else
+        {
+            health -= damage;
+        }
+        return health;
     }
 }

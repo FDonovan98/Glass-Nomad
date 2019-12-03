@@ -7,9 +7,9 @@ using Photon.Realtime;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private string lobbySceneName = "SCN_Launcher"; // Used to change scene when we leave a room.
-    private GameObject player; // Used to change the player's name tag, above their head.
     [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero;
     [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero;
+    private GameObject player; // Used to change the player's name tag, above their head.
     private void Start()
     {
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
