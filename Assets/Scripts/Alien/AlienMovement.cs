@@ -80,6 +80,18 @@ public class AlienMovement : MonoBehaviour
                 charRigidbody.velocity += jumpSpeed * charNormal;
             }
         }
+        
+        // Gets mouse x and y movement.
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
+
+        // Rotates the player model in the x-axis.
+        transform.Rotate(new Vector3(0.0f, mouseX, 0.0f));
+
+        Camera camera = this.GetComponentInChildren<Camera>();
+
+        camera.transform.Rotate(new Vector3(-mouseY, 0.0f, 0.0f));
+
 
     }
 }
