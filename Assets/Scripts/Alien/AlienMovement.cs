@@ -16,7 +16,7 @@ public class AlienMovement : MonoBehaviour
     public float lerpSpeed = 10;
     public float gravity = 10;
     // Char counts as grounded up to this distance from the ground.
-    public float deltaGround = 0.2f;
+    public float deltaGround = 1.0f;
     // Is the alien in contact with the ground.
     public bool isGrounded;
     // The initial vertical speed of a jump.
@@ -45,7 +45,8 @@ public class AlienMovement : MonoBehaviour
         // Initialises the charNormal to the world normal.
         charNormal = transform.up;
         // Gets the height from the centre of the collider to the ground.
-        distGround = charCollider.bounds.extents.y - charCollider.bounds.center.y;
+        distGround =  charCollider.bounds.center.y - charCollider.bounds.extents.y;
+        Debug.Log(distGround);
     }
 
     void FixedUpdate()
@@ -69,6 +70,7 @@ public class AlienMovement : MonoBehaviour
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
         if (Input.GetButtonDown("Jump"))
         {
+            Debug.Log("Jump key pressed");
             // Creates a ray from the current position in the direction the char is facing.
             ray = new Ray(transform.position, transform.forward);
 
@@ -80,6 +82,7 @@ public class AlienMovement : MonoBehaviour
             // If the player is on the ground then jump up.
             else if (isGrounded)
             {
+                Debug.Log("Applying Jump Force");
                 charRigidbody.velocity += jumpSpeed * charNormal;
             }
         }
@@ -103,7 +106,10 @@ public class AlienMovement : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             // If the character is touching the ground.
-            if (hit.distance <= distGround + deltaGround)
+            Debug.Log(hit.distance);
+            Debug.Log(distGround);
+            Debug.Log(deltaGround);
+            if (hit.distance <= (distGround + deltaGround))
             {
                 isGrounded = true;
                 surfaceNormal = hit.normal;
@@ -112,8 +118,10 @@ public class AlienMovement : MonoBehaviour
             {
                 // If the character isn't grounded resets surface normal.
                 isGrounded = false;
-                surfaceNormal = Vector3.up;
+                surfaceNormal = Vector3.up; // Just completely breaks it.
             }
+
+            
 
             // Interpolate between the characters current normal and the surface normal.
             charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
@@ -133,6 +141,7 @@ public class AlienMovement : MonoBehaviour
 
     IEnumerator JumpToWall(Vector3 point, Vector3 normal)
     {
+        Debug.Log("JumpToWall");
         // Enables the flag saying the char is jumping.
         jumping = true;
 
