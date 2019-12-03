@@ -71,7 +71,7 @@ public class AlienMovement : MonoBehaviour
             // If there is a wall ahead then trigger JumpToWall script.
             if (Physics.Raycast(ray, out hit, jumpRange))
             {
-                JumpToWall(hit.point, hit.normal);
+                //JumpToWall(hit.point, hit.normal);
             }
             // If the player is on the ground then jump up.
             else if (isGrounded)
