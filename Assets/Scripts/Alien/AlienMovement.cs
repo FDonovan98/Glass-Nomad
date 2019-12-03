@@ -106,7 +106,10 @@ public class AlienMovement : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             // If the character is touching the ground.
-            if (hit.distance <= distGround + deltaGround)
+            Debug.Log(hit.distance);
+            Debug.Log(distGround);
+            Debug.Log(deltaGround);
+            if (hit.distance <= (distGround + deltaGround))
             {
                 isGrounded = true;
                 surfaceNormal = hit.normal;
@@ -115,8 +118,10 @@ public class AlienMovement : MonoBehaviour
             {
                 // If the character isn't grounded resets surface normal.
                 isGrounded = false;
-                surfaceNormal = Vector3.up;
+                surfaceNormal = Vector3.up; // Just completely breaks it.
             }
+
+            
 
             // Interpolate between the characters current normal and the surface normal.
             charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
