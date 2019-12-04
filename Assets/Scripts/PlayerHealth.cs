@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerHealth
 {
-    public float health;
+    public int health;
 
     public PlayerHealth(int maxHealth = 100)
     {
         health = maxHealth;
     }
 
-    public float PlayerHit(int damage = 10)
+    public int PlayerHit(int damage = 10)
     {
         if (health < damage)
         {
