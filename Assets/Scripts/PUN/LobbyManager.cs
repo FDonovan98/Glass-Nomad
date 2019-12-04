@@ -3,14 +3,14 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class Launcher : MonoBehaviourPunCallbacks
+public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private string gameSceneName = "SCN_Blockout"; // Used to change scene when we are join a room.
     [SerializeField] private GameObject controlPanel = null; // Used to show/hide the play button and input field.
     [SerializeField] private GameObject progressLabel = null; // Used to display "Connecting..." to once the Connect() funtion is called.
-    [SerializeField] private GameObject playerItemPrefab = null;
-    [SerializeField] private GameObject loadGameButton = null;
-    [SerializeField] private Transform playerListPanel = null;
+    [SerializeField] private GameObject playerItemPrefab = null; // Used to display the players in the lobby.
+    [SerializeField] private GameObject loadGameButton = null; // Used to enable to master client to load the players into the game.
+    [SerializeField] private Transform playerListPanel = null; // Used to contain all the playeritem prefabs.
 
     private byte maxPlayersPerRoom = 5; // Used to set a limit to the number of players in a room.
     private string gameVersion = "1"; // Used to separate users from each other by gameVersion.
@@ -148,5 +148,14 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LoadLevel(gameSceneName);
         }
+    }
+
+    public void OnQuitClick()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
