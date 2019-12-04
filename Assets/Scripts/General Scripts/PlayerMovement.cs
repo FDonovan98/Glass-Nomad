@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     protected void Start()
     {
+        gameObject.name = photonView.Owner.NickName; // Sets the gameobject name to the player's username.
         cameraGO = this.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
         playerHeight = GetComponent<Collider>().bounds.extents.y; // Gets the players height using collider bounds.
         rigidBody = this.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.

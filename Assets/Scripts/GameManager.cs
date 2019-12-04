@@ -9,18 +9,17 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private string lobbySceneName = "SCN_Lobby"; // Used to change scene when we leave a room.
     [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero; // Used to spawn the alien.
     [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero; // Used to spawn the marines.
-    private GameObject player; // Used to change the player's name tag, above their head.
 
     private void Start()
     {
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
-            player = PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint, new Quaternion());
+            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint, new Quaternion());
         }
         else
         {
-            player = PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
         }
         
         Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
@@ -39,8 +38,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player other)
     {
         Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
-
-        player.GetComponentInChildren<Text>().text = other.NickName; // Sets the name tag above the player to its nickname.
 
         if (PhotonNetwork.IsMasterClient)
         {
