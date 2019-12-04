@@ -298,7 +298,8 @@ GameObject:
   - component: {fileID: 2808216820221156601}
   - component: {fileID: 307403933066171618}
   - component: {fileID: 6831255852340070626}
-  - component: {fileID: 2707247032260907939}
+  - component: {fileID: 585495260726479801}
+  - component: {fileID: 490376372209670051}
   - component: {fileID: 8229355201946509017}
   - component: {fileID: 2188038134139432926}
   m_Layer: 9
@@ -406,7 +407,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4364988366066350752}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffea967e7e29a0949895499a73171b53, type: 3}
   m_Name: 
@@ -420,7 +421,7 @@ MonoBehaviour:
   isGrounded: 0
   jumpSpeed: 10
   jumpRange: 10
---- !u!114 &2707247032260907939
+--- !u!114 &585495260726479801
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -434,13 +435,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   mouseSensitivity: 1
-  jumpThrust: 5
-  marineLayerMask:
+  jumpSpeed: 10
+  lerpSpeed: 10
+  jumpRange: 10
+  isPlayerGrounded: 1
+--- !u!114 &490376372209670051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4364988366066350752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eebc5e4e8cd09194d9c009fea322adde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitLayerMask:
     serializedVersion: 2
     m_Bits: 256
   hitDistance: 2
-  playerMaxHealth: 50
+  playerDamage: 25
   healthSlider: {fileID: 6329036609802932500}
+  maxHealth: 50
 --- !u!114 &8229355201946509017
 MonoBehaviour:
   m_ObjectHideFlags: 0

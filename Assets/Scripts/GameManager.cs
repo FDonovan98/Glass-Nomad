@@ -16,11 +16,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
-            player = PhotonNetwork.Instantiate("Player (Capsule)", alienSpawnPoint, new Quaternion());
+            player = PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint, new Quaternion());
         }
         else
         {
-            player = PhotonNetwork.Instantiate("Player (Capsule)", marineSpawnPoint, new Quaternion());
+            player = PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
         }
         
         Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");

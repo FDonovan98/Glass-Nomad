@@ -1,105 +1,159 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using Photon.Pun;
-using Photon.Realtime;
 
-public class AlienController : MonoBehaviourPunCallbacks
+public class AlienController : PlayerMovement
 {
+    [SerializeField] private float lerpSpeed = 10; // Smoothing speed.
+    [SerializeField] private float jumpRange = 10;// The range at which to detect a wall to stick to
+    [SerializeField] private bool isPlayerGrounded = true; // Is the alien in contact with the ground.
 
-    [SerializeField] private int speed = 10; // Used to control the movement speed of the player.
-    [SerializeField] private int mouseSensitivity = 1; // Used to control the sensitivity of the mouse.
-    [SerializeField] private float jumpThrust = 10; // Used to control the jumping force of the player.
-    [SerializeField] private LayerMask marineLayerMask = new LayerMask(); // Used to control which layers the alien can hit.
-    [SerializeField] private int hitDistance = 1; // Used to control how far the alien can hit.
+    private const float gravity = 10; // Used as a const for the gravity scale.
+    private Vector3 surfaceNormal = Vector3.zero;// The normal of the current surface.
+    private Vector3 charNormal = Vector3.zero;// The characters normal
+    private float verticalSpeed; // Current vertical speed.
 
-    public int playerMaxHealth = 50; // Needs to be public as they are accessed by attacking enemies
-    public Image healthSlider = null; // Needs to be public as they are accessed by attacking enemies
-    public PlayerHealth healthScript; // Needs to be public as they are accessed by attacking enemies
-
-    private Rigidbody rigidBody; // Used to apply physics to the player, e.g. movement.
-    private float playerHeight; // Used for the ground raycast.
-    private Camera cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.
-
-    private void Start()
+    private new void Start()
     {
-        healthScript = new PlayerHealth(playerMaxHealth); // Initialises the players health to max.
-        healthSlider.fillAmount = 1; // Sets the health slider to full on start.
-        cameraGO = this.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
-        playerHeight = GetComponent<Collider>().bounds.extents.y; // Gets the players height using collider bounds.
-        rigidBody = this.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.
-
-        if (!photonView.IsMine)
-        {
-            cameraGO.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
-        }
-
+        base.Start();
+        charNormal = transform.up; // Initialises the charNormal to the world normal.
     }
 
     private void Update()
     {
-        if (!photonView.IsMine)
-        {
+        if (!photonView.IsMine) // If we are not the local client then don't compute any of this.
             return;
-        }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (!isPlayerGrounded) // If the player is in the air then don't worry about any of this.
+            return;
+
+        PlayerInput(); // Process the player's input.
+
+        Ray ray = new Ray(transform.position, -charNormal);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
         {
-            // Calls the 'LightAttack' method on all clients, meaning that the health will be synced across all clients.
-            photonView.RPC("LightAttack", RpcTarget.All);
+            // If the character is touching the ground.
+            if (hit.distance <= (playerHeight + 1))
+            {
+                // then, update the grounded variable and the surface normal.
+                isPlayerGrounded = true;
+                surfaceNormal = hit.normal;
+            }
+            else
+            {
+                // otherwise, reset the surface normal.
+                isPlayerGrounded = false;
+                surfaceNormal = Vector3.up; // Just completely breaks it.
+            }
+
+            // Interpolate between the characters current normal and the surface normal.
+            charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
+
+            // Get the direction the character faces.
+            Vector3 charForward = Vector3.Cross(transform.right, charNormal);
+
+            // Align the character to the surface normal while still looking forward.
+            Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
         }
     }
 
     private void FixedUpdate()
     {
         if (!photonView.IsMine)
-        {
             return;
+
+        // Camera rotation
+        Vector3 cameraRotation = new Vector3(-mouseRotationInput.y, 0, 0) * mouseSensitivity;
+        cameraGO.transform.Rotate(cameraRotation);
+
+        // Player rotation
+        Vector3 playerRotation = new Vector3(0, mouseRotationInput.x, 0) * mouseSensitivity;
+        transform.Rotate(playerRotation);
+
+        // Calculate and apply force of gravity to char.
+        Vector3 gravForce = -gravity * rigidBody.mass * charNormal;
+        rigidBody.AddForce(gravForce);
+
+        if (!isPlayerGrounded) // We can't move if the player is still in the air.
+            return;
+
+
+        // Player movement
+        transform.Translate(playerMovementInput);
+    }
+
+    protected override void PlayerInput()
+    {
+        // If we are on the ground (or a wall?) and we pressed the jump key...
+        if (IsGrounded(-charNormal) && Input.GetButtonDown("Jump"))
+        {
+            // If we can jump to a wall then do so...
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, jumpRange))
+            {
+                // Start the jump transition to the wall.
+                StartCoroutine(JumpToWall(hit.point, hit.normal));
+            }
+            else
+            {
+                // otherwise apply a jump force to our movement variable.
+                isPlayerGrounded = false;
+                playerMovementInput += jumpSpeed * charNormal;
+            }
         }
 
         // Player movement
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
-        Vector3 dir = transform.TransformDirection(new Vector3(x, 0, z) * speed);
-        rigidBody.velocity = dir;
+        playerMovementInput = new Vector3(x, 0, z) * speed * Time.deltaTime;
 
         // Mouse rotation
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-
-        Vector3 playerRotation = new Vector3(0, mouseX, 0) * mouseSensitivity;
-        transform.Rotate(playerRotation);
-
-        Vector3 cameraRotation = new Vector3(-mouseY, 0, 0) * mouseSensitivity;
-        cameraGO.transform.Rotate(cameraRotation);
-
-        if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
-        {
-            rigidBody.velocity = Vector2.up * jumpThrust;
-        }
+        mouseRotationInput = new Vector3(mouseX, mouseY, 0);
     }
 
-    private bool IsGrounded()
+    private IEnumerator JumpToWall(Vector3 point, Vector3 normal)
     {
-        // Sends a raycast directing down, checking for a floor.
-        return Physics.Raycast(transform.position, -Vector3.up, playerHeight + 0.1f);
-    }
+        Debug.Log("JumpToWall");
+        // Enables the flag saying the char is jumping.
+        isPlayerGrounded = false;
 
-    [PunRPC] // Important as this is needed to be able to be called by the PhotonView.RPC().
-    private void LightAttack()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, cameraGO.transform.forward, out hit, hitDistance, marineLayerMask))
+        // Disables physics while jumping.
+        rigidBody.isKinematic = true;
+
+        // Gets the original position and rotation of char.
+        Vector3 originalPos = transform.position;
+        Quaternion originalRotation = transform.rotation;
+
+        // Gets the point at which the function should give up control.
+        float finalGroundOffset = 0.5f;
+        Vector3 farPos = point + normal * (playerHeight + finalGroundOffset);
+
+        // Gets the char forward facing and the rotation at the far point
+        Vector3 charForward = Vector3.Cross(transform.right, normal);
+        Quaternion farRotation = Quaternion.LookRotation(charForward, normal);
+
+        // Interpolates between current position and target position for a second.
+        float timeElapsed = 0.0f;
+        do
         {
-            AlienController hitPlayer = hit.transform.gameObject.GetComponent<AlienController>();
-            hitPlayer.healthScript.PlayerHit(damage: 5);
-            hitPlayer.healthSlider.fillAmount = (float)hitPlayer.healthScript.currentHealth / hitPlayer.playerMaxHealth; // !!IMPORTANT!! Change this to marine movement/controller script at a later date!!!!
-        }
+            timeElapsed += Time.deltaTime;
 
-        Debug.DrawRay(transform.position, cameraGO.transform.forward * 100, Color.red);
-        
-        Debug.Log(PhotonNetwork.NickName + " (Alien) did a light attack");
+            transform.position = Vector3.Lerp(originalPos, farPos, timeElapsed);
+            transform.rotation = Quaternion.Slerp(originalRotation, farRotation, timeElapsed);
+            yield return null;
+
+        } while (timeElapsed < 1.0f);
+
+        // Update charNormal.
+        charNormal = normal;
+        // Re-enables physics.
+        rigidBody.isKinematic = false;
+        // Signals the jump to the wall has finished.
+        isPlayerGrounded = true;
     }
 }
