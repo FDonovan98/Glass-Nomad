@@ -10,7 +10,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [SerializeField] private int playerDamage = 25; // Used to damage the other players.
     [SerializeField] private Image healthSlider = null; // Used to change the health bar slider above the player.
     [SerializeField] private int maxHealth = 100; // Used to set the player's health the max, on initialisation.
-    public PlayerHealth healthScript;
+    public PlayerHealth healthScript; // Used to control the health of this player.
     private Camera cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.
 
     private void Start()
@@ -28,13 +28,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         if (Input.GetButtonDown("Fire1"))
         {
-            // Calls the 'LightAttack' method on all clients, meaning that the health will be synced across all clients.
-            photonView.RPC("LightAttack", RpcTarget.All);
+            // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
+            photonView.RPC("Attack", RpcTarget.All);
         }
     }
 
     [PunRPC] // Important as this is needed to be able to be called by the PhotonView.RPC().
-    private void LightAttack()
+    private void Attack()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, cameraGO.transform.forward, out hit, hitDistance, hitLayerMask))
@@ -46,8 +46,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
         }
 
-        Debug.DrawRay(transform.position, cameraGO.transform.forward * 100, Color.red);
+        Debug.DrawRay(transform.position, cameraGO.transform.forward * hitDistance, Color.red);
 
-        Debug.Log(PhotonNetwork.NickName + " (Alien) did a light attack");
+        Debug.Log(PhotonNetwork.NickName + " did a light attack");
     }
 }
