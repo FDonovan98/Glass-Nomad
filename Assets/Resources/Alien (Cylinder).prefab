@@ -297,7 +297,6 @@ GameObject:
   - component: {fileID: 5573858290313199518}
   - component: {fileID: 2808216820221156601}
   - component: {fileID: 307403933066171618}
-  - component: {fileID: 6831255852340070626}
   - component: {fileID: 585495260726479801}
   - component: {fileID: 490376372209670051}
   - component: {fileID: 8229355201946509017}
@@ -400,27 +399,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &6831255852340070626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4364988366066350752}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffea967e7e29a0949895499a73171b53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mosueSensitivity: 10
-  movementSpeed: 6
-  turnSpeed: 90
-  lerpSpeed: 10
-  gravity: 10
-  deltaGround: 1
-  isGrounded: 0
-  jumpSpeed: 10
-  jumpRange: 10
 --- !u!114 &585495260726479801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,12 +411,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  movementSpeed: 5
   mouseSensitivity: 10
   jumpSpeed: 10
+  turnSpeed: 90
   lerpSpeed: 10
+  gravity: 10
+  deltaGround: 1
+  isGrounded: 0
   jumpRange: 10
-  isPlayerGrounded: 1
 --- !u!114 &490376372209670051
 MonoBehaviour:
   m_ObjectHideFlags: 0

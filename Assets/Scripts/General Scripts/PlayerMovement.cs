@@ -4,31 +4,35 @@ using Photon.Realtime;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
-    [SerializeField] protected int speed = 10; // Used to control the movement speed of the player.
+    [SerializeField] protected int movementSpeed = 10; // Used to control the movement movementSpeed of the player.
     [SerializeField] protected int mouseSensitivity = 1; // Used to control the sensitivity of the mouse.
     [SerializeField] protected float jumpSpeed = 10; // Used to control the jumping force of the player.
 
-    protected Rigidbody rigidBody; // Used to apply physics to the player, e.g. movement.
-    protected float playerHeight; // Used for the ground raycast.
-    protected Camera cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.
+    protected Rigidbody charRigidbody; // Used to apply physics to the player, e.g. movement.
+    protected float distGround; // Used for the ground raycast.
+    protected Collider charCollider;
+    protected Camera charCamera; // Used to disable/enable the camera so that we only control our local player's camera.
     protected Vector3 playerMovementInput; // Used to store the players movement input.
     protected Vector3 mouseRotationInput; // Used to store rotation of the player and the camera.
+    protected float groundDelta = 1.0f;
 
     protected void Start()
     {
         gameObject.name = photonView.Owner.NickName; // Sets the gameobject name to the player's username.
-        cameraGO = this.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
-        playerHeight = GetComponent<Collider>().bounds.extents.y; // Gets the players height using collider bounds.
-        rigidBody = this.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.
+        charCamera = gameObject.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
+        charCollider = gameObject.GetComponent<CapsuleCollider>();
+        distGround =  charCollider.bounds.extents.y;
+        Debug.Log("distGround: " + distGround);
+        charRigidbody = gameObject.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.
 
         if (!photonView.IsMine)
         {
-            cameraGO.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
+            charCamera.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
         }
 
     }
 
-    private void Update()
+    protected void Update()
     {
         if (!photonView.IsMine)
         {
@@ -36,18 +40,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         }
 
         PlayerInput(); // Gets player movement
-    }
-
-    private void FixedUpdate()
-    {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
 
         // Player movement
-        Vector3 dir = transform.TransformDirection(playerMovementInput * speed);
-        rigidBody.velocity = dir;
+        Vector3 dir = transform.TransformDirection(playerMovementInput);
+        charRigidbody.velocity = dir;
 
         // Player rotation
         Vector3 playerRotation = new Vector3(0, mouseRotationInput.x, 0) * mouseSensitivity;
@@ -55,27 +51,27 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Camera rotation
         Vector3 cameraRotation = new Vector3(-mouseRotationInput.y, 0, 0) * mouseSensitivity;
-        cameraGO.transform.Rotate(cameraRotation);
+        charCamera.transform.Rotate(cameraRotation);
     }
 
     protected virtual void PlayerInput()
     {
         float x, y, z; // Declare x, y and z axis variables for player movement.
 
-        // Jump and ground detection
-        if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
-        {
-            y = jumpSpeed;
-        }
-        else
-        {
-            y = rigidBody.velocity.y;
-        }
+        // // Jump and ground detection
+        // if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     y = jumpSpeed;
+        // }
+        // else
+        // {
+        //     y = charRigidbody.velocity.y;
+        // }
 
-        // Player movement
-        x = Input.GetAxisRaw("Horizontal");
-        z = Input.GetAxisRaw("Vertical");
-        playerMovementInput = new Vector3(x, y, z);
+        // // Player movement
+        // x = Input.GetAxisRaw("Horizontal") * movementSpeed;
+        // z = Input.GetAxisRaw("Vertical") * movementSpeed;
+        // playerMovementInput = new Vector3(x, charRigidbody.velocity.y, z);
 
         // Mouse rotation
         float mouseX = Input.GetAxis("Mouse X");
@@ -86,6 +82,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected bool IsGrounded(Vector3 dirOfRay)
     {
         // Sends a raycast directing down, checking for a floor.
-        return Physics.Raycast(transform.position, dirOfRay, playerHeight + 0.1f);
+        return Physics.Raycast(transform.position, dirOfRay, distGround + groundDelta);
     }
 }
