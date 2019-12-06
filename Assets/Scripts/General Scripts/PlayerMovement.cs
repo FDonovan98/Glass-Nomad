@@ -12,7 +12,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected float distGround; // Used for the ground raycast.
     protected Collider charCollider;
     protected Camera charCamera; // Used to disable/enable the camera so that we only control our local player's camera.
-    protected Vector3 playerMovementInput; // Used to store the players movement input.
     protected Vector3 mouseRotationInput; // Used to store rotation of the player and the camera.
     protected float groundDelta = 1.0f;
 
@@ -40,10 +39,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         }
 
         PlayerInput(); // Gets player movement
-
-        // Player movement
-        Vector3 dir = transform.TransformDirection(playerMovementInput);
-        charRigidbody.velocity = dir;
 
         // Player rotation
         Vector3 playerRotation = new Vector3(0, mouseRotationInput.x, 0) * mouseSensitivity;
