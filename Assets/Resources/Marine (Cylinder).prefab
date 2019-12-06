@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 7379751071495778646}
   - component: {fileID: 3761113299169080002}
   - component: {fileID: 6366923831727293381}
-  - component: {fileID: 6824200125660666667}
+  - component: {fileID: 3510170225846742540}
   m_Layer: 8
   m_Name: Marine (Cylinder)
   m_TagString: Untagged
@@ -438,24 +438,21 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
---- !u!143 &6824200125660666667
-CharacterController:
+--- !u!114 &3510170225846742540
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833018608841414331}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5000001
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706336232f148974e8861e3551d2b218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 10
+  mouseSensitivity: 10
+  jumpSpeed: 10
 --- !u!1 &9091064011920724288
 GameObject:
   m_ObjectHideFlags: 0
