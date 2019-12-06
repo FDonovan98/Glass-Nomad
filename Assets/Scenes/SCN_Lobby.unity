@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.03
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 253880434}
   - component: {fileID: 253880433}
   m_Layer: 0
-  m_Name: EMP_Launcher
+  m_Name: EMP_LobbyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -513,46 +513,91 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 253880433}
-    - target: {fileID: 704186607724817682, guid: 5b4a9295d6813be40ad97dbed5e8c615,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.49975586
-      objectReference: {fileID: 0}
-    - target: {fileID: 8666901023688783542, guid: 5b4a9295d6813be40ad97dbed5e8c615,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5287019856785930083, guid: 5b4a9295d6813be40ad97dbed5e8c615,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5287019856785930083, guid: 5b4a9295d6813be40ad97dbed5e8c615,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5287019856785930083, guid: 5b4a9295d6813be40ad97dbed5e8c615,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5287019856785930083, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 253880433}
-    - target: {fileID: 5287019856785930083, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+    - target: {fileID: 8930712224831133285, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnLoadGameClick
+      propertyPath: m_AnchorMin.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5287019856785930083, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+    - target: {fileID: 8930712224831133285, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8930712224831133285, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930712224831133285, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930712224831133285, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930712224843897551, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930712224843897551, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930712224843897551, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930712224843897551, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930712224843897551, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120745626787641828, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120745626787641828, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120745626787641828, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120745626787641828, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120745626787641828, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7000598267216444812, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 253880433}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b4a9295d6813be40ad97dbed5e8c615, type: 3}
 --- !u!1 &2143543752 stripped
