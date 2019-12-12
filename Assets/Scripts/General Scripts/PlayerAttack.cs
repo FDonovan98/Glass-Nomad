@@ -11,12 +11,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [SerializeField] private Image healthSlider = null; // Used to change the health bar slider above the player.
     [SerializeField] private int maxHealth = 100; // Used to set the player's health the max, on initialisation.
     public PlayerHealth healthScript; // Used to control the health of this player.
-    private Camera cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.
+    private GameObject cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.
 
     private void Start()
     {
         healthScript = new PlayerHealth(maxHealth);
-        cameraGO = this.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
+        cameraGO = this.GetComponentInChildren<Camera>().gameObject; // Gets the camera child on the player.
     }
 
     private void Update()
@@ -37,7 +37,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private void Attack()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, cameraGO.transform.right, out hit, hitDistance, hitLayerMask))
+        if (Physics.Raycast(transform.position, cameraGO.transform.forward, out hit, hitDistance, hitLayerMask))
         {
             PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
             PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
