@@ -2,9 +2,11 @@
 
 using UnityEngine;
 
+using System.Collections.Generic;
+
 public class UIEnvironment : EditorWindow
 {
-    bool showHealthBars = false;
+    bool showHealthBars = true;
     [MenuItem("Window/UI and Environment")]
     public static void ShowWindow()
     {
@@ -14,10 +16,20 @@ public class UIEnvironment : EditorWindow
     void OnGUI()
     {
         showHealthBars = EditorGUILayout.Toggle("Enable Health Bars", showHealthBars);
+
+        ToggleHealthBars(showHealthBars);
     }
 
-    void DisableHealthBars()
+    void ToggleHealthBars(bool enable)
     {
+        List<GameObject> playerObjects = new List<GameObject>();
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        foreach (GameObject element in allObjects)
+        {
+            if (element.tag == "Player")
+            {
+                element.transform.GetChild(1).gameObject.SetActive(enable);
+            }
+        }
     }
 }
