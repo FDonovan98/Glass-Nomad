@@ -36,6 +36,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [PunRPC] // Important as this is needed to be able to be called by the PhotonView.RPC().
     private void Attack()
     {
+        Debug.Log(photonView.Owner.NickName + " did a light attack");
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, cameraGO.transform.forward, out hit, hitDistance, hitLayerMask))
         {
@@ -49,10 +51,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             {
                 PhotonNetwork.Destroy(hitPlayer.gameObject);
             }
+
+            Debug.Log(photonView.Owner.NickName + " hit player: " + hitPlayer.gameObject.name);
         }
 
         Debug.DrawRay(transform.position, cameraGO.transform.forward * hitDistance, Color.red);
 
-        Debug.Log(PhotonNetwork.NickName + " did a light attack");
     }
 }
