@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 5573858290313199518}
   - component: {fileID: 2808216820221156601}
   - component: {fileID: 307403933066171618}
-  - component: {fileID: 585495260726479801}
+  - component: {fileID: 5780684092325464000}
   - component: {fileID: 490376372209670051}
   - component: {fileID: 8229355201946509017}
   - component: {fileID: 2188038134139432926}
@@ -399,7 +399,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &585495260726479801
+--- !u!114 &5780684092325464000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -411,13 +411,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 20
-  mouseSensitivity: 10
+  movementSpeed: 10
+  mouseSensitivity: 1
   jumpSpeed: 10
   yRotationClamp: 30
   turnSpeed: 90
   lerpSpeed: 10
-  gravity: 100
+  gravity: 10
   deltaGround: 1
   isGrounded: 0
   jumpRange: 10
