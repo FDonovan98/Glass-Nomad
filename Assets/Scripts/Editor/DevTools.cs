@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 using Photon.Pun;
 
-public class UIEnvironment : EditorWindow
+public class DevTools : EditorWindow
 {
     bool showHealthBars = true;
-    [MenuItem("Window/UI and Environment")]
+    [MenuItem("Window/Development Tools")]
     public static void ShowWindow()
     {
-        GetWindow<UIEnvironment>("UI and Environment");
+        GetWindow<DevTools>("Development Tools");
     }
 
     void OnGUI()
