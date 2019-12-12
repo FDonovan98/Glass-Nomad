@@ -20,6 +20,20 @@ public class UIEnvironment : EditorWindow
         showHealthBars = EditorGUILayout.Toggle("Enable Health Bars", showHealthBars);
         ToggleHealthBars(showHealthBars);
 
+        GUILayout.BeginHorizontal();
+
+        if(GUILayout.Button("Spawn Alien"))
+        {
+            SpawnCreature("Alien (Cylinder)");
+        }
+
+        if(GUILayout.Button("Spawn Marine"))
+        {
+            SpawnCreature("Marine (Cylinder)");
+        }
+
+        GUILayout.EndHorizontal();
+
         if(GUILayout.Button("Switch Character"))
         {
             SwitchModel();
@@ -57,6 +71,39 @@ public class UIEnvironment : EditorWindow
 
                 PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
                 PhotonNetwork.Instantiate(prefabName, playerPos, playerRot);
+
+                return;
+            }
+        }
+    }
+
+    void SpawnCreature(string prefabName)
+    {
+        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject element in playerObjects)
+        {
+            if (element.GetComponent<PhotonView>().IsMine)
+            {
+                Transform playerCam = element.GetComponentInChildren<Camera>().transform;
+                Ray ray = new Ray(element.transform.position, playerCam.forward);
+
+                RaycastHit hit;
+                Physics.Raycast(ray, out hit);
+
+                GameObject creature = PhotonNetwork.Instantiate(prefabName, hit.point, new Quaternion());
+
+                if (creature.GetComponent<AlienController>() != null)
+                {
+                    creature.GetComponent<AlienController>().enabled = false;
+                }
+                else 
+                {
+                    creature.GetComponent<MarineMovement>().enabled = false;
+                }
+                
+                creature.GetComponentInChildren<Camera>().enabled = false;
+
+                return;
             }
         }
     }
