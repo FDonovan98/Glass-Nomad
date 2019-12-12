@@ -10,8 +10,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero; // Used to spawn the alien.
     [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero; // Used to spawn the marines.
 
+    #region devtools
+    [Header("Developer Tools")]
+    [SerializeField] private bool singlePlayerMarine = false; // Used to test the marine player, in testing.
+    #endregion
+
     private void Start()
     {
+        if (singlePlayerMarine)
+        {
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
+            return;
+        }
+
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {

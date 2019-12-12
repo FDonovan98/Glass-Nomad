@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] protected int movementSpeed = 10; // Used to control the movement movementSpeed of the player.
     [SerializeField] protected int mouseSensitivity = 1; // Used to control the sensitivity of the mouse.
     [SerializeField] protected float jumpSpeed = 10; // Used to control the jumping force of the player.
+    [SerializeField] protected float yRotationClamp = 30; // Used to stop the player looking 'underneath' themselves.
 
     protected Rigidbody charRigidbody; // Used to apply physics to the player, e.g. movement.
     protected float distGround; // Used for the ground raycast.
@@ -14,7 +15,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected Camera charCamera; // Used to disable/enable the camera so that we only control our local player's camera.
     protected Vector3 mouseRotationInput; // Used to store rotation of the player and the camera.
     protected float groundDelta = 1.0f;
-
+    protected float cameraRotation = 0f;
+    protected Quaternion charCamTarRot;
     protected void Start()
     {
         gameObject.name = photonView.Owner.NickName; // Sets the gameobject name to the player's username.
@@ -29,6 +31,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             charCamera.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
         }
 
+        charCamTarRot = charCamera.transform.localRotation;
+
     }
 
     protected void Update()
@@ -38,36 +42,26 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             return;
         }
 
-        PlayerInput(); // Gets player movement
+        MouseInput(); // Gets player movement
 
         // Player rotation
         Vector3 playerRotation = new Vector3(0, mouseRotationInput.x, 0) * mouseSensitivity;
         transform.Rotate(playerRotation);
 
-        // Camera rotation
-        Vector3 cameraRotation = new Vector3(-mouseRotationInput.y, 0, 0) * mouseSensitivity;
-        charCamera.transform.Rotate(cameraRotation);
+        // Camera rotation - means that the player can't look underneath themself.
+        cameraRotation = -mouseRotationInput.y * mouseSensitivity;
+
+        // Modifies target from current direction to desired direction.
+        charCamTarRot *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
+
+        charCamTarRot = ClampRotationAroundXAxis(charCamTarRot);
+
+        // Use of localRotation allows movement around y axis.
+        charCamera.transform.localRotation = charCamTarRot;
     }
 
-    protected virtual void PlayerInput()
-    {
-        float x, y, z; // Declare x, y and z axis variables for player movement.
-
-        // // Jump and ground detection
-        // if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     y = jumpSpeed;
-        // }
-        // else
-        // {
-        //     y = charRigidbody.velocity.y;
-        // }
-
-        // // Player movement
-        // x = Input.GetAxisRaw("Horizontal") * movementSpeed;
-        // z = Input.GetAxisRaw("Vertical") * movementSpeed;
-        // playerMovementInput = new Vector3(x, charRigidbody.velocity.y, z);
-
+    protected virtual void MouseInput()
+    {        
         // Mouse rotation
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
@@ -78,5 +72,23 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         // Sends a raycast directing down, checking for a floor.
         return Physics.Raycast(transform.position, dirOfRay, distGround + groundDelta);
+    }
+
+    private Quaternion ClampRotationAroundXAxis(Quaternion q)
+    {
+        // Quaternion is 4x4 matrix.
+        q.x /= q.w;
+        q.y /= q.w;
+        q.z /= q.w;
+        q.w = 1.0f;
+
+        float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan(q.x);
+
+        angleX = Mathf.Clamp(angleX, -yRotationClamp, yRotationClamp);
+
+        // Updates x.
+        q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);
+
+        return q;
     }
 }
