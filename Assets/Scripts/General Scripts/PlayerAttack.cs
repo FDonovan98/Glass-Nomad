@@ -37,13 +37,18 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private void Attack()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, cameraGO.transform.forward, out hit, hitDistance, hitLayerMask))
+        if (Physics.Raycast(transform.position, cameraGO.transform.right, out hit, hitDistance, hitLayerMask))
         {
             PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
             PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
 
             hitPlayerHealth.PlayerHit(damage: playerDamage);
             hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
+
+            if (hitPlayerHealth.currentHealth == 0)
+            {
+                PhotonNetwork.Destroy(hitPlayer.gameObject);
+            }
         }
 
         Debug.DrawRay(transform.position, cameraGO.transform.forward * hitDistance, Color.red);
