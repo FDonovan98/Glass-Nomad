@@ -9,7 +9,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject controlPanel = null; // Used to show/hide the play button and input field.
     [SerializeField] private GameObject progressLabel = null; // Used to display "Connecting..." to once the Connect() funtion is called.
     [SerializeField] private GameObject playerItemPrefab = null; // Used to display the players in the lobby.
-    [SerializeField] private GameObject loadGameButton = null; // Used to enable to master client to load the players into the game.
+    [SerializeField] private GameObject inLobbyPanel = null; // Used to display the lobby buttons when you join a room.
     [SerializeField] private Transform playerListPanel = null; // Used to contain all the playeritem prefabs.
 
     private const string playerNamePrefKey = "Player Name";
@@ -89,12 +89,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Room joined successfully");
         progressLabel.SetActive(false);
+        inLobbyPanel.SetActive(true);
 
 
-        if (PhotonNetwork.IsMasterClient)
+        if (!PhotonNetwork.IsMasterClient)
         {
-            loadGameButton.SetActive(true);
+            inLobbyPanel.transform.GetChild(0).gameObject.SetActive(false);
         }
+
 
         UpdatePlayerList();
     }
@@ -112,6 +114,23 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
+    public void LeaveRoom()
+    {
+        // Leave the lobby and reset the UI.
+        PhotonNetwork.LeaveRoom();
+        isConnection = false;
+
+        inLobbyPanel.SetActive(false);
+        progressLabel.SetActive(false);
+        controlPanel.SetActive(true);
+
+        // Delete all player items from the player list panel.
+        for (int i = 0; i < playerListPanel.childCount; i++)
+        {
+            Destroy(playerListPanel.GetChild(i).gameObject);
+
+        }
+    }
 
     public override void OnPlayerLeftRoom(Player other)
     {
