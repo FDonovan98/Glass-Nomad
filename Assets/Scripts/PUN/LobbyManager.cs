@@ -12,6 +12,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject loadGameButton = null; // Used to enable to master client to load the players into the game.
     [SerializeField] private Transform playerListPanel = null; // Used to contain all the playeritem prefabs.
 
+    private const string playerNamePrefKey = "Player Name";
     private byte maxPlayersPerRoom = 5; // Used to set a limit to the number of players in a room.
     private string gameVersion = "1"; // Used to separate users from each other by gameVersion.
     private bool isConnection = false; // Used to stop us from immediately joining the room if we leave it.
@@ -31,6 +32,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void Connect()
     {
+        // Checks the player's input is empty - returns if it is.
+        if (PlayerPrefs.GetString(playerNamePrefKey) == string.Empty)
+        {
+            return;
+        }
+
         // Switches which UI elements are visable.
         progressLabel.SetActive(true);
         controlPanel.SetActive(false);
