@@ -61,7 +61,7 @@ public class AlienMovement : PlayerMovement
         {
             Debug.Log("Jump key pressed");
             // Creates a ray from the current position in the direction the char is facing.
-            ray = new Ray(transform.position, transform.forward);
+            ray = new Ray(transform.position, charCamera.transform.forward);
 
             // If there is a wall ahead then trigger JumpToWall script.
             if (Physics.Raycast(ray, out hit, jumpRange))
