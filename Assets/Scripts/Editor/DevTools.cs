@@ -7,10 +7,10 @@ using Photon.Pun;
 public class DevTools : EditorWindow
 {
     bool showHealthBars = true;
-    [MenuItem("Window/Development Tools")]
+    [MenuItem("Window/Dev Tools/General")]
     public static void ShowWindow()
     {
-        GetWindow<DevTools>("Development Tools");
+        GetWindow<DevTools>("General Tools");
     }
 
     void OnGUI()
