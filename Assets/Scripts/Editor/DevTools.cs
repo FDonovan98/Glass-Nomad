@@ -2,8 +2,6 @@
 
 using UnityEngine;
 
-using System.Collections.Generic;
-
 using Photon.Pun;
 
 public class DevTools : EditorWindow
