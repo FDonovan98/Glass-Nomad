@@ -11,12 +11,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [SerializeField] private Image healthSlider = null; // Used to change the health bar slider above the player.
     [SerializeField] private int maxHealth = 100; // Used to set the player's health the max, on initialisation.
     public PlayerHealth healthScript; // Used to control the health of this player.
-    private Camera cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.
+    private GameObject cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.
 
     private void Start()
     {
         healthScript = new PlayerHealth(maxHealth);
-        cameraGO = this.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
+        cameraGO = this.GetComponentInChildren<Camera>().gameObject; // Gets the camera child on the player.
     }
 
     private void Update()
@@ -36,6 +36,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [PunRPC] // Important as this is needed to be able to be called by the PhotonView.RPC().
     private void Attack()
     {
+        Debug.Log(photonView.Owner.NickName + " did a light attack");
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, cameraGO.transform.forward, out hit, hitDistance, hitLayerMask))
         {
@@ -44,10 +46,16 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
             hitPlayerHealth.PlayerHit(damage: playerDamage);
             hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
+
+            if (hitPlayerHealth.currentHealth == 0)
+            {
+                PhotonNetwork.Destroy(hitPlayer.gameObject);
+            }
+
+            Debug.Log(photonView.Owner.NickName + " hit player: " + hitPlayer.gameObject.name);
         }
 
         Debug.DrawRay(transform.position, cameraGO.transform.forward * hitDistance, Color.red);
 
-        Debug.Log(PhotonNetwork.NickName + " did a light attack");
     }
 }

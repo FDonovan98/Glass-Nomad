@@ -19,6 +19,8 @@ public class AlienMovement : PlayerMovement
     public bool isGrounded;
     // The range at which to detect a wall to stick to.
     public float jumpRange = 10;
+    // Time it takes to transfer between two surfaces.
+    public float transferTime = 1;
 
     // The normal of the current surface.
     private Vector3 surfaceNormal;
@@ -61,7 +63,7 @@ public class AlienMovement : PlayerMovement
         {
             Debug.Log("Jump key pressed");
             // Creates a ray from the current position in the direction the char is facing.
-            ray = new Ray(transform.position, transform.forward);
+            ray = new Ray(transform.position, charCamera.transform.forward);
 
             // If there is a wall ahead then trigger JumpToWall script.
             if (Physics.Raycast(ray, out hit, jumpRange))
@@ -92,10 +94,8 @@ public class AlienMovement : PlayerMovement
             {
                 // If the character isn't grounded resets surface normal.
                 isGrounded = false;
-                surfaceNormal = Vector3.up; // Just completely breaks it.
+                surfaceNormal = Vector3.up;
             }
-
-            
 
             // Interpolate between the characters current normal and the surface normal.
             charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
@@ -124,25 +124,27 @@ public class AlienMovement : PlayerMovement
         
         // Gets the original position and rotation of char.
         Vector3 originalPos = transform.position;
-        Quaternion originalRotation = transform.rotation;
+        Quaternion originalRotation = charCamera.transform.rotation;
 
         // Gets the point at which the function should give up control.
         float finalGroundOffset = 0.5f;
         Vector3 farPos = point + normal * (distGround + finalGroundOffset);
 
         // Gets the char forward facing and the rotation at the far point
-        Vector3 charForward = Vector3.Cross(transform.right, normal);
+        Vector3 charForward = charCamera.transform.forward;
         Quaternion farRotation = Quaternion.LookRotation(charForward, normal);
 
         // Interpolates between current position and target position for a second.
         float timeElapsed = 0.0f;
+
         do
         {
-            timeElapsed += Time.deltaTime;
+            timeElapsed += Time.deltaTime / transferTime;
 
             transform.position = Vector3.Lerp(originalPos, farPos, timeElapsed);
             transform.rotation = Quaternion.Slerp(originalRotation, farRotation, timeElapsed);
-            yield return null;
+            
+            yield return null; 
 
         } while (timeElapsed < 1.0f);
 
