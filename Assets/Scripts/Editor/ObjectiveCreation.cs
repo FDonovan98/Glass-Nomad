@@ -7,6 +7,7 @@ using System;
 
 public class Objectives : EditorWindow
 {    
+    // Variables needed Triggers.
     int chosenTrigger = 0;
     Button button;
 
@@ -25,6 +26,10 @@ public class Objectives : EditorWindow
         "On Area Entered"
     };
 
+    // Variables needed for effects.
+    bool ambientLighting = false;
+    Color ambientLightingColor;
+
     [MenuItem("Window/Dev Tools/Objective Creation")]
     public static void ShowWindow()
     {
@@ -34,12 +39,15 @@ public class Objectives : EditorWindow
     void OnGUI()
     {
         Triggers();
+        EditorGUILayout.Separator();
         Effects();
     }
 
     // Renders menu items handling the selection of triggers.
     void Triggers()
     {
+        GUILayout.Label("Select Trigger Condition");
+
         if(EditorGUILayout.DropdownButton(new GUIContent(triggerOptions[chosenTrigger]), new FocusType()))
         {
             GenericMenu menu = new GenericMenu();
@@ -79,6 +87,16 @@ public class Objectives : EditorWindow
     // Renders menu items handling the effect of the trigger.
     void Effects()
     {
+        GUILayout.Label("Select Effects");
 
+        ambientLighting = EditorGUILayout.Toggle("Change Ambient Lighting?", ambientLighting);
+
+        // PLAEHOLDER - Currently changes it live when it shouldn't.
+        if(ambientLighting)
+        {
+            ambientLightingColor = RenderSettings.ambientLight;
+            ambientLightingColor = EditorGUILayout.ColorField("Color", ambientLightingColor);
+            RenderSettings.ambientLight = ambientLightingColor;
+        }
     }
 }
