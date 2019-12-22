@@ -21,7 +21,7 @@ public class ObjectiveCreation : EditorWindow
     }
 
     // Renders menu items handling the selection of triggers.
-    private void Triggers()
+    void Triggers()
     {
         string[] triggerOptions = 
         {
@@ -41,7 +41,7 @@ public class ObjectiveCreation : EditorWindow
         switch (chosenTrigger)
         {
             case 0:
-                EditorGUILayout.ObjectField("Trigger Button", button, typeof(Button), true);
+                button = (Button)EditorGUILayout.ObjectField("Trigger Button", button, typeof(Button), true);
                 return;
 
             default:
@@ -50,7 +50,7 @@ public class ObjectiveCreation : EditorWindow
     }
 
     // Renders menu items handling the effect of the trigger.
-    private void Effects()
+    void Effects()
     {
 
     }
