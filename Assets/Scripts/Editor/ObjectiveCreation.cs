@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ObjectiveCreation : EditorWindow
+public class Objectives : EditorWindow
 {    
     int chosenTrigger = 0;
     Button button;
@@ -11,7 +11,7 @@ public class ObjectiveCreation : EditorWindow
     [MenuItem("Window/Dev Tools/Objective Creation")]
     public static void ShowWindow()
     {
-        GetWindow<ObjectiveCreation>("Objective Creation");
+        GetWindow<Objectives>("Objective Creation");
     }
 
     void OnGUI()
