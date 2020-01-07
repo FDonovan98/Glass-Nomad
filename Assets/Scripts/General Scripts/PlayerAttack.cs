@@ -1,22 +1,30 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class PlayerAttack : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private LayerMask hitLayerMask = new LayerMask(); // Used to control which layers the player can hit.
-    [SerializeField] private int hitDistance = 1; // Used to control how far the alien can hit.
-    [SerializeField] private int playerDamage = 25; // Used to damage the other players.
-    [SerializeField] public Image healthSlider = null; // Used to change the health bar slider above the player.
-    [SerializeField] private int maxHealth = 100; // Used to set the player's health the max, on initialisation.
-    public PlayerHealth healthScript; // Used to control the health of this player.
-    private GameObject cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.
+    // Used to change the health bar slider above the player.
+    [SerializeField] 
+    public Image healthSlider = null; 
+
+    // Used to set the player's health the max, on initialisation.
+    [SerializeField] 
+    private int maxHealth = 100; 
+    
+    // Used to control the health of this player.
+    public PlayerHealth healthScript;     
+    // Used to disable/enable the camera so that we only control our local player's camera.
+    private GameObject cameraGO; 
 
     private void Start()
     {
-        healthScript = new PlayerHealth(maxHealth);
-        cameraGO = this.GetComponentInChildren<Camera>().gameObject; // Gets the camera child on the player.
+        healthScript = new PlayerHealth(this.gameObject, maxHealth);
+
+        // Gets the camera child on the player.
+        cameraGO = this.GetComponentInChildren<Camera>().gameObject; 
+
+        WeaponClass rifle = new WeaponClass(3, 2, 20, 20, 40);
     }
 
     private void Update()
@@ -29,33 +37,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (Input.GetButtonDown("Fire1"))
         {
             // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
-            photonView.RPC("Attack", RpcTarget.All);
+            photonView.RPC("FireWeapon", RpcTarget.All);
         }
-    }
-
-    [PunRPC] // Important as this is needed to be able to be called by the PhotonView.RPC().
-    private void Attack()
-    {
-        Debug.Log(photonView.Owner.NickName + " did a light attack");
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, cameraGO.transform.forward, out hit, hitDistance, hitLayerMask))
-        {
-            PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
-            PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
-
-            hitPlayerHealth.PlayerHit(damage: playerDamage);
-            hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
-
-            if (hitPlayerHealth.currentHealth == 0)
-            {
-                PhotonNetwork.Destroy(hitPlayer.gameObject);
-            }
-
-            Debug.Log(photonView.Owner.NickName + " hit player: " + hitPlayer.gameObject.name);
-        }
-
-        Debug.DrawRay(transform.position, cameraGO.transform.forward * hitDistance, Color.red);
-
     }
 }

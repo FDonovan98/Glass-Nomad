@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 public class WeaponClass
 {
@@ -14,14 +15,14 @@ public class WeaponClass
 
     protected int bulletsInCurrentMag;
 
-    // inimum time delay between each shot.
+    // Minimum time delay between each shot.
     private float fireRate;
     // Max number of bullets stored in a magazine.
     private int magSize;
     private float range;
     private int damage;
 
-    protected WeaponClass(int magazineCount, float shotsPerSecond, int magazingSize, float weaponRange, int weaponDamage)
+    public WeaponClass(int magazineCount, float shotsPerSecond, int magazingSize, float weaponRange, int weaponDamage)
     {
         magCount = magazineCount;
         fireRate = 1 / shotsPerSecond;
@@ -33,6 +34,7 @@ public class WeaponClass
         bulletsInCurrentMag = magSize;
     }
 
+    [PunRPC]
     protected void FireWeapon(ref float deltaTime, GameObject camera)
     {
         if (canFire(deltaTime))
