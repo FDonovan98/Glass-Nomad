@@ -1,20 +1,26 @@
-﻿public class PlayerHealth
+﻿using UnityEngine;
+using Photon.Pun;
+
+public class PlayerHealth
 {
     public int maxHealth;
     public int currentHealth;
     public float fillAmount;
 
-    public PlayerHealth(int playerMaxHealth = 100)
+    private GameObject player;
+
+    public PlayerHealth(GameObject attachedPlayer, int playerMaxHealth = 100)
     {
         maxHealth = playerMaxHealth;
         currentHealth = maxHealth;
+        player = attachedPlayer;
     }
 
     public void PlayerHit(int damage)
     {
         if (currentHealth < damage)
         {
-            currentHealth = 0;
+            PhotonNetwork.Destroy(player);
         }
         else
         {
