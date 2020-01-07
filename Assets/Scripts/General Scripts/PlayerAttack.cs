@@ -8,7 +8,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [SerializeField] private LayerMask hitLayerMask = new LayerMask(); // Used to control which layers the player can hit.
     [SerializeField] private int hitDistance = 1; // Used to control how far the alien can hit.
     [SerializeField] private int playerDamage = 25; // Used to damage the other players.
-    [SerializeField] private Image healthSlider = null; // Used to change the health bar slider above the player.
+    [SerializeField] public Image healthSlider = null; // Used to change the health bar slider above the player.
     [SerializeField] private int maxHealth = 100; // Used to set the player's health the max, on initialisation.
     public PlayerHealth healthScript; // Used to control the health of this player.
     private GameObject cameraGO; // Used to disable/enable the camera so that we only control our local player's camera.

@@ -19,9 +19,9 @@ public class WeaponClass
     // Max number of bullets stored in a magazine.
     private int magSize;
     private float range;
-    private float damage;
+    private int damage;
 
-    protected WeaponClass(int magazineCount, float shotsPerSecond, int magazingSize, float weaponRange, float weaponDamage)
+    protected WeaponClass(int magazineCount, float shotsPerSecond, int magazingSize, float weaponRange, int weaponDamage)
     {
         magCount = magazineCount;
         fireRate = 1 / shotsPerSecond;
@@ -42,7 +42,14 @@ public class WeaponClass
             RaycastHit hit;
             if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, range))
             {
+                PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
+                if (hitPlayer != null)
+                {
+                    PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
 
+                    hitPlayerHealth.PlayerHit(damage);
+                    hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
+                }
             }
         }
     }
