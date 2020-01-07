@@ -16,11 +16,11 @@ public class WeaponClass
     protected int bulletsInCurrentMag;
 
     // Minimum time delay between each shot.
-    private float fireRate;
+    public float fireRate;
     // Max number of bullets stored in a magazine.
     private int magSize;
-    private float range;
-    private int damage;
+    public float range;
+    public int damage;
 
     public WeaponClass(int magazineCount, float shotsPerSecond, int magazingSize, float weaponRange, int weaponDamage)
     {
@@ -32,37 +32,5 @@ public class WeaponClass
 
         // Starts the weapon with a full magazine.
         bulletsInCurrentMag = magSize;
-    }
-
-    [PunRPC]
-    protected void FireWeapon(ref float deltaTime, GameObject camera)
-    {
-        if (canFire(deltaTime))
-        {
-            deltaTime -= fireRate;
-
-            RaycastHit hit;
-            if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, range))
-            {
-                PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
-                if (hitPlayer != null)
-                {
-                    PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
-
-                    hitPlayerHealth.PlayerHit(damage);
-                    hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
-                }
-            }
-        }
-    }
-
-    private bool canFire(float deltaTime)
-    {
-        if (deltaTime > fireRate)
-        {
-            return true;
-        }
-
-        return false;
     }
 }

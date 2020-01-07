@@ -17,6 +17,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     // Used to disable/enable the camera so that we only control our local player's camera.
     private GameObject cameraGO; 
 
+    WeaponClass rifle;
+
+    private float deltaTime = 0.0f;
+
     private void Start()
     {
         healthScript = new PlayerHealth(this.gameObject, maxHealth);
@@ -24,7 +28,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject; 
 
-        WeaponClass rifle = new WeaponClass(3, 2, 20, 20, 40);
+        rifle = new WeaponClass(3, 2, 20, 20, 40);
+        deltaTime = rifle.fireRate;
     }
 
     private void Update()
@@ -34,10 +39,51 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
-            // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
-            photonView.RPC("FireWeapon", RpcTarget.All);
+            
+            if (canFire(deltaTime, rifle.fireRate))
+            {
+                // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
+                photonView.RPC("FireWeapon", RpcTarget.All, cameraGO, rifle.range, rifle.damage);
+                deltaTime -= rifle.fireRate;
+            }
+            
+        }
+
+        if (Input.GetButtonUp("Fire1"))
+        {
+            // Means there is no delay before firing when the button is first pressed.
+            deltaTime = rifle.fireRate;
         }
     }
+
+    private bool canFire(float deltaTime, float fireRate)
+    {
+        if (deltaTime > fireRate)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    [PunRPC]
+    protected void FireWeapon(GameObject camera, float range, float damage)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, range))
+        {
+            PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
+            if (hitPlayer != null)
+            {
+                PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
+
+                hitPlayerHealth.PlayerHit(damage);
+                hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
+            }
+        }
+    }
+
+
 }
