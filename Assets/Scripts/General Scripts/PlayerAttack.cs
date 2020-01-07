@@ -69,7 +69,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    protected void FireWeapon(GameObject camera, float range, float damage)
+    protected void FireWeapon(GameObject camera, float range, int damage)
     {
         RaycastHit hit;
         if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, range))
