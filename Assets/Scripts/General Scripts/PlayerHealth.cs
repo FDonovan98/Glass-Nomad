@@ -7,16 +7,13 @@ public class PlayerHealth
     public int currentHealth;
     public float fillAmount;
 
-    private GameObject player;
-
     public PlayerHealth(GameObject attachedPlayer, int playerMaxHealth = 100)
     {
         maxHealth = playerMaxHealth;
         currentHealth = maxHealth;
-        player = attachedPlayer;
     }
 
-    public void PlayerHit(int damage)
+    public void PlayerHit(int damage, GameObject player)
     {
         if (currentHealth < damage)
         {

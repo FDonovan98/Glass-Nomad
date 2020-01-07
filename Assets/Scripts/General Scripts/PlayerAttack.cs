@@ -41,6 +41,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         if (Input.GetButton("Fire1"))
         {
+            deltaTime += Time.deltaTime;
             
             if (canFire(deltaTime, rifle.fireRate))
             {
@@ -71,6 +72,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [PunRPC]
     protected void FireWeapon(GameObject camera, float range, int damage)
     {
+        Debug.Log(photonView.Owner.NickName + " did a light attack");
+
         RaycastHit hit;
         if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, range))
         {
@@ -79,11 +82,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             {
                 PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
 
-                hitPlayerHealth.PlayerHit(damage);
+                hitPlayerHealth.PlayerHit(damage, camera.transform.parent.gameObject);
                 hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
+
+                Debug.Log(photonView.Owner.NickName + " hit player: " + hitPlayer.gameObject.name);
             }
         }
     }
-
-
 }
