@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using System;
+using System.IO;
 
 public class Objectives : EditorWindow
 {    
@@ -33,7 +34,7 @@ public class Objectives : EditorWindow
     [MenuItem("Window/Dev Tools/Objective Creation")]
     public static void ShowWindow()
     {
-        GetWindow<Objectives>("Objective Creation");
+        GetWindow<Objectives>("Objective Creation (WIP)");
     }
 
     void OnGUI()
@@ -41,6 +42,14 @@ public class Objectives : EditorWindow
         Triggers();
         EditorGUILayout.Separator();
         Effects();
+
+        if(GUILayout.Button("Create Objective"))
+        {
+            if(ambientLighting)
+            {
+                AddAmbientLightingToScript();
+            }
+        }
     }
 
     // Renders menu items handling the selection of triggers.
@@ -91,12 +100,15 @@ public class Objectives : EditorWindow
 
         ambientLighting = EditorGUILayout.Toggle("Change Ambient Lighting?", ambientLighting);
 
-        // PLAEHOLDER - Currently changes it live when it shouldn't.
         if(ambientLighting)
         {
             ambientLightingColor = RenderSettings.ambientLight;
             ambientLightingColor = EditorGUILayout.ColorField("Color", ambientLightingColor);
-            RenderSettings.ambientLight = ambientLightingColor;
         }
+    }
+
+    void AddAmbientLightingToScript()
+    {
+        
     }
 }
