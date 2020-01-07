@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         distGround =  charCollider.bounds.extents.y;
         Debug.Log("distGround: " + distGround);
         charRigidbody = gameObject.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.
+        Cursor.lockState = CursorLockMode.Locked;   //Cursor starts off locked to the center of the game window and invisible
 
         if (!photonView.IsMine)
         {
@@ -58,6 +59,20 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Use of localRotation allows movement around y axis.
         charCamera.transform.localRotation = charCamTarRot;
+
+        //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else if (Cursor.lockState == CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+
+        }
     }
 
     protected virtual void MouseInput()
