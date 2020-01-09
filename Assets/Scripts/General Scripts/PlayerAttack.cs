@@ -17,9 +17,9 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     // Used to disable/enable the camera so that we only control our local player's camera.
     private GameObject cameraGO; 
 
-    WeaponClass rifle;
-
     private float deltaTime = 0.0f;
+
+    static WeaponClass rifle;
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject; 
 
-        rifle = new WeaponClass(3, 2, 20, 20, 40);
+        rifle = new WeaponClass(3, 2, 20, 50, 40);
         deltaTime = rifle.fireRate;
     }
 
