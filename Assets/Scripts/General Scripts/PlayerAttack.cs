@@ -43,7 +43,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             deltaTime += Time.deltaTime;
             
-            if (canFire(deltaTime, rifle.fireRate))
+            if (canFire(deltaTime, rifle.fireRate, rifle.bulletsInCurrentMag))
             {
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
                 photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, rifle.range, rifle.damage);
@@ -57,13 +57,25 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             // Means there is no delay before firing when the button is first pressed.
             deltaTime = rifle.fireRate;
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            rifle.ReloadWeapon();
+        }
     }
 
-    private bool canFire(float deltaTime, float fireRate)
+    private bool canFire(float deltaTime, float fireRate, int bulletsInCurrentMag)
     {
-        if (deltaTime > fireRate)
+        if (bulletsInCurrentMag > 0)
         {
-            return true;
+            if (deltaTime > fireRate)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            Debug.Log("You are out of bullets in your magazine.");
         }
 
         return false;

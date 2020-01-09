@@ -13,7 +13,9 @@ public class WeaponClass
     public int magCount;
     public FireType fireMode;
 
-    protected int bulletsInCurrentMag;
+    public int magsLeft;
+
+    public int bulletsInCurrentMag;
 
     // Minimum time delay between each shot.
     public float fireRate;
@@ -30,7 +32,23 @@ public class WeaponClass
         range = weaponRange;
         damage = weaponDamage;
 
+        // Tracks how many usable magazines you still have left.
+        magsLeft = magCount;
+
         // Starts the weapon with a full magazine.
         bulletsInCurrentMag = magSize;
+    }
+
+    public void ReloadWeapon()
+    {
+        if (magsLeft > 0)
+        {
+            bulletsInCurrentMag = magSize;
+            magsLeft--;
+        }
+        else
+        {
+            Debug.Log("You are out of magazines for this weapon. Find more ammo.");
+        }
     }
 }
