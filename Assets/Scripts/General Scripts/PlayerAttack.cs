@@ -46,7 +46,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             if (canFire(deltaTime, rifle.fireRate))
             {
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
-                photonView.RPC("FireWeapon", RpcTarget.All, cameraGO, rifle.range, rifle.damage);
+                photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, rifle.range, rifle.damage);
                 deltaTime -= rifle.fireRate;
             }
             
@@ -70,19 +70,19 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    protected void FireWeapon(GameObject camera, float range, int damage)
+    protected void FireWeapon(Vector3 cameraPos, Vector3 cameraForward, float range, int damage)
     {
         Debug.Log(photonView.Owner.NickName + " did a light attack");
 
         RaycastHit hit;
-        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, range))
+        if (Physics.Raycast(cameraPos, cameraForward, out hit, range))
         {
             PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
             if (hitPlayer != null)
             {
                 PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
 
-                hitPlayerHealth.PlayerHit(damage, camera.transform.parent.gameObject);
+                hitPlayerHealth.PlayerHit(damage);
                 hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
 
                 Debug.Log(photonView.Owner.NickName + " hit player: " + hitPlayer.gameObject.name);
