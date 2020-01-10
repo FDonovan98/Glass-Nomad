@@ -31,7 +31,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject; 
 
-        rifle = new WeaponClass(3, 2, 20, 50, 40);
+        rifle = new WeaponClass(3, 2, 5, 50, 40);
 
         // Starts the user with a rifle.
         currentWeapon = rifle;
@@ -54,6 +54,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             {
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
                 photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, currentWeapon.range, currentWeapon.damage);
+
+                currentWeapon.bulletsInCurrentMag--;
+
+                Debug.LogAssertion(currentWeapon.bulletsInCurrentMag + " rounds remaining");
+
                 deltaTime = 0;
             }
             
