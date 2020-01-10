@@ -9,6 +9,7 @@ public class WeaponClass
         Burst,
         FullAuto
     }
+    
     // Number of magazines for the weapon.
     public int magCount;
     public FireType fireMode;

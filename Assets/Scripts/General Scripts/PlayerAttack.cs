@@ -19,7 +19,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private float deltaTime = 0.0f;
 
-    static WeaponClass rifle;
+    // List of weapon.
+    private static WeaponClass rifle;
+
+    private WeaponClass currentWeapon;
 
     private void Start()
     {
@@ -29,7 +32,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         cameraGO = this.GetComponentInChildren<Camera>().gameObject; 
 
         rifle = new WeaponClass(3, 2, 20, 50, 40);
-        deltaTime = rifle.fireRate;
+
+        // Starts the user with a rifle.
+        currentWeapon = rifle;
+
+        deltaTime = currentWeapon.fireRate;
     }
 
     private void Update()
@@ -43,11 +50,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             deltaTime += Time.deltaTime;
             
-            if (canFire(deltaTime, rifle.fireRate, rifle.bulletsInCurrentMag))
+            if (canFire(deltaTime, currentWeapon))
             {
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
-                photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, rifle.range, rifle.damage);
-                deltaTime -= rifle.fireRate;
+                photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, currentWeapon.range, currentWeapon.damage);
+                deltaTime = 0;
             }
             
         }
@@ -55,20 +62,20 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (Input.GetButtonUp("Fire1"))
         {
             // Means there is no delay before firing when the button is first pressed.
-            deltaTime = rifle.fireRate;
+            deltaTime = currentWeapon.fireRate;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            rifle.ReloadWeapon();
+            currentWeapon.ReloadWeapon();
         }
     }
 
-    private bool canFire(float deltaTime, float fireRate, int bulletsInCurrentMag)
+    private bool canFire(float deltaTime, WeaponClass weapon)
     {
-        if (bulletsInCurrentMag > 0)
+        if (weapon.bulletsInCurrentMag > 0)
         {
-            if (deltaTime > fireRate)
+            if (deltaTime > weapon.fireRate)
             {
                 return true;
             }
