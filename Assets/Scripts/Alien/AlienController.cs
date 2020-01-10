@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class AlienController : AlienMovement
 {
+    public Color alienVision;
+
     private new void Start()
     {
         base.Start();
+        
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        RenderSettings.ambientLight = alienVision;
     }
 
     private new void Update()
