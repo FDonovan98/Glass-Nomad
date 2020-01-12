@@ -24,8 +24,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private WeaponClass currentWeapon;
 
+    private MuzzleFlashScript muzzleFlash;
+
     private void Start()
     {
+        muzzleFlash = new MuzzleFlashScript();
+
         healthScript = new PlayerHealth(this.gameObject, maxHealth);
 
         // Gets the camera child on the player.
@@ -46,7 +50,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             deltaTime += Time.deltaTime;
             
@@ -56,6 +60,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, currentWeapon.range, currentWeapon.damage);
 
                 currentWeapon.bulletsInCurrentMag--;
+
+                muzzleFlash.Flash();
 
                 Debug.LogAssertion(currentWeapon.bulletsInCurrentMag + " rounds remaining");
 
