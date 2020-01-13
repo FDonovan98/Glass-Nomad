@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class MuzzleFlashScript : MonoBehaviour
+public class MuzzleFlashScript
 {
-    public GameObject muzzleFlash;
+    private Vector3 instantiatePosition;
 
-    public void Flash()
+    public MuzzleFlashScript()
     {
-        if (muzzleFlash != null)
-        {
-            var flash = Instantiate(muzzleFlash, gameObject.transform);
-            flash.transform.position = new Vector3(flash.transform.position.x, flash.transform.position.y, flash.transform.position.z + 0.52f);
-            Destroy(flash, 0.1f);
-        }
+
+    }
+    
+    public IEnumerator Flash(Vector3 position, Quaternion rotation)
+    {
+        instantiatePosition = position;
+        GameObject flash = PhotonNetwork.Instantiate("Muzzle_Flash", instantiatePosition, rotation);
+        yield return new WaitForSeconds(0.1f);
+        PhotonNetwork.Destroy(flash);
     }
 }

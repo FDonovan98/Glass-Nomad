@@ -25,10 +25,17 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private WeaponClass currentWeapon;
 
     private MuzzleFlashScript muzzleFlash;
+    private Vector3 muzzleFlashPosition;
+    private Light flashlight;
 
     private void Start()
     {
-        muzzleFlash = new MuzzleFlashScript();
+        // The muzzle flash will appear at the same spot as the flashlight
+        flashlight = gameObject.GetComponentInChildren<Light>();
+        if (flashlight != null)
+        {
+            muzzleFlash = new MuzzleFlashScript();
+        }
 
         healthScript = new PlayerHealth(this.gameObject, maxHealth);
 
@@ -61,7 +68,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
                 currentWeapon.bulletsInCurrentMag--;
 
-                muzzleFlash.Flash();
+                muzzleFlashPosition = flashlight.gameObject.transform.position;
+                
+
+                if (muzzleFlash != null)
+                {
+                    StartCoroutine(muzzleFlash.Flash(muzzleFlashPosition, flashlight.gameObject.transform.rotation));
+                }
 
                 Debug.LogAssertion(currentWeapon.bulletsInCurrentMag + " rounds remaining");
 

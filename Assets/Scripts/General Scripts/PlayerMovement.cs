@@ -66,10 +66,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             if (Cursor.lockState == CursorLockMode.Locked)
             {
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
             else if (Cursor.lockState == CursorLockMode.None)
             {
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
 
         }
