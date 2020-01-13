@@ -52,11 +52,11 @@ public class AlienMovement : PlayerMovement
         Ray ray;
         RaycastHit hit;
 
-        // Exits Update if the character is mid-jump.
-        if (jumping)
-        {
-            return;
-        }
+        // // Exits Update if the character is mid-jump.
+        // if (jumping)
+        // {
+        //     return;
+        // }
 
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
         if (Input.GetButtonDown("Jump"))
@@ -66,7 +66,7 @@ public class AlienMovement : PlayerMovement
             ray = new Ray(transform.position, charCamera.transform.forward);
 
             // If there is a wall ahead then trigger JumpToWall script.
-            if (Physics.Raycast(ray, out hit, jumpRange))
+            if (Physics.Raycast(ray, out hit, jumpRange) && hit.normal != this.transform.up)
             {
                 StartCoroutine(JumpToWall(hit.point, hit.normal));
             }
