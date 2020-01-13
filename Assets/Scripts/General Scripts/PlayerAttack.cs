@@ -50,7 +50,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
             deltaTime += Time.deltaTime;
             
