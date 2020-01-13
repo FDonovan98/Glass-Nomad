@@ -202,7 +202,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4390003744034751614}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.59, z: 0}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 246526236530761477}
@@ -405,7 +405,6 @@ GameObject:
   - component: {fileID: 326724175733053885}
   - component: {fileID: 9195684233792559127}
   - component: {fileID: 4546526508333691818}
-  - component: {fileID: 9081430286524813958}
   m_Layer: 8
   m_Name: Gun
   m_TagString: Untagged
@@ -421,11 +420,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6941760736000276331}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.7999999, y: -0.37999994, z: 1}
+  m_LocalPosition: {x: 0.8, y: -0.38, z: 1}
   m_LocalScale: {x: 0.4, y: 0.4, z: 1.6}
   m_Children:
   - {fileID: 2200460539119212618}
-  - {fileID: 2363198233736313347}
   m_Father: {fileID: 2722167150254570600}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -487,19 +485,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9081430286524813958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6941760736000276331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a58bf9e0b93367043a3f2eba8b09aa3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  muzzleFlash: {fileID: 8899164988844084932}
 --- !u!1 &6972813183663857378
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,75 +816,6 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
---- !u!1 &8899164988844084932
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2363198233736313347}
-  - component: {fileID: 3291978432409341102}
-  m_Layer: 8
-  m_Name: Muzzle_Flash
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &2363198233736313347
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8899164988844084932}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.52}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 246526236530761477}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &3291978432409341102
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8899164988844084932}
-  m_Enabled: 1
-  serializedVersion: 8
-  m_Type: 0
-  m_Color: {r: 0.9372549, g: 0.92156863, b: 0.84705883, a: 1}
-  m_Intensity: 12
-  m_Range: 11.777183
-  m_SpotAngle: 82.6
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!1 &9091064011920724288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,7 +935,7 @@ PrefabInstance:
     - target: {fileID: 8865416381457730582, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730582, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
