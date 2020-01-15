@@ -26,6 +26,11 @@ public class PlayerHealth
             currentHealth -= damage;
         }
 
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
         UpdateFillAmount();
     }
 

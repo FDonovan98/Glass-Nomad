@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -145,6 +145,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementSpeed: 10
+  mouseSensitivity: 1
+  jumpSpeed: 10
+  yRotationClamp: 30
+  turnSpeed: 90
+  lerpSpeed: 10
+  gravity: 10
+  deltaGround: 1
+  isGrounded: 0
+  jumpRange: 10
+  transferTime: 1
+  alienVision: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &349158236
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class AlienController : AlienMovement
 {
@@ -32,5 +33,13 @@ public class AlienController : AlienMovement
         if (!photonView.IsMine) 
             return;
         base.FixedUpdate();
+    }
+
+    [PunRPC]
+    protected void RegenHealth(int viewID, float deltaTime)
+    {
+        GameObject alien = PhotonView.Find(viewID).gameObject;
+        alien.GetComponent<PlayerAttack>().healthScript.PlayerHit(-1);
+        alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().healthScript.fillAmount;
     }
 }
