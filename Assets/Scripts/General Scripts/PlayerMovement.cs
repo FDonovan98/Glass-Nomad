@@ -42,11 +42,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     protected void Update()
     {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-
         MouseInput(); // Gets player movement
 
         // Player rotation

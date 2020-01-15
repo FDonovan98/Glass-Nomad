@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
-public class AlienController : AlienMovement
+public class MarineController : MarineMovement
 {
-    public Color alienVision;
     public PlayerInteraction playerInteraction;
 
     float deltaTime = 0;
@@ -17,8 +15,6 @@ public class AlienController : AlienMovement
         {
             return;
         }
-
-        RenderSettings.ambientLight = alienVision;
         
         playerInteraction = new PlayerInteraction();
     }
@@ -41,21 +37,5 @@ public class AlienController : AlienMovement
         {
             deltaTime = 0.0f;
         }
-    }
-
-    private new void FixedUpdate()
-    {
-        // If we are not the local client then don't compute any of this.
-        if (!photonView.IsMine) 
-            return;
-        base.FixedUpdate();
-    }
-
-    [PunRPC]
-    protected void RegenHealth(int viewID, float deltaTime)
-    {
-        GameObject alien = PhotonView.Find(viewID).gameObject;
-        alien.GetComponent<PlayerAttack>().healthScript.PlayerHit(-1);
-        alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().healthScript.fillAmount;
     }
 }
