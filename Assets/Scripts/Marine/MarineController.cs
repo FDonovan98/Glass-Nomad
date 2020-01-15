@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MarineController : MarineMovement
 {
-    private PlayerInteraction marineInteraction;
+    public PlayerInteraction marineInteraction;
     private PlayerAttack marineAttack;
 
     float deltaTime = 0;
@@ -35,7 +35,7 @@ public class MarineController : MarineMovement
         if (Input.GetButton("Interact"))
         {
             deltaTime += Time.deltaTime;
-            marineInteraction.ProcessTriggers(deltaTime, false);
+            marineInteraction.ProcessTriggers(deltaTime, true);
         }
 
         if (Input.GetButtonUp("Interact"))
