@@ -6,13 +6,16 @@ public class PlayerInteraction : ObjectInteraction
 
     public void ProcessTriggers(float deltaTime)
     {
+        // Script to execute if interacting with a door.
         if (interactionType == InteractionType.Door)
         {
-            float actionDuration = 5;
+            float actionDuration = 2;
+
+            Debug.Log(deltaTime);
 
             if (deltaTime >= actionDuration)
             {
-                // Run animation to open door
+                Debug.Log("Door Open");
             }
         }
     }

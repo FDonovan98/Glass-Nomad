@@ -10,16 +10,10 @@ public class ObjectInteraction : MonoBehaviour
 
     protected InteractionType interactionType;
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (interactionType == InteractionType.Door && other.tag == "Player")
+        if (other.tag == "Player")
         {
-            // Time the action has been going on for.
-            float interactionDuration;
-            
-            // Time taken for the action to complete.
-            float actionDuration;
-
             PlayerInteraction playerInteraction = other.gameObject.GetComponent<PlayerInteraction>();
             playerInteraction.interactionType = interactionType;
             
