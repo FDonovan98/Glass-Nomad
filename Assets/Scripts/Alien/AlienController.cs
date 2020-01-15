@@ -6,7 +6,9 @@ using Photon.Pun;
 public class AlienController : AlienMovement
 {
     public Color alienVision;
+    public PlayerInteraction playerInteraction;
 
+    float deltaTime = 0;
     private new void Start()
     {
         base.Start();
@@ -17,6 +19,8 @@ public class AlienController : AlienMovement
         }
 
         RenderSettings.ambientLight = alienVision;
+        
+        playerInteraction = new PlayerInteraction();
     }
 
     private new void Update()
@@ -24,7 +28,14 @@ public class AlienController : AlienMovement
         // If we are not the local client then don't compute any of this.
         if (!photonView.IsMine) 
             return;
+
         base.Update();
+
+        if (Input.GetButton("Interact"))
+        {
+            deltaTime += Time.deltaTime;
+            playerInteraction.ProcessTriggers(deltaTime, false);
+        }
     }
 
     private new void FixedUpdate()

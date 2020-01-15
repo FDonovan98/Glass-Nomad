@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using Photon.Pun;
 
 public class PlayerHealth
@@ -19,7 +20,7 @@ public class PlayerHealth
     {
         if (currentHealth < damage)
         {
-            PhotonNetwork.Destroy(player);
+            player.GetComponent<MarineMovement>().Ragdoll();
         }
         else
         {

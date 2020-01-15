@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1323797144487734875}
   - component: {fileID: 8018512350622736506}
   - component: {fileID: 6329036609802932500}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8812722947201370498}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 1760323300739135901}
   - component: {fileID: 3915323289422165989}
   - component: {fileID: 7038345413833809573}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 271858484038972895}
   - component: {fileID: 5581921797576302612}
   - component: {fileID: 6471048423355015658}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Slider Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 490376372209670051}
   - component: {fileID: 8229355201946509017}
   - component: {fileID: 2188038134139432926}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Alien (Cylinder)
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -424,6 +424,7 @@ MonoBehaviour:
   jumpRange: 10
   transferTime: 0.2
   alienVision: {r: 0.7830189, g: 0.30655926, b: 0.30655926, a: 0}
+  playerInteraction: {fileID: 0}
 --- !u!114 &490376372209670051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,7 +487,7 @@ GameObject:
   - component: {fileID: 8251318883155944740}
   - component: {fileID: 4175009778015692842}
   - component: {fileID: 439806900962051433}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -561,7 +562,7 @@ GameObject:
   - component: {fileID: 3804300193629163057}
   - component: {fileID: 1543104172036656728}
   - component: {fileID: 8195995887919339541}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: HUD Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -660,7 +661,8 @@ GameObject:
   - component: {fileID: 6657931584920568425}
   - component: {fileID: 4328822313441412364}
   - component: {fileID: 5364820036926898381}
-  m_Layer: 0
+  - component: {fileID: 4999215166340740336}
+  m_Layer: 10
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,7 +760,7 @@ MonoBehaviour:
   subpixelMorphologicalAntialiasing:
     quality: 2
   fastApproximateAntialiasing:
-    fastMode: 0
+    fastMode: 1
     keepAlpha: 0
   fog:
     enabled: 1
@@ -791,3 +793,20 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &4999215166340740336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8857119557930920037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: d0ffaa22bb04b3e45bb9c2b090917f64, type: 2}
+  isGlobal: 1
+  blendDistance: 0
+  weight: 1
+  priority: 1

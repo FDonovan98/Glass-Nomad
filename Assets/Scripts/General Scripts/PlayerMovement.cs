@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected float groundDelta = 1.0f;
     protected float cameraRotation = 0f;
     protected Quaternion charCamTarRot;
+
     protected void Start()
     {
         gameObject.name = photonView.Owner.NickName; // Sets the gameobject name to the player's username.
