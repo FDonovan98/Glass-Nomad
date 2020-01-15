@@ -8,19 +8,19 @@ public class ObjectInteraction : MonoBehaviour
         Door
     }
 
-    protected InteractionType interactionType;
+    public InteractionType interactionType;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            PlayerInteraction playerInteraction = other.gameObject.GetComponent<PlayerInteraction>();
-            playerInteraction.interactionType = interactionType;
+            AlienController playerInteraction = other.gameObject.GetComponent<AlienController>();
+            playerInteraction.playerInteraction.interactionType = interactionType;
             
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         PlayerInteraction playerInteraction = other.gameObject.GetComponent<PlayerInteraction>();
         playerInteraction.interactionType = InteractionType.None;
