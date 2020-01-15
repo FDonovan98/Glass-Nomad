@@ -707,10 +707,10 @@ GameObject:
   - component: {fileID: 818794212765684613}
   - component: {fileID: 6989138274606362850}
   - component: {fileID: 4774585629608982777}
-  - component: {fileID: 504354787674316869}
   - component: {fileID: 7379751071495778646}
   - component: {fileID: 3761113299169080002}
   - component: {fileID: 6366923831727293381}
+  - component: {fileID: 8072271135877907066}
   m_Layer: 8
   m_Name: Marine (Cylinder)
   m_TagString: Player
@@ -810,22 +810,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &504354787674316869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833018608841414331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35d47ac425fc3a14795151e51457ce3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 10
-  mouseSensitivity: 10
-  jumpSpeed: 10
-  yRotationClamp: 60
 --- !u!114 &7379751071495778646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -877,6 +861,25 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!114 &8072271135877907066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8833018608841414331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9de75805ba4ee48870873de3b3fe90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 10
+  mouseSensitivity: 1
+  jumpSpeed: 10
+  yRotationClamp: 30
+  force: 150
+  InputEnabled: 1
+  playerInteraction: {fileID: 0}
 --- !u!1 &9091064011920724288
 GameObject:
   m_ObjectHideFlags: 0

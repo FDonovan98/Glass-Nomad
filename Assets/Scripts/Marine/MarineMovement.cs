@@ -10,19 +10,15 @@ public class MarineMovement : PlayerMovement
 
     public bool InputEnabled = true;
 
-    private new void Start()
+    protected new void Start()
     {
         base.Start();
     }
 
-    private new void Update()
+    protected new void Update()
     {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-
         base.Update();
+        
         GetPlayerInput();
         // Player movement
         Vector3 dir = transform.TransformDirection(playerMovementInput);
