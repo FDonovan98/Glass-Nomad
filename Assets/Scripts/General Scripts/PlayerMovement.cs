@@ -34,6 +34,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         charCamTarRot = charCamera.transform.localRotation;
 
+        Cursor.lockState = CursorLockMode.Locked; // Forces every player's mouse to the center of the window and hides it when the player is created
+        Cursor.visible = false;
+
     }
 
     protected void Update()
