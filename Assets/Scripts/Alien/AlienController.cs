@@ -33,7 +33,7 @@ public class AlienController : AlienMovement
         if (Input.GetButton("Interact"))
         {
             deltaTime += Time.deltaTime;
-            playerInteraction.ProcessTriggers(deltaTime);
+            playerInteraction.ProcessTriggers(deltaTime, false);
         }
     }
 
