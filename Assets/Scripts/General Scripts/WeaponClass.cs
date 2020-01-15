@@ -21,7 +21,8 @@ public class WeaponClass
     // Minimum time delay between each shot.
     public float fireRate;
     // Max number of bullets stored in a magazine.
-    private int magSize;
+    // 0 If the weapon should never reload (melee).
+    public int magSize;
     public float range;
     public int damage;
 

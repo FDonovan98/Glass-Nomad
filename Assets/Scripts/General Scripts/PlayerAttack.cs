@@ -19,10 +19,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private float deltaTime = 0.0f;
 
-    // List of weapon.
-    private static WeaponClass rifle;
-
-    private WeaponClass currentWeapon;
+    public WeaponClass currentWeapon;
 
     private MuzzleFlashScript muzzleFlash;
     private Vector3 muzzleFlashPosition;
@@ -41,11 +38,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject; 
-
-        rifle = new WeaponClass(3, 2, 5, 50, 40);
-
-        // Starts the user with a rifle.
-        currentWeapon = rifle;
 
         deltaTime = currentWeapon.fireRate;
     }
@@ -66,9 +58,14 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
                 photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, currentWeapon.range, currentWeapon.damage);
 
-                currentWeapon.bulletsInCurrentMag--;
-
-                //muzzleFlashPosition = flashlight.gameObject.transform.position;
+                // If magSize is zero then it is a melee attack.
+                if (currentWeapon.magSize > 0)
+                {
+                    currentWeapon.bulletsInCurrentMag--;
+                    muzzleFlashPosition = flashlight.gameObject.transform.position;
+                }
+                
+                
                 
 
                 if (muzzleFlash != null)

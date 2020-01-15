@@ -5,7 +5,8 @@ using UnityEngine;
 public class AlienController : AlienMovement
 {
     public Color alienVision;
-    public PlayerInteraction playerInteraction;
+    public PlayerInteraction alienInteraction;
+    private PlayerAttack alienAttack;
 
     float deltaTime = 0;
     private new void Start()
@@ -19,7 +20,10 @@ public class AlienController : AlienMovement
 
         RenderSettings.ambientLight = alienVision;
         
-        playerInteraction = new PlayerInteraction();
+        alienInteraction = new PlayerInteraction();
+        alienAttack = new PlayerAttack();
+
+        alienAttack.currentWeapon = WeaponList.claws;
     }
 
     private new void Update()
@@ -33,7 +37,7 @@ public class AlienController : AlienMovement
         if (Input.GetButton("Interact"))
         {
             deltaTime += Time.deltaTime;
-            playerInteraction.ProcessTriggers(deltaTime, false);
+            alienInteraction.ProcessTriggers(deltaTime, false);
         }
 
         if (Input.GetButtonUp("Interact"))
