@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MarineController : MarineMovement
 {
-    public PlayerInteraction playerInteraction;
+    public PlayerInteraction marineInteraction;
+    private PlayerAttack marineAttack;
 
     float deltaTime = 0;
     private new void Start()
@@ -16,7 +17,11 @@ public class MarineController : MarineMovement
             return;
         }
         
-        playerInteraction = new PlayerInteraction();
+        marineInteraction = new PlayerInteraction();
+        marineAttack = new PlayerAttack();
+
+        // Starts the user with a rifle.
+        marineAttack.currentWeapon = WeaponList.rifle;        
     }
 
     private new void Update()
@@ -30,7 +35,7 @@ public class MarineController : MarineMovement
         if (Input.GetButton("Interact"))
         {
             deltaTime += Time.deltaTime;
-            playerInteraction.ProcessTriggers(deltaTime, false);
+            marineInteraction.ProcessTriggers(deltaTime, true);
         }
 
         if (Input.GetButtonUp("Interact"))

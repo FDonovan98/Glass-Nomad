@@ -14,15 +14,30 @@ public class ObjectInteraction : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            AlienController playerInteraction = other.gameObject.GetComponent<AlienController>();
-            playerInteraction.playerInteraction.interactionType = interactionType;
-            
+            if (other.gameObject.GetComponent<AlienController>() != null)
+            {
+                AlienController controller = other.gameObject.GetComponent<AlienController>();
+                controller.alienInteraction.interactionType = interactionType;
+            } 
+            else
+            {
+                MarineController controller = other.gameObject.GetComponent<MarineController>();
+                controller.marineInteraction.interactionType = interactionType;
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        PlayerInteraction playerInteraction = other.gameObject.GetComponent<PlayerInteraction>();
-        playerInteraction.interactionType = InteractionType.None;
+        if (other.gameObject.GetComponent<AlienController>() != null)
+        {
+            AlienController controller = other.gameObject.GetComponent<AlienController>();
+            controller.alienInteraction.interactionType = InteractionType.None;
+        } 
+        else
+        {
+            MarineController controller = other.gameObject.GetComponent<MarineController>();
+            controller.marineInteraction.interactionType = InteractionType.None;
+        }
     }
 }
