@@ -48,7 +48,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1384146924520659662
 Transform:
   m_ObjectHideFlags: 0
@@ -724,13 +724,14 @@ GameObject:
   - component: {fileID: 102155402685905219}
   - component: {fileID: 3260451622906445922}
   - component: {fileID: 2377293631480533579}
+  - component: {fileID: 3268759177784996054}
   m_Layer: 0
   m_Name: Sliding_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6717997813321790913
 Transform:
   m_ObjectHideFlags: 0
@@ -739,7 +740,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4393737429053461775}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -6.24, y: -0.466, z: 0}
+  m_LocalPosition: {x: -6.24, y: -0.48, z: 0}
   m_LocalScale: {x: 1.072908, y: 9.965831, z: 0.22601}
   m_Children:
   - {fileID: 5434945661177113892}
@@ -804,6 +805,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &3268759177784996054
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4393737429053461775}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5e5e0fc60f405d84aa646d78595936d7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5374247585159771071
 GameObject:
   m_ObjectHideFlags: 0
