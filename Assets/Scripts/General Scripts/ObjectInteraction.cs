@@ -2,18 +2,27 @@
 
 public class ObjectInteraction : MonoBehaviour
 {
-    // Time taken for the action to complete.
-    public float actionDuration;
-    public GameObject actionArea;
+    public enum InteractionType
+    {
+        None,
+        Door
+    }
 
-    // Time the action has been going on for.
-    private float interactionDuration;
+    public InteractionType interactionType;
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            MarineMovement marineMovement = other.gameObject.GetComponent<MarineMovement>();
+            AlienController playerInteraction = other.gameObject.GetComponent<AlienController>();
+            playerInteraction.playerInteraction.interactionType = interactionType;
+            
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        PlayerInteraction playerInteraction = other.gameObject.GetComponent<PlayerInteraction>();
+        playerInteraction.interactionType = InteractionType.None;
     }
 }

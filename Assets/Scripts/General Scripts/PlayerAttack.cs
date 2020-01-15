@@ -68,7 +68,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
                 currentWeapon.bulletsInCurrentMag--;
 
-                muzzleFlashPosition = flashlight.gameObject.transform.position;
+                //muzzleFlashPosition = flashlight.gameObject.transform.position;
                 
 
                 if (muzzleFlash != null)
