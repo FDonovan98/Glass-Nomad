@@ -2,10 +2,6 @@
 
 public class PlayerInteraction : ObjectInteraction
 {
-    public new InteractionType interactionType;
-    public new AnimationClip anim;
-    public new GameObject animator;
-
     public void ProcessTriggers(float deltaTime, bool isMarine)
     {
         // Script to execute if interacting with a door.
