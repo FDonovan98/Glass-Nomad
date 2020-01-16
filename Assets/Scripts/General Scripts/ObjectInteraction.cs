@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Photon.Pun;
+using ExitGames.Client.Photon;
 
 public class ObjectInteraction : MonoBehaviour
 {
@@ -11,6 +13,32 @@ public class ObjectInteraction : MonoBehaviour
     public InteractionType interactionType;
     public AnimationClip anim;
     public GameObject animator;
+
+    public void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        Debug.Log("Event Recieved");
+        byte eventCode = photonEvent.Code;
+
+        if (eventCode == (byte)1)
+        {
+            int targetID = (int)photonEvent.CustomData;
+            if (this.GetInstanceID() == targetID) 
+            {
+                animator.GetComponent<Animator>().Play(anim.name);
+            }
+        }
+        
+    }
 
     private void OnTriggerEnter(Collider other)
     {

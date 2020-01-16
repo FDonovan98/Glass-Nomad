@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class PlayerInteraction : ObjectInteraction
 {
@@ -13,8 +16,29 @@ public class PlayerInteraction : ObjectInteraction
 
             if (deltaTime >= actionDuration)
             {
-                animator.GetComponent<Animator>().Play(anim.name);
+                // animator.GetComponent<Animator>().Play(anim.name);
+                Debug.Log("Open Door");
+                TriggerAnimation();
             }
         }
+    }
+
+    private void TriggerAnimation()
+    {
+        byte eventCode = 1;
+        int gameObjectID = animator.GetInstanceID();
+
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions 
+        {
+            Receivers = ReceiverGroup.All
+        };
+
+        SendOptions sendOptions = new SendOptions
+        {
+            Reliability = true
+        };
+
+        PhotonNetwork.RaiseEvent(eventCode, gameObjectID, raiseEventOptions, sendOptions);
+
     }
 }
