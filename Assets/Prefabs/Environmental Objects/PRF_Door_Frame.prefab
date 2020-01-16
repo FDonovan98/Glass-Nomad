@@ -965,6 +965,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7702698668140992416}
   - component: {fileID: 42229956098551719}
+  - component: {fileID: 5744959961914180315}
+  - component: {fileID: 1630134158359401673}
+  - component: {fileID: 4900685329578015607}
   m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
@@ -1007,6 +1010,62 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5744959961914180315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101527011065256552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 4900685329578015607}
+  - {fileID: 4900685329578015607}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1630134158359401673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101527011065256552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+--- !u!114 &4900685329578015607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101527011065256552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
 --- !u!1 &9196524643967798896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,11 +1103,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 470797686823896528}
     m_Modifications:
-    - target: {fileID: 2201657863824191433, guid: cf14e6afa775a424aa03cb9d5e9cdada,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Emissive_Light (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2201657863824191438, guid: cf14e6afa775a424aa03cb9d5e9cdada,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1119,6 +1173,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.71664035
       objectReference: {fileID: 0}
+    - target: {fileID: 2201657863824191433, guid: cf14e6afa775a424aa03cb9d5e9cdada,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Emissive_Light (2)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf14e6afa775a424aa03cb9d5e9cdada, type: 3}
 --- !u!4 &709050289621460196 stripped
@@ -1134,11 +1193,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 470797686823896528}
     m_Modifications:
-    - target: {fileID: 2201657863824191433, guid: cf14e6afa775a424aa03cb9d5e9cdada,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Emissive_Light
-      objectReference: {fileID: 0}
     - target: {fileID: 2201657863824191438, guid: cf14e6afa775a424aa03cb9d5e9cdada,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1209,6 +1263,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.71664035
       objectReference: {fileID: 0}
+    - target: {fileID: 2201657863824191433, guid: cf14e6afa775a424aa03cb9d5e9cdada,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Emissive_Light
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf14e6afa775a424aa03cb9d5e9cdada, type: 3}
 --- !u!4 &6631591947819708843 stripped
@@ -1224,11 +1283,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 470797686823896528}
     m_Modifications:
-    - target: {fileID: 2201657863824191433, guid: cf14e6afa775a424aa03cb9d5e9cdada,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Emissive_Light (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 2201657863824191438, guid: cf14e6afa775a424aa03cb9d5e9cdada,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1299,6 +1353,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.71664035
       objectReference: {fileID: 0}
+    - target: {fileID: 2201657863824191433, guid: cf14e6afa775a424aa03cb9d5e9cdada,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Emissive_Light (3)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf14e6afa775a424aa03cb9d5e9cdada, type: 3}
 --- !u!4 &5830905588624471320 stripped
@@ -1314,11 +1373,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 470797686823896528}
     m_Modifications:
-    - target: {fileID: 2201657863824191433, guid: cf14e6afa775a424aa03cb9d5e9cdada,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Emissive_Light (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2201657863824191438, guid: cf14e6afa775a424aa03cb9d5e9cdada,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1388,6 +1442,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.71664035
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201657863824191433, guid: cf14e6afa775a424aa03cb9d5e9cdada,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Emissive_Light (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf14e6afa775a424aa03cb9d5e9cdada, type: 3}
