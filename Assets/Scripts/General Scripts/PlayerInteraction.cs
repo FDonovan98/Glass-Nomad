@@ -3,6 +3,8 @@
 public class PlayerInteraction : ObjectInteraction
 {
     public new InteractionType interactionType;
+    public new AnimationClip anim;
+    public new GameObject animator;
 
     public void ProcessTriggers(float deltaTime, bool isMarine)
     {
@@ -15,7 +17,7 @@ public class PlayerInteraction : ObjectInteraction
 
             if (deltaTime >= actionDuration)
             {
-                Debug.Log("Door Open");
+                animator.GetComponent<Animator>().Play(anim.name);
             }
         }
     }

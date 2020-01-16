@@ -180,6 +180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionType: 1
+  anim: {fileID: 7400000, guid: 2769f7ddc5d82f743b9e0ca66123abac, type: 2}
+  animator: {fileID: 9101527011065256552}
 --- !u!1 &3063817442227562268
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +240,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionType: 1
+  anim: {fileID: 7400000, guid: 2769f7ddc5d82f743b9e0ca66123abac, type: 2}
+  animator: {fileID: 9101527011065256552}
 --- !u!1 &3216819390952174953
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,7 +755,6 @@ GameObject:
   - component: {fileID: 102155402685905219}
   - component: {fileID: 3260451622906445922}
   - component: {fileID: 2377293631480533579}
-  - component: {fileID: 3268759177784996054}
   m_Layer: 0
   m_Name: Sliding_Door1
   m_TagString: Untagged
@@ -832,25 +835,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &3268759177784996054
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4393737429053461775}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5374247585159771071
 GameObject:
   m_ObjectHideFlags: 0

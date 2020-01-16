@@ -9,35 +9,51 @@ public class ObjectInteraction : MonoBehaviour
     }
 
     public InteractionType interactionType;
+    public AnimationClip anim;
+    public GameObject animator;
 
     private void OnTriggerEnter(Collider other)
+    {
+        SetPlayerInteraction(other, false);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        SetPlayerInteraction(other, true);
+    }
+
+    private void SetPlayerInteraction(Collider other, bool resetValues)
     {
         if (other.tag == "Player")
         {
             if (other.gameObject.GetComponent<AlienController>() != null)
             {
                 AlienController controller = other.gameObject.GetComponent<AlienController>();
-                controller.alienInteraction.interactionType = interactionType;
+                SetPlayerInteractionValues(controller.alienInteraction, resetValues);
             } 
             else
             {
                 MarineController controller = other.gameObject.GetComponent<MarineController>();
-                controller.marineInteraction.interactionType = interactionType;
+                SetPlayerInteractionValues(controller.marineInteraction, resetValues);
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void SetPlayerInteractionValues(PlayerInteraction playerInteraction, bool resetValues)
     {
-        if (other.gameObject.GetComponent<AlienController>() != null)
+        if (resetValues)
         {
-            AlienController controller = other.gameObject.GetComponent<AlienController>();
-            controller.alienInteraction.interactionType = InteractionType.None;
-        } 
+            playerInteraction.interactionType = InteractionType.None;
+            Debug.Log(playerInteraction.interactionType.ToString());
+            playerInteraction.anim = null;
+            playerInteraction.animator = null;
+        }
         else
         {
-            MarineController controller = other.gameObject.GetComponent<MarineController>();
-            controller.marineInteraction.interactionType = InteractionType.None;
+            playerInteraction.interactionType = interactionType;
+            Debug.Log(playerInteraction.interactionType.ToString());
+            playerInteraction.anim = anim;
+            playerInteraction.animator = animator;
         }
     }
 }
