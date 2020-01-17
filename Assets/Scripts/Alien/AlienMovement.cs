@@ -16,7 +16,7 @@ public class AlienMovement : PlayerMovement
     // Char counts as grounded up to this distance from the ground.
     public float deltaGround = 1.0f;
     // Is the alien in contact with the ground.
-    public bool isGrounded;
+    public bool isGrounded = false;
     // The range at which to detect a wall to stick to.
     public float jumpRange = 10;
     // Time it takes to transfer between two surfaces.
@@ -26,10 +26,11 @@ public class AlienMovement : PlayerMovement
     private Vector3 surfaceNormal;
     // The characters normal.
     private Vector3 charNormal;
+
     // Flag for if the alien is currently jumping.
-    private bool jumping;
+    //private bool jumping;
     // Current vertical speed.
-    private float verticalSpeed;
+    //private float verticalSpeed;
 
     protected new void Start()
     {
@@ -117,7 +118,7 @@ public class AlienMovement : PlayerMovement
     {
         Debug.Log("JumpToWall");
         // Enables the flag saying the char is jumping.
-        jumping = true;
+        //jumping = true;
 
         // Disables physics while jumping.
         charRigidbody.isKinematic = true;
@@ -153,6 +154,6 @@ public class AlienMovement : PlayerMovement
         // Re-enables physics.
         charRigidbody.isKinematic = false;
         // Signals the jump to the wall has finished.
-        jumping = false;
+        //jumping = false;
     }
 }

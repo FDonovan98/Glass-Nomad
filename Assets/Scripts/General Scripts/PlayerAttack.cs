@@ -1,21 +1,22 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
 public class PlayerAttack : MonoBehaviourPunCallbacks
 {
     // Used to change the health bar slider above the player.
-    [SerializeField] 
-    public Image healthSlider = null; 
+    [SerializeField]
+    public Image healthSlider = null;
 
     // Used to set the player's health the max, on initialisation.
-    [SerializeField] 
-    private int maxHealth = 100; 
-    
+    [SerializeField]
+    private int maxHealth = 100;
+
     // Used to control the health of this player.
-    public PlayerHealth healthScript;     
+    public PlayerHealth healthScript;
     // Used to disable/enable the camera so that we only control our local player's camera.
-    private GameObject cameraGO; 
+    private GameObject cameraGO;
 
     private float deltaTime = 0.0f;
 
@@ -25,10 +26,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
 
-    public PlayerAttack(WeaponClass weapon)
+    public Dictionary<string, WeaponClass> weaponDict = new Dictionary<string, WeaponClass>()
     {
-        currentWeapon = weapon;
-    }
+        { "default", new WeaponClass(10, 10, 10, 1000, 10) },
+        { "claws", new WeaponClass(1, 0, 0, 5, 10) }
+    };
 
     private void Start()
     {
@@ -38,26 +40,28 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             muzzleFlash = new MuzzleFlashScript();
         }
-		
+
         healthScript = new PlayerHealth(this.gameObject, maxHealth);
 
         // Gets the camera child on the player.
-        cameraGO = this.GetComponentInChildren<Camera>().gameObject; 
-
+        cameraGO = this.GetComponentInChildren<Camera>().gameObject;
+        weaponDict.TryGetValue("default", out currentWeapon);
         deltaTime = currentWeapon.fireRate;
     }
 
-    public void RunOnUpdate()
+    private void Update()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (Input.GetButton("Fire1"))
         {
             deltaTime += Time.deltaTime;
 
-            Debug.Log("fire ma gun");
-            
             if (canFire(deltaTime, currentWeapon))
             {
-                Debug.Log("Firing");
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
                 photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, currentWeapon.range, currentWeapon.damage);
 
@@ -67,9 +71,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                     currentWeapon.bulletsInCurrentMag--;
                     muzzleFlashPosition = flashlight.gameObject.transform.position;
                 }
-                
-                
-                
 
                 if (muzzleFlash != null)
                 {
@@ -80,7 +81,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
                 deltaTime = 0;
             }
-            
+
         }
 
         if (Input.GetButtonUp("Fire1"))

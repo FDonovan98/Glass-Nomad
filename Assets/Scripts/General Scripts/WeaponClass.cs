@@ -19,7 +19,7 @@ public class WeaponClass
     public int bulletsInCurrentMag;
 
     // Minimum time delay between each shot.
-    public float fireRate;
+    public float fireRate = 0f;
     // Max number of bullets stored in a magazine.
     // 0 If the weapon should never reload (melee).
     public int magSize;
@@ -38,15 +38,7 @@ public class WeaponClass
         magsLeft = magCount;
 
         // Starts the weapon with a full magazine.
-        if (magSize > 0)
-        {
-            bulletsInCurrentMag = magSize;
-        }
-        else
-        {
-            bulletsInCurrentMag = 1;
-        }
-        
+        bulletsInCurrentMag = magSize;
     }
 
     public void ReloadWeapon()

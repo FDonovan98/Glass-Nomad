@@ -22,7 +22,9 @@ public class AlienController : AlienMovement
         RenderSettings.ambientLight = alienVision;
         
         alienInteraction = new PlayerInteraction();
-        alienAttack = new PlayerAttack(WeaponList.claws);
+        alienAttack = GetComponent<PlayerAttack>();
+
+        alienAttack.weaponDict.TryGetValue("claws", out alienAttack.currentWeapon);
     }
 
     private new void Update()
@@ -32,8 +34,6 @@ public class AlienController : AlienMovement
             return;
 
         base.Update();
-
-        alienAttack.RunOnUpdate();
 
         if (Input.GetButton("Interact"))
         {
