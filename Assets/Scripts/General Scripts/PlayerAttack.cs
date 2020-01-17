@@ -25,6 +25,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
 
+    public PlayerAttack(WeaponClass weapon)
+    {
+        currentWeapon = weapon;
+    }
+
     private void Start()
     {
         // The muzzle flash will appear at the same spot as the flashlight
@@ -42,13 +47,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         deltaTime = currentWeapon.fireRate;
     }
 
-    public void Update()
+    public void RunOnUpdate()
     {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-
         if (Input.GetButton("Fire1"))
         {
             deltaTime += Time.deltaTime;

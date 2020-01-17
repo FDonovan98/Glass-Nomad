@@ -18,10 +18,7 @@ public class MarineController : MarineMovement
         }
         
         marineInteraction = new PlayerInteraction();
-        marineAttack = new PlayerAttack();
-
-        // Starts the user with a rifle.
-        marineAttack.currentWeapon = WeaponList.rifle;        
+        marineAttack = new PlayerAttack(WeaponList.rifle);    
     }
 
     private new void Update()
@@ -32,7 +29,7 @@ public class MarineController : MarineMovement
 
         base.Update();
 
-        marineAttack.Update();
+        marineAttack.RunOnUpdate();
 
         if (Input.GetButton("Interact"))
         {
