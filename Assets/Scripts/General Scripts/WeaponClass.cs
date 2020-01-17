@@ -38,7 +38,15 @@ public class WeaponClass
         magsLeft = magCount;
 
         // Starts the weapon with a full magazine.
-        bulletsInCurrentMag = magSize;
+        if (magSize > 0)
+        {
+            bulletsInCurrentMag = magSize;
+        }
+        else
+        {
+            bulletsInCurrentMag = 1;
+        }
+        
     }
 
     public void ReloadWeapon()

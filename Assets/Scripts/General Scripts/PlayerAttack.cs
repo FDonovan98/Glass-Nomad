@@ -52,9 +52,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (Input.GetButton("Fire1"))
         {
             deltaTime += Time.deltaTime;
+
+            Debug.Log("fire ma gun");
             
             if (canFire(deltaTime, currentWeapon))
             {
+                Debug.Log("Firing");
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
                 photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, currentWeapon.range, currentWeapon.damage);
 
