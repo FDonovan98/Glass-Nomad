@@ -6,6 +6,7 @@ public class DoorTriggerScript : MonoBehaviourPunCallbacks
     private Animator anim;
     private bool isDoorOpen = false;
 
+    public bool GetDoorOpen() { return isDoorOpen; }
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -13,27 +14,23 @@ public class DoorTriggerScript : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter(Collider coll)
     {
-        if (coll.gameObject.tag == "Player")
-        {
-            // ---- might need to check that this is a local player ----
-            // ---- might want a button press to trigger the below? ----
-            ChangeDoorState();
-        }
+        if (isDoorOpen) { return; } // if the door is already open,
+                                    // we don't need to open it again.
+        ChangeDoorState(coll.gameObject);
     }
 
     private void OnTriggerExit(Collider coll)
     {
-        if (coll.gameObject.tag == "Player")
-        {
-            // ---- might need to check that this is a local player ----
-            ChangeDoorState();
-        }
+        ChangeDoorState(coll.gameObject);
     }
 
-    private void ChangeDoorState()
+    public void ChangeDoorState(GameObject obj)
     {
-        isDoorOpen = !isDoorOpen;
-        Debug.Log(isDoorOpen ? "Door opening" : "Door closing");
-        anim.SetBool("doorOpen", isDoorOpen);
+        if (obj.tag == "Player")
+        {
+            isDoorOpen = !isDoorOpen;
+            Debug.Log(isDoorOpen ? "Door opening" : "Door closing");
+            anim.SetBool("doorOpen", isDoorOpen);
+        }
     }
 }

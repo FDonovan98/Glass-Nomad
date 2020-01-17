@@ -21,6 +21,18 @@ public class PlayerInteraction : ObjectInteraction
                 TriggerAnimation();
             }
         }
+        else if (interactionType == InteractionType.Generator && isMarine)
+        {
+            float actionDuration = 0;
+
+            Debug.Log(deltaTime);
+
+            if (deltaTime >= actionDuration)
+            {
+                Debug.Log("Turning power on...");
+                TurnPowerOn();
+            }
+        }
     }
 
     private void TriggerAnimation()
@@ -39,6 +51,10 @@ public class PlayerInteraction : ObjectInteraction
         };
 
         PhotonNetwork.RaiseEvent(eventCode, gameObjectID, raiseEventOptions, sendOptions);
+    }
+
+    private void TurnPowerOn()
+    {
 
     }
 }
