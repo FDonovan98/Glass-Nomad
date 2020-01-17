@@ -32,6 +32,8 @@ public class MarineController : MarineMovement
 
         base.Update();
 
+        marineAttack.Update();
+
         if (Input.GetButton("Interact"))
         {
             deltaTime += Time.deltaTime;

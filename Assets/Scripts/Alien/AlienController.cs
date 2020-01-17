@@ -35,6 +35,8 @@ public class AlienController : AlienMovement
 
         base.Update();
 
+        alienAttack.Update();
+
         if (Input.GetButton("Interact"))
         {
             deltaTime += Time.deltaTime;

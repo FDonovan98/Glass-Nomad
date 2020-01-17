@@ -42,7 +42,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         deltaTime = currentWeapon.fireRate;
     }
 
-    private void Update()
+    public void Update()
     {
         if (!photonView.IsMine)
         {
