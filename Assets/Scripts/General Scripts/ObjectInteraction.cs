@@ -7,7 +7,8 @@ public class ObjectInteraction : MonoBehaviour
     public enum InteractionType
     {
         None,
-        Door
+        Door,
+        Generator
     }
 
     public InteractionType interactionType;
