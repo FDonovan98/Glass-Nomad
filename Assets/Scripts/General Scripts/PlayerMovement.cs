@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] protected int mouseSensitivity = 1; // Used to control the sensitivity of the mouse.
     [SerializeField] protected float jumpSpeed = 10; // Used to control the jumping force of the player.
     [SerializeField] protected float yRotationClamp = 30; // Used to stop the player looking 'underneath' themselves.
+    [SerializeField] private GameObject menu = null; // Used to hide and show the menu options.
 
     protected Rigidbody charRigidbody; // Used to apply physics to the player, e.g. movement.
     protected float distGround; // Used for the ground raycast.
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected float groundDelta = 1.0f;
     protected float cameraRotation = 0f;
     protected Quaternion charCamTarRot;
+    private bool inputEnabled = true;
 
     protected void Start()
     {
@@ -35,13 +37,48 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         charCamTarRot = charCamera.transform.localRotation;
 
+        menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
         Cursor.lockState = CursorLockMode.Locked; // Forces every player's mouse to the center of the window and hides it when the player is created
         Cursor.visible = false;
-
     }
 
     protected void Update()
     {
+#if UNITY_EDITOR
+        //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                ToggleMenu(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else if (Cursor.lockState == CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                ToggleMenu(false);
+            }
+        }
+#elif UNITY_STANDALONE_WIN
+        //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (menu.activeSelf) // Menu is open, so close it.
+            {
+                ToggleMenu(false);
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else // Menu is closed, so open it.
+            {
+                ToggleMenu(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+#endif
+
+
+        if (!inputEnabled) { return; } // If input is enabled, ignore all of the below.
+
         MouseInput(); // Gets player movement
 
         // Player rotation
@@ -58,22 +95,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Use of localRotation allows movement around y axis.
         charCamera.transform.localRotation = charCamTarRot;
-
-        //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
-        if (Input.GetKeyDown(KeyCode.Comma))
-        {
-            if (Cursor.lockState == CursorLockMode.Locked)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else if (Cursor.lockState == CursorLockMode.None)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-
-        }
     }
 
     protected virtual void MouseInput()
@@ -106,5 +127,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);
 
         return q;
+    }
+
+    private void ToggleMenu(bool toggle)
+    {
+        menu.SetActive(toggle);
+        Cursor.visible = toggle;
+        inputEnabled = !toggle;
     }
 }

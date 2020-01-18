@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -9,6 +11,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [SerializeField] private string lobbySceneName = "SCN_Lobby"; // Used to change scene when we leave a room.
     [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero; // Used to spawn the alien.
     [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero; // Used to spawn the marines.
+    [SerializeField] private Dropdown resolutionDropdown = null; // Used to change the video resolution.
+    [SerializeField] private Dropdown qualityDropdown = null; // Used to change the video quality.
+    [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
+    public GameObject pauseMenu; // Used by PlayerMovement to access the pause menu gameobject.
+    private Resolution[] resolutions; // Used to retrieve all the available resolutions.
 
     #region devtools
     [Header("Developer Tools")]
@@ -35,6 +42,29 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
         
         Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
+
+        // Setting up the resolution options
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();
+        List<string> options = new List<string>();
+
+        int currentResIndex = 0;
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + " x " + resolutions[i].height;
+            options.Add(option);
+
+            if (resolutions[i].width == Screen.currentResolution.width
+            && resolutions[i].height == Screen.currentResolution.height)
+            {
+                currentResIndex = i;
+            }
+        }
+
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResIndex;
+        resolutionDropdown.RefreshShownValue();
+        qualityDropdown.value = QualitySettings.GetQualityLevel();
     }
 
     public override void OnLeftRoom()
@@ -94,4 +124,36 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
             }
         }
     }
+
+    #region menu_options
+    public void ToggleOptionMenu(GameObject menu)
+    {
+        menu.SetActive(!menu.activeSelf);
+    }
+
+    public void SetVolume(float volume)
+    {
+        audioMixer.SetFloat("volume", volume);
+    }
+
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution res = resolutions[resolutionIndex];
+        Debug.Log("Changing screen resolution to: " + res);
+        Screen.SetResolution(res.width, res.height, Screen.fullScreen);
+    }
+
+    public void SetQuality(int qualityIndex)
+    {
+        Debug.Log("Changing quality to: " + qualityDropdown.captionText.text);
+        QualitySettings.SetQualityLevel(qualityIndex);
+    }
+
+    public void SetFullscreenMode(bool isFullscreen)
+    {
+        Debug.Log("Changing fullscreen to: " + isFullscreen);
+        Screen.fullScreen = isFullscreen;
+    }
+
+    #endregion
 }
