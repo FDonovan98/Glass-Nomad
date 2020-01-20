@@ -20,17 +20,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private float deltaTime = 0.0f;
 
-    public WeaponClass currentWeapon;
+    public Weapon currentWeapon;
 
     private MuzzleFlashScript muzzleFlash;
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
-
-    public Dictionary<string, WeaponClass> weaponDict = new Dictionary<string, WeaponClass>()
-    {
-        { "default", new WeaponClass(10, 10, 10, 1000, 10) },
-        { "claws", new WeaponClass(1, 0, 0, 5, 10) }
-    };
 
     private void Start()
     {
@@ -45,7 +39,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
-        weaponDict.TryGetValue("default", out currentWeapon);
         deltaTime = currentWeapon.fireRate;
     }
 
@@ -92,11 +85,24 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            currentWeapon.ReloadWeapon();
+            ReloadWeapon(currentWeapon);
         }
     }
 
-    private bool canFire(float deltaTime, WeaponClass weapon)
+    private void ReloadWeapon(Weapon weapon)
+    {
+        if (weapon.magsLeft > 0)
+        {
+            weapon.bulletsInCurrentMag = weapon.magSize;
+            weapon.magsLeft--;
+        }
+        else
+        {
+            Debug.Log("You are out of magazines for this weapon. Find more ammo.");
+        }
+    }
+
+    private bool canFire(float deltaTime, Weapon weapon)
     {
         if (weapon.bulletsInCurrentMag > 0)
         {

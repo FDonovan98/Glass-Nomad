@@ -21,7 +21,7 @@ public class MarineController : MarineMovement
         marineAttack = GetComponent<PlayerAttack>();
 
         // Starts the user with a rifle.
-        marineAttack.weaponDict.TryGetValue("default", out marineAttack.currentWeapon);        
+        //marineAttack.weaponDict.TryGetValue("default", out marineAttack.currentWeapon);        
     }
 
     private new void Update()
