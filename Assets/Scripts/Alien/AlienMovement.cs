@@ -53,12 +53,6 @@ public class AlienMovement : PlayerMovement
         Ray ray;
         RaycastHit hit;
 
-        // // Exits Update if the character is mid-jump.
-        // if (jumping)
-        // {
-        //     return;
-        // }
-
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
         if (Input.GetButtonDown("Jump"))
         {
