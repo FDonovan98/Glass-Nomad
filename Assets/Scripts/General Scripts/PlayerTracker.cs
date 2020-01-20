@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerTracker : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class PlayerTracker : MonoBehaviour
     [Tooltip("Which tags the tracker is able to detect.")]
     public string tagMask;
 
-    private List<Vector3> playersFound = new List<Vector3>();
+    public Transform canvas;
+    public GameObject redDot;
+    public float dotOpacity = 1f;
 
     private void Start()
     {
@@ -24,24 +27,21 @@ public class PlayerTracker : MonoBehaviour
 
     private void OnTriggerStay(Collider coll)
     {
-        playersFound.Clear();
         if (coll.gameObject.tag == tagMask)
         {
-            Debug.Log("Player found");
-            playersFound = new List<Vector3>() { coll.gameObject.transform.position };
-            // ---- Implement functionality here ---- (e.g. red dot on tracker
-        }
-    }
+            GameObject dot = Instantiate(redDot, Camera.main.WorldToScreenPoint(coll.gameObject.transform.position), Quaternion.identity, canvas);
 
-    private void OnTriggerExit() { playersFound.Clear(); }
+            // Change the scale of the dot.
+            float dist = Vector3.Distance(transform.parent.position, coll.gameObject.transform.position);
+            dot.transform.localScale = new Vector3(1 / dist, 1 / dist, 1f);
 
-    // This method is for debug purposes only. The gizmos are only seen in the editor.
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        foreach (Vector3 player in playersFound)
-        {
-            Gizmos.DrawSphere(player, 0.1f);
+            // Change the opacity of the dot - closer is more visible.
+            dist = dist > dotOpacity ? dist : dotOpacity;
+            Color temp = dot.GetComponent<Image>().color;
+            temp.a = dotOpacity / dist;
+            dot.GetComponent<Image>().color = temp;
+
+            Destroy(dot, Time.fixedDeltaTime);
         }
     }
 }
