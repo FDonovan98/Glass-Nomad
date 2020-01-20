@@ -19,14 +19,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private GameObject cameraGO;
 
     private float deltaTime = 0.0f;
-
     public Weapon currentWeapon;
 
     private MuzzleFlashScript muzzleFlash;
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
-
-    private void Start()
+	private UIBehaviour hudCanvas;    private void Start()
     {
         // The muzzle flash will appear at the same spot as the flashlight
         flashlight = gameObject.GetComponentInChildren<Light>();
@@ -40,6 +38,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
         deltaTime = currentWeapon.fireRate;
+
+        hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
+        
+        hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
     }
 
     private void Update()
@@ -62,7 +64,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 if (currentWeapon.magSize > 0)
                 {
                     currentWeapon.bulletsInCurrentMag--;
-                    muzzleFlashPosition = flashlight.gameObject.transform.position;
+                    if (flashlight != null)
+                    {
+                        muzzleFlashPosition = flashlight.gameObject.transform.position;
+                    }
                 }
 
                 if (muzzleFlash != null)
@@ -73,6 +78,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 Debug.LogAssertion(currentWeapon.bulletsInCurrentMag + " rounds remaining");
 
                 deltaTime = 0;
+                
+                hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
             }
 
         }
@@ -86,6 +93,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadWeapon(currentWeapon);
+            hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
         }
     }
 
