@@ -12,7 +12,8 @@ public class AlienMovement : PlayerMovement
     public float turnSpeed = 90; 
     // Smoothing speed.
     public float lerpSpeed = 1;
-    public float gravity = 10;
+    public float gravConstant = 10;
+    private float gravity;
     // Char counts as grounded up to this distance from the ground.
     public float deltaGround = 0.1f;
     // Is the alien in contact with the ground.
@@ -38,6 +39,7 @@ public class AlienMovement : PlayerMovement
         // Initialises the charNormal to the world normal.
         charNormal = transform.up;
         Debug.Log(distGround);
+        gravity = gravConstant;
     }
 
     protected void FixedUpdate()
@@ -75,21 +77,36 @@ public class AlienMovement : PlayerMovement
 
         Vector3[] testVectors = new Vector3 [6] 
         {
-            -charNormal,
-            charNormal,
             transform.right,
             -transform.right, 
             transform.forward,
-            -transform.forward
+            -transform.forward,
+            charNormal,
+            -charNormal
         };
 
         Vector3 averageRayDirection = new Vector3(0, 0, 0);
+        int ventCount = 0;
+        gravity = gravConstant;
 
         foreach (Vector3 element in testVectors)
         {
             if (Physics.Raycast(transform.position, element, out hit, distGround + deltaGround))
             {
-                averageRayDirection += hit.normal;
+                if (hit.transform.gameObject.tag == "Vent")
+                {
+                    ventCount++;
+                }
+
+                if (ventCount <= 2)
+                {
+                    averageRayDirection += hit.normal;
+                }
+                else
+                {
+                    //gravity = 0;
+                    averageRayDirection = hit.normal;
+                }
             }
         }
 
