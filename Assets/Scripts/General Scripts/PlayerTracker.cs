@@ -17,19 +17,21 @@ public class PlayerTracker : MonoBehaviour
     public Transform canvas;
     public GameObject redDot;
     public float dotOpacity = 1f;
+    private Camera cam;
 
     private void Start()
     {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.size = new Vector3(width, 1f, range);
         boxCollider.center = new Vector3(0f, 0f, range / 2);
+        cam = GetComponentInParent<Camera>();
     }
 
     private void OnTriggerStay(Collider coll)
     {
         if (coll.gameObject.tag == tagMask)
         {
-            GameObject dot = Instantiate(redDot, Camera.main.WorldToScreenPoint(coll.gameObject.transform.position), Quaternion.identity, canvas);
+            GameObject dot = Instantiate(redDot, cam.WorldToScreenPoint(coll.gameObject.transform.position), Quaternion.identity, canvas);
 
             // Change the scale of the dot.
             float dist = Vector3.Distance(transform.parent.position, coll.gameObject.transform.position);
