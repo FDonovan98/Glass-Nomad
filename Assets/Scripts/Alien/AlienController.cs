@@ -22,7 +22,7 @@ public class AlienController : AlienMovement
         alienInteraction = new PlayerInteraction();
         alienAttack = GetComponent<PlayerAttack>();
 
-        alienAttack.weaponDict.TryGetValue("claws", out alienAttack.currentWeapon);
+        //alienAttack.weaponDict.TryGetValue("claws", out alienAttack.currentWeapon);
     }
 
     private new void Update()

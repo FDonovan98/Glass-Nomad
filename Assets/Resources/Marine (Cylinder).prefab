@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &503343661005264170
 Transform:
   m_ObjectHideFlags: 0
@@ -57,9 +57,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe1af11b1a69347ae03378c5572fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 10
-  width: 1
+  range: 30
+  width: 3
   tagMask: Player
+  canvas: {fileID: 1185400105508379042}
+  redDot: {fileID: 3378461893015919104, guid: b9517dc6a0ae0474184fd6cdb55c4be9, type: 3}
+  dotOpacity: 2
 --- !u!1 &2344721418371622438
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,7 +76,7 @@ GameObject:
   - component: {fileID: 2504440589249172993}
   - component: {fileID: 7783720681552790546}
   m_Layer: 5
-  m_Name: HUD Canvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -881,6 +884,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 8187056976602975490}
   maxHealth: 100
+  currentWeapon: {fileID: 11400000, guid: f07ed8fadc5211d47885c7f535b3d0f8, type: 2}
 --- !u!1 &9091064011920724288
 GameObject:
   m_ObjectHideFlags: 0

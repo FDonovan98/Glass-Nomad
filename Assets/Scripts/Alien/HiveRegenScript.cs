@@ -7,8 +7,13 @@ using Photon.Realtime;
 public class HiveRegenScript : MonoBehaviourPunCallbacks
 {
     private float deltaTime = 0.0f;
+    private GameObject alien;
+    private UIBehaviour hudCanvas;
 
-    GameObject alien;
+    private void Start()
+    {
+        hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
+    }
     
     private void OnTriggerStay(Collider other)
     {
@@ -20,6 +25,7 @@ public class HiveRegenScript : MonoBehaviourPunCallbacks
             if (deltaTime >= 0.2f)
             {
                 alien.GetPhotonView().RPC("RegenHealth", RpcTarget.All, viewID, deltaTime);
+                hudCanvas.UpdateUI(other.GetComponent<PlayerAttack>());
                 deltaTime = 0.0f;
             }
         }
