@@ -15,6 +15,7 @@ public class FlashlightControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Press F to toggle flashlight on and off
         if (Input.GetKeyDown(KeyCode.F))
         {
             flashlight.enabled = !flashlight.enabled;

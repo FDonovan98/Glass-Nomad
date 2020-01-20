@@ -16,7 +16,7 @@ public class AlienMovement : PlayerMovement
     // Char counts as grounded up to this distance from the ground.
     public float deltaGround = 1.0f;
     // Is the alien in contact with the ground.
-    public bool isGrounded;
+    public bool isGrounded = false;
     // The range at which to detect a wall to stick to.
     public float jumpRange = 10;
     // Time it takes to transfer between two surfaces.
@@ -26,10 +26,11 @@ public class AlienMovement : PlayerMovement
     private Vector3 surfaceNormal;
     // The characters normal.
     private Vector3 charNormal;
+
     // Flag for if the alien is currently jumping.
-    private bool jumping;
+    //private bool jumping;
     // Current vertical speed.
-    private float verticalSpeed;
+    //private float verticalSpeed;
 
     protected new void Start()
     {
@@ -52,11 +53,11 @@ public class AlienMovement : PlayerMovement
         Ray ray;
         RaycastHit hit;
 
-        // Exits Update if the character is mid-jump.
-        if (jumping)
-        {
-            return;
-        }
+        // // Exits Update if the character is mid-jump.
+        // if (jumping)
+        // {
+        //     return;
+        // }
 
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
         if (Input.GetButtonDown("Jump"))
@@ -66,7 +67,7 @@ public class AlienMovement : PlayerMovement
             ray = new Ray(transform.position, charCamera.transform.forward);
 
             // If there is a wall ahead then trigger JumpToWall script.
-            if (Physics.Raycast(ray, out hit, jumpRange))
+            if (Physics.Raycast(ray, out hit, jumpRange) && hit.normal != this.transform.up)
             {
                 StartCoroutine(JumpToWall(hit.point, hit.normal));
             }
@@ -117,7 +118,7 @@ public class AlienMovement : PlayerMovement
     {
         Debug.Log("JumpToWall");
         // Enables the flag saying the char is jumping.
-        jumping = true;
+        //jumping = true;
 
         // Disables physics while jumping.
         charRigidbody.isKinematic = true;
@@ -153,6 +154,6 @@ public class AlienMovement : PlayerMovement
         // Re-enables physics.
         charRigidbody.isKinematic = false;
         // Signals the jump to the wall has finished.
-        jumping = false;
+        //jumping = false;
     }
 }
