@@ -7,16 +7,13 @@ using Photon.Realtime;
 public class HiveRegenScript : MonoBehaviourPunCallbacks
 {
     private float deltaTime = 0.0f;
-
     private GameObject alien;
-
     private UIBehaviour hudCanvas;
 
     private void Start()
     {
         hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
     }
-    GameObject alien;
     
     private void OnTriggerStay(Collider other)
     {
