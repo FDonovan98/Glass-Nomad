@@ -8,12 +8,14 @@ public class PlayerHealth
     public int currentHealth;
     public float fillAmount;
     public GameObject player;
+    private UIBehaviour hudCanvas;
 
     public PlayerHealth(GameObject attachedPlayer, int playerMaxHealth = 100)
     {
         maxHealth = playerMaxHealth;
         currentHealth = maxHealth;
         player = attachedPlayer;
+        hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
     }
 
     public void PlayerHit(int damage)
@@ -33,6 +35,8 @@ public class PlayerHealth
         }
 
         UpdateFillAmount();
+        //This is required to update player health not only when they shoot but more importantly when they get shot.
+        hudCanvas.UpdateUI(player.GetComponent<PlayerAttack>());
     }
 
     private void UpdateFillAmount()

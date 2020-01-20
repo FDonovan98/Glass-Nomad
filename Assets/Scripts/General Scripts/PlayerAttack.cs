@@ -26,6 +26,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
 
+    private UIBehaviour hudCanvas;
+
     public Dictionary<string, WeaponClass> weaponDict = new Dictionary<string, WeaponClass>()
     {
         { "default", new WeaponClass(10, 10, 10, 1000, 10) },
@@ -47,6 +49,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
         weaponDict.TryGetValue("default", out currentWeapon);
         deltaTime = currentWeapon.fireRate;
+
+        hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
+        
+        hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
     }
 
     private void Update()
@@ -69,7 +75,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 if (currentWeapon.magSize > 0)
                 {
                     currentWeapon.bulletsInCurrentMag--;
-                    muzzleFlashPosition = flashlight.gameObject.transform.position;
+                    if (flashlight != null)
+                    {
+                        muzzleFlashPosition = flashlight.gameObject.transform.position;
+                    }
                 }
 
                 if (muzzleFlash != null)
@@ -80,6 +89,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 Debug.LogAssertion(currentWeapon.bulletsInCurrentMag + " rounds remaining");
 
                 deltaTime = 0;
+                
+                hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
             }
 
         }
@@ -93,6 +104,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.R))
         {
             currentWeapon.ReloadWeapon();
+            hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
         }
     }
 
