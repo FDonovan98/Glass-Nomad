@@ -14,7 +14,7 @@ public class AlienMovement : PlayerMovement
     public float lerpSpeed = 1;
     public float gravity = 10;
     // Char counts as grounded up to this distance from the ground.
-    public float deltaGround = 1.0f;
+    public float deltaGround = 0.5f;
     // Is the alien in contact with the ground.
     public bool isGrounded = false;
     // The range at which to detect a wall to stick to.
@@ -73,39 +73,23 @@ public class AlienMovement : PlayerMovement
             }
         }
 
-        // Update surfaceNormal.
-        // Casts ray downwards.
-        ray = new Ray(transform.position, -charNormal);
-
-        Ray downCast = new Ray(transform.position, -charNormal);
-        Ray upCast = downCast;
-        upCast.direction = -upCast.direction;
-
-        Ray rightCast = new Ray(transform.position, transform.right);
-        Ray leftCast = rightCast;
-        leftCast.direction = -leftCast.direction;
-
-        Ray forwardCast = new Ray(transform.position, Vector3.Cross(transform.right, charNormal));
-        Ray backCast = forwardCast;
-        backCast.direction = -backCast.direction;
-
-        Ray[] testRays = new Ray [6] 
+        Vector3[] testVectors = new Vector3 [6] 
         {
-            downCast,
-            upCast,
-            rightCast,
-            leftCast, 
-            forwardCast,
-            backCast
+            -charNormal,
+            charNormal,
+            transform.right,
+            -transform.right, 
+            transform.forward,
+            -transform.forward
         };
 
         Vector3 averageRayDirection = new Vector3(0, 0, 0);
 
-        foreach (Ray element in testRays)
+        foreach (Vector3 element in testVectors)
         {
-            if (Physics.Raycast(element, distGround + deltaGround))
+            if (Physics.Raycast(transform.position, element, distGround + deltaGround))
             {
-                averageRayDirection += element.direction;
+                averageRayDirection += element;
             }
         }
 
@@ -122,12 +106,12 @@ public class AlienMovement : PlayerMovement
         }
 
         // Interpolate between the characters current normal and the surface normal.
-        charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
-        // Get the direction the character faces.
-        Vector3 charForward = Vector3.Cross(transform.right, charNormal);
-        // Align the character to the surface normal while still looking forward.
-        Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+        // charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
+        // // Get the direction the character faces.
+        // Vector3 charForward = Vector3.Cross(transform.right, charNormal);
+        // // Align the character to the surface normal while still looking forward.
+        // Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
+        // transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
 
         // if (Physics.Raycast(ray, out hit))
         // {
@@ -144,13 +128,13 @@ public class AlienMovement : PlayerMovement
         //         surfaceNormal = Vector3.up;
         //     }
 
-        //     // Interpolate between the characters current normal and the surface normal.
-        //     charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
-        //     // Get the direction the character faces.
-        //     Vector3 charForward = Vector3.Cross(transform.right, charNormal);
-        //     // Align the character to the surface normal while still looking forward.
-        //     Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
-        //     transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+            // Interpolate between the characters current normal and the surface normal.
+            charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
+            // Get the direction the character faces.
+            Vector3 charForward = Vector3.Cross(transform.right, charNormal);
+            // Align the character to the surface normal while still looking forward.
+            Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
         // }
 
         // Gets the horz and vert movement for char.
