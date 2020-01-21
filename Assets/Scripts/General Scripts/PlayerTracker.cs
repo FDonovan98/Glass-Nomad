@@ -24,6 +24,8 @@ public class PlayerTracker : MonoBehaviour
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.size = new Vector3(width, 1f, range);
         boxCollider.center = new Vector3(0f, 0f, range / 2);
+        boxCollider.gameObject.SetActive(false);
+        
         cam = GetComponentInParent<Camera>();
     }
 
