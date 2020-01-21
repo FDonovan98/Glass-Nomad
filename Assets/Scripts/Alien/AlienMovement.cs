@@ -8,8 +8,6 @@ using System.Collections;
 [RequireComponent(typeof(Collider))]
 public class AlienMovement : PlayerMovement
 {
-    // Turn speed is in degrees per second.
-    public float turnSpeed = 90; 
     // Smoothing speed.
     public float lerpSpeed = 1;
     public float gravConstant = 10;
@@ -76,6 +74,7 @@ public class AlienMovement : PlayerMovement
         }
 
         // Vectors needed to cast rays in six directions around the alien.
+        // -charNormal needs to be last for movement to work well within vents.
         Vector3[] testVectors = new Vector3 [6] 
         {
             transform.right,
