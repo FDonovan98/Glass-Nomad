@@ -75,6 +75,7 @@ public class AlienMovement : PlayerMovement
             }
         }
 
+        // Vectors needed to cast rays in six directions around the alien.
         Vector3[] testVectors = new Vector3 [6] 
         {
             transform.right,
@@ -98,6 +99,8 @@ public class AlienMovement : PlayerMovement
                     ventCount++;
                 }
 
+                // If there are more than two vents surrounding the alien wall running mechanic changes.
+                // Gravity is disabled and alien just sticks to the surface below it.
                 if (ventCount <= 2)
                 {
                     averageRayDirection += hit.normal;
@@ -110,6 +113,8 @@ public class AlienMovement : PlayerMovement
             }
         }
 
+        // Magnitude is only zero if the alien isn't close to any surface.
+        // In this case it falls towards the ground.
         if (averageRayDirection.magnitude > 0)
         {
             isGrounded = true;
@@ -129,30 +134,6 @@ public class AlienMovement : PlayerMovement
         // Align the character to the surface normal while still looking forward.
         Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
-
-        // if (Physics.Raycast(ray, out hit))
-        // {
-        //     // If the character is touching the ground.
-        //     if (hit.distance <= (distGround + deltaGround))
-        //     {
-        //         isGrounded = true;
-        //         surfaceNormal = hit.normal;
-        //     }
-        //     else
-        //     {
-        //         // If the character isn't grounded resets surface normal.
-        //         isGrounded = false;
-        //         surfaceNormal = Vector3.up;
-        //     }
-
-            // // Interpolate between the characters current normal and the surface normal.
-            // charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
-            // // Get the direction the character faces.
-            // Vector3 charForward = Vector3.Cross(transform.right, charNormal);
-            // // Align the character to the surface normal while still looking forward.
-            // Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
-            // transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
-        // }
 
         // Gets the horz and vert movement for char.
         float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
