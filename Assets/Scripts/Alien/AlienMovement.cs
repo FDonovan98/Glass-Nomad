@@ -104,7 +104,7 @@ public class AlienMovement : PlayerMovement
                 }
                 else
                 {
-                    //gravity = 0;
+                    gravity = 0;
                     averageRayDirection = hit.normal;
                 }
             }
