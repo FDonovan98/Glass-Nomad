@@ -69,7 +69,7 @@ public class AlienMovement : PlayerMovement
             else if (isGrounded)
             {
                 Debug.Log("Applying Jump Force");
-                charRigidbody.velocity += jumpSpeed * charNormal;
+                charRigidbody.velocity += jumpSpeed * charCamera.transform.forward;
             }
         }
 
@@ -129,10 +129,11 @@ public class AlienMovement : PlayerMovement
         // Interpolate between the characters current normal and the surface normal.
         charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
         // Get the direction the character faces.
-        Vector3 charForward = Vector3.Cross(transform.right, charNormal);
+        Vector3 charForward = Vector3.Cross(charCamera.transform.right, charNormal);
         // Align the character to the surface normal while still looking forward.
         Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+        
 
         // Gets the horz and vert movement for char.
         float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
