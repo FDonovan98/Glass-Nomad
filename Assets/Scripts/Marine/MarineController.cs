@@ -8,6 +8,11 @@ public class MarineController : MarineMovement
     private PlayerAttack marineAttack;
 
     float deltaTime = 0;
+
+    public float maxOxygenAmountSeconds = 300f;
+    public float oxygenAmountSeconds;
+    private float oxygenDamageTime = 0f;
+
     private new void Start()
     {
         base.Start();
@@ -19,9 +24,7 @@ public class MarineController : MarineMovement
         
         marineInteraction = new PlayerInteraction();
         marineAttack = GetComponent<PlayerAttack>();
-
-        // Starts the user with a rifle.
-        //marineAttack.weaponDict.TryGetValue("default", out marineAttack.currentWeapon);        
+        oxygenAmountSeconds = maxOxygenAmountSeconds;
     }
 
     private new void Update()
@@ -41,6 +44,23 @@ public class MarineController : MarineMovement
         if (Input.GetButtonUp("Interact"))
         {
             deltaTime = 0.0f;
+        }
+
+        if (oxygenAmountSeconds > 0)
+        {
+            oxygenAmountSeconds -= Time.deltaTime;
+        }
+        if (oxygenAmountSeconds == 0)
+        {
+            if (oxygenDamageTime >= 0.2f)
+            {
+                gameObject.GetComponent<PlayerAttack>().healthScript.PlayerHit(1);
+                oxygenDamageTime = 0f;
+            }
+            else
+            {
+                oxygenDamageTime += Time.deltaTime;
+            }
         }
     }
 }
