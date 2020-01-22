@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Weapons/Create New Weapon")]
 public class Weapon : ScriptableObject
@@ -12,12 +10,13 @@ public class Weapon : ScriptableObject
         FullAuto
     }
 
-    public FireType fireMode;
-    public int magCount;
+    public FireType fireMode = FireType.Single;
+    public int magCount = 3;
     public float fireRate = 0f;
-    public int magSize;
-    public float range;
-    public int damage;
+    public int magSize = 8;
+    public float range = 10f;
+    public int damage = 10;
+    public float recoilForce = 5f;
 
     // These are hidden in the inspector as they don't need to be set.
     [HideInInspector] public int magsLeft;

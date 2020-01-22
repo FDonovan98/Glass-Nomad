@@ -58,7 +58,10 @@ public class MarineMovement : PlayerMovement
         charRigidbody.AddForceAtPosition(RandomForce(force), transform.position);
 
         // Start death (a.k.a delete the player gameobject)
-        StartCoroutine(Death());
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(Death());
+        }
     }
 
     private Vector3 RandomForce(float velocity)
