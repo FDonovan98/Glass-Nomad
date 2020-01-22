@@ -20,11 +20,15 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private float deltaTime = 0.0f;
     public Weapon currentWeapon;
+    private float recoil = 0f;
+    private float recoil_rotation = 0f;
 
     private MuzzleFlashScript muzzleFlash;
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
-	private UIBehaviour hudCanvas;    private void Start()
+	private UIBehaviour hudCanvas;
+    
+    private void Start()
     {
         // The muzzle flash will appear at the same spot as the flashlight
         flashlight = gameObject.GetComponentInChildren<Light>();
@@ -64,6 +68,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 if (currentWeapon.magSize > 0)
                 {
                     currentWeapon.bulletsInCurrentMag--;
+                    recoil += currentWeapon.recoilForce;
+
                     if (flashlight != null)
                     {
                         muzzleFlashPosition = flashlight.gameObject.transform.position;
@@ -82,6 +88,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
             }
 
+        }
+
+        if (recoil > 0)
+        {
+            RecoilWeapon();
         }
 
         if (Input.GetButtonUp("Fire1"))
@@ -108,6 +119,15 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             Debug.Log("You are out of magazines for this weapon. Find more ammo.");
         }
+    }
+
+    private void RecoilWeapon()
+    {
+        float xRotation = cameraGO.transform.localEulerAngles.x;
+        recoil *= 10 * Time.deltaTime; // this dampens the recoil until it is (almost) zero.
+        recoil_rotation += recoil;
+        recoil_rotation *= 0.95f; // get smaller every frame.
+        cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoil_rotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
     }
 
     private bool canFire(float deltaTime, Weapon weapon)
