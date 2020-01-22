@@ -52,5 +52,9 @@ public class DoorTriggerScript : MonoBehaviourPunCallbacks
         }
     }
 
+    public void LockDoorOpen()
+    {
+        GetComponent<BoxCollider>().enabled = false;
+    }
 
 }

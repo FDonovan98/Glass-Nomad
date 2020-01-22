@@ -13,11 +13,15 @@ public class GeneratorPowerOn : MonoBehaviour
             foreach (GameObject door in doors)
             {
                 DoorTriggerScript doorTrigger = door.GetComponent<DoorTriggerScript>();
+                
                 if (!doorTrigger.GetDoorOpen())
                 {
                     doorTrigger.ChangeDoorState(coll.gameObject);
                 }
+                
+                doorTrigger.LockDoorOpen();
             }
+            this.gameObject.SetActive(false);
         }
     }
 }
