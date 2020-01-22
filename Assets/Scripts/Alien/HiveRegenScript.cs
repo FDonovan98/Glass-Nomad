@@ -25,7 +25,7 @@ public class HiveRegenScript : MonoBehaviourPunCallbacks
             if (deltaTime >= 0.2f)
             {
                 // PunRPC is in AlienController.cs.
-                alien.GetPhotonView().RPC("RegenHealth", RpcTarget.All, viewID, deltaTime);
+                alien.GetPhotonView().RPC("RegenHealth", RpcTarget.All, viewID, -1);
                 hudCanvas.UpdateUI(other.GetComponent<PlayerAttack>());
                 deltaTime = 0.0f;
             }

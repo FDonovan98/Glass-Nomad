@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class AlienController : AlienMovement
 {
@@ -12,7 +13,16 @@ public class AlienController : AlienMovement
     private PlayerAttack alienAttack;
     private GameObject trackerGO;
 
-    float deltaTime = 0;
+    private bool usedEmergencyHealing = false;
+    private PlayerHealth healthScript;
+    public int emergencyHealingThreshold = 10;
+    public int emergencyHealingAmount = 10;
+    public int emergencyHealingTickCount = 10;
+    private int emergencyHealingCurrentTickCount = 0;
+    public float emergencyHealingTickDelay = 0.1f;
+    private float emergencyHealingDeltaTime = 0.0f;
+
+    private float deltaTime = 0;
     private new void Start()
     {
         base.Start();
@@ -33,6 +43,7 @@ public class AlienController : AlienMovement
         {
             vent.GetComponent<Renderer>().material = transparentVent;
         }
+        healthScript = gameObject.GetComponent<PlayerAttack>().healthScript;
     }
 
     private new void Update()
@@ -58,6 +69,27 @@ public class AlienController : AlienMovement
         {
             deltaTime = 0.0f;
         }
+
+        if (!usedEmergencyHealing && healthScript.currentHealth < emergencyHealingThreshold)
+        {
+            if (emergencyHealingCurrentTickCount != emergencyHealingTickCount)
+            {
+                emergencyHealingDeltaTime += Time.deltaTime;
+                if (emergencyHealingDeltaTime > emergencyHealingTickDelay)
+                {
+                    PhotonView photonView = gameObject.GetPhotonView();
+                    int viewID = photonView.ViewID;
+                    photonView.RPC("RegenHealth", RpcTarget.All, viewID, emergencyHealingAmount);
+                    emergencyHealingDeltaTime = 0;
+                }
+            }
+            else
+            {
+                usedEmergencyHealing = true;
+            }
+
+            emergencyHealingCurrentTickCount++;
+        }
     }
 
     private new void FixedUpdate()
@@ -69,10 +101,10 @@ public class AlienController : AlienMovement
     }
 
     [PunRPC]
-    protected void RegenHealth(int viewID, float deltaTime)
+    protected void RegenHealth(int viewID, int healingAmount)
     {
         GameObject alien = PhotonView.Find(viewID).gameObject;
-        alien.GetComponent<PlayerAttack>().healthScript.PlayerHit(-1);
+        alien.GetComponent<PlayerAttack>().healthScript.PlayerHit(healingAmount);
         alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().healthScript.fillAmount;
     }
 
