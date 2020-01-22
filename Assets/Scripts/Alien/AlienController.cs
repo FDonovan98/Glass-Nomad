@@ -15,7 +15,8 @@ public class AlienController : AlienMovement
 
     private bool usedEmergencyHealing = false;
     private PlayerHealth healthScript;
-    public int emergencyHealingThreshold = 10;
+    public int health;
+    public int emergencyHealingThreshold = 60;
     public int emergencyHealingAmount = 10;
     public int emergencyHealingTickCount = 10;
     private int emergencyHealingCurrentTickCount = 0;
@@ -78,23 +79,25 @@ public class AlienController : AlienMovement
 
         if (!usedEmergencyHealing && healthScript.currentHealth < emergencyHealingThreshold)
         {
+            Debug.LogWarning("check ONE");
             if (emergencyHealingCurrentTickCount != emergencyHealingTickCount)
             {
+                Debug.LogWarning("check TWO");
                 emergencyHealingDeltaTime += Time.deltaTime;
                 if (emergencyHealingDeltaTime > emergencyHealingTickDelay)
                 {
+                    Debug.LogWarning("check THREE");
                     PhotonView photonView = gameObject.GetPhotonView();
                     int viewID = photonView.ViewID;
-                    photonView.RPC("RegenHealth", RpcTarget.All, viewID, emergencyHealingAmount);
+                    photonView.RPC("RegenHealth", RpcTarget.All, viewID, -emergencyHealingAmount);
                     emergencyHealingDeltaTime = 0;
+                    emergencyHealingCurrentTickCount++;
                 }
             }
             else
             {
                 usedEmergencyHealing = true;
             }
-
-            emergencyHealingCurrentTickCount++;
         }
     }
 

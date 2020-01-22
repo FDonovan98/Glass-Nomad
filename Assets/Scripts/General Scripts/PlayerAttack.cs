@@ -28,6 +28,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private Light flashlight;
 	private UIBehaviour hudCanvas;
     
+    private new void OnEnable()
+    {
+        healthScript = new PlayerHealth(this.gameObject, maxHealth);
+    }
     private void Start()
     {
         // The muzzle flash will appear at the same spot as the flashlight
@@ -36,8 +40,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             muzzleFlash = new MuzzleFlashScript();
         }
-
-        healthScript = new PlayerHealth(this.gameObject, maxHealth);
 
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
