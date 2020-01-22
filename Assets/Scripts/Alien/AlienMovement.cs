@@ -21,6 +21,10 @@ public class AlienMovement : PlayerMovement
     // Time it takes to transfer between two surfaces.
     public float transferTime = 1;
 
+    // Variables used for adjusting jump charge.
+    private float jumpCharge = 0.0f;
+    public float jumpChargeTime = 1.0f;
+
     // The normal of the current surface.
     private Vector3 surfaceNormal;
     // The characters normal.
@@ -54,8 +58,9 @@ public class AlienMovement : PlayerMovement
         RaycastHit hit;
 
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButton("Jump"))
         {
+            jumpCharge += Time.deltaTime;
             Debug.Log("Jump key pressed");
             // Creates a ray from the current position in the direction the char is facing.
             ray = new Ray(transform.position, charCamera.transform.forward);
@@ -65,14 +70,23 @@ public class AlienMovement : PlayerMovement
             {
                 StartCoroutine(JumpToWall(hit.point, hit.normal));
             }
+        }
+
+        if (Input.GetButtonUp("Jump"))
+        {
             // If the player is on the ground then jump up.
-            else if (isGrounded)
+            // Jump speed is multiplied by jump charge.
+            if (isGrounded)
             {
+                // Limits the jump multiplier.
+                jumpCharge = Mathf.Min(jumpCharge, jumpChargeTime);
                 Debug.Log("Applying Jump Force");
-                charRigidbody.velocity += jumpSpeed * charCamera.transform.forward;
-                charRigidbody.velocity += jumpSpeed * surfaceNormal;
+                float jumpForce = jumpSpeed * jumpCharge;
+                charRigidbody.velocity += jumpForce * charCamera.transform.forward;
+                charRigidbody.velocity += jumpForce * surfaceNormal;
             }
         }
+
 
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
