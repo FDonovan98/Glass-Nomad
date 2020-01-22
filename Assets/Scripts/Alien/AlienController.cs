@@ -43,6 +43,7 @@ public class AlienController : AlienMovement
         {
             vent.GetComponent<Renderer>().material = transparentVent;
         }
+
         healthScript = gameObject.GetComponent<PlayerAttack>().healthScript;
     }
 
@@ -68,6 +69,11 @@ public class AlienController : AlienMovement
         if (Input.GetButtonUp("Interact"))
         {
             deltaTime = 0.0f;
+        }
+
+        if (healthScript == null)
+        {
+            Debug.Log("healthscript is null");
         }
 
         if (!usedEmergencyHealing && healthScript.currentHealth < emergencyHealingThreshold)

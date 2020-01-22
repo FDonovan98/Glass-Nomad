@@ -360,10 +360,10 @@ GameObject:
   - component: {fileID: 5573858290313199518}
   - component: {fileID: 2808216820221156601}
   - component: {fileID: 307403933066171618}
-  - component: {fileID: 5780684092325464000}
   - component: {fileID: 8229355201946509017}
   - component: {fileID: 2188038134139432926}
   - component: {fileID: 1976297135196911948}
+  - component: {fileID: 5780684092325464000}
   m_Layer: 10
   m_Name: Alien (Cylinder)
   m_TagString: Player
@@ -463,33 +463,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &5780684092325464000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4364988366066350752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 10
-  mouseSensitivity: 10
-  jumpSpeed: 38.5
-  yRotationClamp: 80
-  menu: {fileID: 0}
-  lerpSpeed: 10
-  gravConstant: 50
-  deltaGround: 1
-  isGrounded: 1
-  jumpRange: 15
-  transferTime: 0.2
-  jumpChargeTime: 1
-  alienVision: {r: 1, g: 0.6745283, b: 0.6745283, a: 0}
-  alienInteraction: {fileID: 0}
-  transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
 --- !u!114 &8229355201946509017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -542,6 +515,37 @@ MonoBehaviour:
   healthSlider: {fileID: 6329036609802932500}
   maxHealth: 100
   currentWeapon: {fileID: 11400000, guid: c97386eb027242b41992e743522b1ddf, type: 2}
+--- !u!114 &5780684092325464000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4364988366066350752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 10
+  mouseSensitivity: 10
+  jumpSpeed: 38.5
+  yRotationClamp: 80
+  menu: {fileID: 0}
+  lerpSpeed: 10
+  gravConstant: 50
+  deltaGround: 1
+  isGrounded: 1
+  jumpRange: 15
+  transferTime: 0.2
+  jumpChargeTime: 1
+  alienVision: {r: 1, g: 0.6745283, b: 0.6745283, a: 0}
+  alienInteraction: {fileID: 0}
+  transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
+  emergencyHealingThreshold: 10
+  emergencyHealingAmount: 10
+  emergencyHealingTickCount: 10
+  emergencyHealingTickDelay: 0.1
 --- !u!1 &4418398108616668018
 GameObject:
   m_ObjectHideFlags: 0
