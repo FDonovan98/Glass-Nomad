@@ -8,6 +8,7 @@ public class AlienController : AlienMovement
 {
     public Color alienVision;
     public PlayerInteraction alienInteraction;
+    public Material transparentVent;
     private PlayerAttack alienAttack;
     private GameObject trackerGO;
 
@@ -26,6 +27,12 @@ public class AlienController : AlienMovement
         alienInteraction = new PlayerInteraction();
         alienAttack = GetComponent<PlayerAttack>();
         trackerGO = charCamera.transform.GetChild(0).gameObject;
+        GameObject[] vents = GameObject.FindGameObjectsWithTag("Vent");
+        Debug.Log(vents.Length);
+        foreach (GameObject vent in vents)
+        {
+            vent.GetComponent<Renderer>().material = transparentVent;
+        }
     }
 
     private new void Update()
