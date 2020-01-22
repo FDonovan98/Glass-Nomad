@@ -57,11 +57,8 @@ public class AlienMovement : PlayerMovement
         Ray ray;
         RaycastHit hit;
 
-        // When the jump key is pressed activate either a normal jump or a jump to a wall.
-        if (Input.GetButton("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
-            jumpCharge += Time.deltaTime;
-            Debug.Log("Jump key pressed");
             // Creates a ray from the current position in the direction the char is facing.
             ray = new Ray(transform.position, charCamera.transform.forward);
 
@@ -71,6 +68,14 @@ public class AlienMovement : PlayerMovement
                 StartCoroutine(JumpToWall(hit.point, hit.normal));
             }
         }
+
+        // When the jump key is pressed activate either a normal jump or a jump to a wall.
+        if (Input.GetButton("Jump"))
+        {
+            jumpCharge += Time.deltaTime;
+            Debug.Log("Jump key pressed");
+        }
+
 
         if (Input.GetButtonUp("Jump"))
         {
