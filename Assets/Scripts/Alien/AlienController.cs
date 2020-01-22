@@ -13,9 +13,9 @@ public class AlienController : AlienMovement
     private PlayerAttack alienAttack;
     private GameObject trackerGO;
 
-    private bool usedEmergencyHealing = false;
+    private bool triggeredEmergencyHealing = false;
+    private bool usingEmergencyHealing = true;
     private PlayerHealth healthScript;
-    public int health;
     public int emergencyHealingThreshold = 60;
     public int emergencyHealingAmount = 10;
     public int emergencyHealingTickCount = 10;
@@ -72,17 +72,10 @@ public class AlienController : AlienMovement
             deltaTime = 0.0f;
         }
 
-        if (healthScript == null)
+        if (emergencyHealingCurrentTickCount != emergencyHealingTickCount)
         {
-            Debug.Log("healthscript is null");
-        }
-
-        if (!usedEmergencyHealing && healthScript.currentHealth < emergencyHealingThreshold)
-        {
-            Debug.LogWarning("check ONE");
-            if (emergencyHealingCurrentTickCount != emergencyHealingTickCount)
+            if (triggeredEmergencyHealing)
             {
-                Debug.LogWarning("check TWO");
                 emergencyHealingDeltaTime += Time.deltaTime;
                 if (emergencyHealingDeltaTime > emergencyHealingTickDelay)
                 {
@@ -94,11 +87,12 @@ public class AlienController : AlienMovement
                     emergencyHealingCurrentTickCount++;
                 }
             }
-            else
+            else if (healthScript.currentHealth < emergencyHealingThreshold)
             {
-                usedEmergencyHealing = true;
+                triggeredEmergencyHealing = true;
             }
         }
+
     }
 
     private new void FixedUpdate()
