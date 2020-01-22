@@ -70,6 +70,7 @@ public class AlienMovement : PlayerMovement
             {
                 Debug.Log("Applying Jump Force");
                 charRigidbody.velocity += jumpSpeed * charCamera.transform.forward;
+                charRigidbody.velocity += jumpSpeed * surfaceNormal;
             }
         }
 
