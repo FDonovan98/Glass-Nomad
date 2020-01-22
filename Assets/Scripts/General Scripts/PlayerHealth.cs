@@ -22,7 +22,8 @@ public class PlayerHealth
     {
         if (currentHealth < damage)
         {
-            player.GetComponent<MarineMovement>().Ragdoll();
+            if (player.GetComponent<MarineMovement>() != null)
+                player.GetComponent<MarineMovement>().Ragdoll();
         }
         else
         {
