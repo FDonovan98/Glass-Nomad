@@ -23,6 +23,8 @@ public class AlienController : AlienMovement
     public float emergencyHealingTickDelay = 0.1f;
     private float emergencyHealingDeltaTime = 0.0f;
 
+    public float emergencySpeedMultiplier = 1.0f;
+
     private float deltaTime = 0;
     private new void Start()
     {
@@ -79,6 +81,7 @@ public class AlienController : AlienMovement
                 emergencyHealingDeltaTime += Time.deltaTime;
                 if (emergencyHealingDeltaTime > emergencyHealingTickDelay)
                 {
+                    this.movementSpeed *= emergencySpeedMultiplier;
                     Debug.LogWarning("check THREE");
                     PhotonView photonView = gameObject.GetPhotonView();
                     int viewID = photonView.ViewID;
@@ -91,6 +94,10 @@ public class AlienController : AlienMovement
             {
                 triggeredEmergencyHealing = true;
             }
+        }
+        else
+        {
+            this.movementSpeed /= emergencySpeedMultiplier;
         }
 
     }
