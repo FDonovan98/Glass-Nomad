@@ -84,6 +84,8 @@ public class AlienMovement : PlayerMovement
                 float jumpForce = jumpSpeed * jumpCharge;
                 charRigidbody.velocity += jumpForce * charCamera.transform.forward;
                 charRigidbody.velocity += jumpForce * surfaceNormal;
+
+                jumpCharge = 0.0f;
             }
         }
 
