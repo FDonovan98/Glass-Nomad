@@ -456,7 +456,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4364988366066350752}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 51b40067fe98d2b478d02af103cde26e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -477,14 +477,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 10
   mouseSensitivity: 10
-  jumpSpeed: 10
+  jumpSpeed: 38.5
   yRotationClamp: 80
   menu: {fileID: 0}
   lerpSpeed: 10
-  gravConstant: 10
+  gravConstant: 50
   deltaGround: 1
-  isGrounded: 0
-  jumpRange: 10
+  isGrounded: 1
+  jumpRange: 15
   transferTime: 0.2
   jumpChargeTime: 1
   alienVision: {r: 1, g: 0.6745283, b: 0.6745283, a: 0}
