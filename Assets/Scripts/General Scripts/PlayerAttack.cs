@@ -112,19 +112,24 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private bool canFire(float deltaTime, Weapon weapon)
     {
-        if (weapon.bulletsInCurrentMag > 0)
+        if (weapon.magSize > 0)
         {
-            if (deltaTime > weapon.fireRate)
+            if (weapon.bulletsInCurrentMag > 0)
             {
-                return true;
+                if (deltaTime > weapon.fireRate)
+                {
+                    return true;
+                }
             }
+            else
+            {
+                Debug.Log("You are out of bullets in your magazine.");
+            }
+            return false;
         }
-        else
-        {
-            Debug.Log("You are out of bullets in your magazine.");
-        }
-
-        return false;
+        
+        return true;
+        
     }
 
     [PunRPC]
