@@ -12,7 +12,7 @@ public class AlienController : AlienMovement
     public Material transparentVent;
     private PlayerAttack alienAttack;
     private GameObject trackerGO;
-
+    private bool isTrackerOn = false;
     private bool triggeredEmergencyHealing = false;
     private bool usingEmergencyHealing = true;
     private PlayerHealth healthScript;
@@ -128,7 +128,7 @@ public class AlienController : AlienMovement
 
         // When in normal vision, vignette intensity = 0.5, lens distortion = 25
         // When in tracker vision, vignette intensity = 1, lens distortion = 80
-        if (trackerGO.activeSelf)
+        if (isTrackerOn)
         {
             StartCoroutine(FadeValue(result => vignette.intensity.value = result, vignette.intensity.value, 0.5f, 1f));
             StartCoroutine(FadeValue(result => lensDistortion.intensity.value = result, lensDistortion.intensity.value, 25, 1f));
@@ -138,7 +138,9 @@ public class AlienController : AlienMovement
             StartCoroutine(FadeValue(result => vignette.intensity.value = result, vignette.intensity.value, 1, 1f));
             StartCoroutine(FadeValue(result => lensDistortion.intensity.value = result, lensDistortion.intensity.value, 80, 1f));
         }
-        trackerGO.SetActive(!trackerGO.activeSelf);
+        
+        isTrackerOn = !isTrackerOn;
+        trackerGO.SetActive(isTrackerOn);
     }
 
     IEnumerator FadeValue(Action<float> value, float startingValue, float endValue, float fadeDuration)

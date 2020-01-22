@@ -27,6 +27,7 @@ public class PlayerTracker : MonoBehaviour
         boxCollider.gameObject.SetActive(false);
         
         cam = GetComponentInParent<Camera>();
+        this.gameObject.SetActive(false);
     }
 
     private void OnTriggerStay(Collider coll)
