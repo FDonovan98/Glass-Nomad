@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected float groundDelta = 1.0f;
     protected float cameraRotation = 0f;
     protected Quaternion charCamTarRot;
-    private bool inputEnabled = true;
+    protected bool inputEnabled = true;
 
     protected void Start()
     {
