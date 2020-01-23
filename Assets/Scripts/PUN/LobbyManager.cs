@@ -59,6 +59,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
         }
+
+        OnLoadGameClick();
     }
 
     public override void OnConnectedToMaster()
