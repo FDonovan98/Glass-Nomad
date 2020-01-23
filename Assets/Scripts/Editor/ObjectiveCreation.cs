@@ -31,7 +31,7 @@ public class Objectives : EditorWindow
     bool ambientLighting = false;
     Color ambientLightingColor;
 
-    [MenuItem("Window/Dev Tools/Objective Creation")]
+    [MenuItem("Window/Developer Tools/Objective Creation")]
     public static void ShowWindow()
     {
         GetWindow<Objectives>("Objective Creation (WIP)");

@@ -3,11 +3,12 @@
 using UnityEngine;
 
 using Photon.Pun;
+using System;
 
 public class DevTools : EditorWindow
 {
     bool showHealthBars = true;
-    [MenuItem("Window/Dev Tools/General")]
+    [MenuItem("Window/Developer Tools/General")]
     public static void ShowWindow()
     {
         GetWindow<DevTools>("General Tools");
@@ -36,9 +37,14 @@ public class DevTools : EditorWindow
         {
             SwitchModel();
         }
+
+        if (GUILayout.Button("Activate Armoury Switches"))
+        {
+            ActivateSwitches();
+        }
     }
 
-    void ToggleHealthBars(bool enable)
+    private void ToggleHealthBars(bool enable)
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject element in playerObjects)
@@ -47,7 +53,7 @@ public class DevTools : EditorWindow
         }
     }
 
-    void SwitchModel()
+    private void SwitchModel()
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject element in playerObjects)
@@ -75,7 +81,7 @@ public class DevTools : EditorWindow
         }
     }
 
-    void SpawnCreature(string prefabName)
+    private void SpawnCreature(string prefabName)
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject element in playerObjects)
@@ -104,5 +110,11 @@ public class DevTools : EditorWindow
                 return;
             }
         }
+    }
+
+    private void ActivateSwitches()
+    {
+        GameObject armoury = GameObject.FindGameObjectWithTag("ArmouryDoor");
+        armoury.GetComponentInChildren<RedSwitchManager>().OpenArmouryDoor();
     }
 }

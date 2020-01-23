@@ -5706,11 +5706,22 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.49491
       objectReference: {fileID: 0}
+    - target: {fileID: 5313114450160228864, guid: 065db5d7b051a7746bb38c3b185d1a8f,
+        type: 3}
+      propertyPath: m_TagString
+      value: ArmouryDoor
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 065db5d7b051a7746bb38c3b185d1a8f, type: 3}
 --- !u!4 &192973509 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7286693630916819247, guid: 065db5d7b051a7746bb38c3b185d1a8f,
+    type: 3}
+  m_PrefabInstance: {fileID: 192973508}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &192973510 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7176227896274954937, guid: 065db5d7b051a7746bb38c3b185d1a8f,
     type: 3}
   m_PrefabInstance: {fileID: 192973508}
   m_PrefabAsset: {fileID: 0}
@@ -10912,6 +10923,11 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 6259497379611898291, guid: cdb504aa55264284fbb42d1bddd91cdd,
+        type: 3}
+      propertyPath: switchManager
+      value: 
+      objectReference: {fileID: 1055973388}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdb504aa55264284fbb42d1bddd91cdd, type: 3}
 --- !u!4 &342334159 stripped
@@ -26970,6 +26986,11 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6259497379611898291, guid: cdb504aa55264284fbb42d1bddd91cdd,
+        type: 3}
+      propertyPath: switchManager
+      value: 
+      objectReference: {fileID: 1055973388}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdb504aa55264284fbb42d1bddd91cdd, type: 3}
 --- !u!4 &883997689 stripped
@@ -31967,6 +31988,49 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055293623}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1055973387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1055973389}
+  - component: {fileID: 1055973388}
+  m_Layer: 0
+  m_Name: Red Switch Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1055973388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055973387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 976daea291b0aae4fba89bbfceebb9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1055973389
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055973387}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 192973510}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1056304850
 GameObject:
   m_ObjectHideFlags: 0

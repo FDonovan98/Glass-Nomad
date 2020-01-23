@@ -16,7 +16,7 @@ public class GeneratorPowerOn : MonoBehaviour
                 
                 if (!doorTrigger.GetDoorOpen())
                 {
-                    doorTrigger.ChangeDoorState(coll.gameObject);
+                    doorTrigger.ChangeDoorState();
                 }
                 
                 doorTrigger.LockDoorOpen();

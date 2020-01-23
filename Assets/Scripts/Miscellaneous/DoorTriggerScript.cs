@@ -25,31 +25,28 @@ public class DoorTriggerScript : MonoBehaviourPunCallbacks
 
     private void OnTriggerStay(Collider coll)
     {
-        if (Input.GetKey(KeyCode.E) && !isDoorOpen)
+        if (Input.GetKey(KeyCode.E) && !isDoorOpen && coll.gameObject.tag == "Player")
         {
             currentTime += Time.deltaTime;
             Debug.Log("Door progress: " + (currentTime / timeToOpen) * 100 + "%");
 
             if (currentTime >= timeToOpen)
             {
-                ChangeDoorState(coll.gameObject);
+                ChangeDoorState();
             }
         }
     }
 
     private void OnTriggerExit(Collider coll)
     {
-        ChangeDoorState(coll.gameObject);
+        ChangeDoorState();
     }
 
-    public void ChangeDoorState(GameObject obj)
+    public void ChangeDoorState()
     {
-        if (obj.tag == "Player")
-        {
-            isDoorOpen = !isDoorOpen;
-            Debug.Log(isDoorOpen ? "Door opening" : "Door closing");
-            anim.SetBool("doorOpen", isDoorOpen);
-        }
+        isDoorOpen = !isDoorOpen;
+        Debug.Log(isDoorOpen ? "Door opening" : "Door closing");
+        anim.SetBool("doorOpen", isDoorOpen);
     }
 
     public void LockDoorOpen()
