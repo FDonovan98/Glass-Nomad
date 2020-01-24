@@ -5,14 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     [SerializeField] private string lobbySceneName = "SCN_Lobby"; // Used to change scene when we leave a room.
     [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero; // Used to spawn the alien.
     [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero; // Used to spawn the marines.
-    [SerializeField] private Dropdown resolutionDropdown = null; // Used to change the video resolution.
-    [SerializeField] private Dropdown qualityDropdown = null; // Used to change the video quality.
+    [SerializeField] private TMP_Dropdown resolutionDropdown = null; // Used to change the video resolution.
+    [SerializeField] private TMP_Dropdown qualityDropdown = null; // Used to change the video quality.
     [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
     public GameObject pauseMenu; // Used by PlayerMovement to access the pause menu gameobject.
     private Resolution[] resolutions; // Used to retrieve all the available resolutions.
