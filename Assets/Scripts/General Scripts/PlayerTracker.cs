@@ -16,13 +16,14 @@ public class PlayerTracker : MonoBehaviour
 
     public Transform canvas;
     public GameObject redDot;
+    public float dotScaler = 3f;
     public float dotOpacity = 1f;
     private Camera cam;
 
     private void Start()
     {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
-        boxCollider.size = new Vector3(width, 1f, range);
+        boxCollider.size = new Vector3(width, width, range);
         boxCollider.center = new Vector3(0f, 0f, range / 2);
         boxCollider.gameObject.SetActive(false);
         
@@ -38,7 +39,7 @@ public class PlayerTracker : MonoBehaviour
 
             // Change the scale of the dot.
             float dist = Vector3.Distance(transform.parent.position, coll.gameObject.transform.position);
-            dot.transform.localScale = new Vector3(1 / dist, 1 / dist, 1f);
+            dot.transform.localScale = new Vector3(1 / Mathf.Pow(dist, 1/dotScaler), 1 / Mathf.Pow(dist, 1/dotScaler), 1f);
 
             // Change the opacity of the dot - closer is more visible.
             dist = dist > dotOpacity ? dist : dotOpacity;
