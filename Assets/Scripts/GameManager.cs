@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
     public GameObject pauseMenu; // Used by PlayerMovement to access the pause menu gameobject.
     private Resolution[] resolutions; // Used to retrieve all the available resolutions.
+    private Camera cam; // Used to change the FOV of the camera.
 
     #region devtools
     [Header("Developer Tools")]
@@ -66,6 +67,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         resolutionDropdown.value = currentResIndex;
         resolutionDropdown.RefreshShownValue();
         qualityDropdown.value = QualitySettings.GetQualityLevel();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     public override void OnLeftRoom()
@@ -154,6 +156,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         Debug.Log("Changing fullscreen to: " + isFullscreen);
         Screen.fullScreen = isFullscreen;
+    }
+
+    public void SetFOV(float fov)
+    {
+        cam.fieldOfView = fov;
     }
 
     #endregion
