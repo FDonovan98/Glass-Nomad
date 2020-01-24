@@ -95,13 +95,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             RecoilWeapon();
         }
-
-        if (Input.GetButtonUp("Fire1"))
-        {
-            // Means there is no delay before firing when the button is first pressed.
-            deltaTime = currentWeapon.fireRate;
-        }
-
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadWeapon(currentWeapon);
