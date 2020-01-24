@@ -57,10 +57,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             return;
         }
 
+        deltaTime += Time.deltaTime;
+
         if (Input.GetButton("Fire1"))
         {
-            deltaTime += Time.deltaTime;
-
             if (canFire(deltaTime, currentWeapon))
             {
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
@@ -89,7 +89,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 
                 hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
             }
-
         }
 
         if (recoil > 0)

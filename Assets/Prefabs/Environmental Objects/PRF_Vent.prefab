@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 1415460900050272142}
   m_Layer: 0
   m_Name: PRF_Vent
-  m_TagString: Vent
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90,6 +90,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1415460900050272142}
     m_Modifications:
+    - target: {fileID: 100006, guid: da5528706bec4734a94a7fb565bbb7e2, type: 3}
+      propertyPath: m_Name
+      value: vent (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: da5528706bec4734a94a7fb565bbb7e2, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: da5528706bec4734a94a7fb565bbb7e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -146,11 +154,15 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 500
       objectReference: {fileID: 0}
-    - target: {fileID: 100006, guid: da5528706bec4734a94a7fb565bbb7e2, type: 3}
-      propertyPath: m_Name
-      value: vent (3)
+    - target: {fileID: 100000, guid: da5528706bec4734a94a7fb565bbb7e2, type: 3}
+      propertyPath: m_TagString
+      value: Vent
       objectReference: {fileID: 0}
-    - target: {fileID: 100006, guid: da5528706bec4734a94a7fb565bbb7e2, type: 3}
+    - target: {fileID: 100002, guid: da5528706bec4734a94a7fb565bbb7e2, type: 3}
+      propertyPath: m_TagString
+      value: Vent
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: da5528706bec4734a94a7fb565bbb7e2, type: 3}
       propertyPath: m_TagString
       value: Vent
       objectReference: {fileID: 0}
