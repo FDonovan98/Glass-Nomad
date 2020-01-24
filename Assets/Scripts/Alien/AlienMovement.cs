@@ -24,6 +24,8 @@ public class AlienMovement : PlayerMovement
     // Variables used for adjusting jump charge.
     private float jumpCharge = 0.0f;
     public float jumpChargeTime = 1.0f;
+    public float horizontalJumpMod = 1.0f;
+    public float verticalJumpMod = 1.0f;
 
     // The normal of the current surface.
     private Vector3 surfaceNormal;
@@ -87,8 +89,8 @@ public class AlienMovement : PlayerMovement
                 jumpCharge = Mathf.Min(jumpCharge, jumpChargeTime);
                 Debug.Log("Applying Jump Force");
                 float jumpForce = jumpSpeed * jumpCharge;
-                charRigidbody.velocity += jumpForce * charCamera.transform.forward;
-                charRigidbody.velocity += jumpForce * surfaceNormal;
+                charRigidbody.velocity += horizontalJumpMod * jumpForce * charCamera.transform.forward;
+                charRigidbody.velocity += verticalJumpMod * jumpForce * charNormal;
 
                 jumpCharge = 0.0f;
             }
