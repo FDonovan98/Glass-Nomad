@@ -7,8 +7,7 @@ public class MarineMovement : PlayerMovement
 {
     public float force = 150f;
     protected Vector3 playerMovementInput; // Used to store the players movement input.
-
-    public bool InputEnabled = true;
+    public float sprintSpeedMultiplier = 2f;
 
     protected new void Start()
     {
@@ -27,7 +26,7 @@ public class MarineMovement : PlayerMovement
 
     private void GetPlayerInput()
     {
-        if (!InputEnabled) { return; }
+        if (!inputEnabled) { return; }
         float x, y, z; // Declare x, y and z axis variables for player movement.
 
         // Jump and ground detection
@@ -43,13 +42,20 @@ public class MarineMovement : PlayerMovement
         // Player movement
         x = Input.GetAxisRaw("Horizontal") * movementSpeed;
         z = Input.GetAxisRaw("Vertical") * movementSpeed;
+
+        if (Input.GetAxis("Sprint") == 1)
+        {
+            x *= sprintSpeedMultiplier;
+            z *= sprintSpeedMultiplier;
+        }   
+
         playerMovementInput = new Vector3(x, charRigidbody.velocity.y, z);
     }
 
     public void Ragdoll()
     {
         // Disable input
-        InputEnabled = false;
+        inputEnabled = false;
 
         // Enable rotation constraints
         charRigidbody.constraints = RigidbodyConstraints.None;
