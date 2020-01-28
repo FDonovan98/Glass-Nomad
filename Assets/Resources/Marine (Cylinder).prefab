@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &503343661005264170
 Transform:
   m_ObjectHideFlags: 0
@@ -57,9 +57,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe1af11b1a69347ae03378c5572fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 10
-  width: 1
+  range: 50
+  width: 5
   tagMask: Player
+  canvas: {fileID: 1185400105508379042}
+  redDot: {fileID: 3378461893015919104, guid: b9517dc6a0ae0474184fd6cdb55c4be9, type: 3}
+  dotScaler: 3
+  dotOpacity: 3
 --- !u!1 &2344721418371622438
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,7 +77,7 @@ GameObject:
   - component: {fileID: 2504440589249172993}
   - component: {fileID: 7783720681552790546}
   m_Layer: 5
-  m_Name: HUD Canvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +253,7 @@ GameObject:
   - component: {fileID: 7988140017429761338}
   m_Layer: 8
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -573,7 +577,7 @@ RectTransform:
   m_GameObject: {fileID: 6972813183663857378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4988, y: 0.4988, z: 0.4988}
   m_Children: []
   m_Father: {fileID: 1185400105508379042}
   m_RootOrder: 0
@@ -859,7 +863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9de75805ba4ee48870873de3b3fe90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  movementSpeed: 20
   mouseSensitivity: 10
   jumpSpeed: 10
   yRotationClamp: 30
@@ -867,6 +871,8 @@ MonoBehaviour:
   force: 150
   InputEnabled: 1
   marineInteraction: {fileID: 0}
+  maxOxygenAmountSeconds: 300
+  oxygenAmountSeconds: 0
 --- !u!114 &6820651075571509334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -881,6 +887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 8187056976602975490}
   maxHealth: 100
+  currentWeapon: {fileID: 11400000, guid: f07ed8fadc5211d47885c7f535b3d0f8, type: 2}
 --- !u!1 &9091064011920724288
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,7 +906,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8629879697156583784
 RectTransform:
   m_ObjectHideFlags: 0

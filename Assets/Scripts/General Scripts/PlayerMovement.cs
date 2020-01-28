@@ -4,7 +4,7 @@ using Photon.Realtime;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
-    [SerializeField] protected int movementSpeed = 10; // Used to control the movement movementSpeed of the player.
+    [SerializeField] public float movementSpeed = 10; // Used to control the movement movementSpeed of the player.
     [SerializeField] protected int mouseSensitivity = 1; // Used to control the sensitivity of the mouse.
     [SerializeField] protected float jumpSpeed = 10; // Used to control the jumping force of the player.
     [SerializeField] protected float yRotationClamp = 30; // Used to stop the player looking 'underneath' themselves.
@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected float groundDelta = 1.0f;
     protected float cameraRotation = 0f;
     protected Quaternion charCamTarRot;
-    private bool inputEnabled = true;
+    protected bool inputEnabled = true;
 
     protected void Start()
     {

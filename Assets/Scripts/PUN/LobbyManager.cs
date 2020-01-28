@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -58,6 +59,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
         }
+
+        OnLoadGameClick();
     }
 
     public override void OnConnectedToMaster()
@@ -158,12 +161,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             if (player.IsMasterClient)
             {
                 Debug.Log("MASTER IN ROOM:: " + player.NickName);
-                go.GetComponentInChildren<Text>().text = "Room owner: " + player.NickName;
+                go.GetComponentInChildren<TMP_Text>().text = "Room owner: " + player.NickName;
             }
             else
             {
                 Debug.Log("PLAYER IN ROOM:: " + player.NickName);
-                go.GetComponentInChildren<Text>().text = player.NickName;
+                go.GetComponentInChildren<TMP_Text>().text = player.NickName;
             }
         }
     }

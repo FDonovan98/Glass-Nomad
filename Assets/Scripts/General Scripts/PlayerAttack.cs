@@ -19,19 +19,19 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private GameObject cameraGO;
 
     private float deltaTime = 0.0f;
-
-    public WeaponClass currentWeapon;
+    public Weapon currentWeapon;
+    private float recoil = 0f;
+    private float recoil_rotation = 0f;
 
     private MuzzleFlashScript muzzleFlash;
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
-
-    public Dictionary<string, WeaponClass> weaponDict = new Dictionary<string, WeaponClass>()
+	private UIBehaviour hudCanvas;
+    
+    private new void OnEnable()
     {
-        { "default", new WeaponClass(10, 10, 10, 1000, 10) },
-        { "claws", new WeaponClass(1, 0, 0, 5, 10) }
-    };
-
+        healthScript = new PlayerHealth(this.gameObject, maxHealth);
+    }
     private void Start()
     {
         // The muzzle flash will appear at the same spot as the flashlight
@@ -41,12 +41,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             muzzleFlash = new MuzzleFlashScript();
         }
 
-        healthScript = new PlayerHealth(this.gameObject, maxHealth);
-
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
-        weaponDict.TryGetValue("default", out currentWeapon);
         deltaTime = currentWeapon.fireRate;
+
+        hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
+        
+        hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
     }
 
     private void Update()
@@ -56,10 +57,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             return;
         }
 
+        deltaTime += Time.deltaTime;
+
         if (Input.GetButton("Fire1"))
         {
-            deltaTime += Time.deltaTime;
-
             if (canFire(deltaTime, currentWeapon))
             {
                 // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
@@ -69,7 +70,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 if (currentWeapon.magSize > 0)
                 {
                     currentWeapon.bulletsInCurrentMag--;
-                    muzzleFlashPosition = flashlight.gameObject.transform.position;
+                    recoil += currentWeapon.recoilForce;
+
+                    if (flashlight != null)
+                    {
+                        muzzleFlashPosition = flashlight.gameObject.transform.position;
+                    }
                 }
 
                 if (muzzleFlash != null)
@@ -80,37 +86,66 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 Debug.LogAssertion(currentWeapon.bulletsInCurrentMag + " rounds remaining");
 
                 deltaTime = 0;
+                
+                hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
             }
-
         }
 
-        if (Input.GetButtonUp("Fire1"))
+        if (recoil > 0)
         {
-            // Means there is no delay before firing when the button is first pressed.
-            deltaTime = currentWeapon.fireRate;
+            RecoilWeapon();
         }
-
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
-            currentWeapon.ReloadWeapon();
+            ReloadWeapon(currentWeapon);
+            hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
         }
     }
 
-    private bool canFire(float deltaTime, WeaponClass weapon)
+    private void ReloadWeapon(Weapon weapon)
     {
-        if (weapon.bulletsInCurrentMag > 0)
+        if (weapon.magsLeft > 0)
         {
-            if (deltaTime > weapon.fireRate)
-            {
-                return true;
-            }
+            weapon.bulletsInCurrentMag = weapon.magSize;
+            weapon.magsLeft--;
         }
         else
         {
-            Debug.Log("You are out of bullets in your magazine.");
+            Debug.Log("You are out of magazines for this weapon. Find more ammo.");
         }
+    }
 
+    private void RecoilWeapon()
+    {
+        float xRotation = cameraGO.transform.localEulerAngles.x;
+        recoil *= 10 * Time.deltaTime; // this dampens the recoil until it is (almost) zero.
+        recoil_rotation += recoil;
+        recoil_rotation *= 0.95f; // get smaller every frame.
+        cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoil_rotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
+    }
+
+    private bool canFire(float deltaTime, Weapon weapon)
+    {
+        if (deltaTime > weapon.fireRate)
+        {
+            if (weapon.magSize > 0)
+            {
+                if (weapon.bulletsInCurrentMag > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("You are out of bullets in your magazine.");
+                }
+                return false;
+            }  
+            return true; 
+        }
+        
         return false;
+        
     }
 
     [PunRPC]

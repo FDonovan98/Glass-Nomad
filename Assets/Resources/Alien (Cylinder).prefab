@@ -1,5 +1,69 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2275121965378106740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6090700423788729028}
+  - component: {fileID: 9006037921499568054}
+  - component: {fileID: 8628130912537397817}
+  m_Layer: 10
+  m_Name: Tracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6090700423788729028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2275121965378106740}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7188227636938248307}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &9006037921499568054
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2275121965378106740}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8628130912537397817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2275121965378106740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fe1af11b1a69347ae03378c5572fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 200
+  width: 7
+  tagMask: Player
+  canvas: {fileID: 195176777644635280}
+  redDot: {fileID: 3378461893015919104, guid: b9517dc6a0ae0474184fd6cdb55c4be9, type: 3}
+  dotScaler: 3
+  dotOpacity: 3
 --- !u!1 &2584912031797641484
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +267,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3586518652141116787
 RectTransform:
   m_ObjectHideFlags: 0
@@ -297,10 +361,10 @@ GameObject:
   - component: {fileID: 5573858290313199518}
   - component: {fileID: 2808216820221156601}
   - component: {fileID: 307403933066171618}
-  - component: {fileID: 5780684092325464000}
   - component: {fileID: 8229355201946509017}
   - component: {fileID: 2188038134139432926}
   - component: {fileID: 1976297135196911948}
+  - component: {fileID: 5780684092325464000}
   m_Layer: 10
   m_Name: Alien (Cylinder)
   m_TagString: Player
@@ -393,39 +457,13 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4364988366066350752}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 51b40067fe98d2b478d02af103cde26e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &5780684092325464000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4364988366066350752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 10
-  mouseSensitivity: 10
-  jumpSpeed: 10
-  yRotationClamp: 80
-  menu: {fileID: 0}
-  turnSpeed: 90
-  lerpSpeed: 10
-  gravity: 10
-  deltaGround: 1
-  isGrounded: 0
-  jumpRange: 10
-  transferTime: 0.2
-  alienVision: {r: 0.7830189, g: 0.30655926, b: 0.30655926, a: 0}
-  alienInteraction: {fileID: 0}
 --- !u!114 &8229355201946509017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,6 +515,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 6329036609802932500}
   maxHealth: 100
+  currentWeapon: {fileID: 11400000, guid: c97386eb027242b41992e743522b1ddf, type: 2}
+--- !u!114 &5780684092325464000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4364988366066350752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 10
+  mouseSensitivity: 10
+  jumpSpeed: 38.5
+  yRotationClamp: 80
+  menu: {fileID: 0}
+  lerpSpeed: 10
+  gravConstant: 50
+  deltaGround: 1
+  isGrounded: 1
+  jumpRange: 6.5
+  transferTime: 0.2
+  jumpChargeTime: 1
+  horizontalJumpMod: 1
+  verticalJumpMod: 1
+  alienVision: {r: 1, g: 0.6745283, b: 0.6745283, a: 0}
+  alienInteraction: {fileID: 0}
+  transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
+  emergencyHealingThreshold: 60
+  emergencyHealingAmount: 10
+  emergencyHealingTickCount: 10
+  emergencyHealingTickDelay: 0.1
+  emergencySpeedMultiplier: 1
 --- !u!1 &4418398108616668018
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,7 +637,7 @@ GameObject:
   - component: {fileID: 1543104172036656728}
   - component: {fileID: 8195995887919339541}
   m_Layer: 10
-  m_Name: HUD Canvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -665,7 +738,7 @@ GameObject:
   - component: {fileID: 4999215166340740336}
   m_Layer: 10
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -680,7 +753,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.59, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_Children: []
+  m_Children:
+  - {fileID: 6090700423788729028}
   m_Father: {fileID: 332868465348257334}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
