@@ -39,7 +39,10 @@ public class DoorTriggerScript : MonoBehaviourPunCallbacks
 
     private void OnTriggerExit(Collider coll)
     {
-        ChangeDoorState();
+        if (isDoorOpen)
+        {
+            ChangeDoorState();
+        }
     }
 
     public void ChangeDoorState()
