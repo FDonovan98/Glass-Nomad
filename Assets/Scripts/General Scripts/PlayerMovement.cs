@@ -55,8 +55,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             }
             else if (Cursor.lockState == CursorLockMode.None)
             {
-                Cursor.lockState = CursorLockMode.Locked;
                 ToggleMenu(false);
+                Cursor.lockState = CursorLockMode.Locked;
             }
         }
 #elif UNITY_STANDALONE_WIN
@@ -76,9 +76,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         }
 #endif
 
-
+        Debug.Log(inputEnabled);
         if (!inputEnabled) { return; } // If input is enabled, ignore all of the below.
-
+        
         MouseInput(); // Gets player movement
 
         // Player rotation

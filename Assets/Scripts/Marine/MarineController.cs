@@ -34,6 +34,7 @@ public class MarineController : MarineMovement
             return;
 
         base.Update();
+        if (!inputEnabled) { return; }
 
         if (Input.GetButton("Interact"))
         {

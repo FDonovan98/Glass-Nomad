@@ -17,8 +17,10 @@ public class MarineMovement : PlayerMovement
     protected new void Update()
     {
         base.Update();
-        
+        if (!inputEnabled) { return; }
+
         GetPlayerInput();
+
         // Player movement
         Vector3 dir = transform.TransformDirection(playerMovementInput);
         charRigidbody.velocity = dir;
@@ -26,7 +28,6 @@ public class MarineMovement : PlayerMovement
 
     private void GetPlayerInput()
     {
-        if (!inputEnabled) { return; }
         float x, y, z; // Declare x, y and z axis variables for player movement.
 
         // Jump and ground detection
