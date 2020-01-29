@@ -9,9 +9,15 @@ public class MarineMovement : PlayerMovement
     protected Vector3 playerMovementInput; // Used to store the players movement input.
     public float sprintSpeedMultiplier = 2f;
 
+    public float gravConstant = 10;
+    private float gravity;
+    private Vector3 charNormal;
+
     protected new void Start()
     {
         base.Start();
+        gravity = gravConstant;
+        charNormal = Vector3.up;
     }
 
     protected new void Update()
@@ -24,6 +30,15 @@ public class MarineMovement : PlayerMovement
         // Player movement
         Vector3 dir = transform.TransformDirection(playerMovementInput);
         charRigidbody.velocity = dir;
+
+        gravity = gravConstant;
+    }
+
+    protected void FixedUpdate()
+    {
+        // Calculate and apply force of gravity to char.
+        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
+        charRigidbody.AddForce(gravForce);
     }
 
     private void GetPlayerInput()
