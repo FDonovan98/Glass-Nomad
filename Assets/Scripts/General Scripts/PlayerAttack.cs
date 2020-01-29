@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using System.Collections;
+using System;
 
 public class PlayerAttack : MonoBehaviourPunCallbacks
 {
@@ -192,8 +194,23 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 int temp1 = hit.normal.x != 0 ? 2 : 0;
                 Vector3 holeSpawn = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
                 GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + (hit.normal * 0.001f), Quaternion.Euler(holeSpawn));
+                StartCoroutine(FadeBulletOut(bulletHole, 1f));
                 Destroy(bulletHole, 1f);
             }
+        }
+    }
+
+    IEnumerator FadeBulletOut(GameObject bullet, float fadeDuration)
+    {
+        Color col = bullet.GetComponent<MeshRenderer>().material.color;
+        float step = 1 / fadeDuration;
+
+        for (float t = 0f; t < fadeDuration; t += Time.deltaTime)
+        {
+            Debug.Log(bullet.GetComponent<MeshRenderer>().material.color);
+            Debug.Log(t);
+            bullet.GetComponent<MeshRenderer>().material.color = new Color(col.r, col.g, col.b, col.a * ((fadeDuration - t) / fadeDuration));
+            yield return null;
         }
     }
 }
