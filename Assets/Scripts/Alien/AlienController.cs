@@ -10,7 +10,7 @@ public class AlienController : AlienMovement
     public Color alienVision;
     public PlayerInteraction alienInteraction;
     public Material transparentVent;
-    private PlayerAttack alienAttack;
+    public PlayerAttack alienAttack;
     private GameObject trackerGO;
     private bool isTrackerOn = false;
     private bool triggeredEmergencyHealing = false;

@@ -28,6 +28,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private Light flashlight;
 	private UIBehaviour hudCanvas;
 
+    public GameObject bulletHolePrefab; // Spawned when a bullet hits a wall.
+
     // Oxygen shenanigans
     public float maxOxygenAmountSeconds = 300f;
     public float oxygenAmountSeconds;
@@ -88,8 +90,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 {
                     StartCoroutine(muzzleFlash.Flash(muzzleFlashPosition, flashlight.gameObject.transform.rotation));
                 }
-
-                Debug.LogAssertion(currentWeapon.bulletsInCurrentMag + " rounds remaining");
 
                 deltaTime = 0;
             }
@@ -174,20 +174,25 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [PunRPC]
     protected void FireWeapon(Vector3 cameraPos, Vector3 cameraForward, float range, int damage)
     {
-        Debug.Log(photonView.Owner.NickName + " did a light attack");
-
         RaycastHit hit;
         if (Physics.Raycast(cameraPos, cameraForward, out hit, range))
         {
             PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
-            if (hitPlayer != null)
+            if (hitPlayer != null) // A player was hit
             {
                 PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
 
                 hitPlayerHealth.PlayerHit(damage);
                 hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
-
-                Debug.Log(photonView.Owner.NickName + " hit player: " + hitPlayer.gameObject.name);
+            }
+            else // A wall was hit.
+            {
+                // It works somehow... don't ask.
+                int temp = hit.normal.z == -1 ? 2 : 0;
+                int temp1 = hit.normal.x != 0 ? 2 : 0;
+                Vector3 holeSpawn = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
+                GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + (hit.normal * 0.001f), Quaternion.Euler(holeSpawn));
+                Destroy(bulletHole, 1f);
             }
         }
     }
