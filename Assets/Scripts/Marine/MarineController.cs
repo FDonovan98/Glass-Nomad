@@ -5,13 +5,10 @@ using UnityEngine;
 public class MarineController : MarineMovement
 {
     public PlayerInteraction marineInteraction;
-    private PlayerAttack marineAttack;
+    public PlayerAttack marineAttack; // Accessed by the oxygen regen script.
 
     float deltaTime = 0;
 
-    public float maxOxygenAmountSeconds = 300f;
-    public float oxygenAmountSeconds;
-    private float oxygenDamageTime = 0f;
 
     private new void Start()
     {
@@ -24,7 +21,6 @@ public class MarineController : MarineMovement
         
         marineInteraction = new PlayerInteraction();
         marineAttack = GetComponent<PlayerAttack>();
-        oxygenAmountSeconds = maxOxygenAmountSeconds;
     }
 
     private new void Update()
@@ -45,23 +41,6 @@ public class MarineController : MarineMovement
         if (Input.GetButtonUp("Interact"))
         {
             deltaTime = 0.0f;
-        }
-
-        if (oxygenAmountSeconds > 0)
-        {
-            oxygenAmountSeconds -= Time.deltaTime;
-        }
-        if (oxygenAmountSeconds == 0)
-        {
-            if (oxygenDamageTime >= 0.2f)
-            {
-                gameObject.GetComponent<PlayerAttack>().healthScript.PlayerHit(1);
-                oxygenDamageTime = 0f;
-            }
-            else
-            {
-                oxygenDamageTime += Time.deltaTime;
-            }
         }
     }
 }

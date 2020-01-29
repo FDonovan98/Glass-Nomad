@@ -27,7 +27,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
 	private UIBehaviour hudCanvas;
-    
+
+    // Oxygen shenanigans
+    public float maxOxygenAmountSeconds = 300f;
+    public float oxygenAmountSeconds;
+    private float oxygenDamageTime = 0f;
+
     private new void OnEnable()
     {
         healthScript = new PlayerHealth(this.gameObject, maxHealth);
@@ -45,8 +50,9 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
         deltaTime = currentWeapon.fireRate;
 
+        oxygenAmountSeconds = maxOxygenAmountSeconds;
+
         hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
-        
         hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
     }
 
@@ -86,8 +92,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 Debug.LogAssertion(currentWeapon.bulletsInCurrentMag + " rounds remaining");
 
                 deltaTime = 0;
-                
-                hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
             }
         }
 
@@ -99,8 +103,27 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadWeapon(currentWeapon);
-            hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
         }
+
+        // Reduce oxygen
+        if (oxygenAmountSeconds > 0)
+        {
+            oxygenAmountSeconds -= Time.fixedDeltaTime;
+        }
+        if (oxygenAmountSeconds == 0)
+        {
+            if (oxygenDamageTime >= 0.2f)
+            {
+                healthScript.PlayerHit(1);
+                oxygenDamageTime = 0f;
+            }
+            else
+            {
+                oxygenDamageTime += Time.fixedDeltaTime;
+            }
+        }
+
+        hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
     }
 
     private void ReloadWeapon(Weapon weapon)

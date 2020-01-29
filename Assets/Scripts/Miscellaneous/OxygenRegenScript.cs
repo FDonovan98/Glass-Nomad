@@ -11,12 +11,12 @@ public class OxygenRegenScript : MonoBehaviour
         // Layer 8 is MarineCharacter. Harry made me type this.
         if (other.gameObject.layer == 8 && other.CompareTag("Player"))
         {
-            MarineController marineController = other.GetComponent<MarineController>();
-            marineController.oxygenAmountSeconds += marineController.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime;
-            marineController.oxygenAmountSeconds += Time.deltaTime;
-            if (marineController.oxygenAmountSeconds > marineController.maxOxygenAmountSeconds)
+            PlayerAttack playerAttack = other.GetComponent<MarineController>().marineAttack;
+            playerAttack.oxygenAmountSeconds += playerAttack.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime;
+            playerAttack.oxygenAmountSeconds += Time.deltaTime;
+            if (playerAttack.oxygenAmountSeconds > playerAttack.maxOxygenAmountSeconds)
             {
-                marineController.oxygenAmountSeconds = marineController.maxOxygenAmountSeconds;
+                playerAttack.oxygenAmountSeconds = playerAttack.maxOxygenAmountSeconds;
             }
         }
     }
