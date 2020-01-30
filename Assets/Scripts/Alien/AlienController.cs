@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class AlienController : AlienMovement
 {

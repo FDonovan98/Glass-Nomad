@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 using System.Collections;
 
 // Code initially based on code from here:
@@ -8,16 +7,25 @@ using System.Collections;
 [RequireComponent(typeof(Collider))]
 public class AlienMovement : PlayerMovement
 {
-    // Smoothing speed.
+    #region variable-declaration
+
+    // Constant used for gravity scaling.
+    const float gravConstant = 10;
+
+    // Smoothing speed of rotating to wall.
     public float lerpSpeed = 1;
-    public float gravConstant = 10;
+
     private float gravity;
+
     // Char counts as grounded up to this distance from the ground.
     public float deltaGround = 0.1f;
+
     // Is the alien in contact with the ground.
     public bool isGrounded = false;
+
     // The range at which to detect a wall to stick to.
     public float jumpRange = 10;
+
     // Time it takes to transfer between two surfaces.
     public float transferTime = 1;
 
@@ -29,30 +37,35 @@ public class AlienMovement : PlayerMovement
 
     // The normal of the current surface.
     private Vector3 surfaceNormal;
+
     // The characters normal.
     private Vector3 charNormal;
 
-    // Flag for if the alien is currently jumping.
-    //private bool jumping;
-    // Current vertical speed.
-    //private float verticalSpeed;
+    #endregion
 
+    /// <summary>
+    /// Initialises the alien's normal to the world's normal, and
+    /// initialises the gravity to the gravity constant.
+    /// </summary>
     protected new void Start()
     {
         base.Start();
-        // Initialises the charNormal to the world normal.
         charNormal = transform.up;
-        Debug.Log(distGround);
         gravity = gravConstant;
     }
 
+    /// <summary>
+    /// Calculates and applies the force of gravity to the alien.
+    /// </summary>
     protected void FixedUpdate()
     {
-        // Calculate and apply force of gravity to char.
         Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
         charRigidbody.AddForce(gravForce);
     }
 
+    /// <summary>
+    /// Retreives the jump input and moves the player.
+    /// </summary>
     protected new void Update()
     {   
         base.Update();
@@ -95,7 +108,6 @@ public class AlienMovement : PlayerMovement
                 jumpCharge = 0.0f;
             }
         }
-
 
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
@@ -157,12 +169,12 @@ public class AlienMovement : PlayerMovement
         // Align the character to the surface normal while still looking forward.
         Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
-        
 
         // Gets the horz and vert movement for char.
         float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
         float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
 
+        // Multiplies the alien's speed if they are sprinting.
         if (Input.GetAxis("Sprint") == 1)
         {
             deltaX *= sprintSpeedMultiplier;
@@ -172,12 +184,14 @@ public class AlienMovement : PlayerMovement
         transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
     }
 
+    /// <summary>
+    /// Computes the transition when jumping to a wall.
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="normal"></param>
+    /// <returns></returns>
     IEnumerator JumpToWall(Vector3 point, Vector3 normal)
     {
-        Debug.Log("JumpToWall");
-        // Enables the flag saying the char is jumping.
-        //jumping = true;
-
         // Disables physics while jumping.
         charRigidbody.isKinematic = true;
         
@@ -211,7 +225,5 @@ public class AlienMovement : PlayerMovement
         charNormal = normal;
         // Re-enables physics.
         charRigidbody.isKinematic = false;
-        // Signals the jump to the wall has finished.
-        //jumping = false;
     }
 }
