@@ -125,7 +125,7 @@ public class AlienController : AlienMovement
             this.movementSpeed /= emergencySpeedMultiplier;
         }
     }
-
+    
     private new void FixedUpdate()
     {
         // If we are not the local client then don't compute any of this.

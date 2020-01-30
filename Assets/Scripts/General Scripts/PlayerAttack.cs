@@ -83,7 +83,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 // If magSize is zero then it is a melee attack.
                 if (currentWeapon.magSize > 0)
                 {
-                    weaponAudio.Play();
                     currentWeapon.bulletsInCurrentMag--;
                     recoil += currentWeapon.recoilForce;
 
@@ -181,6 +180,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     [PunRPC]
     protected void FireWeapon(Vector3 cameraPos, Vector3 cameraForward, float range, int damage)
     {
+        weaponAudio.Play();
         RaycastHit hit;
         if (Physics.Raycast(cameraPos, cameraForward, out hit, range))
         {
