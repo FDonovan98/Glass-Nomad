@@ -485,7 +485,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6941760736000276331}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.8, y: -0.38, z: 1}
+  m_LocalPosition: {x: 0.661, y: 1.348, z: 0.832}
   m_LocalScale: {x: 0.4, y: 0.4, z: 1.6}
   m_Children:
   - {fileID: 2200460539119212618}
@@ -707,7 +707,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4798643066128009773}
-  - component: {fileID: 7843200221880555899}
   - component: {fileID: 818794212765684613}
   - component: {fileID: 6989138274606362850}
   - component: {fileID: 4774585629608982777}
@@ -715,6 +714,7 @@ GameObject:
   - component: {fileID: 6366923831727293381}
   - component: {fileID: 8072271135877907066}
   - component: {fileID: 6820651075571509334}
+  - component: {fileID: 8238451842474713795}
   m_Layer: 8
   m_Name: Marine (Cylinder)
   m_TagString: Player
@@ -730,8 +730,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833018608841414331}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.69, z: 0}
-  m_LocalScale: {x: 3.36085, y: 3.36085, z: 3.36085}
+  m_LocalPosition: {x: -838.45, y: -416.32, z: -3.7617}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2722167150254570600}
   - {fileID: 8629879697156583784}
@@ -739,14 +739,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7843200221880555899
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833018608841414331}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &818794212765684613
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -810,10 +802,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.32016957
+  m_Height: 3.0319667
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0.00000007093996, y: 0.38396087, z: 0.016407419}
 --- !u!114 &3761113299169080002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,6 +884,14 @@ MonoBehaviour:
     type: 3}
   maxOxygenAmountSeconds: 300
   oxygenAmountSeconds: 0
+--- !u!33 &8238451842474713795
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8833018608841414331}
+  m_Mesh: {fileID: 4300000, guid: f5a12c8caed9dbc40a4297938cdd6059, type: 3}
 --- !u!1 &9091064011920724288
 GameObject:
   m_ObjectHideFlags: 0
