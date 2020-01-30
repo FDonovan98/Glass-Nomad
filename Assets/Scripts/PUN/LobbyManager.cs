@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -65,8 +64,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Connected to master");
-
         if (isConnection)
         {
             // Try and join a potential existing room, else, we'll be called back with OnJoinRandomFailed().
@@ -84,13 +81,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         // We failed to join a random room, maybe none exists or they are all full. So we create a new room.
-        Debug.Log("No room found, creating new room");
         PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Room joined successfully");
         progressLabel.SetActive(false);
         inLobbyPanel.SetActive(true);
 

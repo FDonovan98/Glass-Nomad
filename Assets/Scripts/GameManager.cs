@@ -41,8 +41,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
         }
-        
-        Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
 
         // Setting up the resolution options
         resolutions = Screen.resolutions;
