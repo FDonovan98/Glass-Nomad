@@ -29,11 +29,16 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private float recoil = 0f;
     private float recoilRotation = 0f;
 
-    //
+    // Used to keep track of how long it has been since the weapon was last fired.
     private float deltaTime = 0.0f;
+
+    // Used to spawn a muzzle flash when a player shoots.
     private MuzzleFlashScript muzzleFlash;
-    private Vector3 muzzleFlashPosition;
+
+    // Used to position the muzzle flash.
     private Light flashlight;
+
+    // Used to display the players current ammo, mag count, and oxygen.
 	private UIBehaviour hudCanvas;
 
     // Spawned when a bullet hits a wall.
@@ -41,16 +46,22 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     // Oxygen shenanigans
     public float maxOxygenAmountSeconds = 300f;
-    public float oxygenAmountSeconds;
+    public float oxygenAmountSeconds = 0f;
     private float oxygenDamageTime = 0f;
 
     #endregion
 
+    /// <summary>
+    /// Initialises the players health. 
+    /// </summary>
     private new void OnEnable()
     {
         healthScript = new PlayerHealth(this.gameObject, maxHealth);
     }
 
+    /// <summary>
+    /// Assigns the flashlight, camera, weapon audio and HUD canvas.
+    /// </summary>
     private void Start()
     {
         // The muzzle flash will appear at the same spot as the flashlight
@@ -73,17 +84,15 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
     }
 
+    /// <summary>
+    /// Controls the players fire input, and reduces oxygen every frame.
+    /// If oxygen reaches 0, the player starts taking damage.
+    /// </summary>
     private void Update()
     {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
+        if (!photonView.IsMine) { return; }
 
-        if (deltaTime <= currentWeapon.fireRate)
-        {
-            deltaTime += Time.deltaTime;
-        }
+        if (deltaTime <= currentWeapon.fireRate) { deltaTime += Time.deltaTime; }
 
         if (Input.GetButton("Fire1"))
         {
@@ -94,15 +103,9 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             }
         }
 
-        if (recoil > 0)
-        {
-            RecoilWeapon();
-        }
+        if (recoil > 0) { RecoilWeapon(); }
         
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            currentWeapon.Reload();
-        }
+        if (Input.GetKeyDown(KeyCode.R)) { currentWeapon.Reload(); }
 
         // Reduce oxygen
         if (oxygenAmountSeconds > 0)
@@ -125,34 +128,47 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
     }
 
-    private void RecoilWeapon()
-    {
-        float xRotation = cameraGO.transform.localEulerAngles.x;
-        recoil *= 10 * Time.deltaTime; // this dampens the recoil until it is (almost) zero.
-        recoilRotation += recoil;
-        recoilRotation *= 0.95f; // get smaller every frame.
-        cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoilRotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
-    }
-
+    /// <summary>
+    /// Used to call the PunRPC 'FireWeapon' so that every clients registers the fire, and takes damage accordingly.
+    /// This also reduces the players ammo count and adds recoil, as well as spawning the muzzle flash.
+    /// </summary>
     private void Shoot()
     {
-        // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
-        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, currentWeapon.range, currentWeapon.damage);
+        // Calls the 'FireWeapon' method on all clients, meaning that the health and gun shot will be synced across all clients.
+        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward,
+                    currentWeapon.range, currentWeapon.damage);
 
         currentWeapon.bulletsInCurrentMag--;
         recoil += currentWeapon.recoilForce;
 
-        if (flashlight != null)
-        {
-            muzzleFlashPosition = flashlight.gameObject.transform.position;
-        }
-
         if (muzzleFlash != null)
         {
-            StartCoroutine(muzzleFlash.Flash(muzzleFlashPosition, flashlight.gameObject.transform.rotation));
+            StartCoroutine(muzzleFlash.Flash(flashlight.gameObject.transform.position, flashlight.gameObject.transform.rotation));
         }
     }
 
+    /// <summary>
+    /// Used to recoil the players weapon when they shoot.
+    /// </summary>
+    private void RecoilWeapon()
+    {
+        float xRotation = cameraGO.transform.localEulerAngles.x;
+        recoil *= 10 * Time.deltaTime; // This dampens the recoil until it is (almost) zero.
+        recoilRotation += recoil;
+        recoilRotation *= 0.95f; // Get smaller every frame.
+        cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoilRotation,
+                                cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
+    }
+
+    /// <summary>
+    /// Plays a gun shot sound, so that all clients hear it. If the bullet hits a player,
+    /// then the hit player's health is reduced, otherwise, if the bullet hit a wall, then
+    /// a bullet hole is instantiated and faded out.
+    /// </summary>
+    /// <param name="cameraPos"></param>
+    /// <param name="cameraForward"></param>
+    /// <param name="range"></param>
+    /// <param name="damage"></param>
     [PunRPC]
     protected void FireWeapon(Vector3 cameraPos, Vector3 cameraForward, float range, int damage)
     {
@@ -181,7 +197,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator FadeBulletOut(GameObject bullet, float fadeDuration)
+    /// <summary>
+    /// Used to fade out the bullet if it hits a wall.
+    /// </summary>
+    /// <param name="bullet"></param>
+    /// <param name="fadeDuration"></param>
+    /// <returns></returns>
+    private IEnumerator FadeBulletOut(GameObject bullet, float fadeDuration)
     {
         Color col = bullet.GetComponent<MeshRenderer>().material.color;
         float step = 1 / fadeDuration;
