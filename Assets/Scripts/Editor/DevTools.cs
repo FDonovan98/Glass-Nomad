@@ -149,8 +149,9 @@ public class DevTools : EditorWindow
             {
                 doorTrigger.ChangeDoorState();
             }
-
-            doorTrigger.LockDoorOpen();
+            
+            // Keeps the door open, forever.
+            doorTrigger.LockDoor();
         }
     }
 

@@ -19,7 +19,8 @@ public class GeneratorPowerOn : MonoBehaviour
                     doorTrigger.ChangeDoorState();
                 }
                 
-                doorTrigger.LockDoorOpen();
+                // Keeps the door open, forever.
+                doorTrigger.LockDoor();
             }
             this.gameObject.SetActive(false);
         }
