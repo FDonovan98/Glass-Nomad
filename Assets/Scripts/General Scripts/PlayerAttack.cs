@@ -207,8 +207,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         for (float t = 0f; t < fadeDuration; t += Time.deltaTime)
         {
-            Debug.Log(bullet.GetComponent<MeshRenderer>().material.color);
-            Debug.Log(t);
             bullet.GetComponent<MeshRenderer>().material.color = new Color(col.r, col.g, col.b, col.a * ((fadeDuration - t) / fadeDuration));
             yield return null;
         }
