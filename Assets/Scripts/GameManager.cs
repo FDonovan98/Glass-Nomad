@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public GameObject marineSpawnPoint; // Used to spawn the marines.
     [SerializeField] private TMP_Dropdown resolutionDropdown = null; // Used to change the video resolution.
     [SerializeField] private TMP_Dropdown qualityDropdown = null; // Used to change the video quality.
-    [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
     public GameObject pauseMenu; // Used by PlayerMovement to access the pause menu gameobject.
     private Resolution[] resolutions; // Used to retrieve all the available resolutions.
     private Camera cam; // Used to change the FOV of the camera.
@@ -136,7 +135,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public void SetVolume(float volume)
     {
-        audioMixer.SetFloat("volume", volume);
+        AudioListener.volume = volume;
     }
 
     public void SetResolution(int resolutionIndex)

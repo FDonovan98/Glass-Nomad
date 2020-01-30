@@ -54,6 +54,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
         weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
+        weaponAudio.clip = currentWeapon.weaponSound;
 
         deltaTime = currentWeapon.fireRate;
 
@@ -211,8 +212,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         for (float t = 0f; t < fadeDuration; t += Time.deltaTime)
         {
-            bullet.GetComponent<MeshRenderer>().material.color = new Color(col.r, col.g, col.b, col.a * ((fadeDuration - t) / fadeDuration));
-            yield return null;
+            if (bullet.GetComponent<MeshRenderer>() != null)
+            {
+                bullet.GetComponent<MeshRenderer>().material.color = new Color(col.r, col.g, col.b, col.a * ((fadeDuration - t) / fadeDuration));
+                yield return null;
+            }
         }
     }
 }
