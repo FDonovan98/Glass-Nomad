@@ -29,18 +29,18 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         // Dev tool
         if (singlePlayerMarine)
         {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
             return;
         }
 
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform, new Quaternion());
+            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform, new Quaternion());
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
         }
         
         Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
             {
                 if (element.GetComponent<PhotonView>().IsMine)
                 {
-                    Vector3 playerPos = alienSpawnPoint;
+                    Vector3 playerPos = alienSpawnPoint.transform.position;
                     Quaternion playerRot = element.transform.rotation;
                     string prefabName;
 
