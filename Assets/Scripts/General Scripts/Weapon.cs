@@ -22,4 +22,35 @@ public class Weapon : ScriptableObject
     // These are hidden in the inspector as they don't need to be set.
     [HideInInspector] public int magsLeft;
     [HideInInspector] public int bulletsInCurrentMag;
+
+    public bool CanFire(float currentTime)
+    {
+        if (currentTime > fireRate)
+        {
+            if (magSize > 0)
+            {
+                if (bulletsInCurrentMag > 0)
+                {
+                    return true;
+                }
+
+                Debug.Log("You need to reload.");
+            }
+        }
+
+        return false;
+    }
+
+    public void Reload()
+    {
+        if (magsLeft > 0)
+        {
+            bulletsInCurrentMag = magSize;
+            magsLeft--;
+        }
+        else
+        {
+            Debug.Log("You are out of magazines for this weapon. Find more ammo.");
+        }
+    }
 }
