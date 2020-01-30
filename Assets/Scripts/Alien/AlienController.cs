@@ -52,7 +52,7 @@ public class AlienController : AlienMovement
     public float emergencyHealingTickDelay = 0.1f;
     private float emergencyHealingDeltaTime = 0.0f;
 
-    // Used to boost the speed of the alien when in the
+    // Used to slow the speed of the alien when in the
     // emergency state.
     public float emergencySpeedMultiplier = 1.0f;
 
@@ -63,27 +63,32 @@ public class AlienController : AlienMovement
 
     private new void Start()
     {
+        // Uses the Start method from its parent class (alien movement),
+        // which inherits from player movement.
         base.Start();
         
+        // If the local player is not the alien, then we don't
+        // need to process anything below.
         if (!photonView.IsMine)
         {
             return;
         }
 
+        // Changes the colour tint of the camera.
         RenderSettings.ambientLight = alienVision;
         
+        // Variable assigning.
         alienInteraction = new PlayerInteraction();
         alienAttack = GetComponent<PlayerAttack>();
+        healthScript = gameObject.GetComponent<PlayerAttack>().healthScript;
         trackerGO = charCamera.transform.GetChild(0).gameObject;
-        GameObject[] vents = GameObject.FindGameObjectsWithTag("Vent");
-        Debug.Log(vents.Length);
 
+        // Changes the material of all the vents found in the map.
+        GameObject[] vents = GameObject.FindGameObjectsWithTag("Vent");
         foreach (GameObject vent in vents)
         {
             vent.GetComponent<Renderer>().material = transparentVent;
         }
-
-        healthScript = gameObject.GetComponent<PlayerAttack>().healthScript;
     }
 
     private new void Update()
@@ -92,6 +97,7 @@ public class AlienController : AlienMovement
         if (!photonView.IsMine) 
             return;
 
+        // Activate the tracker if the 'F' is pressed.
         if (Input.GetKeyDown(KeyCode.F))
         {
             ToggleTracker();
@@ -112,30 +118,12 @@ public class AlienController : AlienMovement
 
         if (emergencyHealingCurrentTickCount != emergencyHealingTickCount)
         {
-            if (triggeredEmergencyHealing)
-            {
-                emergencyHealingDeltaTime += Time.deltaTime;
-                if (emergencyHealingDeltaTime > emergencyHealingTickDelay)
-                {
-                    this.movementSpeed *= emergencySpeedMultiplier;
-                    Debug.LogWarning("check THREE");
-                    PhotonView photonView = gameObject.GetPhotonView();
-                    int viewID = photonView.ViewID;
-                    photonView.RPC("RegenHealth", RpcTarget.All, viewID, -emergencyHealingAmount);
-                    emergencyHealingDeltaTime = 0;
-                    emergencyHealingCurrentTickCount++;
-                }
-            }
-            else if (healthScript.currentHealth < emergencyHealingThreshold)
-            {
-                triggeredEmergencyHealing = true;
-            }
+            EmergencyHealth();
         }
         else
         {
             this.movementSpeed /= emergencySpeedMultiplier;
         }
-
     }
 
     private new void FixedUpdate()
@@ -144,6 +132,28 @@ public class AlienController : AlienMovement
         if (!photonView.IsMine) 
             return;
         base.FixedUpdate();
+    }
+
+    private void EmergencyHealth()
+    {
+        if (triggeredEmergencyHealing)
+        {
+            emergencyHealingDeltaTime += Time.deltaTime;
+            if (emergencyHealingDeltaTime > emergencyHealingTickDelay)
+            {
+                this.movementSpeed *= emergencySpeedMultiplier;
+                Debug.LogWarning("check THREE");
+                PhotonView photonView = gameObject.GetPhotonView();
+                int viewID = photonView.ViewID;
+                photonView.RPC("RegenHealth", RpcTarget.All, viewID, -emergencyHealingAmount);
+                emergencyHealingDeltaTime = 0;
+                emergencyHealingCurrentTickCount++;
+            }
+        }
+        else if (healthScript.currentHealth < emergencyHealingThreshold)
+        {
+            triggeredEmergencyHealing = true;
+        }
     }
 
     [PunRPC]
