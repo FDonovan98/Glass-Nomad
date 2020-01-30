@@ -163,6 +163,12 @@ public class AlienMovement : PlayerMovement
         float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
         float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
 
+        if (Input.GetAxis("Sprint") == 1)
+        {
+            deltaX *= sprintSpeedMultiplier;
+            deltaZ *= sprintSpeedMultiplier;
+        }
+
         transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
     }
 

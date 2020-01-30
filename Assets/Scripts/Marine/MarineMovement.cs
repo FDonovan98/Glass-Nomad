@@ -7,7 +7,6 @@ public class MarineMovement : PlayerMovement
 {
     public float force = 150f;
     protected Vector3 playerMovementInput; // Used to store the players movement input.
-    public float sprintSpeedMultiplier = 2f;
 
     public float gravConstant = 10;
     private float gravity;

@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] protected int mouseSensitivity = 1; // Used to control the sensitivity of the mouse.
     [SerializeField] protected float jumpSpeed = 10; // Used to control the jumping force of the player.
     [SerializeField] protected float yRotationClamp = 30; // Used to stop the player looking 'underneath' themselves.
+    [SerializeField] protected float sprintSpeedMultiplier = 1.5f;
     [SerializeField] private GameObject menu = null; // Used to hide and show the menu options.
 
     protected Rigidbody charRigidbody; // Used to apply physics to the player, e.g. movement.
