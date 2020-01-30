@@ -7,25 +7,60 @@ using Photon.Realtime;
 
 public class AlienController : AlienMovement
 {
+    #region variables
+
+    // Used to alter the colour of the alien's vision (red).
     public Color alienVision;
+
     public PlayerInteraction alienInteraction;
+
+    // Used to change the material of all of the vents to make it
+    // easier for the alien to see and orientate themselves.
     public Material transparentVent;
+
+    // Used by the oxygen regen script.
     public PlayerAttack alienAttack;
+
+    // Used to toggle the alien's tracker vision on and off.
     private GameObject trackerGO;
+
+    // Used to keep track of whether the tracker is on or off.
     private bool isTrackerOn = false;
+
+    // Used to determine whether the alien's current health is
+    // less than the emergency health threshold.
     private bool triggeredEmergencyHealing = false;
-    private bool usingEmergencyHealing = true;
+
+    // Used to check against the emergency health threshold
+    // and regen the alien's health.
     private PlayerHealth healthScript;
+
+    // Used to determine how much health the alien should have
+    // before the health regen kicks in.
     public int emergencyHealingThreshold = 60;
+
+    // Used to determine how much health the alien should regen
+    // every emergency tick count.
     public int emergencyHealingAmount = 10;
+
+    // Used to track how often the alien regens when in the
+    // emergency healing state.
     public int emergencyHealingTickCount = 10;
+
+    // Used to keep track 
     private int emergencyHealingCurrentTickCount = 0;
     public float emergencyHealingTickDelay = 0.1f;
     private float emergencyHealingDeltaTime = 0.0f;
 
+    // Used to boost the speed of the alien when in the
+    // emergency state.
     public float emergencySpeedMultiplier = 1.0f;
 
+    // Used by the interaction script.
     private float deltaTime = 0;
+
+    #endregion
+
     private new void Start()
     {
         base.Start();
@@ -42,6 +77,7 @@ public class AlienController : AlienMovement
         trackerGO = charCamera.transform.GetChild(0).gameObject;
         GameObject[] vents = GameObject.FindGameObjectsWithTag("Vent");
         Debug.Log(vents.Length);
+
         foreach (GameObject vent in vents)
         {
             vent.GetComponent<Renderer>().material = transparentVent;
@@ -114,8 +150,8 @@ public class AlienController : AlienMovement
     protected void RegenHealth(int viewID, int healingAmount)
     {
         GameObject alien = PhotonView.Find(viewID).gameObject;
-        alien.GetComponent<PlayerAttack>().healthScript.PlayerHit(healingAmount);
-        alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().healthScript.fillAmount;
+        healthScript.PlayerHit(healingAmount);
+        alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = healthScript.fillAmount;
     }
 
     private void ToggleTracker()
