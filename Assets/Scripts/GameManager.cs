@@ -10,8 +10,8 @@ using TMPro;
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     [SerializeField] private string lobbySceneName = "SCN_Lobby"; // Used to change scene when we leave a room.
-    [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero; // Used to spawn the alien.
-    [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero; // Used to spawn the marines.
+    public GameObject alienSpawnPoint; // Used to spawn the alien.
+    public GameObject marineSpawnPoint; // Used to spawn the marines.
     [SerializeField] private TMP_Dropdown resolutionDropdown = null; // Used to change the video resolution.
     [SerializeField] private TMP_Dropdown qualityDropdown = null; // Used to change the video quality.
     [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
@@ -29,18 +29,18 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         // Dev tool
         if (singlePlayerMarine)
         {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
             return;
         }
 
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint, new Quaternion());
+            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
         }
         
         Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
             {
                 if (element.GetComponent<PhotonView>().IsMine)
                 {
-                    Vector3 playerPos = alienSpawnPoint;
+                    Vector3 playerPos = alienSpawnPoint.transform.position;
                     Quaternion playerRot = element.transform.rotation;
                     string prefabName;
 

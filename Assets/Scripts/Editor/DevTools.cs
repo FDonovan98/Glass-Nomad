@@ -38,6 +38,11 @@ public class DevTools : EditorWindow
             SwitchModel();
         }
 
+        if (GUILayout.Button("Open All Doors"))
+        {
+            OpenAllDoors();
+        }
+
         if (GUILayout.Button("Activate Armoury Switches"))
         {
             ActivateSwitches();
@@ -109,6 +114,23 @@ public class DevTools : EditorWindow
 
                 return;
             }
+        }
+    }
+
+    private void OpenAllDoors()
+    {
+        Debug.Log("All doors are now opened");
+        GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+        foreach (GameObject door in doors)
+        {
+            DoorTriggerScript doorTrigger = door.GetComponent<DoorTriggerScript>();
+
+            if (!doorTrigger.GetDoorOpen())
+            {
+                doorTrigger.ChangeDoorState();
+            }
+
+            doorTrigger.LockDoorOpen();
         }
     }
 
