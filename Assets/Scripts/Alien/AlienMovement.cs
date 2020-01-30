@@ -88,7 +88,6 @@ public class AlienMovement : PlayerMovement
         if (Input.GetButton("Jump"))
         {
             jumpCharge += Time.deltaTime;
-            Debug.Log("Jump key pressed");
         }
 
         if (Input.GetButtonUp("Jump"))
@@ -99,7 +98,6 @@ public class AlienMovement : PlayerMovement
             {
                 // Limits the jump multiplier.
                 jumpCharge = Mathf.Min(jumpCharge, jumpChargeTime);
-                Debug.Log("Applying Jump Force");
                 float jumpForce = jumpSpeed * jumpCharge;
                 charRigidbody.velocity += horizontalJumpMod * jumpForce * charCamera.transform.forward;
                 charRigidbody.velocity += verticalJumpMod * jumpForce * charNormal;

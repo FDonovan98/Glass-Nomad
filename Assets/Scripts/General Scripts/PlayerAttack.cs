@@ -134,27 +134,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoilRotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
     }
 
-    // private bool canFire(float deltaTime, Weapon weapon)
-    // {
-    //     if (deltaTime > weapon.fireRate)
-    //     {
-    //         if (weapon.magSize > 0)
-    //         {
-    //             if (weapon.bulletsInCurrentMag > 0)
-    //             {
-    //                 return true;
-    //             }
-    //             else
-    //             {
-    //                 Debug.Log("You are out of bullets in your magazine.");
-    //             }
-    //             return false;
-    //         }  
-    //         return true; 
-    //     }
-    //     return false;
-    // }
-
     private void Shoot()
     {
         // Calls the 'Attack' method on all clients, meaning that the health will be synced across all clients.
