@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -18,20 +16,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private Resolution[] resolutions; // Used to retrieve all the available resolutions.
     private Camera cam; // Used to change the FOV of the camera.
 
-    #region devtools
-    [Header("Developer Tools")]
-    [SerializeField] private bool singlePlayerMarine = false; // Used to test the marine player, in testing.
-    #endregion
-
     private void Start()
     {
-        // Dev tool
-        if (singlePlayerMarine)
-        {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
-            return;
-        }
-
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
