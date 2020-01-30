@@ -91,7 +91,6 @@ public class AlienMovement : PlayerMovement
             Debug.Log("Jump key pressed");
         }
 
-
         if (Input.GetButtonUp("Jump"))
         {
             // If the player is on the ground then jump up.

@@ -6,7 +6,7 @@ using Photon.Pun;
 
 public class AlienController : AlienMovement
 {
-    #region variables
+    #region variable-declaration
 
     // Used to alter the colour of the alien's vision (red).
     public Color alienVision;
