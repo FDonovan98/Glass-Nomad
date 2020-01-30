@@ -94,12 +94,23 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         if (deltaTime <= currentWeapon.fireRate) { deltaTime += Time.deltaTime; }
 
-        if (Input.GetButton("Fire1"))
+        if (currentWeapon.CanFire(deltaTime))
         {
-            if (currentWeapon.CanFire(deltaTime))
+            if (currentWeapon.fireMode == Weapon.FireType.Single)
             {
-                Shoot();
-                deltaTime = 0;
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    Shoot();
+                    deltaTime = 0;
+                }
+            }
+            else if (currentWeapon.fireMode == Weapon.FireType.FullAuto)
+            {
+                if (Input.GetButton("Fire1"))
+                {
+                    Shoot();
+                    deltaTime = 0;
+                }
             }
         }
 
