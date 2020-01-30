@@ -24,7 +24,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     public Weapon currentWeapon;
     private float recoil = 0f;
     private float recoil_rotation = 0f;
-
+    private AudioSource weaponAudio;
     private MuzzleFlashScript muzzleFlash;
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
@@ -41,6 +41,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     {
         healthScript = new PlayerHealth(this.gameObject, maxHealth);
     }
+
     private void Start()
     {
         // The muzzle flash will appear at the same spot as the flashlight
@@ -52,6 +53,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
+        weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
+
         deltaTime = currentWeapon.fireRate;
 
         oxygenAmountSeconds = maxOxygenAmountSeconds;
@@ -79,6 +82,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 // If magSize is zero then it is a melee attack.
                 if (currentWeapon.magSize > 0)
                 {
+                    weaponAudio.Play();
                     currentWeapon.bulletsInCurrentMag--;
                     recoil += currentWeapon.recoilForce;
 

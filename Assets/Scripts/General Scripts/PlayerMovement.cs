@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         if (!photonView.IsMine)
         {
+            charCamera.GetComponent<AudioListener>().enabled = false; // Disables the audio listener on every client that isn't our own.
             charCamera.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
         }
 
