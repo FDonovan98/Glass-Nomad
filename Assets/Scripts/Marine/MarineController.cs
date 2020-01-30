@@ -1,23 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MarineController : MarineMovement
 {
+    // Redundant now?
     public PlayerInteraction marineInteraction;
-    public PlayerAttack marineAttack; // Accessed by the oxygen regen script.
+    private float deltaTime = 0;
 
-    float deltaTime = 0;
-
+    // Accessed by the oxygen regen script.
+    public PlayerAttack marineAttack;
 
     private new void Start()
     {
         base.Start();
         
-        if (!photonView.IsMine)
-        {
-            return;
-        }
+        if (!photonView.IsMine) { return; }
         
         marineInteraction = new PlayerInteraction();
         marineAttack = GetComponent<PlayerAttack>();
@@ -26,12 +22,12 @@ public class MarineController : MarineMovement
     private new void Update()
     {
         // If we are not the local client then don't compute any of this.
-        if (!photonView.IsMine) 
-            return;
+        if (!photonView.IsMine) { return; }
 
         base.Update();
         if (!inputEnabled) { return; }
 
+        // Redundant now?
         if (Input.GetButton("Interact"))
         {
             deltaTime += Time.deltaTime;
