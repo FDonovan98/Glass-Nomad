@@ -143,6 +143,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.LogFormat("You are the master client");
+            inLobbyPanel.transform.GetChild(0).gameObject.SetActive(true);
         }
 
         UpdatePlayerList();
