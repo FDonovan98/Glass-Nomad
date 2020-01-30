@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MainMenuCameraRotation : MonoBehaviour
 {
@@ -8,6 +6,7 @@ public class MainMenuCameraRotation : MonoBehaviour
 
     private void Update()
     {
+        // Constantly rotates the camera, while you are in the main menu.
         transform.localEulerAngles += new Vector3(0f, rotationSpeed * Time.deltaTime, 0f);
     }
 }
