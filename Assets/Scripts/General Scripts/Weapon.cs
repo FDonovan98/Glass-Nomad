@@ -11,6 +11,8 @@ public class Weapon : ScriptableObject
         FullAuto
     }
 
+    #region variable-declaration
+
     // Refer to FireType enum (above).
     public FireType fireMode = FireType.Single;
     
@@ -42,6 +44,8 @@ public class Weapon : ScriptableObject
     // This is initialised in PlayerAttack.cs
     [HideInInspector] public int magsLeft;
 
+    #endregion
+    
     /// <summary>
     /// Determines whether you can fire, using the current bullets in your gun,
     /// the fire rate and the magazine size to do so.
