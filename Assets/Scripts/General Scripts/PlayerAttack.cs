@@ -75,7 +75,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
         weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
         weaponAudio.clip = currentWeapon.weaponSound;
-
+        currentWeapon.magsLeft = currentWeapon.magCount;
+        
         deltaTime = currentWeapon.fireRate;
 
         oxygenAmountSeconds = maxOxygenAmountSeconds;
