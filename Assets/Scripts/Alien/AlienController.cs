@@ -61,6 +61,9 @@ public class AlienController : AlienMovement
 
     #endregion
 
+    /// <summary>
+    /// Assigns the variables and makes the vents transparent.
+    /// </summary>
     private new void Start()
     {
         // Uses the Start method from its parent class (alien movement),
@@ -91,6 +94,9 @@ public class AlienController : AlienMovement
         }
     }
 
+    /// <summary>
+    /// Handles the tracker input, player interaction and emergency healing.
+    /// </summary>
     private new void Update()
     {
         // If we are not the local client then don't compute any of this.
@@ -118,7 +124,14 @@ public class AlienController : AlienMovement
 
         if (emergencyHealingCurrentTickCount != emergencyHealingTickCount)
         {
-            EmergencyHealth();
+            if (triggeredEmergencyHealing)
+            {
+                EmergencyHealth();
+            }
+            else if (healthScript.currentHealth < emergencyHealingThreshold)
+            {
+                triggeredEmergencyHealing = true;
+            }
         }
         else
         {
@@ -126,6 +139,9 @@ public class AlienController : AlienMovement
         }
     }
     
+    /// <summary>
+    /// Just runs the parent FixedUpdate method.
+    /// </summary>
     private new void FixedUpdate()
     {
         // If we are not the local client then don't compute any of this.
@@ -134,28 +150,30 @@ public class AlienController : AlienMovement
         base.FixedUpdate();
     }
 
+    /// <summary>
+    /// The method that runs if the alien is emergency healing.
+    /// </summary>
     private void EmergencyHealth()
     {
-        if (triggeredEmergencyHealing)
+        emergencyHealingDeltaTime += Time.deltaTime;
+        if (emergencyHealingDeltaTime > emergencyHealingTickDelay)
         {
-            emergencyHealingDeltaTime += Time.deltaTime;
-            if (emergencyHealingDeltaTime > emergencyHealingTickDelay)
-            {
-                this.movementSpeed *= emergencySpeedMultiplier;
-                Debug.LogWarning("check THREE");
-                PhotonView photonView = gameObject.GetPhotonView();
-                int viewID = photonView.ViewID;
-                photonView.RPC("RegenHealth", RpcTarget.All, viewID, -emergencyHealingAmount);
-                emergencyHealingDeltaTime = 0;
-                emergencyHealingCurrentTickCount++;
-            }
-        }
-        else if (healthScript.currentHealth < emergencyHealingThreshold)
-        {
-            triggeredEmergencyHealing = true;
+            this.movementSpeed *= emergencySpeedMultiplier;
+            Debug.LogWarning("check THREE");
+            PhotonView photonView = gameObject.GetPhotonView();
+            int viewID = photonView.ViewID;
+            photonView.RPC("RegenHealth", RpcTarget.All, viewID, -emergencyHealingAmount);
+            emergencyHealingDeltaTime = 0;
+            emergencyHealingCurrentTickCount++;
         }
     }
 
+    /// <summary>
+    /// Passes a negative number to the player damage health script method, so that the player
+    /// is healed instead. Uses a PunRPC so that the alien is healed on all clients.
+    /// </summary>
+    /// <param name="viewID"></param>
+    /// <param name="healingAmount"></param>
     [PunRPC]
     protected void RegenHealth(int viewID, int healingAmount)
     {
@@ -164,6 +182,10 @@ public class AlienController : AlienMovement
         alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = healthScript.fillAmount;
     }
 
+    /// <summary>
+    /// Changes the les distortion and vignette intensity of the alien's camera, when their
+    /// tracker vision is toggled.
+    /// </summary>
     private void ToggleTracker()
     {
         PostProcessVolume ppVolume = GetComponentInChildren<PostProcessVolume>();
@@ -189,6 +211,15 @@ public class AlienController : AlienMovement
         trackerGO.SetActive(isTrackerOn);
     }
 
+    /// <summary>
+    /// Transitions one value to another, over a certain amount of time. In this case,
+    /// it is used to fade the vignette and lens distortion for the tracker vision.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="startingValue"></param>
+    /// <param name="endValue"></param>
+    /// <param name="fadeDuration"></param>
+    /// <returns></returns>
     IEnumerator FadeValue(Action<float> value, float startingValue, float endValue, float fadeDuration)
     {
         float diff = endValue - startingValue;
