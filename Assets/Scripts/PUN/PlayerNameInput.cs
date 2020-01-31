@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
 
 public class PlayerNameInput : MonoBehaviour
 {
+    // The string used to set the player's nickname.
     private const string playerNamePrefKey = "Player Name";
 
-    void Start()
+    /// <summary>
+    /// Initialises the input field with the player's current player
+    /// pref nickname, if they have one, otherwise it is initialised
+    /// as empty.
+    /// </summary>
+    private void Start()
     {
         TMP_InputField inputField = GetComponent<TMP_InputField>();
         string defaultName = string.Empty;
@@ -24,6 +29,10 @@ public class PlayerNameInput : MonoBehaviour
         PhotonNetwork.NickName = defaultName;
     }
 
+    /// <summary>
+    /// Used by the Lobby manager to set a player's nickname.
+    /// </summary>
+    /// <param name="name"></param>
     public void SetPlayerName(string name)
     {
         if (string.IsNullOrEmpty(name))
