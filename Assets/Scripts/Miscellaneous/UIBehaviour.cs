@@ -4,12 +4,18 @@ using TMPro;
 
 public class UIBehaviour : MonoBehaviour
 {
-    public TMP_Text healthText;
-    public TMP_Text currentClipText;
-    public TMP_Text remainingClipsText;
-    public Slider oxygenSlider;
-    public TMP_Text oxygenPercentage;
+    [SerializeField] private TMP_Text healthText;
+    [SerializeField] private TMP_Text currentClipText;
+    [SerializeField] private TMP_Text remainingClipsText;
+    [SerializeField] private Slider oxygenSlider;
+    [SerializeField] private TMP_Text oxygenPercentage;
 
+    /// <summary>
+    /// Called by multiple scripts to update the player's UI.
+    /// The player's UI consists of: health, current ammo and clip,
+    /// and oxygen.
+    /// </summary>
+    /// <param name="attackScript"></param>
     public void UpdateUI(PlayerAttack attackScript = null)
     {
         remainingClipsText.text = "Remaining clips: " + attackScript.currentWeapon.magsLeft.ToString();
