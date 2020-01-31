@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OxygenRegenScript : MonoBehaviour
 {
@@ -11,12 +9,14 @@ public class OxygenRegenScript : MonoBehaviour
         PlayerAttack playerAttack;
 
         // Layer 8 is MarineCharacter. Harry made me type this.
-        if (other.gameObject.layer == 8 && other.CompareTag("Player")) // Marine regen
+        if (other.gameObject.layer == 8 && other.CompareTag("Player"))
         {
+            // Marine regen
             playerAttack = other.GetComponent<MarineController>().marineAttack;
         }
-        else // Alien regen
+        else
         {
+            // Alien regen
             playerAttack = other.GetComponent<AlienController>().alienAttack;
         }
 
