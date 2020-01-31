@@ -2,7 +2,7 @@
 
 public class OxygenRegenScript : MonoBehaviour
 {
-    public int PercentageOxygenRegenPerSecond = 10;
+    public float PercentageOxygenRegenPerSecond = 10f;
 
     private void OnTriggerStay(Collider other)
     {
@@ -13,18 +13,12 @@ public class OxygenRegenScript : MonoBehaviour
         {
             // Marine regen
             playerAttack = other.GetComponent<MarineController>().marineAttack;
-        }
-        else
-        {
-            // Alien regen
-            playerAttack = other.GetComponent<AlienController>().alienAttack;
-        }
-
-        playerAttack.oxygenAmountSeconds += playerAttack.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime;
-        playerAttack.oxygenAmountSeconds += Time.deltaTime;
-        if (playerAttack.oxygenAmountSeconds > playerAttack.maxOxygenAmountSeconds)
-        {
-            playerAttack.oxygenAmountSeconds = playerAttack.maxOxygenAmountSeconds;
+            playerAttack.oxygenAmountSeconds += playerAttack.maxOxygenAmountSeconds * (PercentageOxygenRegenPerSecond / 100f) * Time.deltaTime;
+            playerAttack.oxygenAmountSeconds += Time.deltaTime;
+            if (playerAttack.oxygenAmountSeconds > playerAttack.maxOxygenAmountSeconds)
+            {
+                playerAttack.oxygenAmountSeconds = playerAttack.maxOxygenAmountSeconds;
+            }
         }
     }
 }
