@@ -1,41 +1,38 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
-    // Used to change scene when we leave a room.
-    [SerializeField] private string lobbySceneName = "SCN_Lobby";
-    
-    // Used to spawn the alien and marines.
-    [SerializeField] private GameObject alienSpawnPoint = null;
-    [SerializeField] private GameObject marineSpawnPoint = null;
+    [SerializeField] private string lobbySceneName = "SCN_Lobby"; // Used to change scene when we leave a room.
+    public GameObject alienSpawnPoint; // Used to spawn the alien.
+    public GameObject marineSpawnPoint; // Used to spawn the marines.
+    [SerializeField] private TMP_Dropdown resolutionDropdown = null; // Used to change the video resolution.
+    [SerializeField] private TMP_Dropdown qualityDropdown = null; // Used to change the video quality.
+    [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
+    public GameObject pauseMenu; // Used by PlayerMovement to access the pause menu gameobject.
+    private Resolution[] resolutions; // Used to retrieve all the available resolutions.
+    private Camera cam; // Used to change the FOV of the camera.
 
-    // Used to change the video resolution.
-    [SerializeField] private TMP_Dropdown resolutionDropdown = null;
+    #region devtools
+    [Header("Developer Tools")]
+    [SerializeField] private bool singlePlayerMarine = false; // Used to test the marine player, in testing.
+    #endregion
 
-    // Used to change the video quality.
-    [SerializeField] private TMP_Dropdown qualityDropdown = null;
-    
-    // Used by PlayerMovement to access the pause menu gameobject.
-    public GameObject pauseMenu;
-
-    // Used to retrieve all the available resolutions.
-    private Resolution[] resolutions;
-    
-    // Used to change the FOV of the camera.
-    private Camera cam;
-
-    /// <summary>
-    /// Spawns the alien and marine prefabs.
-    /// Sets up the resolution dropdown settings in the pause menu, and assigns the camera.
-    /// Resolution code referenced from: https://www.youtube.com/watch?v=YOaYQrN1oYQ
-    /// </summary>
     private void Start()
     {
+        // Dev tool
+        if (singlePlayerMarine)
+        {
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
+            return;
+        }
+
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
@@ -45,6 +42,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
         }
+        
+        Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
 
         // Setting up the resolution options
         resolutions = Screen.resolutions;
@@ -68,7 +67,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         resolutionDropdown.value = currentResIndex;
         resolutionDropdown.RefreshShownValue();
         qualityDropdown.value = QualitySettings.GetQualityLevel();
-
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
@@ -84,7 +82,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     
     public override void OnPlayerEnteredRoom(Player other)
     {
-        Debug.LogFormat("{0} entered the game room", other.NickName);
+        Debug.LogFormat("{0} entered the game room", other.NickName); // not seen if you're the player connecting
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -94,13 +92,9 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public override void OnPlayerLeftRoom(Player other)
     {
-        Debug.LogFormat("{0} left the game room", other.NickName);
+        Debug.LogFormat("{0} left the game room", other.NickName); // seen when other disconnects
     }
 
-    /// <summary>
-    /// Changes the model of the new master client, when the old one leaves.
-    /// </summary>
-    /// <param name="newMasterClient"></param>
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -135,7 +129,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     }
 
     #region menu_options
-    
     public void ToggleOptionMenu(GameObject menu)
     {
         menu.SetActive(!menu.activeSelf);
@@ -143,7 +136,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public void SetVolume(float volume)
     {
-        AudioListener.volume = volume;
+        audioMixer.SetFloat("volume", volume);
     }
 
     public void SetResolution(int resolutionIndex)

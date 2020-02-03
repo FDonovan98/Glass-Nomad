@@ -1,11 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class GeneratorPowerOn : MonoBehaviour
 {
-    /// <summary>
-    /// Once a player enters the generator room, all doors are locked open.
-    /// </summary>
-    /// <param name="coll"></param>
     private void OnTriggerEnter(Collider coll)
     {
         if (coll.gameObject.tag == "Player")
@@ -16,11 +14,12 @@ public class GeneratorPowerOn : MonoBehaviour
             {
                 DoorTriggerScript doorTrigger = door.GetComponent<DoorTriggerScript>();
                 
-                // If the door isn't already open, then open it.
-                if (!doorTrigger.GetDoorOpen()) { doorTrigger.ChangeDoorState(); }
+                if (!doorTrigger.GetDoorOpen())
+                {
+                    doorTrigger.ChangeDoorState();
+                }
                 
-                // Keeps the door open, forever.
-                doorTrigger.LockDoor();
+                doorTrigger.LockDoorOpen();
             }
             this.gameObject.SetActive(false);
         }

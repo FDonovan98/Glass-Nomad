@@ -1,7 +1,10 @@
 ﻿using UnityEditor;
+
 using UnityEngine;
 using UnityEngine.UI;
+
 using System;
+using System.IO;
 
 public class Objectives : EditorWindow
 {    
@@ -17,7 +20,6 @@ public class Objectives : EditorWindow
         Bool,
         Areas
     }
-    
     string[] triggerOptions = 
     {
         "On Button Press",

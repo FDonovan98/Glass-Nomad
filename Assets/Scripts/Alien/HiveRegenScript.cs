@@ -1,50 +1,35 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class HiveRegenScript : MonoBehaviourPunCallbacks
 {
-    #region variable-declaration
-
-    // Used to keep track of how often to regen health.
     private float deltaTime = 0.0f;
-
-    // Used to update the canvas, when the alien regens health.
+    private GameObject alien;
     private UIBehaviour hudCanvas;
 
-    #endregion
-
-    /// <summary>
-    /// Assigns the hudCanvas variable so that it can be updated when regenerating health.
-    /// </summary>
     private void Start()
     {
         hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
     }
     
-    /// <summary>
-    /// When the alien enters the hive regeneration collider, their health will begin regen
-    /// and their HUD will update.
-    /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerStay(Collider coll)
+    private void OnTriggerStay(Collider other)
     {
-        if (coll.gameObject.tag == "Player")
+        if (other.tag == "Player")
         {
-            GameObject alien = coll.gameObject;
+            alien = other.gameObject;
             int viewID = alien.GetPhotonView().ViewID;
             deltaTime += Time.deltaTime;
             if (deltaTime >= 0.2f)
             {
                 // PunRPC is in AlienController.cs.
-                // Update the alien's health, using an RPC so all clients update it, too.
                 alien.GetPhotonView().RPC("RegenHealth", RpcTarget.All, viewID, -1);
-                
-                // Update the alien's UI, with its new health.
-                hudCanvas.UpdateUI(coll.GetComponent<PlayerAttack>());
-
-                // Reset the timer.
+                hudCanvas.UpdateUI(other.GetComponent<PlayerAttack>());
                 deltaTime = 0.0f;
             }
         }
     }
+
 }
