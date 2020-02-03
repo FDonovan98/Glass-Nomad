@@ -381,7 +381,7 @@ Transform:
   m_GameObject: {fileID: 4364988366066350752}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
   m_Children:
   - {fileID: 7188227636938248307}
   - {fileID: 3586518652141116787}
@@ -532,21 +532,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  movementSpeed: 25
   mouseSensitivity: 10
-  jumpSpeed: 38.5
+  jumpSpeed: 34
   yRotationClamp: 80
-  sprintSpeedMultiplier: 1.2
+  sprintSpeedMultiplier: 1.675
   menu: {fileID: 0}
   lerpSpeed: 10
   gravConstant: 50
   deltaGround: 1
   isGrounded: 1
-  jumpRange: 6.5
+  jumpRange: 5
   transferTime: 0.2
   jumpChargeTime: 1
-  horizontalJumpMod: 1
-  verticalJumpMod: 1
+  horizontalJumpMod: 1.35
+  verticalJumpMod: 1.35
   alienVision: {r: 1, g: 0.6745283, b: 0.6745283, a: 0}
   alienInteraction: {fileID: 0}
   transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
@@ -583,7 +583,7 @@ RectTransform:
   m_GameObject: {fileID: 4418398108616668018}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 195176777644635280}
   m_RootOrder: 0
