@@ -51,10 +51,7 @@ public class AlienMovement : PlayerMovement
         // Calculate and apply force of gravity to char.
         Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
         charRigidbody.AddForce(gravForce);
-    }
 
-    protected new void Update()
-    {   
         base.Update();
         Ray ray;
         RaycastHit hit;
