@@ -180,7 +180,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (Physics.Raycast(cameraPos, cameraForward, out hit, range))
         {
             PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
-            if (hitPlayer != null) // A player was hit
+            if (hitPlayer != null && hitPlayer.gameObject != this.gameObject) // A player was hit
             {
                 PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
 
