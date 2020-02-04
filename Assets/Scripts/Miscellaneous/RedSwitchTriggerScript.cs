@@ -1,58 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class RedSwitchTriggerScript : MonoBehaviour
+public class RedSwitchTriggerScript : TriggerInteractionScript
 {
     public RedSwitchManager switchManager = null;
-    private float currentTime = 0f;
-    private float timeToOpen = 5f;
-    private bool switchActivated = false;
 
-    private void OnTriggerEnter()
+    private new void OnTriggerStay(Collider coll)
     {
-        currentTime = 0f;
-    }
-
-    private void OnTriggerStay(Collider coll)
-    {
-        if (coll.gameObject.tag == "Player")
+        if (coll.gameObject.tag == "Player" && currCooldownTime <= 0)
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(inputKey))
             {
-                if (!switchActivated)
+                if (!interactionComplete)
                 {
-                    currentTime += Time.deltaTime;
-                    Debug.Log("Switch progress: " + (currentTime / timeToOpen) * 100 + "%");
-
-                    if (currentTime >= timeToOpen)
+                    if (currInteractTime >= interactTime)
                     {
-                        Debug.Log("Switch activated");
-                        switchActivated = true;
-                        switchManager.SwitchActivated();
+                        InteractionComplete(coll.gameObject);
+                        currInteractTime = 0f;
+                        interactionComplete = true;
+                        currCooldownTime = cooldownTime;
                     }
+
+                    currInteractTime += Time.deltaTime;
+                    Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
                 }
-            } else // if the player is not pressing then reset the switch's state.
+            }
+            else // if the player is not pressing then reset the switch's state.
             {
-                currentTime = 0f;
-                if (switchActivated)
-                {
-                    Debug.Log("Switch deactivated");
-                    switchActivated = false;
-                    switchManager.SwitchDeactivated();
-                }
+                currInteractTime = 0f;
+                LeftTriggerArea();
             }
         }
     }
 
-    private void OnTriggerExit()
+    protected override void InteractionComplete(GameObject player)
     {
-        currentTime = 0f;
-        if (switchActivated)
+        Debug.Log("Switch activated");
+        interactionComplete = true;
+        switchManager.SwitchActivated();
+    }
+
+    protected override void LeftTriggerArea()
+    {
+        if (interactionComplete)
         {
             Debug.Log("Switch deactivated");
-            switchActivated = false;
             switchManager.SwitchDeactivated();
+            interactionComplete = false;
         }
     }
 }
