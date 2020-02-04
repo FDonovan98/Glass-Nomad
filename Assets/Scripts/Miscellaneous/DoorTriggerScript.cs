@@ -20,7 +20,7 @@ public class DoorTriggerScript : TriggerInteractionScript
         }
     }
 
-    protected override void InteractionComplete()
+    protected override void InteractionComplete(GameObject player)
     {
         ChangeDoorState();
     }

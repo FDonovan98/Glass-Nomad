@@ -25,7 +25,7 @@ abstract public class TriggerInteractionScript : MonoBehaviour
             {
                 if (currInteractTime >= interactTime)
                 {
-                    InteractionComplete();
+                    InteractionComplete(coll.gameObject);
                     currInteractTime = 0f;
                     interactionComplete = true;
                     currCooldownTime = cooldownTime;
@@ -51,6 +51,6 @@ abstract public class TriggerInteractionScript : MonoBehaviour
         }
     }
 
-    abstract protected void InteractionComplete();
+    abstract protected void InteractionComplete(GameObject player);
     virtual protected void LeftTriggerArea() { }
 }
