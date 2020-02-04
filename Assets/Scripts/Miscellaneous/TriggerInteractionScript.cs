@@ -2,14 +2,22 @@
 
 abstract public class TriggerInteractionScript : MonoBehaviour
 {
-    public KeyCode inputKey;
-    public float interactTime; // The time needed to interact with the object to activate/open it.
-    private float currInteractTime = 0f;
-    public float cooldownTime;
-    private float currCooldownTime = 0f;
-    private bool interactionComplete = false;
+    [SerializeField] protected KeyCode inputKey = KeyCode.E;
+    [SerializeField] protected float interactTime; // The time needed to interact with the object to activate/open it.
+    protected float currInteractTime = 0f;
+    [SerializeField] protected float cooldownTime;
+    protected float currCooldownTime = 0f;
+    protected bool interactionComplete = false;
 
-    protected void OnTriggerEnter(Collider coll)
+    protected void Update()
+    {
+        if (currCooldownTime > 0)
+        {
+            currCooldownTime -= Time.deltaTime;
+        }
+    }
+
+    protected void OnTriggerStay(Collider coll)
     {
         if (coll.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
         {
@@ -20,17 +28,17 @@ abstract public class TriggerInteractionScript : MonoBehaviour
                     InteractionComplete();
                     currInteractTime = 0f;
                     interactionComplete = true;
+                    currCooldownTime = cooldownTime;
                 }
 
                 currInteractTime += Time.deltaTime;
                 Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
             }
 
-            Debug.LogFormat("Cooldown: {0} seconds", cooldownTime - currCooldownTime);
+            Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
             return;
         }
 
-        currCooldownTime -= Time.deltaTime;
     }
 
     protected void OnTriggerExit(Collider coll)
