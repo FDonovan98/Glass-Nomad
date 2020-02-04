@@ -34,11 +34,11 @@ abstract public class TriggerInteractionScript : MonoBehaviour
                 currInteractTime += Time.deltaTime;
                 Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
             }
-
-            Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
+            currInteractTime = 0f;
             return;
         }
 
+        Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
     }
 
     protected void OnTriggerExit(Collider coll)

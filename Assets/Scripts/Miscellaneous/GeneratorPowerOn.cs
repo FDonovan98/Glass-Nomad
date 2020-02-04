@@ -1,27 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GeneratorPowerOn : MonoBehaviour
+public class GeneratorPowerOn : TriggerInteractionScript
 {
-    private void OnTriggerEnter(Collider coll)
+    protected override void InteractionComplete(GameObject player)
     {
-        if (coll.gameObject.tag == "Player")
+        Debug.Log("All doors are now opened");
+        GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+        foreach (GameObject door in doors)
         {
-            Debug.Log("All doors are now opened");
-            GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
-            foreach (GameObject door in doors)
+            DoorTriggerScript doorTrigger = door.GetComponent<DoorTriggerScript>();
+                
+            if (!doorTrigger.GetDoorOpen())
             {
-                DoorTriggerScript doorTrigger = door.GetComponent<DoorTriggerScript>();
-                
-                if (!doorTrigger.GetDoorOpen())
-                {
-                    doorTrigger.ChangeDoorState();
-                }
-                
-                doorTrigger.LockDoorOpen();
+                doorTrigger.ChangeDoorState();
             }
-            this.gameObject.SetActive(false);
+                
+            doorTrigger.LockDoorOpen();
         }
+        this.gameObject.SetActive(false);
     }
 }
