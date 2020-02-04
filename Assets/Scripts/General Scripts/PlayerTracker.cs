@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerTracker : MonoBehaviour
@@ -25,10 +23,9 @@ public class PlayerTracker : MonoBehaviour
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.size = new Vector3(width, width, range);
         boxCollider.center = new Vector3(0f, 0f, range / 2);
+        cam = GetComponentInParent<Camera>();
         boxCollider.gameObject.SetActive(false);
         
-        cam = GetComponentInParent<Camera>();
-        this.gameObject.SetActive(false);
     }
 
     private void OnTriggerStay(Collider coll)
