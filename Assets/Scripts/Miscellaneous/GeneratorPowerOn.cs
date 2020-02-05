@@ -17,6 +17,8 @@ public class GeneratorPowerOn : TriggerInteractionScript
                 
             doorTrigger.LockDoorOpen();
         }
+
+        Objectives.ObjectiveComplete("GENERATOR", "START");
         this.gameObject.SetActive(false);
     }
 }
