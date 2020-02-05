@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -44,14 +45,46 @@ public class Objectives : MonoBehaviour
     /// with the same title is found, then the 'Say' method is called.
     /// </summary>
     /// <param name="objName">The objective's title that has been completed.</param>
-    public static void ObjectiveComplete(string objName)
+    /// <param name="requiredObjective">The title of any objective(s) that need
+    /// to be completed before this objective can be completed.</param>
+    public static void ObjectiveComplete(string objName, string requiredObjective = "")
     {
-        Objective objectiveCompleted = new Objective("", "");
-        foreach (Objective obj in objectives) { if (obj.title == objName) { objectiveCompleted = obj; } }
-        if (objectiveCompleted.title != "" && objectiveCompleted.completed != true)
+        Objective objectiveCompleted = GetObjective(objName);
+        Objective objectiveRequired = GetObjective(requiredObjective);
+
+        if (objectiveRequired.title != "ERROR" && objectiveRequired.completed == true)
         {
-            objectiveCompleted.Say();
+            if (objectiveCompleted.title != "ERROR" && objectiveCompleted.completed != true)
+            {
+                try
+                {
+                    objectiveCompleted.Say();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Could not complete objective because it errored: \n" + e);
+                }
+
+            }
         }
+    }
+
+    private static Objective GetObjective(string objName)
+    {
+        if (objName == "")
+        {
+            return new Objective("", "");
+        }
+
+        foreach (Objective obj in objectives)
+        {
+            if (obj.title == objName)
+            {
+                return obj;
+            }
+        }
+
+        return new Objective("ERROR", "");
     }
 }
 
