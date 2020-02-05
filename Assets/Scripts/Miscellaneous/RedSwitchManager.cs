@@ -23,6 +23,6 @@ public class RedSwitchManager : MonoBehaviour
     {
         GetComponentInParent<DoorTriggerScript>().ChangeDoorState();
         GetComponentInParent<BoxCollider>().enabled = false;
-        Objectives.ObjectiveComplete("RED SWITCH");
+        Objectives.ObjectiveComplete("RED SWITCH", "GENERATOR");
     }
 }
