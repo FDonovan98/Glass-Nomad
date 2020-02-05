@@ -62,11 +62,15 @@ public class Objectives : MonoBehaviour
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError("Could not complete objective because it errored: \n" + e);
+                    Debug.LogError("ERROR: Could not complete objective because it errored: \n" + e);
                 }
-
+                return;
             }
+            Debug.Log("Objective already completed or error has occured.");
+            return;
         }
+        Debug.LogFormat("Objective '{0}' has not been completed. This objective is required before " +
+            "completing the '{1}' objective", objectiveRequired.title, objectiveCompleted.title);
     }
 
     private static Objective GetObjective(string objName)
