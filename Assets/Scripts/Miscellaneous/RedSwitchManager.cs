@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RedSwitchManager : MonoBehaviour
 {
@@ -25,5 +23,6 @@ public class RedSwitchManager : MonoBehaviour
     {
         GetComponentInParent<DoorTriggerScript>().ChangeDoorState();
         GetComponentInParent<BoxCollider>().enabled = false;
+        Objectives.ObjectiveComplete("RED SWITCH");
     }
 }
