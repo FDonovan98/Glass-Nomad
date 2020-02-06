@@ -27,15 +27,13 @@ public class MarineMovement : PlayerMovement
         base.Update();
         if (!inputEnabled) return;
 
+        // If there is a step, and its height is correct, then try and apply force.
         if (CheckIfStep() && CheckStepHeight())
         {
             ApplyUpwardsForce();
         }
 
-        if (debug)
-        {
-            Debugging();
-        }
+        if (debug) Debugging();
 
         GetPlayerInput();
 
@@ -101,7 +99,7 @@ public class MarineMovement : PlayerMovement
             StartCoroutine(Death());
         }
     }
-
+    
     private Vector3 RandomForce(float velocity)
     {
         return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
@@ -119,6 +117,7 @@ public class MarineMovement : PlayerMovement
         // Sends a raycast directing down, checking for a floor.
         Vector3 frontOfPlayer = transform.position;
         frontOfPlayer.z += charCollider.bounds.extents.z;
+
         return Physics.Raycast(frontOfPlayer, -Vector3.up, charCollider.bounds.extents.y + 0.5f);
     }
 
@@ -129,6 +128,7 @@ public class MarineMovement : PlayerMovement
         // If the player isn't grounded, then force has (presumably) already been applied.
         if (!IsGrounded()) return false;
 
+        // Start the ray at the bottom center of the player.
         Vector3 playerFeet = transform.position;
         playerFeet.y -= charCollider.bounds.extents.y;
 
@@ -137,15 +137,22 @@ public class MarineMovement : PlayerMovement
 
     private bool CheckStepHeight()
     {
+        // Start the ray half way up the player, at the front.
         Vector3 startDir = transform.position;
         startDir.z += charCollider.bounds.extents.z;
 
+        // End the ray on the floor, 0.1 distance ahead of the player.
         Vector3 endDir = transform.position;
         endDir.y -= charCollider.bounds.extents.y;
         endDir.z += charCollider.bounds.extents.z + 0.1f;
 
-        // NEED TO CHECK IF THE HIT.NORMAL IS VECTOR3.UP
-        return Physics.Raycast(startDir, endDir, distanceBetweenStep);
+        // Cast the ray and output it to the hitInfo.
+        RaycastHit hitInfo;
+        bool stepHeight = Physics.Raycast(startDir, endDir, out hitInfo, distanceBetweenStep);
+        Debug.Log(hitInfo.normal);
+
+        // If the step height is correct and the step's normal is the worlds up axis then return true.
+        return stepHeight && hitInfo.normal == Vector3.up; // ** THIS LINE MAY HAVE BROKEN IT **
     }
 
     private void ApplyUpwardsForce()
