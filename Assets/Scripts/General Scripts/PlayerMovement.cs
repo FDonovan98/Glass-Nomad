@@ -30,14 +30,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         charRigidbody = gameObject.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.
         Cursor.lockState = CursorLockMode.Locked;   //Cursor starts off locked to the center of the game window and invisible
 
-        if (!photonView.IsMine)
-        {
-            charCamera.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
-        }
+         if (!photonView.IsMine)
+         {
+             charCamera.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
+         }
 
         charCamTarRot = charCamera.transform.localRotation;
 
-        menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
+         menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
         Cursor.lockState = CursorLockMode.Locked; // Forces every player's mouse to the center of the window and hides it when the player is created
         Cursor.visible = false;
     }
@@ -104,10 +104,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         mouseRotationInput = new Vector3(mouseX, mouseY, 0);
     }
 
-    protected bool IsGrounded(Vector3 dirOfRay)
+    protected bool IsGrounded(Vector3 origin, Vector3 dirOfRay)
     {
         // Sends a raycast directing down, checking for a floor.
-        return Physics.Raycast(transform.position, dirOfRay, distGround + groundDelta);
+        return Physics.Raycast(origin, dirOfRay, distGround + groundDelta);
     }
 
     private Quaternion ClampRotationAroundXAxis(Quaternion q)

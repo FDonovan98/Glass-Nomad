@@ -21,7 +21,7 @@ public class MarineMovement : PlayerMovement
 
     // Used to store the players movement input.
     private Vector3 playerMovementInput;
-
+    
     protected new void Update()
     {
         base.Update();
@@ -60,7 +60,7 @@ public class MarineMovement : PlayerMovement
         float x, y, z;
 
         // Jump and ground detection
-        if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
+        if (IsGrounded(transform.position, -Vector3.up) && Input.GetKeyDown(KeyCode.Space))
         {
             charRigidbody.velocity += new Vector3(0, jumpSpeed, 0);
         }
@@ -112,21 +112,18 @@ public class MarineMovement : PlayerMovement
         PhotonNetwork.LeaveRoom();
     }
 
-    private bool IsGrounded()
-    {
-        // Sends a raycast directing down, checking for a floor.
-        Vector3 frontOfPlayer = transform.position;
-        frontOfPlayer.z += charCollider.bounds.extents.z;
-
-        return Physics.Raycast(frontOfPlayer, -Vector3.up, charCollider.bounds.extents.y + 0.5f);
-    }
-
     #region stairs
 
+    /// <summary>
+    /// Casts a ray from the player's feet, forwards, to check if a step is infront of the player.
+    /// </summary>
+    /// <returns>True if a step is infront of the player, false if not.</returns>
     private bool CheckIfStep()
     {
         // If the player isn't grounded, then force has (presumably) already been applied.
-        if (!IsGrounded()) return false;
+        Vector3 frontOfPlayer = transform.position;
+        frontOfPlayer.z += charCollider.bounds.extents.z;
+        if (!IsGrounded(frontOfPlayer, -Vector3.up)) return false;
 
         // Start the ray at the bottom center of the player.
         Vector3 playerFeet = transform.position;
@@ -135,6 +132,11 @@ public class MarineMovement : PlayerMovement
         return Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep);
     }
 
+    /// <summary>
+    /// Casts a ray from the middle of the player, downwards, to check for the step height,
+    /// and for the step's normal.
+    /// </summary>
+    /// <returns>True if the player can walk the step's height, false if not.</returns>
     private bool CheckStepHeight()
     {
         // Start the ray half way up the player, at the front.
@@ -155,6 +157,9 @@ public class MarineMovement : PlayerMovement
         return stepHeight && hitInfo.normal == Vector3.up; // ** THIS LINE MAY HAVE BROKEN IT **
     }
 
+    /// <summary>
+    /// Applies a force upwards, to make the player be able to traverse steps.
+    /// </summary>
     private void ApplyUpwardsForce()
     {
         // If there isn't a force already being applied upwards on the player, then...
@@ -169,6 +174,9 @@ public class MarineMovement : PlayerMovement
         }
     }
 
+    /// <summary>
+    /// Provides debugging rays and logs for the stair mechanics.
+    /// </summary>
     private void Debugging()
     {
         // Used to check the distance betweent the players feet and the step.
@@ -188,8 +196,8 @@ public class MarineMovement : PlayerMovement
         Vector3 frontOfPlayer = transform.position;
         frontOfPlayer.z += charCollider.bounds.extents.z;
         Debug.DrawRay(frontOfPlayer, -Vector3.up * (charCollider.bounds.extents.y + 0.5f), Color.green);
-
-        Debug.Log("IS GROUNDED: " + IsGrounded());
+        
+        Debug.Log("IS GROUNDED: " + IsGrounded(frontOfPlayer, -Vector3.up));
         Debug.Log("IS THERE A STEP: " + CheckIfStep());
         Debug.Log("STEP HEIGHT LOW ENOUGH: " + CheckStepHeight());
     }
