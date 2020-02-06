@@ -15,7 +15,7 @@ public class AlienController : AlienMovement
     private bool isTrackerOn = false;
     private bool triggeredEmergencyHealing = false;
     private bool usingEmergencyHealing = true;
-    private PlayerHealth healthScript;
+    private PlayerResources resourcesScript;
     public int emergencyHealingThreshold = 60;
     public int emergencyHealingAmount = 10;
     public int emergencyHealingTickCount = 10;
@@ -47,7 +47,7 @@ public class AlienController : AlienMovement
             vent.GetComponent<Renderer>().material = transparentVent;
         }
 
-        healthScript = gameObject.GetComponent<PlayerAttack>().healthScript;
+        resourcesScript = gameObject.GetComponent<PlayerAttack>().resourcesScript;
     }
 
     private new void Update()
@@ -90,7 +90,7 @@ public class AlienController : AlienMovement
                     emergencyHealingCurrentTickCount++;
                 }
             }
-            else if (healthScript.currentHealth < emergencyHealingThreshold)
+            else if (resourcesScript.currentHealth < emergencyHealingThreshold)
             {
                 triggeredEmergencyHealing = true;
             }
@@ -114,8 +114,8 @@ public class AlienController : AlienMovement
     protected void RegenHealth(int viewID, int healingAmount)
     {
         GameObject alien = PhotonView.Find(viewID).gameObject;
-        alien.GetComponent<PlayerAttack>().healthScript.PlayerHit(healingAmount);
-        alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().healthScript.fillAmount;
+        alien.GetComponent<PlayerAttack>().resourcesScript.PlayerHit(healingAmount);
+        alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().resourcesScript.fillAmount;
     }
 
     private void ToggleTracker()

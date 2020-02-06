@@ -9,6 +9,8 @@ public class MarineController : MarineMovement
 
     float deltaTime = 0;
 
+    private float oxygenDamageTime = 0f;
+
 
     private new void Start()
     {
@@ -41,6 +43,19 @@ public class MarineController : MarineMovement
         if (Input.GetButtonUp("Interact"))
         {
             deltaTime = 0.0f;
+        }
+
+        if (marineAttack.resourcesScript.oxygenAmountSeconds == 0)
+        {
+            if (oxygenDamageTime >= 0.2f)
+            {
+                marineAttack.resourcesScript.PlayerHit(1);
+                oxygenDamageTime = 0f;
+            }
+            else
+            {
+                oxygenDamageTime += Time.fixedDeltaTime;
+            }
         }
     }
 }
