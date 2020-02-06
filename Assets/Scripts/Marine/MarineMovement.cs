@@ -161,8 +161,8 @@ public class MarineMovement : PlayerMovement
 
         // Cast the ray and output it to the hitInfo.
         RaycastHit hitInfo;
-        bool stepHeight = Physics.Raycast(startDir, endDir, out hitInfo, distanceBetweenStep);
-        Debug.Log(hitInfo.normal);
+        bool stepHeight = Physics.Raycast(startDir, endDir - startDir, out hitInfo, distanceBetweenStep);
+        if (debug) Debug.DrawRay(hitInfo.point, hitInfo.normal, Color.cyan);
 
         // If the step height is correct and the step's normal is the worlds up axis then return true.
         return stepHeight && hitInfo.normal == Vector3.up; // ** THIS LINE MAY HAVE BROKEN IT **
