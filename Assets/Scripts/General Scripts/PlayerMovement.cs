@@ -4,18 +4,42 @@ using Photon.Realtime;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
-    [SerializeField] public float movementSpeed = 10; // Used to control the movement movementSpeed of the player.
-    [SerializeField] protected int mouseSensitivity = 1; // Used to control the sensitivity of the mouse.
-    [SerializeField] protected float jumpSpeed = 10; // Used to control the jumping force of the player.
-    [SerializeField] protected float yRotationClamp = 30; // Used to stop the player looking 'underneath' themselves.
-    [SerializeField] protected float sprintSpeedMultiplier = 1.5f;
-    [SerializeField] private GameObject menu = null; // Used to hide and show the menu options.
+    // Used to control the movement movementSpeed of the player.
+    [SerializeField] 
+    public float movementSpeed = 10;     
+    
+    // Used to control the sensitivity of the mouse.
+    [SerializeField] 
+    protected int mouseSensitivity = 1; 
 
-    protected Rigidbody charRigidbody; // Used to apply physics to the player, e.g. movement.
-    protected float distGround; // Used for the ground raycast.
+    // Used to control the jumping force of the player.
+    [SerializeField] 
+    protected float jumpSpeed = 10; 
+
+    // Used to stop the player looking 'underneath' themselves.
+    [SerializeField] 
+    protected float yRotationClamp = 30; 
+
+    [SerializeField] 
+    protected float sprintSpeedMultiplier = 1.5f;
+
+    // Used to hide and show the menu options.
+    [SerializeField] 
+    private GameObject menu = null; 
+
+    // Used to apply physics to the player, e.g. movement.
+    protected Rigidbody charRigidbody; 
+
+    // Used for the ground raycast.
+    protected float distGround; 
     protected Collider charCollider;
-    protected Camera charCamera; // Used to disable/enable the camera so that we only control our local player's camera.
-    protected Vector3 mouseRotationInput; // Used to store rotation of the player and the camera.
+
+    // Used to disable/enable the camera so that we only control our local player's camera.
+    protected Camera charCamera; 
+    
+    // Used to store rotation of the player and the camera.
+    protected Vector3 mouseRotationInput; 
+    
     protected float groundDelta = 1.0f;
     protected float cameraRotation = 0f;
     protected Quaternion charCamTarRot;
