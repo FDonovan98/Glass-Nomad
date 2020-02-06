@@ -25,10 +25,18 @@ public class MarineMovement : PlayerMovement
     protected new void Update()
     {
         base.Update();
-        if (!inputEnabled) { return; }
+        if (!inputEnabled) return;
 
-        CheckIfStep();
-        if (debug) Debugging();
+        if (CheckIfStep() && CheckStepHeight())
+        {
+            ApplyUpwardsForce();
+        }
+
+        if (debug)
+        {
+            Debugging();
+        }
+
         GetPlayerInput();
 
         // Player movement
@@ -116,15 +124,18 @@ public class MarineMovement : PlayerMovement
 
     #region stairs
 
-    private void CheckIfStep()
+    private bool CheckIfStep()
     {
-        if (!IsGrounded()) return;
+        // If the player isn't grounded, then force has (presumably) already been applied.
+        if (!IsGrounded()) return false;
+
         Vector3 playerFeet = transform.position;
         playerFeet.y -= charCollider.bounds.extents.y;
-        if (Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep)) CheckStepHeight();
+
+        return Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep);
     }
 
-    private void CheckStepHeight()
+    private bool CheckStepHeight()
     {
         Vector3 startDir = transform.position;
         startDir.z += charCollider.bounds.extents.z;
@@ -132,16 +143,20 @@ public class MarineMovement : PlayerMovement
         Vector3 endDir = transform.position;
         endDir.y -= charCollider.bounds.extents.y;
         endDir.z += charCollider.bounds.extents.z + 0.1f;
+
         // NEED TO CHECK IF THE HIT.NORMAL IS VECTOR3.UP
-        if (Physics.Raycast(startDir, endDir, distanceBetweenStep)) ApplyUpwardsForce();
+        return Physics.Raycast(startDir, endDir, distanceBetweenStep);
     }
 
     private void ApplyUpwardsForce()
     {
+        // If there isn't a force already being applied upwards on the player, then...
         if (charRigidbody.velocity.y < upForce)
         {
+            // If the player is pressing forward key ('W')...
             if (playerMovementInput.z > 0)
             {
+                // Apply an upwards force onto the player's rigidbody.
                 charRigidbody.velocity += transform.up * upForce;
             }
         }
@@ -168,8 +183,8 @@ public class MarineMovement : PlayerMovement
         Debug.DrawRay(frontOfPlayer, -Vector3.up * (charCollider.bounds.extents.y + 0.5f), Color.green);
 
         Debug.Log("IS GROUNDED: " + IsGrounded());
-        Debug.Log("IS THERE A STEP: " + Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep));
-        Debug.Log("STEP HEIGHT LOW ENOUGH: " + Physics.Raycast(startDir, endDir, distanceBetweenStep));
+        Debug.Log("IS THERE A STEP: " + CheckIfStep());
+        Debug.Log("STEP HEIGHT LOW ENOUGH: " + CheckStepHeight());
     }
 
     #endregion
