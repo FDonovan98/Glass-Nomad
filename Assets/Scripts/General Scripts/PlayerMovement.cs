@@ -3,6 +3,8 @@ using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
+    #region variable-declaration
+
     // The movement of the player.
     [SerializeField] 
     public float movementSpeed = 10;     
@@ -32,6 +34,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     // Used for the ground raycast.
     protected float distGround; 
+
+    // The characters collider.
     protected Collider charCollider;
 
     // Disables/enables the camera so that we only control our local player's camera.
@@ -40,10 +44,19 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     // Stores rotation of the player and the camera.
     protected Vector3 mouseRotationInput; 
 
+    // How far off the ground counts as 'grounded'.
     protected float groundDelta = 1.0f;
-    protected float cameraRotation = 0f;
+
+    // The x-axis rotation of the players camera.
     protected Quaternion charCameraTargetRotation;
+
+    // Enables/disables the players input.
     protected bool inputEnabled = true;
+
+    // Toggles the menu and cursor visibilty.
+    private bool turnMenuOn = false;
+
+    #endregion
 
     protected void Start()
     {
@@ -65,12 +78,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         // Sets the gameobject name to the player's username.
         gameObject.name = photonView.Owner.NickName; 
 
-        // Gets the camera child on the player.
         charCamera = gameObject.GetComponentInChildren<Camera>(); 
         charCollider = gameObject.GetComponent<Collider>();
         distGround =  charCollider.bounds.extents.y;
-
-        // Gets the rigidbody component of the player.
         charRigidbody = gameObject.GetComponent<Rigidbody>(); 
 
         menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
@@ -88,6 +98,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         HandlePlayerRotation();
     }
 
+    /// <summary>
+    /// Rotates the players gameobject around the y-axis, and the players camera
+    /// around the x-axis.
+    /// </summary>
     private void HandlePlayerRotation()
     {
         Vector3 mouseRotationInput = GetMouseInput(); 
@@ -97,7 +111,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         transform.Rotate(playerRotation);
 
         // Camera rotation
-        cameraRotation = -mouseRotationInput.y * mouseSensitivity;
+        float cameraRotation = -mouseRotationInput.y * mouseSensitivity;
         charCameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
         charCameraTargetRotation = ClampRotationAroundXAxis(charCameraTargetRotation);
 
@@ -105,37 +119,31 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         charCamera.transform.localRotation = charCameraTargetRotation;
     }
 
+    /// <summary>
+    /// Retrieves the platform specific input for toggling the pause menu.
+    /// </summary>
     private void HandlePauseMenu()
     {
         #if UNITY_EDITOR
             //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetKeyDown(KeyCode.Comma))
-            {
-                ToggleCursorAndMenu();
-            }
+            if (Input.GetKeyDown(KeyCode.Comma)) ToggleCursorAndMenu();
         #elif UNITY_STANDALONE_WIN
             //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ToggleCursorAndMenu();
-            }
+            if (Input.GetKeyDown(KeyCode.Escape)) ToggleCursorAndMenu();
         #endif
     }
-
+    
     private void ToggleCursorAndMenu()
     {
-        if (Cursor.lockState == CursorLockMode.Locked)
-        {
-            ToggleMenu(true);
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else if (Cursor.lockState == CursorLockMode.None)
-        {
-            ToggleMenu(false);
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        turnMenuOn = !turnMenuOn;
+        Cursor.lockState = turnMenuOn ? CursorLockMode.None : CursorLockMode.Locked;
+        ToggleMenu(turnMenuOn);
     }
 
+    /// <summary>
+    /// Retrieves the x and y input of the mouse and returns it as a Vector3.
+    /// </summary>
+    /// <returns>The mouse input as a Vector3.</returns>
     protected Vector3 GetMouseInput()
     {
         float mouseX = Input.GetAxis("Mouse X");
@@ -143,11 +151,23 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         return new Vector3(mouseX, mouseY, 0);
     }
 
+    /// <summary>
+    /// Sends a raycast from 'origin' in the direction of 'dirOfRay'.
+    /// Predominantly used to check if the player is on the floor.
+    /// </summary>
+    /// <param name="origin">The starting position for the raycast.</param>
+    /// <param name="dirOfRay">The direction of the raycast.</param>
+    /// <returns>True if the player is grounded, false if not.</returns>
     protected bool IsGrounded(Vector3 origin, Vector3 dirOfRay)
     {
         return Physics.Raycast(origin, dirOfRay, distGround + groundDelta);
     }
 
+    /// <summary>
+    /// Clamps the given quaternion within the value of the 'yRotationClamp' variable.
+    /// </summary>
+    /// <param name="q">The quaternion to clamp.</param>
+    /// <returns>The clamped quaternion.</returns>
     private Quaternion ClampRotationAroundXAxis(Quaternion q)
     {
         // Quaternion is 4x4 matrix.
@@ -166,6 +186,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         return q;
     }
 
+    /// <summary>
+    /// Toggles the visibility of the pause menu.
+    /// </summary>
+    /// <param name="toggle">Whether to turn the pause menu on or off.</param>
     private void ToggleMenu(bool toggle)
     {
         menu.SetActive(toggle);
