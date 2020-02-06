@@ -1,43 +1,43 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
-    // Used to control the movement movementSpeed of the player.
+    // The movement of the player.
     [SerializeField] 
     public float movementSpeed = 10;     
     
-    // Used to control the sensitivity of the mouse.
+    // The sensitivity of the mouse.
     [SerializeField] 
     protected int mouseSensitivity = 1; 
 
-    // Used to control the jumping force of the player.
+    // The jumping force of the player.
     [SerializeField] 
     protected float jumpSpeed = 10; 
 
-    // Used to stop the player looking 'underneath' themselves.
+    // Stops the player looking 'underneath' themselves.
     [SerializeField] 
     protected float yRotationClamp = 30; 
 
+    // Multiplies the players current speed, when sprinting.
     [SerializeField] 
     protected float sprintSpeedMultiplier = 1.5f;
 
-    // Used to hide and show the menu options.
+    // Hides and shows the menu options.
     [SerializeField] 
     private GameObject menu = null; 
 
-    // Used to apply physics to the player, e.g. movement.
+    // Applies physics to the player, e.g. movement.
     protected Rigidbody charRigidbody; 
 
     // Used for the ground raycast.
     protected float distGround; 
     protected Collider charCollider;
 
-    // Used to disable/enable the camera so that we only control our local player's camera.
+    // Disables/enables the camera so that we only control our local player's camera.
     protected Camera charCamera; 
     
-    // Used to store rotation of the player and the camera.
+    // Stores rotation of the player and the camera.
     protected Vector3 mouseRotationInput; 
 
     protected float groundDelta = 1.0f;
@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Gets the camera child on the player.
         charCamera = gameObject.GetComponentInChildren<Camera>(); 
-        charCollider = gameObject.GetComponent<CapsuleCollider>();
+        charCollider = gameObject.GetComponent<Collider>();
         distGround =  charCollider.bounds.extents.y;
 
         // Gets the rigidbody component of the player.
@@ -82,30 +82,23 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         HandlePauseMenu();
 
-        // If input is enabled, ignore all of the below.
-        if (!inputEnabled) 
-        { 
-            return; 
-        } 
+        // If input is enabled, ignore player and camera rotation.
+        if (!inputEnabled) return;
 
         HandlePlayerRotation();
     }
 
     private void HandlePlayerRotation()
     {
-        // Gets player movement
         Vector3 mouseRotationInput = GetMouseInput(); 
 
         // Player rotation
         Vector3 playerRotation = new Vector3(0, mouseRotationInput.x, 0) * mouseSensitivity;
         transform.Rotate(playerRotation);
 
-        // Camera rotation - means that the player can't look underneath themself.
+        // Camera rotation
         cameraRotation = -mouseRotationInput.y * mouseSensitivity;
-
-        // Modifies target from current direction to desired direction.
         charCameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
-
         charCameraTargetRotation = ClampRotationAroundXAxis(charCameraTargetRotation);
 
         // Use of localRotation allows movement around y axis.
@@ -144,17 +137,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     }
 
     protected Vector3 GetMouseInput()
-    {        
-        // Mouse rotation
+    {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
         return new Vector3(mouseX, mouseY, 0);
     }
 
-    protected bool IsGrounded(Vector3 dirOfRay)
+    protected bool IsGrounded(Vector3 origin, Vector3 dirOfRay)
     {
-        // Sends a raycast directing down, checking for a floor.
-        return Physics.Raycast(transform.position, dirOfRay, distGround + groundDelta);
+        return Physics.Raycast(origin, dirOfRay, distGround + groundDelta);
     }
 
     private Quaternion ClampRotationAroundXAxis(Quaternion q)

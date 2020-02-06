@@ -17,7 +17,7 @@ public class MarineMovement : PlayerMovement
     [SerializeField] private float upForce = 1.5f;
 
     // Should the debug rays and console messages be shown.
-    [SerializeField] private bool debug;
+    [SerializeField] private bool debug = false;
 
     // Used to store the players movement input.
     private Vector3 playerMovementInput;
