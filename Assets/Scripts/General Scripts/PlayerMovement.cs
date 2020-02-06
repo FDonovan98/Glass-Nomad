@@ -79,37 +79,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     protected void Update()
     {
-        #if UNITY_EDITOR
-            //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetKeyDown(KeyCode.Comma))
-            {
-                if (Cursor.lockState == CursorLockMode.Locked)
-                {
-                    ToggleMenu(true);
-                    Cursor.lockState = CursorLockMode.None;
-                }
-                else if (Cursor.lockState == CursorLockMode.None)
-                {
-                    ToggleMenu(false);
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
-            }
-        #elif UNITY_STANDALONE_WIN
-            //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (menu.activeSelf) // Menu is open, so close it.
-                {
-                    ToggleMenu(false);
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
-                else // Menu is closed, so open it.
-                {
-                    ToggleMenu(true);
-                    Cursor.lockState = CursorLockMode.None;
-                }
-            }
-        #endif
+        HandlePauseMenu();
 
         // If input is enabled, ignore all of the below.
         if (!inputEnabled) 
@@ -134,6 +104,37 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Use of localRotation allows movement around y axis.
         charCamera.transform.localRotation = charCamTarRot;
+    }
+
+    private void HandlePauseMenu()
+    {
+        #if UNITY_EDITOR
+            //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
+            if (Input.GetKeyDown(KeyCode.Comma))
+            {
+                ToggleCursorAndMenu();
+            }
+        #elif UNITY_STANDALONE_WIN
+            //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ToggleCursorAndMenu();
+            }
+        #endif
+    }
+
+    private void ToggleCursorAndMenu()
+    {
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            ToggleMenu(true);
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else if (Cursor.lockState == CursorLockMode.None)
+        {
+            ToggleMenu(false);
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     protected virtual void MouseInput()
