@@ -56,18 +56,6 @@ public class AlienMovement : PlayerMovement
         Ray ray;
         RaycastHit hit;
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            // Creates a ray from the current position in the direction the char is facing.
-            ray = new Ray(transform.position, charCamera.transform.forward);
-
-            // If there is a wall ahead then trigger JumpToWall script.
-            if (Physics.Raycast(ray, out hit, jumpRange) && hit.normal != this.transform.up)
-            {
-                StartCoroutine(JumpToWall(hit.point, hit.normal));
-            }
-        }
-
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
         if (Input.GetButton("Jump"))
         {
