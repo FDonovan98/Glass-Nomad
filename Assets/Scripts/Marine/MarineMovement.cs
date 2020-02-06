@@ -46,17 +46,21 @@ public class MarineMovement : PlayerMovement
     {
         ApplyGravity();
     }
-
+    
+    /// <summary>
+    /// Calculate and apply force of gravity to char.
+    /// </summary>
     private void ApplyGravity()
     {
-        // Calculate and apply force of gravity to char.
         Vector3 gravForce = gravity * charRigidbody.mass * Vector3.up;
         charRigidbody.AddForce(gravForce);
     }
 
+    /// <summary>
+    /// Retrieves the player's WASD and jump input, applying forces where necessary.
+    /// </summary>
     private void GetPlayerInput()
     {
-        // Declare x, y and z axis variables for player movement.
         float x, y, z;
 
         // Jump and ground detection
@@ -82,29 +86,36 @@ public class MarineMovement : PlayerMovement
         playerMovementInput = new Vector3(x, charRigidbody.velocity.y, z);
     }
 
+    /// <summary>
+    /// Disables the player's input, enables rotations in the rigidbody, adds a random force to the
+    /// rigidbody, and starts the 'Death' coroutine.
+    /// </summary>
     public void Ragdoll()
     {
-        // Disable input
         inputEnabled = false;
-
-        // Enable rotation constraints
         charRigidbody.constraints = RigidbodyConstraints.None;
-
-        // Apply force
         charRigidbody.AddForceAtPosition(RandomForce(deathForce), transform.position);
 
-        // Start death (a.k.a delete the player gameobject)
         if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(Death());
         }
     }
     
+    /// <summary>
+    /// Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.
+    /// </summary>
+    /// <param name="velocity">The maximum random force.</param>
+    /// <returns>Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.</returns>
     private Vector3 RandomForce(float velocity)
     {
         return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
     }
 
+    /// <summary>
+    /// Waits 3 seconds before destorying the gameobject on the Photon Network, and forcing the player to leave the room.
+    /// </summary>
+    /// <returns>Nothing.</returns>
     IEnumerator Death()
     {
         yield return new WaitForSeconds(3f);
@@ -196,7 +207,7 @@ public class MarineMovement : PlayerMovement
         Vector3 frontOfPlayer = transform.position;
         frontOfPlayer.z += charCollider.bounds.extents.z;
         Debug.DrawRay(frontOfPlayer, -Vector3.up * (charCollider.bounds.extents.y + 0.5f), Color.green);
-        
+
         Debug.Log("IS GROUNDED: " + IsGrounded(frontOfPlayer, -Vector3.up));
         Debug.Log("IS THERE A STEP: " + CheckIfStep());
         Debug.Log("STEP HEIGHT LOW ENOUGH: " + CheckStepHeight());
