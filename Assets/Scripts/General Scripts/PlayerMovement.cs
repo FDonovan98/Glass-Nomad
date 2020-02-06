@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     
     // Used to store rotation of the player and the camera.
     protected Vector3 mouseRotationInput; 
-    
+
     protected float groundDelta = 1.0f;
     protected float cameraRotation = 0f;
     protected Quaternion charCamTarRot;
@@ -47,63 +47,78 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     protected void Start()
     {
-        gameObject.name = photonView.Owner.NickName; // Sets the gameobject name to the player's username.
-        charCamera = gameObject.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
+        // Sets the gameobject name to the player's username.
+        gameObject.name = photonView.Owner.NickName; 
+
+        // Gets the camera child on the player.
+        charCamera = gameObject.GetComponentInChildren<Camera>(); 
         charCollider = gameObject.GetComponent<CapsuleCollider>();
         distGround =  charCollider.bounds.extents.y;
         Debug.Log("distGround: " + distGround);
-        charRigidbody = gameObject.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.
-        Cursor.lockState = CursorLockMode.Locked;   //Cursor starts off locked to the center of the game window and invisible
+
+        // Gets the rigidbody component of the player.
+        charRigidbody = gameObject.GetComponent<Rigidbody>(); 
+
+        //Cursor starts off locked to the center of the game window and invisible
+        Cursor.lockState = CursorLockMode.Locked;   
 
         if (!photonView.IsMine)
         {
-            charCamera.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
+            // Disables the camera on every client that isn't our own.
+            charCamera.GetComponent<Camera>().enabled = false; 
         }
 
         charCamTarRot = charCamera.transform.localRotation;
 
         menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
-        Cursor.lockState = CursorLockMode.Locked; // Forces every player's mouse to the center of the window and hides it when the player is created
+
+        // Forces every player's mouse to the center of the window and hides it when the player is created.
+        Cursor.lockState = CursorLockMode.Locked; 
         Cursor.visible = false;
     }
 
     protected void Update()
     {
-#if UNITY_EDITOR
-        //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
-        if (Input.GetKeyDown(KeyCode.Comma))
-        {
-            if (Cursor.lockState == CursorLockMode.Locked)
+        #if UNITY_EDITOR
+            //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
+            if (Input.GetKeyDown(KeyCode.Comma))
             {
-                ToggleMenu(true);
-                Cursor.lockState = CursorLockMode.None;
+                if (Cursor.lockState == CursorLockMode.Locked)
+                {
+                    ToggleMenu(true);
+                    Cursor.lockState = CursorLockMode.None;
+                }
+                else if (Cursor.lockState == CursorLockMode.None)
+                {
+                    ToggleMenu(false);
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
             }
-            else if (Cursor.lockState == CursorLockMode.None)
+        #elif UNITY_STANDALONE_WIN
+            //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                ToggleMenu(false);
-                Cursor.lockState = CursorLockMode.Locked;
+                if (menu.activeSelf) // Menu is open, so close it.
+                {
+                    ToggleMenu(false);
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+                else // Menu is closed, so open it.
+                {
+                    ToggleMenu(true);
+                    Cursor.lockState = CursorLockMode.None;
+                }
             }
-        }
-#elif UNITY_STANDALONE_WIN
-        //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (menu.activeSelf) // Menu is open, so close it.
-            {
-                ToggleMenu(false);
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else // Menu is closed, so open it.
-            {
-                ToggleMenu(true);
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
-#endif
+        #endif
 
-        if (!inputEnabled) { return; } // If input is enabled, ignore all of the below.
+        // If input is enabled, ignore all of the below.
+        if (!inputEnabled) 
+        { 
+            return; 
+        } 
         
-        MouseInput(); // Gets player movement
+        // Gets player movement
+        MouseInput(); 
 
         // Player rotation
         Vector3 playerRotation = new Vector3(0, mouseRotationInput.x, 0) * mouseSensitivity;
