@@ -42,10 +42,25 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     protected float groundDelta = 1.0f;
     protected float cameraRotation = 0f;
-    protected Quaternion charCamTarRot;
+    protected Quaternion charCameraTargetRotation;
     protected bool inputEnabled = true;
 
     protected void Start()
+    {
+        if (!photonView.IsMine)
+        {
+            // Disables the camera on every client that isn't our own.
+            charCamera.GetComponent<Camera>().enabled = false; 
+        }
+
+        InitialiseGlobals();
+
+        // Forces every player's mouse to the center of the window and hides it when the player is created.
+        Cursor.lockState = CursorLockMode.Locked; 
+        Cursor.visible = false;
+    }
+
+    private void InitialiseGlobals()
     {
         // Sets the gameobject name to the player's username.
         gameObject.name = photonView.Owner.NickName; 
@@ -54,27 +69,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         charCamera = gameObject.GetComponentInChildren<Camera>(); 
         charCollider = gameObject.GetComponent<CapsuleCollider>();
         distGround =  charCollider.bounds.extents.y;
-        Debug.Log("distGround: " + distGround);
 
         // Gets the rigidbody component of the player.
         charRigidbody = gameObject.GetComponent<Rigidbody>(); 
 
-        //Cursor starts off locked to the center of the game window and invisible
-        Cursor.lockState = CursorLockMode.Locked;   
-
-        if (!photonView.IsMine)
-        {
-            // Disables the camera on every client that isn't our own.
-            charCamera.GetComponent<Camera>().enabled = false; 
-        }
-
-        charCamTarRot = charCamera.transform.localRotation;
-
         menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
 
-        // Forces every player's mouse to the center of the window and hides it when the player is created.
-        Cursor.lockState = CursorLockMode.Locked; 
-        Cursor.visible = false;
+        charCameraTargetRotation = charCamera.transform.localRotation;
     }
 
     protected void Update()
@@ -86,9 +87,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         { 
             return; 
         } 
-        
+
+        HandlePlayerRotation();
+    }
+
+    private void HandlePlayerRotation()
+    {
         // Gets player movement
-        MouseInput(); 
+        Vector3 mouseRotationInput = GetMouseInput(); 
 
         // Player rotation
         Vector3 playerRotation = new Vector3(0, mouseRotationInput.x, 0) * mouseSensitivity;
@@ -98,12 +104,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         cameraRotation = -mouseRotationInput.y * mouseSensitivity;
 
         // Modifies target from current direction to desired direction.
-        charCamTarRot *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
+        charCameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
 
-        charCamTarRot = ClampRotationAroundXAxis(charCamTarRot);
+        charCameraTargetRotation = ClampRotationAroundXAxis(charCameraTargetRotation);
 
         // Use of localRotation allows movement around y axis.
-        charCamera.transform.localRotation = charCamTarRot;
+        charCamera.transform.localRotation = charCameraTargetRotation;
     }
 
     private void HandlePauseMenu()
@@ -137,12 +143,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         }
     }
 
-    protected virtual void MouseInput()
+    protected Vector3 GetMouseInput()
     {        
         // Mouse rotation
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-        mouseRotationInput = new Vector3(mouseX, mouseY, 0);
+        return new Vector3(mouseX, mouseY, 0);
     }
 
     protected bool IsGrounded(Vector3 dirOfRay)
