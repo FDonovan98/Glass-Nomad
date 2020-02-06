@@ -22,11 +22,6 @@ public class MarineMovement : PlayerMovement
     // Used to store the players movement input.
     private Vector3 playerMovementInput;
 
-    protected new void Start()
-    {
-        base.Start();
-    }
-
     protected new void Update()
     {
         base.Update();
@@ -55,7 +50,8 @@ public class MarineMovement : PlayerMovement
 
     private void GetPlayerInput()
     {
-        float x, y, z; // Declare x, y and z axis variables for player movement.
+        // Declare x, y and z axis variables for player movement.
+        float x, y, z;
 
         // Jump and ground detection
         if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
@@ -153,18 +149,20 @@ public class MarineMovement : PlayerMovement
 
     private void Debugging()
     {
+        // Used to check the distance betweent the players feet and the step.
         Vector3 playerFeet = transform.position;
         playerFeet.y -= charCollider.bounds.extents.y;
         Debug.DrawRay(playerFeet, transform.forward * (charCollider.bounds.extents.z + distanceBetweenStep), Color.magenta);
 
+        // Used to check how steep the step is, and its height.
         Vector3 startDir = transform.position;
         startDir.z += charCollider.bounds.extents.z;
-
         Vector3 endDir = transform.position;
         endDir.y -= charCollider.bounds.extents.y;
         endDir.z += charCollider.bounds.extents.z + 0.1f;
         Debug.DrawRay(startDir, endDir - startDir, Color.red);
 
+        // Used to check is the player is on the ground.
         Vector3 frontOfPlayer = transform.position;
         frontOfPlayer.z += charCollider.bounds.extents.z;
         Debug.DrawRay(frontOfPlayer, -Vector3.up * (charCollider.bounds.extents.y + 0.5f), Color.green);
