@@ -46,14 +46,9 @@ public class AlienMovement : PlayerMovement
         gravity = gravConstant;
     }
 
-    protected void FixedUpdate()
+    protected new void Update()
     {
-        // Calculate and apply force of gravity to char.
-        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
-        charRigidbody.AddForce(gravForce);
-
         base.Update();
-        Ray ray;
         RaycastHit hit;
 
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
@@ -80,7 +75,13 @@ public class AlienMovement : PlayerMovement
                 jumpCharge = 0.0f;
             }
         }
+    }
 
+    protected void FixedUpdate()
+    {
+        // Calculate and apply force of gravity to char.
+        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
+        charRigidbody.AddForce(gravForce);
 
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
@@ -97,6 +98,8 @@ public class AlienMovement : PlayerMovement
         Vector3 averageRayDirection = new Vector3(0, 0, 0);
         int ventCount = 0;
         gravity = gravConstant;
+
+        RaycastHit hit;
 
         foreach (Vector3 element in testVectors)
         {
@@ -155,48 +158,5 @@ public class AlienMovement : PlayerMovement
         }
 
         transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
-    }
-
-    IEnumerator JumpToWall(Vector3 point, Vector3 normal)
-    {
-        Debug.Log("JumpToWall");
-        // Enables the flag saying the char is jumping.
-        //jumping = true;
-
-        // Disables physics while jumping.
-        charRigidbody.isKinematic = true;
-        
-        // Gets the original position and rotation of char.
-        Vector3 originalPos = transform.position;
-        Quaternion originalRotation = charCamera.transform.rotation;
-
-        // Gets the point at which the function should give up control.
-        float finalGroundOffset = 0.5f;
-        Vector3 farPos = point + normal * (distGround + finalGroundOffset);
-
-        // Gets the char forward facing and the rotation at the far point
-        Vector3 charForward = charCamera.transform.forward;
-        Quaternion farRotation = Quaternion.LookRotation(charForward, normal);
-
-        // Interpolates between current position and target position for a second.
-        float timeElapsed = 0.0f;
-
-        do
-        {
-            timeElapsed += Time.deltaTime / transferTime;
-
-            transform.position = Vector3.Lerp(originalPos, farPos, timeElapsed);
-            transform.rotation = Quaternion.Slerp(originalRotation, farRotation, timeElapsed);
-            
-            yield return null; 
-
-        } while (timeElapsed < 1.0f);
-
-        // Update charNormal.
-        charNormal = normal;
-        // Re-enables physics.
-        charRigidbody.isKinematic = false;
-        // Signals the jump to the wall has finished.
-        //jumping = false;
     }
 }
