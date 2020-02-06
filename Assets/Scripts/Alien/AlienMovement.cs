@@ -10,8 +10,6 @@ public class AlienMovement : PlayerMovement
 {
     // Smoothing speed.
     public float lerpSpeed = 1;
-    public float gravConstant = 10;
-    private float gravity;
     // Char counts as grounded up to this distance from the ground.
     public float deltaGround = 0.1f;
     // Is the alien in contact with the ground.
@@ -29,8 +27,7 @@ public class AlienMovement : PlayerMovement
 
     // The normal of the current surface.
     private Vector3 surfaceNormal;
-    // The characters normal.
-    private Vector3 charNormal;
+
 
     // Flag for if the alien is currently jumping.
     //private bool jumping;
@@ -40,16 +37,11 @@ public class AlienMovement : PlayerMovement
     protected new void Start()
     {
         base.Start();
-        // Initialises the charNormal to the world normal.
-        charNormal = transform.up;
-        Debug.Log(distGround);
-        gravity = gravConstant;
     }
 
     protected new void Update()
     {
         base.Update();
-        RaycastHit hit;
 
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
         if (Input.GetButton("Jump"))
@@ -77,12 +69,10 @@ public class AlienMovement : PlayerMovement
         }
     }
 
-    protected void FixedUpdate()
+    protected new void FixedUpdate()
     {
-        // Calculate and apply force of gravity to char.
-        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
-        charRigidbody.AddForce(gravForce);
-
+        base.FixedUpdate();
+        
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
         Vector3[] testVectors = new Vector3 [6] 

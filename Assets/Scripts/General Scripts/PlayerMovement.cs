@@ -45,6 +45,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected Quaternion charCameraTargetRotation;
     protected bool inputEnabled = true;
 
+    // The characters normal.
+    public Vector3 charNormal;
+
+    public float gravConstant = 10;
+    public float gravity;
+
     protected void Start()
     {
         if (!photonView.IsMine)
@@ -76,6 +82,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
 
         charCameraTargetRotation = charCamera.transform.localRotation;
+
+        // Initialises the charNormal to the world normal.
+        charNormal = Vector3.up;
+        gravity = gravConstant;
     }
 
     protected void Update()
@@ -89,6 +99,43 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         } 
 
         HandlePlayerRotation();
+
+        // Player movement
+        charRigidbody.velocity = transform.TransformDirection(GetPlayerInput());
+    }
+
+    private Vector3 GetPlayerInput()
+    {
+        float x, y, z; // Declare x, y and z axis variables for player movement.
+
+        // Jump and ground detection
+        if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
+        {
+            charRigidbody.velocity += new Vector3(0, jumpSpeed, 0);
+        }
+        else
+        {
+            y = charRigidbody.velocity.y;
+        }
+
+        // Player movement
+        x = Input.GetAxisRaw("Horizontal") * movementSpeed;
+        z = Input.GetAxisRaw("Vertical") * movementSpeed;
+
+        if (Input.GetAxis("Sprint") == 1)
+        {
+            x *= sprintSpeedMultiplier;
+            z *= sprintSpeedMultiplier;
+        }   
+
+        return new Vector3(x, charRigidbody.velocity.y, z);
+    }
+
+    protected void FixedUpdate()
+    {
+        // Calculate and apply force of gravity to char.
+        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
+        charRigidbody.AddForce(gravForce);
     }
 
     private void HandlePlayerRotation()
