@@ -1,22 +1,19 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
 public class MarineMovement : PlayerMovement
 {
-    public float force = 150f;
-    protected Vector3 playerMovementInput; // Used to store the players movement input.
+    [SerializeField] private float deathForce = 150f;
+    [SerializeField] private float gravConstant = 10;
 
-    public float gravConstant = 10;
+    private Vector3 playerMovementInput; // Used to store the players movement input.
     private float gravity;
-    private Vector3 charNormal;
 
     protected new void Start()
     {
         base.Start();
         gravity = gravConstant;
-        charNormal = Vector3.up;
     }
 
     protected new void Update()
@@ -29,14 +26,12 @@ public class MarineMovement : PlayerMovement
         // Player movement
         Vector3 dir = transform.TransformDirection(playerMovementInput);
         charRigidbody.velocity = dir;
-
-        gravity = gravConstant;
     }
 
     protected void FixedUpdate()
     {
         // Calculate and apply force of gravity to char.
-        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
+        Vector3 gravForce = -gravity * charRigidbody.mass * Vector3.up;
         charRigidbody.AddForce(gravForce);
     }
 
@@ -76,7 +71,7 @@ public class MarineMovement : PlayerMovement
         charRigidbody.constraints = RigidbodyConstraints.None;
 
         // Apply force
-        charRigidbody.AddForceAtPosition(RandomForce(force), transform.position);
+        charRigidbody.AddForceAtPosition(RandomForce(deathForce), transform.position);
 
         // Start death (a.k.a delete the player gameobject)
         if (PhotonNetwork.IsMasterClient)
@@ -96,4 +91,10 @@ public class MarineMovement : PlayerMovement
         PhotonNetwork.Destroy(this.gameObject);
         PhotonNetwork.LeaveRoom();
     }
+
+    #region stairs
+
+
+    #endregion
+
 }
