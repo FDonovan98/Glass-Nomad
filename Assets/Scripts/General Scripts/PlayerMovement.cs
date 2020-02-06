@@ -99,37 +99,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         } 
 
         HandlePlayerRotation();
-
-        // Player movement
-        charRigidbody.velocity = transform.TransformDirection(GetPlayerInput());
     }
 
-    private Vector3 GetPlayerInput()
-    {
-        float x, y, z; // Declare x, y and z axis variables for player movement.
 
-        // Jump and ground detection
-        if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
-        {
-            charRigidbody.velocity += new Vector3(0, jumpSpeed, 0);
-        }
-        else
-        {
-            y = charRigidbody.velocity.y;
-        }
-
-        // Player movement
-        x = Input.GetAxisRaw("Horizontal") * movementSpeed;
-        z = Input.GetAxisRaw("Vertical") * movementSpeed;
-
-        if (Input.GetAxis("Sprint") == 1)
-        {
-            x *= sprintSpeedMultiplier;
-            z *= sprintSpeedMultiplier;
-        }   
-
-        return new Vector3(x, charRigidbody.velocity.y, z);
-    }
 
     protected void FixedUpdate()
     {
