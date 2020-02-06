@@ -47,7 +47,7 @@ public class MarineMovement : PlayerMovement
         // Jump and ground detection
         if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
         {
-            y = jumpSpeed;
+            charRigidbody.velocity += new Vector3(0, jumpSpeed, 0);
         }
         else
         {
