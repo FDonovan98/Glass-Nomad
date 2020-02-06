@@ -4,20 +4,27 @@ using Photon.Pun;
 
 public class MarineMovement : PlayerMovement
 {
+    // How much force should be applied randomly to player upon death.
     [SerializeField] private float deathForce = 150f;
-    [SerializeField] private float gravConstant = -10;
+
+    // The scale of gravity to be applied downwards onto the player.
+    [SerializeField] private float gravity = -10;
+
+    // The distance that the step is detected by the player.
     [SerializeField] private float distanceBetweenStep = 2f;
+
+    // The upward force applied to the player when on stairs.
     [SerializeField] private float upForce = 1.5f;
+
+    // Should the debug rays and console messages be shown.
     [SerializeField] private bool debug;
 
-    private Vector3 gravityVector;
-    private Vector3 playerMovementInput; // Used to store the players movement input.
-    private float gravity;
+    // Used to store the players movement input.
+    private Vector3 playerMovementInput;
 
     protected new void Start()
     {
         base.Start();
-        gravity = gravConstant;
     }
 
     protected new void Update()
