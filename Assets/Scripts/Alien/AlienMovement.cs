@@ -134,14 +134,16 @@ public class AlienMovement : PlayerMovement
         Vector3 charForward = Vector3.Cross(transform.right, charNormal);
         // Align the character to the surface normal while still looking forward.
         Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+
+        transform.rotation = targetRotation;
         
 
         // Gets the horz and vert movement for char.
         float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
         float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
 
-        if (Input.GetAxis("Sprint") == 1)
+        if (Input.GetAxisRaw("Sprint") != 0)
         {
             deltaX *= sprintSpeedMultiplier;
             deltaZ *= sprintSpeedMultiplier;
