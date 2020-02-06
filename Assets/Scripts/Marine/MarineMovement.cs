@@ -5,8 +5,12 @@ using Photon.Pun;
 public class MarineMovement : PlayerMovement
 {
     [SerializeField] private float deathForce = 150f;
-    [SerializeField] private float gravConstant = 10;
+    [SerializeField] private float gravConstant = -10;
+    [SerializeField] private float distanceBetweenStep = 2f;
+    [SerializeField] private float upForce = 1.5f;
+    [SerializeField] private bool debug;
 
+    private Vector3 gravityVector;
     private Vector3 playerMovementInput; // Used to store the players movement input.
     private float gravity;
 
@@ -21,6 +25,9 @@ public class MarineMovement : PlayerMovement
         base.Update();
         if (!inputEnabled) { return; }
 
+        CheckIfStep();
+        ApplyGravity();
+        if (debug) Debugging();
         GetPlayerInput();
 
         // Player movement
@@ -28,7 +35,12 @@ public class MarineMovement : PlayerMovement
         charRigidbody.velocity = dir;
     }
 
-    protected void FixedUpdate()
+    private void FixedUpdate()
+    {
+        ApplyGravity();
+    }
+
+    private void ApplyGravity()
     {
         // Calculate and apply force of gravity to char.
         Vector3 gravForce = -gravity * charRigidbody.mass * Vector3.up;
@@ -92,9 +104,31 @@ public class MarineMovement : PlayerMovement
         PhotonNetwork.LeaveRoom();
     }
 
-    #region stairs
+    private bool IsGrounded()
+    {
+        // Sends a raycast directing down, checking for a floor.
+        Vector3 frontOfPlayer = transform.position;
+        frontOfPlayer.z += charCollider.bounds.extents.z;
+        return Physics.Raycast(frontOfPlayer, -Vector3.up, charCollider.bounds.extents.y + 0.5f);
+    }
 
+    private void CheckIfStep()
+    {
 
-    #endregion
+    }
 
+    private void CheckStepHeight()
+    {
+
+    }
+
+    private void ApplyUpwardsForce()
+    {
+
+    }
+
+    private void Debugging()
+    {
+
+    }
 }

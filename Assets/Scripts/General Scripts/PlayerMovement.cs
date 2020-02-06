@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
@@ -25,7 +24,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         gameObject.name = photonView.Owner.NickName; // Sets the gameobject name to the player's username.
         charCamera = gameObject.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
-        charCollider = gameObject.GetComponent<CapsuleCollider>();
+        charCollider = gameObject.GetComponent<Collider>();
         distGround =  charCollider.bounds.extents.y;
         Debug.Log("distGround: " + distGround);
         charRigidbody = gameObject.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.
