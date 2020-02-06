@@ -26,7 +26,6 @@ public class MarineMovement : PlayerMovement
         if (!inputEnabled) { return; }
 
         CheckIfStep();
-        ApplyGravity();
         if (debug) Debugging();
         GetPlayerInput();
 
