@@ -47,6 +47,7 @@ abstract public class TriggerInteractionScript : MonoBehaviour
 
                 currInteractTime += Time.deltaTime;
                 Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
+                return;
             }
             currInteractTime = 0f;
             return;
