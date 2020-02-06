@@ -43,7 +43,7 @@ public class MarineMovement : PlayerMovement
     private void ApplyGravity()
     {
         // Calculate and apply force of gravity to char.
-        Vector3 gravForce = -gravity * charRigidbody.mass * Vector3.up;
+        Vector3 gravForce = gravity * charRigidbody.mass * Vector3.up;
         charRigidbody.AddForce(gravForce);
     }
 
@@ -65,7 +65,7 @@ public class MarineMovement : PlayerMovement
         x = Input.GetAxisRaw("Horizontal") * movementSpeed;
         z = Input.GetAxisRaw("Vertical") * movementSpeed;
 
-        if (Input.GetAxis("Sprint") == 1)
+        if (Input.GetAxis("Sprint") >= 1)
         {
             x *= sprintSpeedMultiplier;
             z *= sprintSpeedMultiplier;
@@ -112,23 +112,61 @@ public class MarineMovement : PlayerMovement
         return Physics.Raycast(frontOfPlayer, -Vector3.up, charCollider.bounds.extents.y + 0.5f);
     }
 
+    #region stairs
+
     private void CheckIfStep()
     {
-
+        if (!IsGrounded()) return;
+        Vector3 playerFeet = transform.position;
+        playerFeet.y -= charCollider.bounds.extents.y;
+        if (Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep)) CheckStepHeight();
     }
 
     private void CheckStepHeight()
     {
+        Vector3 startDir = transform.position;
+        startDir.z += charCollider.bounds.extents.z;
 
+        Vector3 endDir = transform.position;
+        endDir.y -= charCollider.bounds.extents.y;
+        endDir.z += charCollider.bounds.extents.z + 0.1f;
+        // NEED TO CHECK IF THE HIT.NORMAL IS VECTOR3.UP
+        if (Physics.Raycast(startDir, endDir, distanceBetweenStep)) ApplyUpwardsForce();
     }
 
     private void ApplyUpwardsForce()
     {
-
+        if (charRigidbody.velocity.y < upForce)
+        {
+            if (playerMovementInput.z > 0)
+            {
+                charRigidbody.velocity += transform.up * upForce;
+            }
+        }
     }
 
     private void Debugging()
     {
+        Vector3 playerFeet = transform.position;
+        playerFeet.y -= charCollider.bounds.extents.y;
+        Debug.DrawRay(playerFeet, transform.forward * (charCollider.bounds.extents.z + distanceBetweenStep), Color.magenta);
 
+        Vector3 startDir = transform.position;
+        startDir.z += charCollider.bounds.extents.z;
+
+        Vector3 endDir = transform.position;
+        endDir.y -= charCollider.bounds.extents.y;
+        endDir.z += charCollider.bounds.extents.z + 0.1f;
+        Debug.DrawRay(startDir, endDir - startDir, Color.red);
+
+        Vector3 frontOfPlayer = transform.position;
+        frontOfPlayer.z += charCollider.bounds.extents.z;
+        Debug.DrawRay(frontOfPlayer, -Vector3.up * (charCollider.bounds.extents.y + 0.5f), Color.green);
+
+        Debug.Log("IS GROUNDED: " + IsGrounded());
+        Debug.Log("IS THERE A STEP: " + Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep));
+        Debug.Log("STEP HEIGHT LOW ENOUGH: " + Physics.Raycast(startDir, endDir, distanceBetweenStep));
     }
+
+    #endregion
 }
