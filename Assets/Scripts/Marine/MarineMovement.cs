@@ -7,9 +7,6 @@ public class MarineMovement : PlayerMovement
     // How much force should be applied randomly to player upon death.
     [SerializeField] private float deathForce = 150f;
 
-    // The scale of gravity to be applied downwards onto the player.
-    [SerializeField] private float gravity = -10;
-
     // The distance that the step is detected by the player.
     [SerializeField] private float distanceBetweenStep = 2f;
 
@@ -18,6 +15,12 @@ public class MarineMovement : PlayerMovement
 
     // Should the debug rays and console messages be shown.
     [SerializeField] private bool debug = false;
+    protected new void Start()
+    {
+        base.Start();
+        gravity = gravConstant;
+        charNormal = Vector3.up;
+    }
 
     // Used to store the players movement input.
     private Vector3 playerMovementInput;
@@ -25,7 +28,11 @@ public class MarineMovement : PlayerMovement
     protected new void Update()
     {
         base.Update();
-        if (!inputEnabled) return;
+
+        if (!inputEnabled)
+        {
+            return;
+        } 
 
         // If there is a step, and its height is correct, then try and apply force.
         if (CheckIfStep() && CheckStepHeight())
@@ -33,33 +40,21 @@ public class MarineMovement : PlayerMovement
             ApplyUpwardsForce();
         }
 
-        if (debug) Debugging();
+        if (debug)
+        {
+            Debugging();
+        } 
 
-        GetPlayerInput();
 
         // Player movement
-        Vector3 dir = transform.TransformDirection(playerMovementInput);
-        charRigidbody.velocity = dir;
-    }
-
-    private void FixedUpdate()
-    {
-        ApplyGravity();
-    }
-    
-    /// <summary>
-    /// Calculate and apply force of gravity to char.
-    /// </summary>
-    private void ApplyGravity()
-    {
-        Vector3 gravForce = gravity * charRigidbody.mass * Vector3.up;
-        charRigidbody.AddForce(gravForce);
+        charRigidbody.velocity = transform.TransformDirection(GetPlayerInput());
     }
 
     /// <summary>
     /// Retrieves the player's WASD and jump input, applying forces where necessary.
     /// </summary>
-    private void GetPlayerInput()
+    private Vector3 GetPlayerInput()
+
     {
         float x, y, z;
 
@@ -83,7 +78,12 @@ public class MarineMovement : PlayerMovement
             z *= sprintSpeedMultiplier;
         }   
 
-        playerMovementInput = new Vector3(x, charRigidbody.velocity.y, z);
+        return new Vector3(x, charRigidbody.velocity.y, z);
+    }
+
+    protected new void FixedUpdate()
+    {
+        base.FixedUpdate();
     }
 
     /// <summary>

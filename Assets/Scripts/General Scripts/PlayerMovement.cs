@@ -3,8 +3,6 @@ using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
-    #region variable-declaration
-
     // The movement of the player.
     [SerializeField] 
     public float movementSpeed = 10;     
@@ -56,7 +54,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     // Toggles the menu and cursor visibilty.
     private bool turnMenuOn = false;
 
-    #endregion
+    // The characters normal.
+    public Vector3 charNormal;
+
+    public float gravConstant = 10;
+    public float gravity;
+
 
     protected void Start()
     {
@@ -86,6 +89,10 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
 
         charCameraTargetRotation = charCamera.transform.localRotation;
+
+        // Initialises the charNormal to the world normal.
+        charNormal = Vector3.up;
+        gravity = gravConstant;
     }
 
     protected void Update()
@@ -102,6 +109,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     /// Rotates the players gameobject around the y-axis, and the players camera
     /// around the x-axis.
     /// </summary>
+
+    protected void FixedUpdate()
+    {
+        // Calculate and apply force of gravity to char.
+        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
+        charRigidbody.AddForce(gravForce);
+    }
+
     private void HandlePlayerRotation()
     {
         Vector3 mouseRotationInput = GetMouseInput(); 
@@ -126,10 +141,16 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         #if UNITY_EDITOR
             //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetKeyDown(KeyCode.Comma)) ToggleCursorAndMenu();
+            if (Input.GetKeyDown(KeyCode.Comma))
+            {
+                ToggleCursorAndMenu();
+            } 
         #elif UNITY_STANDALONE_WIN
             //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetKeyDown(KeyCode.Escape)) ToggleCursorAndMenu();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ToggleCursorAndMenu();
+            } 
         #endif
     }
     
