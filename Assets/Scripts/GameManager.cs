@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
@@ -9,30 +8,33 @@ using TMPro;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
-    [SerializeField] private string lobbySceneName = "SCN_Lobby"; // Used to change scene when we leave a room.
-    public GameObject alienSpawnPoint; // Used to spawn the alien.
-    public GameObject marineSpawnPoint; // Used to spawn the marines.
-    [SerializeField] private TMP_Dropdown resolutionDropdown = null; // Used to change the video resolution.
-    [SerializeField] private TMP_Dropdown qualityDropdown = null; // Used to change the video quality.
-    [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
-    public GameObject pauseMenu; // Used by PlayerMovement to access the pause menu gameobject.
-    private Resolution[] resolutions; // Used to retrieve all the available resolutions.
-    private Camera cam; // Used to change the FOV of the camera.
+    // Changes to this scene when we leave a room.
+    [SerializeField] private string lobbySceneName = "SCN_Lobby";
 
-    #region devtools
-    [Header("Developer Tools")]
-    [SerializeField] private bool singlePlayerMarine = false; // Used to test the marine player, in testing.
-    #endregion
+    // Spawn points for the alien and marines.
+    [SerializeField] private GameObject alienSpawnPoint = null;
+    [SerializeField] private GameObject marineSpawnPoint = null;
+
+    // Changes the video resolution.
+    [SerializeField] private TMP_Dropdown resolutionDropdown = null;
+
+    // Changes the video quality.
+    [SerializeField] private TMP_Dropdown qualityDropdown = null;
+
+    // Used to change the audio volume.
+    [SerializeField] private AudioMixer audioMixer = null;
+
+    // Used by PlayerMovement to access the pause menu gameobject.
+    public GameObject pauseMenu;
+
+    // Retrieves all the available resolutions.
+    private Resolution[] resolutions;
+
+    // Changes the FOV of the camera.
+    private Camera cam;
 
     private void Start()
     {
-        // Dev tool
-        if (singlePlayerMarine)
-        {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
-            return;
-        }
-
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
@@ -42,10 +44,14 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
         }
-        
-        Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
 
-        // Setting up the resolution options
+        SetupResolutionDropdown();
+
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+    }
+
+    private void SetupResolutionDropdown()
+    {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
@@ -67,7 +73,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         resolutionDropdown.value = currentResIndex;
         resolutionDropdown.RefreshShownValue();
         qualityDropdown.value = QualitySettings.GetQualityLevel();
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     public override void OnLeftRoom()
@@ -95,6 +100,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         Debug.LogFormat("{0} left the game room", other.NickName); // seen when other disconnects
     }
 
+    /// <summary>
+    /// Changes the model of the new master client, when the old one leaves.
+    /// </summary>
+    /// <param name="newMasterClient"></param>
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         if (PhotonNetwork.IsMasterClient)
