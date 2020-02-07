@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
 
 public class MarineMovement : PlayerMovement
@@ -15,16 +14,7 @@ public class MarineMovement : PlayerMovement
 
     // Should the debug rays and console messages be shown.
     [SerializeField] private bool debug = false;
-
-    protected new void Start()
-    {
-        base.Start();
-        charNormal = Vector3.up;
-    }
-
-    // Used to store the players movement input.
-    private Vector3 playerMovementInput;
-    
+        
     protected new void Update()
     {
         base.Update();
@@ -54,7 +44,6 @@ public class MarineMovement : PlayerMovement
     /// Retrieves the player's WASD and jump input, applying forces where necessary.
     /// </summary>
     private Vector3 GetPlayerInput()
-
     {
         float x, y, z;
 
@@ -79,11 +68,6 @@ public class MarineMovement : PlayerMovement
         }   
 
         return new Vector3(x, charRigidbody.velocity.y, z);
-    }
-
-    protected new void FixedUpdate()
-    {
-        base.FixedUpdate();
     }
 
     /// <summary>
@@ -166,7 +150,7 @@ public class MarineMovement : PlayerMovement
         if (charRigidbody.velocity.y < upForce)
         {
             // If the player is pressing forward key ('W')...
-            if (playerMovementInput.z > 0)
+            if (GetPlayerInput().z > 0)
             {
                 // Apply an upwards force onto the player's rigidbody.
                 charRigidbody.velocity += transform.up * upForce;
@@ -201,4 +185,6 @@ public class MarineMovement : PlayerMovement
         Debug.Log("IS THERE A STEP: " + CheckIfStep());
         Debug.Log("STEP HEIGHT LOW ENOUGH: " + CheckStepHeight());
     }
+
+    #endregion
 }

@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Photon.Pun;
+﻿using UnityEngine;
 
 public class MarineController : MarineMovement
 {
-    public PlayerInteraction marineInteraction;
-    public PlayerAttack marineAttack; // Accessed by the oxygen regen script.
+    // Accessed by the oxygen regen script.
+    public PlayerAttack marineAttack;
 
+    // Redundant now?
+    public PlayerInteraction marineInteraction;
     float deltaTime = 0;
 
     private float oxygenDamageTime = 0f;
@@ -17,10 +16,7 @@ public class MarineController : MarineMovement
     {
         base.Start();
         
-        if (!photonView.IsMine)
-        {
-            return;
-        }
+        if (!photonView.IsMine) return;
 
         SpawnFadeFromBlack.Fade(Color.black, Color.clear, 3, this);
 
@@ -31,11 +27,10 @@ public class MarineController : MarineMovement
     private new void Update()
     {
         // If we are not the local client then don't compute any of this.
-        if (!photonView.IsMine) 
-            return;
+        if (!photonView.IsMine) return;
 
         base.Update();
-        if (!inputEnabled) { return; }
+        if (!inputEnabled) return;
 
         if (Input.GetButton("Interact"))
         {
