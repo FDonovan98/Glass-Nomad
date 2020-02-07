@@ -25,9 +25,6 @@ public class AlienMovement : PlayerMovement
     public float horizontalJumpMod = 1.0f;
     public float verticalJumpMod = 1.0f;
 
-    // The normal of the current surface.
-    private Vector3 surfaceNormal;
-
 
     // Flag for if the alien is currently jumping.
     //private bool jumping;
@@ -43,6 +40,11 @@ public class AlienMovement : PlayerMovement
     {
         base.Update();
 
+        AlienJump();
+    }
+
+    private void AlienJump()
+    {
         // When the jump key is pressed activate either a normal jump or a jump to a wall.
         if (Input.GetButton("Jump"))
         {
@@ -72,7 +74,42 @@ public class AlienMovement : PlayerMovement
     protected new void FixedUpdate()
     {
         base.FixedUpdate();
+
+        RotateTransformToSurfaceNormal();
         
+        XYMovement();
+    }
+
+    private void XYMovement()
+    {
+        // Gets the horz and vert movement for char.
+        float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
+        float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
+
+        if (Input.GetAxisRaw("Sprint") != 0)
+        {
+            deltaX *= sprintSpeedMultiplier;
+            deltaZ *= sprintSpeedMultiplier;
+        }
+
+        transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
+    }
+
+    private void RotateTransformToSurfaceNormal()
+    {
+        // Interpolate between the characters current normal and the surface normal.
+        charNormal = Vector3.Lerp(charNormal, CalculateSurfaceNormal(), lerpSpeed * Time.deltaTime);
+        // Get the direction the character faces.
+        Vector3 charForward = Vector3.Cross(transform.right, charNormal);
+        // Align the character to the surface normal while still looking forward.
+        Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+
+        transform.rotation = targetRotation;
+    }
+
+    private Vector3 CalculateSurfaceNormal()
+    {
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
         Vector3[] testVectors = new Vector3 [6] 
@@ -119,36 +156,13 @@ public class AlienMovement : PlayerMovement
         if (averageRayDirection.magnitude > 0)
         {
             isGrounded = true;
-            surfaceNormal = averageRayDirection.normalized;
+            return averageRayDirection.normalized;
         }    
         else
         {
             // If the character isn't grounded resets surface normal.
             isGrounded = false;
-            surfaceNormal = Vector3.up;
+            return Vector3.up;
         }
-
-        // Interpolate between the characters current normal and the surface normal.
-        charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
-        // Get the direction the character faces.
-        Vector3 charForward = Vector3.Cross(transform.right, charNormal);
-        // Align the character to the surface normal while still looking forward.
-        Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
-
-        transform.rotation = targetRotation;
-        
-
-        // Gets the horz and vert movement for char.
-        float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
-        float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
-
-        if (Input.GetAxisRaw("Sprint") != 0)
-        {
-            deltaX *= sprintSpeedMultiplier;
-            deltaZ *= sprintSpeedMultiplier;
-        }
-
-        transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
     }
 }
