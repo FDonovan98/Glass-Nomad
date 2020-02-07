@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
 
 public class MarineController : MarineMovement
 {
@@ -6,6 +9,8 @@ public class MarineController : MarineMovement
     public PlayerAttack marineAttack; // Accessed by the oxygen regen script.
 
     float deltaTime = 0;
+
+    private float oxygenDamageTime = 0f;
 
 
     private new void Start()
@@ -41,6 +46,19 @@ public class MarineController : MarineMovement
         if (Input.GetButtonUp("Interact"))
         {
             deltaTime = 0.0f;
+        }
+
+        if (marineAttack.resourcesScript.oxygenAmountSeconds == 0)
+        {
+            if (oxygenDamageTime >= 0.2f)
+            {
+                marineAttack.resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Health, -1);
+                oxygenDamageTime = 0f;
+            }
+            else
+            {
+                oxygenDamageTime += Time.fixedDeltaTime;
+            }
         }
     }
 }

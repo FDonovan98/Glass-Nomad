@@ -17,8 +17,4 @@ public class Weapon : ScriptableObject
     public float range = 10f;
     public int damage = 10;
     public float recoilForce = 5f;
-
-    // These are hidden in the inspector as they don't need to be set.
-    [HideInInspector] public int magsLeft;
-    [HideInInspector] public int bulletsInCurrentMag;
 }

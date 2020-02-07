@@ -16,7 +16,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private int maxHealth = 100;
 
     // Used to control the health of this player.
-    public PlayerHealth healthScript;
+    public PlayerResources resourcesScript;
     // Used to disable/enable the camera so that we only control our local player's camera.
     private GameObject cameraGO;
 
@@ -28,21 +28,18 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private MuzzleFlashScript muzzleFlash;
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
-	private UIBehaviour hudCanvas;
 
     public GameObject bulletHolePrefab; // Spawned when a bullet hits a wall.
 
-    // Oxygen shenanigans
-    public float maxOxygenAmountSeconds = 300f;
-    public float oxygenAmountSeconds;
-    private float oxygenDamageTime = 0f;
-
     private new void OnEnable()
     {
-        healthScript = new PlayerHealth(this.gameObject, maxHealth);
+        resourcesScript = new PlayerResources(this.gameObject, this, maxHealth);
     }
     private void Start()
     {
+        resourcesScript.magsLeft = currentWeapon.magCount;
+        resourcesScript.bulletsInCurrentMag = currentWeapon.magSize;
+        
         // The muzzle flash will appear at the same spot as the flashlight
         flashlight = gameObject.GetComponentInChildren<Light>();
         if (flashlight != null)
@@ -54,10 +51,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
         deltaTime = currentWeapon.fireRate;
 
-        oxygenAmountSeconds = maxOxygenAmountSeconds;
-
-        hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
-        hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
+        resourcesScript.hudCanvas.UpdateUI(GetComponent<PlayerAttack>());
     }
 
     private void Update()
@@ -79,7 +73,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 // If magSize is zero then it is a melee attack.
                 if (currentWeapon.magSize > 0)
                 {
-                    currentWeapon.bulletsInCurrentMag--;
+                    resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Ammo, -1);
                     recoil += currentWeapon.recoilForce;
 
                     if (flashlight != null)
@@ -104,36 +98,22 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         
         if (Input.GetKeyDown(KeyCode.R))
         {
-            ReloadWeapon(currentWeapon);
+            ReloadWeapon();
         }
 
         // Reduce oxygen
-        if (oxygenAmountSeconds > 0)
+        if (resourcesScript.oxygenAmountSeconds > 0)
         {
-            oxygenAmountSeconds -= Time.fixedDeltaTime;
+            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime);
         }
-        if (oxygenAmountSeconds == 0)
-        {
-            if (oxygenDamageTime >= 0.2f)
-            {
-                healthScript.PlayerHit(1);
-                oxygenDamageTime = 0f;
-            }
-            else
-            {
-                oxygenDamageTime += Time.fixedDeltaTime;
-            }
-        }
-
-        hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
     }
 
-    private void ReloadWeapon(Weapon weapon)
+    private void ReloadWeapon()
     {
-        if (weapon.magsLeft > 0)
+        if (resourcesScript.magsLeft > 0)
         {
-            weapon.bulletsInCurrentMag = weapon.magSize;
-            weapon.magsLeft--;
+            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Ammo, currentWeapon.magSize);
+            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Magazines, -1);
         }
         else
         {
@@ -156,7 +136,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             if (weapon.magSize > 0)
             {
-                if (weapon.bulletsInCurrentMag > 0)
+                if (resourcesScript.bulletsInCurrentMag > 0)
                 {
                     return true;
                 }
@@ -182,10 +162,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
             if (hitPlayer != null && hitPlayer.gameObject != this.gameObject) // A player was hit
             {
-                PlayerHealth hitPlayerHealth = hitPlayer.healthScript;
+                PlayerResources hitPlayerResources = hitPlayer.resourcesScript;
 
-                hitPlayerHealth.PlayerHit(damage);
-                hitPlayer.healthSlider.fillAmount = hitPlayerHealth.fillAmount;
+                hitPlayerResources.UpdatePlayerResource(PlayerResources.PlayerResource.Health, -damage);
+                hitPlayer.healthSlider.fillAmount = hitPlayerResources.fillAmount;
             }
             else // A wall was hit.
             {

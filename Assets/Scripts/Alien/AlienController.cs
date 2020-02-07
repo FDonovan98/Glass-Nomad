@@ -29,8 +29,9 @@ public class AlienController : AlienMovement
     // Whether the alien's current health is less than the emergency health threshold.
     private bool triggeredEmergencyHealing = false;
 
+    private PlayerResources resourcesScript;
     // Used to check against the emergency health threshold and regen the alien's health.
-    private PlayerHealth healthScript;
+    private bool usingEmergencyHealing = true;
 
     // How much health the alien should have before the health regen kicks in.
     public int emergencyHealingThreshold = 60;
@@ -68,7 +69,6 @@ public class AlienController : AlienMovement
         alienInteraction = new PlayerInteraction();
         alienAttack = GetComponent<PlayerAttack>();
         trackerGO = charCamera.transform.GetChild(0).gameObject;
-        healthScript = gameObject.GetComponent<PlayerAttack>().healthScript;
 
         // Changes the material of all the vents found in the map.
         GameObject[] vents = GameObject.FindGameObjectsWithTag("Vent");
@@ -76,6 +76,8 @@ public class AlienController : AlienMovement
         {
             vent.GetComponent<Renderer>().material = transparentVent;
         }
+
+        resourcesScript = gameObject.GetComponent<PlayerAttack>().resourcesScript;
     }
 
     /// <summary>
@@ -110,7 +112,7 @@ public class AlienController : AlienMovement
             {
                 EmergencyHealing();
             }
-            else if (healthScript.currentHealth < emergencyHealingThreshold)
+            else if (resourcesScript.currentHealth < emergencyHealingThreshold)
             {
                 triggeredEmergencyHealing = true;
             }
@@ -119,7 +121,6 @@ public class AlienController : AlienMovement
         {
             movementSpeed /= emergencySpeedMultiplier;
         }
-
     }
 
     /// <summary>
@@ -150,8 +151,8 @@ public class AlienController : AlienMovement
     protected void RegenHealth(int viewID, int healingAmount)
     {
         GameObject alien = PhotonView.Find(viewID).gameObject;
-        alien.GetComponent<PlayerAttack>().healthScript.PlayerHit(healingAmount);
-        alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().healthScript.fillAmount;
+        alien.GetComponent<PlayerAttack>().resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Health, healingAmount);
+        alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().resourcesScript.fillAmount;
     }
 
     /// <summary>

@@ -98,7 +98,7 @@ public class MarineMovement : PlayerMovement
 
         if (PhotonNetwork.IsMasterClient)
         {
-            StartCoroutine(Death());
+            StartCoroutine(GetComponent<MarineController>().marineAttack.resourcesScript.Death(gameObject));
         }
     }
     
@@ -110,17 +110,6 @@ public class MarineMovement : PlayerMovement
     private Vector3 RandomForce(float velocity)
     {
         return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
-    }
-
-    /// <summary>
-    /// Waits 3 seconds before destorying the gameobject on the Photon Network, and forcing the player to leave the room.
-    /// </summary>
-    /// <returns>Nothing.</returns>
-    IEnumerator Death()
-    {
-        yield return new WaitForSeconds(3f);
-        PhotonNetwork.Destroy(this.gameObject);
-        PhotonNetwork.LeaveRoom();
     }
 
     #region stairs
@@ -212,6 +201,4 @@ public class MarineMovement : PlayerMovement
         Debug.Log("IS THERE A STEP: " + CheckIfStep());
         Debug.Log("STEP HEIGHT LOW ENOUGH: " + CheckStepHeight());
     }
-
-    #endregion
 }
