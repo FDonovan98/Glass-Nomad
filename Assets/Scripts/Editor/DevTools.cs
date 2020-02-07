@@ -1,19 +1,22 @@
 ﻿using UnityEditor;
-
 using UnityEngine;
-
 using Photon.Pun;
-using System;
 
 public class DevTools : EditorWindow
 {
-    bool showHealthBars = true;
+    // Used to toggle the visibility of health bars.
+    private bool showHealthBars = true;
+
     [MenuItem("Window/Developer Tools/General")]
     public static void ShowWindow()
     {
         GetWindow<DevTools>("General Tools");
     }
 
+    /// <summary>
+    /// Sets up the GUI of the developer tools window.
+    /// When a button is pressed, it calls the appropriate function.
+    /// </summary>
     void OnGUI()
     {
         showHealthBars = EditorGUILayout.Toggle("Enable Health Bars", showHealthBars);
@@ -49,6 +52,10 @@ public class DevTools : EditorWindow
         }
     }
 
+    /// <summary>
+    /// Finds all the players in the game and shows/hides their health bar.
+    /// </summary>
+    /// <param name="enable"></param>
     private void ToggleHealthBars(bool enable)
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -58,6 +65,10 @@ public class DevTools : EditorWindow
         }
     }
 
+    /// <summary>
+    /// Finds all the players and swaps the prefab of character that the local player
+    /// is controlling.
+    /// </summary>
     private void SwitchModel()
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -86,6 +97,10 @@ public class DevTools : EditorWindow
         }
     }
 
+    /// <summary>
+    /// Spawns a marine or alien, and disables their input, camera and audio listener.
+    /// </summary>
+    /// <param name="prefabName"></param>
     private void SpawnCreature(string prefabName)
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -117,6 +132,9 @@ public class DevTools : EditorWindow
         }
     }
 
+    /// <summary>
+    /// Finds all doors with the tag 'Door' and opens them, if they are not already open.
+    /// </summary>
     private void OpenAllDoors()
     {
         Debug.Log("All doors are now opened");
@@ -134,6 +152,9 @@ public class DevTools : EditorWindow
         }
     }
 
+    /// <summary>
+    /// Opens the armoury door.
+    /// </summary>
     private void ActivateSwitches()
     {
         GameObject armoury = GameObject.FindGameObjectWithTag("ArmouryDoor");
