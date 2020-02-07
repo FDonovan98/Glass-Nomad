@@ -57,8 +57,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     // The characters normal.
     public Vector3 charNormal;
 
-    public float gravConstant = 10;
-    public float gravity;
+    public float gravity = -10;
 
 
     protected void Start()
@@ -66,6 +65,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         if (!photonView.IsMine)
         {
             // Disables the camera on every client that isn't our own.
+            charCamera.GetComponent<AudioListener>().enabled = false; // Disables the audio listener on every client that isn't our own.
             charCamera.GetComponent<Camera>().enabled = false; 
         }
 
@@ -92,7 +92,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Initialises the charNormal to the world normal.
         charNormal = Vector3.up;
-        gravity = gravConstant;
     }
 
     protected void Update()
@@ -113,7 +112,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected void FixedUpdate()
     {
         // Calculate and apply force of gravity to char.
-        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
+        Vector3 gravForce = gravity * charRigidbody.mass * charNormal;
         charRigidbody.AddForce(gravForce);
     }
 

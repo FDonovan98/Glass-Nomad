@@ -1,21 +1,25 @@
 ﻿using UnityEngine;
 
-using System.Collections;
-
 // Code initially based on code from here:
 // https://answers.unity.com/questions/155907/basic-movement-walking-on-walls.html
 
 [RequireComponent(typeof(Collider))]
 public class AlienMovement : PlayerMovement
 {
-    // Smoothing speed.
+    #region variable-declaration
+
+    // Smoothing speed of rotating to wall.
     public float lerpSpeed = 1;
+
     // Char counts as grounded up to this distance from the ground.
     public float deltaGround = 0.1f;
+
     // Is the alien in contact with the ground.
     public bool isGrounded = false;
+
     // The range at which to detect a wall to stick to.
     public float jumpRange = 10;
+
     // Time it takes to transfer between two surfaces.
     public float transferTime = 1;
 
@@ -25,16 +29,10 @@ public class AlienMovement : PlayerMovement
     public float horizontalJumpMod = 1.0f;
     public float verticalJumpMod = 1.0f;
 
+    // Should the debug messages be displayed.
+    public bool debug = false;
 
-    // Flag for if the alien is currently jumping.
-    //private bool jumping;
-    // Current vertical speed.
-    //private float verticalSpeed;
-
-    protected new void Start()
-    {
-        base.Start();
-    }
+    #endregion
 
     protected new void Update()
     {
@@ -43,13 +41,16 @@ public class AlienMovement : PlayerMovement
         AlienJump();
     }
 
+    /// <summary>
+    /// Retrieves the jump input and determines whether to perform a normal
+    /// jump or a jump to a wall.
+    /// </summary>
     private void AlienJump()
     {
-        // When the jump key is pressed activate either a normal jump or a jump to a wall.
         if (Input.GetButton("Jump"))
         {
             jumpCharge += Time.deltaTime;
-            Debug.Log("Jump key pressed");
+            if (debug) Debug.Log("Jump key pressed");
         }
 
 
@@ -61,7 +62,7 @@ public class AlienMovement : PlayerMovement
             {
                 // Limits the jump multiplier.
                 jumpCharge = Mathf.Min(jumpCharge, jumpChargeTime);
-                Debug.Log("Applying Jump Force");
+                if (debug) Debug.Log("Applying Jump Force");
                 float jumpForce = jumpSpeed * jumpCharge;
                 charRigidbody.velocity += horizontalJumpMod * jumpForce * charCamera.transform.forward;
                 charRigidbody.velocity += verticalJumpMod * jumpForce * charNormal;
@@ -73,16 +74,20 @@ public class AlienMovement : PlayerMovement
 
     protected new void FixedUpdate()
     {
-        if (!photonView.IsMine) return;
-
         base.FixedUpdate();
 
+        if (!photonView.IsMine) return;
+
         RotateTransformToSurfaceNormal();
-        
-        XYMovement();
+
+        GetPlayerMovement();
     }
 
-    private void XYMovement()
+    /// <summary>
+    /// Retrieves the player's WASD input, translating the transform of the player.
+    /// Also multiplies the speed if the player is sprinting.
+    /// </summary>
+    private void GetPlayerMovement()
     {
         // Gets the horz and vert movement for char.
         float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
@@ -97,6 +102,9 @@ public class AlienMovement : PlayerMovement
         transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
     }
 
+    /// <summary>
+    /// Rotates the alien to the normal of the surface which the alien in on.
+    /// </summary>
     private void RotateTransformToSurfaceNormal()
     {
         // Interpolate between the characters current normal and the surface normal.
@@ -126,7 +134,6 @@ public class AlienMovement : PlayerMovement
 
         Vector3 averageRayDirection = new Vector3(0, 0, 0);
         int ventCount = 0;
-        gravity = gravConstant;
 
         RaycastHit hit;
 
