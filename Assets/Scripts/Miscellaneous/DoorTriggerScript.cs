@@ -2,7 +2,10 @@
 
 public class DoorTriggerScript : TriggerInteractionScript
 {
+    // Plays the animation of the door opening.
     private Animator anim;
+
+    // Keeps track of whether the door is open or not.
     private bool isDoorOpen = false;
 
     public bool GetDoorOpen() { return isDoorOpen; }
@@ -14,10 +17,7 @@ public class DoorTriggerScript : TriggerInteractionScript
 
     protected override void LeftTriggerArea()
     {
-        if (isDoorOpen)
-        {
-            ChangeDoorState();
-        }
+        if (isDoorOpen) ChangeDoorState();
     }
 
     protected override void InteractionComplete(GameObject player)

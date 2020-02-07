@@ -2,8 +2,18 @@
 
 public class RedSwitchTriggerScript : TriggerInteractionScript
 {
+
+    // Tells the red switch manager when this switch has been (de)activated.
     public RedSwitchManager switchManager = null;
 
+    /// <summary>
+    /// Once the player enters the switch's collider and their holding 'E',
+    /// the timer is started. If the player successfully holds the switch for
+    /// the duration of the timer, then the switch is activated. If the player
+    /// releases the switch, then it is deactivated and will need to be activated
+    /// again.
+    /// </summary>
+    /// <param name="coll"></param>
     private new void OnTriggerStay(Collider coll)
     {
         if (coll.gameObject.tag == "Player" && currCooldownTime <= 0)
@@ -21,7 +31,7 @@ public class RedSwitchTriggerScript : TriggerInteractionScript
                     }
 
                     currInteractTime += Time.deltaTime;
-                    Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
+                    if (debug) Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
                 }
             }
             else // if the player is not pressing then reset the switch's state.
@@ -34,18 +44,22 @@ public class RedSwitchTriggerScript : TriggerInteractionScript
 
     protected override void InteractionComplete(GameObject player)
     {
-        Debug.Log("Switch activated");
+        if (debug) Debug.Log("Switch activated");
         interactionComplete = true;
         switchManager.SwitchActivated();
     }
 
+    /// <summary>
+    /// If the player exits the switch's collider, then reset the switch's state and timer.
+    /// </summary>
     protected override void LeftTriggerArea()
     {
         if (interactionComplete)
         {
-            Debug.Log("Switch deactivated");
+            if (debug) Debug.Log("Switch deactivated");
             switchManager.SwitchDeactivated();
             interactionComplete = false;
         }
+        currInteractTime = 0f;
     }
 }
