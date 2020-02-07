@@ -8,6 +8,7 @@ abstract public class TriggerInteractionScript : MonoBehaviour
     [SerializeField] protected float cooldownTime; // How long it takes for the player to interact with the object again.
     protected float currCooldownTime = 0f; // How long it has been since the player last interacted with the object.
     protected bool interactionComplete = false; // Is the interaction complete?
+    [SerializeField] protected bool debug = false; // Should the debug messages be displayed.
 
 
     /// <summary>
@@ -46,14 +47,14 @@ abstract public class TriggerInteractionScript : MonoBehaviour
                 }
 
                 currInteractTime += Time.deltaTime;
-                Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
+                if (debug) Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
                 return;
             }
             currInteractTime = 0f;
             return;
         }
 
-        Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
+        if (debug) Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
     }
 
     /// <summary>

@@ -16,7 +16,9 @@ public class MarineController : MarineMovement
         {
             return;
         }
-        
+
+        SpawnFadeFromBlack.Fade(Color.black, Color.clear, 3, this);
+
         marineInteraction = new PlayerInteraction();
         marineAttack = GetComponent<PlayerAttack>();
     }

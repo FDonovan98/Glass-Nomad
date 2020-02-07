@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class AlienController : AlienMovement
 {
@@ -35,7 +34,7 @@ public class AlienController : AlienMovement
             return;
         }
 
-        RenderSettings.ambientLight = alienVision;
+        SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
         
         alienInteraction = new PlayerInteraction();
         alienAttack = GetComponent<PlayerAttack>();
