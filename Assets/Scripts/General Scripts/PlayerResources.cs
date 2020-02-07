@@ -11,11 +11,20 @@ public class PlayerResources
         Magazines,
         OxygenLevel
     }
-    
+
+    // Used to initialise the players health and ensure that we don't over-regen.
     public int maxHealth;
+
+    // Used to keep track of the player's current health.
     public int currentHealth;
+
+    // Used to fill the health slider.
     public float fillAmount;
+
+    // Used to ragdoll upon death.
     public GameObject player;
+
+    // Used to update the player's HUD when we get shot.
     public UIBehaviour hudCanvas;
 
     // Oxygen shenanigans
@@ -42,7 +51,6 @@ public class PlayerResources
         fillAmount = (float)currentHealth / maxHealth;
     }
 
-    //
     public void UpdatePlayerResource(PlayerResource playerResource, float value)
     {
         if (playerResource == PlayerResource.OxygenLevel)
@@ -82,11 +90,13 @@ public class PlayerResources
             if (currentHealth < -(int)value)
             {
                 if (player.GetComponent<MarineMovement>() != null)
+                {
                     player.GetComponent<MarineMovement>().Ragdoll();
+                }
                 else if (player.GetComponent<AlienController>() != null)
+                {
                     monoBehaviour.StartCoroutine(Death(player));
-
-
+                }
             }
             else
             {

@@ -55,8 +55,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private bool turnMenuOn = false;
 
     // The characters normal.
-    public Vector3 charNormal;
+    public Vector3 charNormal = Vector3.up;
 
+    // The gravity scale that's applied to the player.
     public float gravity = -10;
 
 
@@ -89,9 +90,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
 
         charCameraTargetRotation = charCamera.transform.localRotation;
-
-        // Initialises the charNormal to the world normal.
-        charNormal = Vector3.up;
     }
 
     protected void Update()
@@ -108,7 +106,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     /// Rotates the players gameobject around the y-axis, and the players camera
     /// around the x-axis.
     /// </summary>
-
     protected void FixedUpdate()
     {
         // Calculate and apply force of gravity to char.
