@@ -11,8 +11,6 @@ public class AlienController : AlienMovement
     // Alters the colour of the alien's vision (red).
     public Color alienVision;
 
-    public PlayerInteraction alienInteraction;
-
     // Change the material of all of the vents to make it
     // easier for the alien to see and orientate themselves.
     public Material transparentVent;
@@ -48,9 +46,6 @@ public class AlienController : AlienMovement
     // Slows the speed of the alien when in the emergency state.
     public float emergencySpeedMultiplier = 1.0f;
 
-    // Used by the interaction script.
-    private float deltaTime = 0;
-
     #endregion
 
     /// <summary>
@@ -64,7 +59,6 @@ public class AlienController : AlienMovement
 
         SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
         
-        alienInteraction = new PlayerInteraction();
         alienAttack = GetComponent<PlayerAttack>();
         trackerGO = charCamera.transform.GetChild(0).gameObject;
 
@@ -91,17 +85,6 @@ public class AlienController : AlienMovement
         if (Input.GetKeyDown(KeyCode.F))
         {
             ToggleTracker();
-        }
-
-        if (Input.GetButton("Interact"))
-        {
-            deltaTime += Time.deltaTime;
-            alienInteraction.ProcessTriggers(deltaTime, false);
-        }
-
-        if (Input.GetButtonUp("Interact"))
-        {
-            deltaTime = 0.0f;
         }
 
         if (emergencyHealingCurrentTickCount != emergencyHealingTickCount)

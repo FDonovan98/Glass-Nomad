@@ -5,10 +5,6 @@ public class MarineController : MarineMovement
     // Accessed by the oxygen regen script.
     public PlayerAttack marineAttack;
 
-    // Redundant now?
-    public PlayerInteraction marineInteraction;
-    float deltaTime = 0;
-
     private float oxygenDamageTime = 0f;
 
 
@@ -20,7 +16,6 @@ public class MarineController : MarineMovement
 
         SpawnFadeFromBlack.Fade(Color.black, Color.clear, 3, this);
 
-        marineInteraction = new PlayerInteraction();
         marineAttack = GetComponent<PlayerAttack>();
     }
 
@@ -31,17 +26,6 @@ public class MarineController : MarineMovement
 
         base.Update();
         if (!inputEnabled) return;
-
-        if (Input.GetButton("Interact"))
-        {
-            deltaTime += Time.deltaTime;
-            marineInteraction.ProcessTriggers(deltaTime, true);
-        }
-
-        if (Input.GetButtonUp("Interact"))
-        {
-            deltaTime = 0.0f;
-        }
 
         if (marineAttack.resourcesScript.oxygenAmountSeconds == 0)
         {
