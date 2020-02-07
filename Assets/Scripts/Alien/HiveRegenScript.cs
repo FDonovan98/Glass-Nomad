@@ -26,7 +26,6 @@ public class HiveRegenScript : MonoBehaviourPunCallbacks
             {
                 // PunRPC is in AlienController.cs.
                 alien.GetPhotonView().RPC("RegenHealth", RpcTarget.All, viewID, -1);
-                hudCanvas.UpdateUI(other.GetComponent<PlayerAttack>());
                 deltaTime = 0.0f;
             }
         }

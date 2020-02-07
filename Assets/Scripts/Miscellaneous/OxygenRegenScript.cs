@@ -20,11 +20,7 @@ public class OxygenRegenScript : MonoBehaviour
             playerAttack = other.GetComponent<AlienController>().alienAttack;
         }
 
-        playerAttack.oxygenAmountSeconds += playerAttack.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime;
-        playerAttack.oxygenAmountSeconds += Time.deltaTime;
-        if (playerAttack.oxygenAmountSeconds > playerAttack.maxOxygenAmountSeconds)
-        {
-            playerAttack.oxygenAmountSeconds = playerAttack.maxOxygenAmountSeconds;
-        }
+        float oxygenIncrease = (playerAttack.resourcesScript.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime) + Time.deltaTime;
+        playerAttack.resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, oxygenIncrease);
     }
 }

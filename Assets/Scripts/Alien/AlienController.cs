@@ -99,7 +99,6 @@ public class AlienController : AlienMovement
         {
             this.movementSpeed /= emergencySpeedMultiplier;
         }
-
     }
 
     private new void FixedUpdate()
@@ -114,7 +113,7 @@ public class AlienController : AlienMovement
     protected void RegenHealth(int viewID, int healingAmount)
     {
         GameObject alien = PhotonView.Find(viewID).gameObject;
-        alien.GetComponent<PlayerAttack>().resourcesScript.PlayerHit(healingAmount);
+        alien.GetComponent<PlayerAttack>().resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Health, healingAmount);
         alien.GetComponent<PlayerAttack>().healthSlider.fillAmount = alien.GetComponent<PlayerAttack>().resourcesScript.fillAmount;
     }
 

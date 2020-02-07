@@ -81,19 +81,12 @@ public class MarineMovement : PlayerMovement
         // Start death (a.k.a delete the player gameobject)
         if (PhotonNetwork.IsMasterClient)
         {
-            StartCoroutine(Death());
+            StartCoroutine(GetComponent<MarineController>().marineAttack.resourcesScript.Death(gameObject));
         }
     }
 
     private Vector3 RandomForce(float velocity)
     {
         return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
-    }
-
-    IEnumerator Death()
-    {
-        yield return new WaitForSeconds(3f);
-        PhotonNetwork.Destroy(this.gameObject);
-        PhotonNetwork.LeaveRoom();
     }
 }

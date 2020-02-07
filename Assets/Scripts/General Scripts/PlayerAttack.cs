@@ -28,13 +28,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private MuzzleFlashScript muzzleFlash;
     private Vector3 muzzleFlashPosition;
     private Light flashlight;
-	private UIBehaviour hudCanvas;
 
     public GameObject bulletHolePrefab; // Spawned when a bullet hits a wall.
 
     private new void OnEnable()
     {
-        resourcesScript = new PlayerResources(this.gameObject, maxHealth);
+        resourcesScript = new PlayerResources(this.gameObject, this, maxHealth);
     }
     private void Start()
     {
@@ -52,8 +51,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
         deltaTime = currentWeapon.fireRate;
 
-        hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
-        hudCanvas.UpdateUI(gameObject.GetComponent<PlayerAttack>());
+        resourcesScript.hudCanvas.UpdateUI(GetComponent<PlayerAttack>());
     }
 
     private void Update()
@@ -75,7 +73,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 // If magSize is zero then it is a melee attack.
                 if (currentWeapon.magSize > 0)
                 {
-                    resourcesScript.bulletsInCurrentMag--;
+                    resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Ammo, -1);
                     recoil += currentWeapon.recoilForce;
 
                     if (flashlight != null)
@@ -106,7 +104,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // Reduce oxygen
         if (resourcesScript.oxygenAmountSeconds > 0)
         {
-            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, Time.fixedDeltaTime);
+            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime);
         }
     }
 
@@ -115,7 +113,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (resourcesScript.magsLeft > 0)
         {
             resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Ammo, currentWeapon.magSize);
-            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Magazines, 1);
+            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Magazines, -1);
         }
         else
         {
@@ -166,7 +164,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             {
                 PlayerResources hitPlayerResources = hitPlayer.resourcesScript;
 
-                hitPlayerResources.PlayerHit(damage);
+                hitPlayerResources.UpdatePlayerResource(PlayerResources.PlayerResource.Health, -damage);
                 hitPlayer.healthSlider.fillAmount = hitPlayerResources.fillAmount;
             }
             else // A wall was hit.

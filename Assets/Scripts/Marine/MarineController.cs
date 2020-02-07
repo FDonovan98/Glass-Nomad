@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class MarineController : MarineMovement
 {
@@ -49,7 +50,7 @@ public class MarineController : MarineMovement
         {
             if (oxygenDamageTime >= 0.2f)
             {
-                marineAttack.resourcesScript.PlayerHit(1);
+                marineAttack.resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Health, -1);
                 oxygenDamageTime = 0f;
             }
             else

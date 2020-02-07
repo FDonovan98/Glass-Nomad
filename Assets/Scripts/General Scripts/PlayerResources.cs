@@ -16,7 +16,7 @@ public class PlayerResources
     public int currentHealth;
     public float fillAmount;
     public GameObject player;
-    private UIBehaviour hudCanvas;
+    public UIBehaviour hudCanvas;
 
     // Oxygen shenanigans
     public float maxOxygenAmountSeconds = 300f;
@@ -25,18 +25,16 @@ public class PlayerResources
     [HideInInspector] public int magsLeft;
     [HideInInspector] public int bulletsInCurrentMag;
 
-    public PlayerResources(GameObject attachedPlayer, int playerMaxHealth = 100)
+    private MonoBehaviour monoBehaviour;
+
+    public PlayerResources(GameObject attachedPlayer, MonoBehaviour instance, int playerMaxHealth = 100)
     {
         maxHealth = playerMaxHealth;
         currentHealth = maxHealth;
         player = attachedPlayer;
         hudCanvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>();
         oxygenAmountSeconds = maxOxygenAmountSeconds;
-    }
-
-    public void PlayerHit(int damage)
-    {
-       
+        monoBehaviour = instance;
     }
 
     private void UpdateFillAmount()
@@ -44,17 +42,22 @@ public class PlayerResources
         fillAmount = (float)currentHealth / maxHealth;
     }
 
-    public void UpdatePlayerResource(PlayerResource type, float value)
+    //
+    public void UpdatePlayerResource(PlayerResource playerResource, float value)
     {
-        if (type == PlayerResource.OxygenLevel)
+        if (playerResource == PlayerResource.OxygenLevel)
         {
-            oxygenAmountSeconds -= value;
+            oxygenAmountSeconds += value;
             if (oxygenAmountSeconds < 0)
             {
                 oxygenAmountSeconds = 0;
             }
+            if (oxygenAmountSeconds > maxOxygenAmountSeconds)
+            {
+                oxygenAmountSeconds = maxOxygenAmountSeconds;
+            }
         }
-        else if (type == PlayerResource.Ammo)
+        else if (playerResource == PlayerResource.Ammo)
         {
             bulletsInCurrentMag += (int)value;
             if (bulletsInCurrentMag > player.GetComponent<PlayerAttack>().currentWeapon.magSize)
@@ -66,27 +69,28 @@ public class PlayerResources
                 bulletsInCurrentMag = 0;
             }
         }
-        else if (type == PlayerResource.Magazines)
+        else if (playerResource == PlayerResource.Magazines)
         {
-            if (magsLeft > 0)
-            {
-                magsLeft -= (int)value;
-            }
+            magsLeft += (int)value;
             if (magsLeft < 0)
             {
                 magsLeft = 0;
             }
         }
-        else if (type == PlayerResource.Health)
+        else if (playerResource == PlayerResource.Health)
         {
-            if (currentHealth < (int)value)
+            if (currentHealth < -(int)value)
             {
                 if (player.GetComponent<MarineMovement>() != null)
                     player.GetComponent<MarineMovement>().Ragdoll();
+                else if (player.GetComponent<AlienController>() != null)
+                    monoBehaviour.StartCoroutine(Death(player));
+
+
             }
             else
             {
-                currentHealth -= (int)value;
+                currentHealth += (int)value;
             }
 
             if (currentHealth > maxHealth)
@@ -97,5 +101,12 @@ public class PlayerResources
             UpdateFillAmount();
         }
         hudCanvas.UpdateUI(player.GetComponent<PlayerAttack>());
+    }
+
+    public IEnumerator Death(GameObject player)
+    {
+        yield return new WaitForSeconds(3f);
+        PhotonNetwork.Destroy(player);
+        PhotonNetwork.LeaveRoom();
     }
 }
