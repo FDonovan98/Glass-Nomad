@@ -73,6 +73,8 @@ public class AlienMovement : PlayerMovement
 
     protected new void FixedUpdate()
     {
+        if (!photonView.IsMine) return;
+
         base.FixedUpdate();
 
         RotateTransformToSurfaceNormal();
