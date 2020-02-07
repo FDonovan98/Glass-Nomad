@@ -30,8 +30,6 @@ public class AlienController : AlienMovement
     private bool triggeredEmergencyHealing = false;
 
     private PlayerResources resourcesScript;
-    // Used to check against the emergency health threshold and regen the alien's health.
-    private bool usingEmergencyHealing = true;
 
     // How much health the alien should have before the health regen kicks in.
     public int emergencyHealingThreshold = 60;

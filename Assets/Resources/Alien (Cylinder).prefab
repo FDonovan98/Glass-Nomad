@@ -513,8 +513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eebc5e4e8cd09194d9c009fea322adde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 6329036609802932500}
   maxHealth: 100
+  healthSlider: {fileID: 6329036609802932500}
   currentWeapon: {fileID: 11400000, guid: c97386eb027242b41992e743522b1ddf, type: 2}
   bulletHolePrefab: {fileID: 8801075028534077450, guid: f34524b31a249bc4390924096267d0d4,
     type: 3}
@@ -537,8 +537,7 @@ MonoBehaviour:
   sprintSpeedMultiplier: 1.675
   menu: {fileID: 0}
   charNormal: {x: 0, y: 0, z: 0}
-  gravConstant: 42.5
-  gravity: 0
+  gravity: -10
   lerpSpeed: 10
   deltaGround: 1
   isGrounded: 1
@@ -547,6 +546,7 @@ MonoBehaviour:
   jumpChargeTime: 1
   horizontalJumpMod: 1.35
   verticalJumpMod: 1.35
+  debug: 0
   alienVision: {r: 1, g: 0.6745283, b: 0.6745283, a: 0}
   alienInteraction: {fileID: 0}
   transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
