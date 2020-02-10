@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
+
+using System.Collections.Generic;
 
 // Code initially based on code from here:
 // https://answers.unity.com/questions/155907/basic-movement-walking-on-walls.html
@@ -34,9 +36,19 @@ public class AlienMovement : PlayerMovement
 
     #endregion
 
+    [SerializeField]
+    public float maxLength = 0;
+
+    protected new void Start()
+    {
+        base.Start();
+    }
+
     protected new void Update()
     {
         base.Update();
+
+        RotateTransformToSurfaceNormal();
 
         AlienJump();
     }
@@ -80,14 +92,14 @@ public class AlienMovement : PlayerMovement
 
         RotateTransformToSurfaceNormal();
 
-        GetPlayerMovement();
+        XYMovement();
     }
 
     /// <summary>
     /// Retrieves the player's WASD input, translating the transform of the player.
     /// Also multiplies the speed if the player is sprinting.
     /// </summary>
-    private void GetPlayerMovement()
+    private void XYMovement()
     {
         // Gets the horz and vert movement for char.
         float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
@@ -107,16 +119,57 @@ public class AlienMovement : PlayerMovement
     /// </summary>
     private void RotateTransformToSurfaceNormal()
     {
+        Vector3 surfaceNormal = CalculateSurfaceNormal();
         // Interpolate between the characters current normal and the surface normal.
-        charNormal = Vector3.Lerp(charNormal, CalculateSurfaceNormal(), lerpSpeed * Time.deltaTime);
-        // Get the direction the character faces.
-        Vector3 charForward = Vector3.Cross(transform.right, charNormal);
-        // Align the character to the surface normal while still looking forward.
-        Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+        //charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
+        // Debug.Log("Surface Normal: " + surfaceNormal);
 
-        transform.rotation = targetRotation;
+        // Vector2 startArc = new Vector2(charNormal.x, charNormal.y);
+        // Debug.Log("Start arc: " + startArc);
+
+        // Vector2 endArc = new Vector2(surfaceNormal.x, surfaceNormal.y);
+        // Debug.Log("End arc: " + endArc);
+
+        // Vector2 arcPoint = ArcLerp(startArc, endArc, lerpSpeed * Time.deltaTime);
+        // Debug.Log("Arc point: " + arcPoint);
+
+        // charNormal = new Vector3(arcPoint.x, arcPoint.y, charNormal.z);
+        // Debug.Log("Character normal: " + charNormal);
+
+        charNormal = surfaceNormal;
+
+        Quaternion targetRotation;
+
+        // // Get the direction the character faces.
+        // Vector3 charForward = Vector3.Cross(transform.InverseTransformDirection(transform.right), charNormal);
+        // Align the character to the surface normal while still looking forward.
+        
+        targetRotation = Quaternion.LookRotation(transform.forward, charNormal);    
+        
+        transform.localRotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
     }
+
+    private Vector2 ArcLerp(Vector2 startVector, Vector2 endVector, float angleStep)
+    {
+        startVector = startVector.normalized;
+        endVector = endVector.normalized;
+        float startX = startVector.x;
+        float startY  = startVector.y;
+        float targetX;
+        float targetY;
+        
+        float angle = Mathf.Acos(Vector2.Dot(startVector, endVector));
+        if (angle <= angleStep)
+        {
+            return endVector;
+        }
+
+        targetX = startX + startVector.magnitude * Mathf.Cos(angleStep);
+        targetY = startY + startVector.magnitude * Mathf.Sin(angleStep);
+
+        return new Vector2(-targetX, -targetY);
+    }
+
 
     private Vector3 CalculateSurfaceNormal()
     {
@@ -150,7 +203,7 @@ public class AlienMovement : PlayerMovement
                 // Gravity is disabled and alien just sticks to the surface below it.
                 if (ventCount <= 2)
                 {
-                    averageRayDirection += hit.normal;
+                    averageRayDirection += hit.normal * ((distGround + deltaGround) - hit.distance);
                 }
                 else
                 {
@@ -173,5 +226,6 @@ public class AlienMovement : PlayerMovement
             isGrounded = false;
             return Vector3.up;
         }
+
     }
 }
