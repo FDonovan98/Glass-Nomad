@@ -76,6 +76,7 @@ public class PlayerResources
             {
                 bulletsInCurrentMag = 0;
             }
+            Debug.Log(bulletsInCurrentMag);
         }
         else if (playerResource == PlayerResource.Magazines)
         {

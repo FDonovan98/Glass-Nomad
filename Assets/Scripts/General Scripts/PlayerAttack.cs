@@ -66,14 +66,14 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         flashlight = gameObject.GetComponentInChildren<Light>();
         if (flashlight != null)
         {
-            muzzleFlash = new MuzzleFlashScript();
+            //muzzleFlash = new MuzzleFlashScript();
         }
 
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
 
-        weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
-        weaponAudio.clip = currentWeapon.weaponSound;
+        //weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
+        //weaponAudio.clip = currentWeapon.weaponSound;
         currentWeapon.magsLeft = currentWeapon.magCount;
         deltaTime = currentWeapon.fireRate;
 
@@ -108,7 +108,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         if (recoil > 0) { RecoilWeapon(); }
 
-        if (Input.GetKeyDown(KeyCode.R)) currentWeapon.Reload();
+        if (Input.GetKeyDown(KeyCode.R)) Reload();
 
         ReduceOxygen();
     }
@@ -123,12 +123,29 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward,
                     currentWeapon.range, currentWeapon.damage);
 
-        currentWeapon.bulletsInCurrentMag--;
+        resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Ammo, -1);
         recoil += currentWeapon.recoilForce;
 
         if (muzzleFlash != null)
         {
             StartCoroutine(muzzleFlash.Flash(flashlight.gameObject.transform.position, flashlight.gameObject.transform.rotation));
+        }
+    }
+
+    /// <summary>
+    /// Deducts the amount of magazines you have left, and refills the bullets in your
+    /// current magazine. Prints a message if you have no more magazines.
+    /// </summary>
+    public void Reload()
+    {
+        if (resourcesScript.magsLeft > 0)
+        {
+            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Ammo, currentWeapon.magSize);
+            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Magazines, -1);
+        }
+        else
+        {
+            Debug.Log("You are out of magazines for this weapon. Find more ammo.");
         }
     }
 
