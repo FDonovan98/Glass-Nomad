@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class UIBehaviour : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class UIBehaviour : MonoBehaviour
     public TMP_Text remainingClipsText;
     public Slider oxygenSlider;
     public TMP_Text oxygenPercentage;
-
+    
     public void UpdateUI(PlayerAttack attackScript = null)
     {
         remainingClipsText.text = "Remaining clips: " + attackScript.resourcesScript.magsLeft.ToString();
@@ -17,5 +18,11 @@ public class UIBehaviour : MonoBehaviour
         healthText.text = "Health: " + attackScript.resourcesScript.currentHealth.ToString();
         oxygenSlider.value = attackScript.resourcesScript.oxygenAmountSeconds / attackScript.resourcesScript.maxOxygenAmountSeconds * 100; // Gets the percentage
         oxygenPercentage.text = Mathf.Floor(oxygenSlider.value).ToString();
+
+        //Layer 9 is AlienCharacter. Alien's don't breathe :/
+        if (attackScript.gameObject.layer == 9 && oxygenSlider.IsActive() && attackScript.photonView.IsMine)
+        {
+            oxygenSlider.gameObject.SetActive(false);
+        }
     }
 }

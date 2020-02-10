@@ -163,9 +163,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private void ReduceOxygen()
     {
-        if (resourcesScript.oxygenAmountSeconds > 0)
+        //Layer 8 is MarineCharacter. This time Harry didn't have to tell me to put this here. Oh how far I've come.
+        if (gameObject.layer == 8)
         {
-            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime);
+            if (resourcesScript.oxygenAmountSeconds > 0)
+            {
+                resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime);
+            }
         }
     }
 
