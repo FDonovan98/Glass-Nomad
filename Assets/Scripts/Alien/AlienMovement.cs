@@ -47,6 +47,7 @@ public class AlienMovement : PlayerMovement
     protected new void Update()
     {
         base.Update();
+        if (!photonView.IsMine) return;
 
         RotateTransformToSurfaceNormal();
 

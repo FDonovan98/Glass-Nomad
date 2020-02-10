@@ -63,14 +63,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     protected void Start()
     {
+        InitialiseGlobals();
+
         if (!photonView.IsMine)
         {
             // Disables the camera on every client that isn't our own.
             charCamera.GetComponent<AudioListener>().enabled = false; // Disables the audio listener on every client that isn't our own.
             charCamera.GetComponent<Camera>().enabled = false; 
         }
-
-        InitialiseGlobals();
 
         // Forces every player's mouse to the center of the window and hides it when the player is created.
         Cursor.lockState = CursorLockMode.Locked; 
@@ -94,6 +94,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     protected void Update()
     {
+        if (!photonView.IsMine) return;
+
         HandlePauseMenu();
 
         // If input is enabled, ignore player and camera rotation.
@@ -108,6 +110,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     /// </summary>
     protected void FixedUpdate()
     {
+        if (!photonView.IsMine) return;
+
         // Calculate and apply force of gravity to char.
         Vector3 gravForce = gravity * charRigidbody.mass * charNormal;
         charRigidbody.AddForce(gravForce);

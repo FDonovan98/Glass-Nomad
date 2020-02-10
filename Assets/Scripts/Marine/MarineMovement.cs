@@ -15,9 +15,18 @@ public class MarineMovement : PlayerMovement
     // Should the debug rays and console messages be shown.
     [SerializeField] private bool debug = false;
         
+    protected new void Start()
+    {
+        base.Start();
+
+        if (!photonView.IsMine) return;
+    }
+    
     protected new void Update()
     {
         base.Update();
+
+        if (!photonView.IsMine) return;
 
         if (!inputEnabled)
         {
