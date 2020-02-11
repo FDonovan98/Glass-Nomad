@@ -90,13 +90,9 @@ public class PlayerResources
         {
             if (currentHealth < -(int)value)
             {
-                if (player.GetComponent<MarineMovement>() != null)
+                if (player.GetComponent<PlayerMovement>() != null)
                 {
-                    player.GetComponent<MarineMovement>().Ragdoll();
-                }
-                else if (player.GetComponent<AlienController>() != null)
-                {
-                    monoBehaviour.StartCoroutine(Death(player));
+                    player.GetComponent<PlayerMovement>().Ragdoll();
                 }
             }
             else
@@ -112,14 +108,5 @@ public class PlayerResources
             UpdateFillAmount();
         }
         hudCanvas.UpdateUI(player.GetComponent<PlayerAttack>());
-    }
-
-    public IEnumerator Death(GameObject player)
-    {
-        yield return new WaitForSeconds(3f);
-        PhotonNetwork.Destroy(player);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        PhotonNetwork.LeaveRoom();
     }
 }

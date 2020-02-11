@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
@@ -59,6 +60,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     // The gravity scale that's applied to the player.
     public float gravity = -10;
+
+    // How much force should be applied randomly to player upon death.
+    [SerializeField] private float deathForce = 150f;
 
 
     protected void Start()
@@ -216,5 +220,36 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         menu.SetActive(toggle);
         Cursor.visible = toggle;
         inputEnabled = !toggle;
+    }
+
+    /// <summary>
+    /// Disables the player's input, enables rotations in the rigidbody, adds a random force to the
+    /// rigidbody, and starts the 'Death' coroutine.
+    /// </summary>
+    public void Ragdoll()
+    {
+        inputEnabled = false;
+        charRigidbody.constraints = RigidbodyConstraints.None;
+        charRigidbody.AddForceAtPosition(RandomForce(deathForce), transform.position);
+        StartCoroutine(Death(gameObject));
+    }
+
+    /// <summary>
+    /// Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.
+    /// </summary>
+    /// <param name="velocity">The maximum random force.</param>
+    /// <returns>Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.</returns>
+    private Vector3 RandomForce(float velocity)
+    {
+        return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
+    }
+
+    private IEnumerator Death(GameObject player)
+    {
+        yield return new WaitForSeconds(3f);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (PhotonNetwork.IsMasterClient) PhotonNetwork.Destroy(player);
+        if (photonView.IsMine) PhotonNetwork.LeaveRoom();
     }
 }

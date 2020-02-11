@@ -3,9 +3,6 @@ using Photon.Pun;
 
 public class MarineMovement : PlayerMovement
 {
-    // How much force should be applied randomly to player upon death.
-    [SerializeField] private float deathForce = 150f;
-
     // The distance that the step is detected by the player.
     [SerializeField] private float distanceBetweenStep = 2f;
 
@@ -77,32 +74,6 @@ public class MarineMovement : PlayerMovement
         }   
 
         return new Vector3(x, charRigidbody.velocity.y, z);
-    }
-
-    /// <summary>
-    /// Disables the player's input, enables rotations in the rigidbody, adds a random force to the
-    /// rigidbody, and starts the 'Death' coroutine.
-    /// </summary>
-    public void Ragdoll()
-    {
-        inputEnabled = false;
-        charRigidbody.constraints = RigidbodyConstraints.None;
-        charRigidbody.AddForceAtPosition(RandomForce(deathForce), transform.position);
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            StartCoroutine(GetComponent<MarineController>().marineAttack.resourcesScript.Death(gameObject));
-        }
-    }
-    
-    /// <summary>
-    /// Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.
-    /// </summary>
-    /// <param name="velocity">The maximum random force.</param>
-    /// <returns>Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.</returns>
-    private Vector3 RandomForce(float velocity)
-    {
-        return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
     }
 
     #region stairs
