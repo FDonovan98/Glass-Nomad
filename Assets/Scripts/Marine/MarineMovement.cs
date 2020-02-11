@@ -25,10 +25,7 @@ public class MarineMovement : PlayerMovement
 
         if (!photonView.IsMine) return;
 
-        if (!inputEnabled)
-        {
-            return;
-        } 
+        if (!inputEnabled) return;
 
         // If there is a step, and its height is correct, then try and apply force.
         if (CheckIfStep() && CheckStepHeight())
@@ -36,10 +33,7 @@ public class MarineMovement : PlayerMovement
             ApplyUpwardsForce();
         }
 
-        if (debug)
-        {
-            Debugging();
-        } 
+        if (debug) Debugging();
 
 
         // Player movement

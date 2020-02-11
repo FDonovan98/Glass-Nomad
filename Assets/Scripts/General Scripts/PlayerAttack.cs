@@ -31,10 +31,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private float recoilRotation = 0f;
 
     // Used to keep track of how long it has been since the weapon was last fired.
-    private float deltaTime = 0.0f;
+    private float currTimeBetweenFiring = 0.0f;
 
     // Used to spawn a muzzle flash when a player shoots.
-    private MuzzleFlashScript muzzleFlash;
+    private MuzzleFlashScript muzzleFlash = null;
 
     // Used to position the muzzle flash.
     private Light flashlight;
@@ -52,31 +52,24 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// </summary>
     private new void OnEnable()
     {
-        resourcesScript = new PlayerResources(this.gameObject, this, maxHealth);
+        resourcesScript = new PlayerResources(this.gameObject, maxHealth);
     }
 
     /// <summary>
     /// Assigns the flashlight, camera, weapon audio and HUD canvas.
     /// </summary>
     private void Start()
-    {
-        resourcesScript.magsLeft = currentWeapon.magCount;
-        resourcesScript.bulletsInCurrentMag = currentWeapon.magSize;
-        
+    {        
         // The muzzle flash will appear at the same spot as the flashlight
         flashlight = gameObject.GetComponentInChildren<Light>();
-        if (flashlight != null)
-        {
-            //muzzleFlash = new MuzzleFlashScript();
-        }
 
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
 
-        //weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
-        //weaponAudio.clip = currentWeapon.weaponSound;
+        weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
+        weaponAudio.clip = currentWeapon.weaponSound;
         currentWeapon.magsLeft = currentWeapon.magCount;
-        deltaTime = currentWeapon.fireRate;
+        currTimeBetweenFiring = currentWeapon.fireRate;
 
         resourcesScript.hudCanvas.UpdateUI(GetComponent<PlayerAttack>());
     }
@@ -85,9 +78,9 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     {
         if (!photonView.IsMine) return;
 
-        if (deltaTime <= currentWeapon.fireRate) deltaTime += Time.deltaTime;
+        if (currTimeBetweenFiring <= currentWeapon.fireRate) currTimeBetweenFiring += Time.deltaTime;
 
-        if (currentWeapon.CanFire(deltaTime))
+        if (currentWeapon.CanFire(currTimeBetweenFiring))
         {
             if (currentWeapon.fireMode == Weapon.FireType.Single)
             {
@@ -104,18 +97,18 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 }
             }
 
-            deltaTime = 0;
+            currTimeBetweenFiring = 0;
         }
 
-        if (recoil > 0) { RecoilWeapon(); }
+        if (recoil > 0) RecoilWeapon();
 
-        if (Input.GetKeyDown(KeyCode.R)) Reload();
+        if (Input.GetKeyDown(KeyCode.R)) currentWeapon.Reload();
 
         ReduceOxygen();
     }
 
     /// <summary>
-    /// Used to call the PunRPC 'FireWeapon' so that every clients registers the fire, and takes damage accordingly.
+    /// Calls the PunRPC 'FireWeapon' so that every clients registers the fire, and takes damage accordingly.
     /// This also reduces the players ammo count and adds recoil, as well as spawning the muzzle flash.
     /// </summary>
     private void Shoot()
@@ -124,8 +117,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward,
                     currentWeapon.range, currentWeapon.damage);
 
-        resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Ammo, -1);
         recoil += currentWeapon.recoilForce;
+        currentWeapon.bulletsInCurrentMag--;
 
         if (muzzleFlash != null)
         {
@@ -134,24 +127,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Deducts the amount of magazines you have left, and refills the bullets in your
-    /// current magazine. Prints a message if you have no more magazines.
-    /// </summary>
-    public void Reload()
-    {
-        if (resourcesScript.magsLeft > 0)
-        {
-            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Ammo, currentWeapon.magSize);
-            resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.Magazines, -1);
-        }
-        else
-        {
-            Debug.Log("You are out of magazines for this weapon. Find more ammo.");
-        }
-    }
-
-    /// <summary>
-    /// Used to recoil the players weapon when they shoot.
+    /// Recoils the players camera when they shoot.
     /// </summary>
     private void RecoilWeapon()
     {
@@ -202,6 +178,9 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 BulletHole(hit);                
             }
         }
+
+        // Play a gunshot sound.
+        if (weaponAudio.clip != null) weaponAudio.Play();
     }
 
     private void BulletHole(RaycastHit hit)
