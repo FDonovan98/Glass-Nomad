@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Photon.Pun;
 
 public class UIBehaviour : MonoBehaviour
 {
@@ -13,9 +12,9 @@ public class UIBehaviour : MonoBehaviour
     
     public void UpdateUI(PlayerAttack attackScript = null)
     {
-        remainingClipsText.text = "Remaining clips: " + attackScript.resourcesScript.magsLeft.ToString();
-        currentClipText.text = "Current clip: " + attackScript.resourcesScript.bulletsInCurrentMag.ToString() + "/" + attackScript.currentWeapon.magSize.ToString();
-        healthText.text = "Health: " + attackScript.resourcesScript.currentHealth.ToString();
+        remainingClipsText.text = "Remaining clips: " + attackScript.currentWeapon.magsLeft;
+        currentClipText.text = "Current clip: " + attackScript.currentWeapon.bulletsInCurrentMag + "/" + attackScript.currentWeapon.magSize;
+        healthText.text = "Health: " + attackScript.resourcesScript.currentHealth;
         oxygenSlider.value = attackScript.resourcesScript.oxygenAmountSeconds / attackScript.resourcesScript.maxOxygenAmountSeconds * 100; // Gets the percentage
         oxygenPercentage.text = Mathf.Floor(oxygenSlider.value).ToString();
 
