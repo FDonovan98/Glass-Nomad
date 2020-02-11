@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using Photon.Pun;
 using System.Collections;
+using System;
 
 public class PlayerAttack : MonoBehaviourPunCallbacks
 {
@@ -198,14 +199,21 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             }
             else // A wall was hit.
             {
-                // It works somehow... don't ask.
-                int temp = hit.normal.z == -1 ? 2 : 0;
-                int temp1 = hit.normal.x != 0 ? 2 : 0;
-                Vector3 holeSpawn = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
-                GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + (hit.normal * 0.001f), Quaternion.Euler(holeSpawn));
-                StartCoroutine(FadeBulletOut(bulletHole, 1f));
-                Destroy(bulletHole, 1f);
+                BulletHole(hit);                
             }
+        }
+    }
+
+    private void BulletHole(RaycastHit hit)
+    {
+        if (GetComponent<MarineController>() != null) // If this is the marine shooting...
+        {
+            int temp = hit.normal.z == -1 ? 2 : 0;
+            int temp1 = hit.normal.x != 0 ? 2 : 0;
+            Vector3 holeSpawn = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
+            GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + (hit.normal * 0.001f), Quaternion.Euler(holeSpawn));
+            StartCoroutine(FadeBulletOut(bulletHole, 1f));
+            Destroy(bulletHole, 1f);
         }
     }
 
