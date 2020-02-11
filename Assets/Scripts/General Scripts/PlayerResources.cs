@@ -118,6 +118,8 @@ public class PlayerResources
     {
         yield return new WaitForSeconds(3f);
         PhotonNetwork.Destroy(player);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         PhotonNetwork.LeaveRoom();
     }
 }
