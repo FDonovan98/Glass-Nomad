@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         SetupResolutionDropdown();
 
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
+        gameObject.GetComponent<ParticleSystem>().Play();
     }
 
     private void SetupResolutionDropdown()
