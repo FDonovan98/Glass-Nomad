@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 abstract public class TriggerInteractionScript : MonoBehaviour
 {
@@ -9,7 +10,6 @@ abstract public class TriggerInteractionScript : MonoBehaviour
     protected float currCooldownTime = 0f; // How long it has been since the player last interacted with the object.
     protected bool interactionComplete = false; // Is the interaction complete?
     [SerializeField] protected bool debug = false; // Should the debug messages be displayed.
-
 
     /// <summary>
     /// Constantly decreases the current cooldown time, unless its already 0.
@@ -44,10 +44,16 @@ abstract public class TriggerInteractionScript : MonoBehaviour
                     currInteractTime = 0f;
                     interactionComplete = true;
                     currCooldownTime = cooldownTime;
+                    return;
                 }
 
                 currInteractTime += Time.deltaTime;
-                if (debug) Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
+                float percentage = (currInteractTime / interactTime) * 100;
+                if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
+
+                GameObject hudCanvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetChild(0).gameObject;
+                Image outerReticle = hudCanvas.transform.GetChild(0).GetComponent<Image>();
+                ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
                 return;
             }
             currInteractTime = 0f;

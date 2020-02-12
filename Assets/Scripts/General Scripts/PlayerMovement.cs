@@ -64,7 +64,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     // How much force should be applied randomly to player upon death.
     [SerializeField] private float deathForce = 150f;
 
-
     protected void Start()
     {
         InitialiseGlobals();
