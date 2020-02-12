@@ -120,7 +120,8 @@ public class AlienMovement : PlayerMovement
     /// </summary>
     private void RotateTransformToSurfaceNormal()
     {
-        Vector3 surfaceNormal = CalculateSurfaceNormal();
+        bool forwardRayHit = false;
+        Vector3 surfaceNormal = CalculateSurfaceNormal(ref forwardRayHit);
         // Interpolate between the characters current normal and the surface normal.
         //charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
         // Debug.Log("Surface Normal: " + surfaceNormal);
@@ -140,14 +141,24 @@ public class AlienMovement : PlayerMovement
         charNormal = surfaceNormal;
 
         Quaternion targetRotation;
+        Vector3 charForward;
 
         // // Get the direction the character faces.
         // Vector3 charForward = Vector3.Cross(transform.InverseTransformDirection(transform.right), charNormal);
         // Align the character to the surface normal while still looking forward.
+
+        if (forwardRayHit)
+        {
+            charForward = Vector3.Cross(transform.right, charNormal);
+        }
+        else
+        {
+            charForward = transform.forward;
+        }
         
-        targetRotation = Quaternion.LookRotation(transform.forward, charNormal);    
+        targetRotation = Quaternion.LookRotation(charForward, charNormal);  
         
-        transform.localRotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
     }
 
     private Vector2 ArcLerp(Vector2 startVector, Vector2 endVector, float angleStep)
@@ -172,7 +183,7 @@ public class AlienMovement : PlayerMovement
     }
 
 
-    private Vector3 CalculateSurfaceNormal()
+    private Vector3 CalculateSurfaceNormal(ref bool forwardRayHit)
     {
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
@@ -195,6 +206,11 @@ public class AlienMovement : PlayerMovement
         {
             if (Physics.Raycast(transform.position, element, out hit, distGround + deltaGround))
             {
+                if (element == transform.forward)
+                {
+                    forwardRayHit = true;
+                }
+
                 if (hit.transform.gameObject.tag == "Vent")
                 {
                     ventCount++;
