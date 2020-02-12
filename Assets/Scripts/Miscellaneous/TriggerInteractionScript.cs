@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 abstract public class TriggerInteractionScript : MonoBehaviour
 {
@@ -9,7 +10,8 @@ abstract public class TriggerInteractionScript : MonoBehaviour
     protected float currCooldownTime = 0f; // How long it has been since the player last interacted with the object.
     protected bool interactionComplete = false; // Is the interaction complete?
     [SerializeField] protected bool debug = false; // Should the debug messages be displayed.
-
+    private GameObject hudCanvas = null;
+    private Image outerReticle = null;
 
     /// <summary>
     /// Constantly decreases the current cooldown time, unless its already 0.
@@ -19,6 +21,15 @@ abstract public class TriggerInteractionScript : MonoBehaviour
         if (currCooldownTime >= 0)
         {
             currCooldownTime -= Time.deltaTime;
+        }
+    }
+
+    protected void OnTriggerEnter(Collider coll)
+    {
+        if (!hudCanvas)
+        {
+            hudCanvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetChild(0).gameObject;
+            outerReticle = hudCanvas.transform.GetChild(0).GetComponent<Image>();
         }
     }
 
@@ -44,13 +55,23 @@ abstract public class TriggerInteractionScript : MonoBehaviour
                     currInteractTime = 0f;
                     interactionComplete = true;
                     currCooldownTime = cooldownTime;
+                    coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+                    return;
                 }
 
+
                 currInteractTime += Time.deltaTime;
-                if (debug) Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
+                float percentage = (currInteractTime / interactTime) * 100;
+                if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
+
+                ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
+                coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = false;
                 return;
             }
+
             currInteractTime = 0f;
+            ReticleProgress.UpdateReticleProgress(0, outerReticle);
+            coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
             return;
         }
 

@@ -25,7 +25,6 @@ public class MarineController : MarineMovement
         if (!photonView.IsMine) return;
 
         base.Update();
-        if (!inputEnabled) return;
 
         if (marineAttack.resourcesScript.oxygenAmountSeconds == 0)
         {
@@ -39,5 +38,7 @@ public class MarineController : MarineMovement
                 oxygenDamageTime += Time.fixedDeltaTime;
             }
         }
+        
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
     }
 }

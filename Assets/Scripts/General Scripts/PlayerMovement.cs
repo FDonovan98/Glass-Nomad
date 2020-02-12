@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
@@ -49,10 +50,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected Quaternion charCameraTargetRotation;
 
     // Enables/disables the players input.
-    protected bool inputEnabled = true;
-
-    // Toggles the menu and cursor visibilty.
-    private bool turnMenuOn = false;
+    public bool inputEnabled = true;
 
     // The characters normal.
     public Vector3 charNormal = Vector3.up;
@@ -60,6 +58,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     // The gravity scale that's applied to the player.
     public float gravity = -10;
 
+    // How much force should be applied randomly to player upon death.
+    [SerializeField] private float deathForce = 150f;
 
     protected void Start()
     {
@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         HandlePauseMenu();
 
         // If input is enabled, ignore player and camera rotation.
-        if (!inputEnabled) return;
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
 
         HandlePlayerRotation();
     }
@@ -143,22 +143,23 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
             if (Input.GetKeyDown(KeyCode.Comma))
             {
-                ToggleCursorAndMenu();
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true);
+                else ToggleCursorAndMenu(false);
             } 
         #elif UNITY_STANDALONE_WIN
             //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                ToggleCursorAndMenu();
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true);
+                else ToggleCursorAndMenu(false);
             } 
         #endif
     }
     
-    private void ToggleCursorAndMenu()
+    private void ToggleCursorAndMenu(bool turnOn)
     {
-        turnMenuOn = !turnMenuOn;
-        Cursor.lockState = turnMenuOn ? CursorLockMode.None : CursorLockMode.Locked;
-        ToggleMenu(turnMenuOn);
+        Cursor.lockState = turnOn ? CursorLockMode.None : CursorLockMode.Locked;
+        ToggleMenu(turnOn);
     }
 
     /// <summary>
@@ -215,6 +216,36 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         menu.SetActive(toggle);
         Cursor.visible = toggle;
-        inputEnabled = !toggle;
+    }
+
+    /// <summary>
+    /// Disables the player's input, enables rotations in the rigidbody, adds a random force to the
+    /// rigidbody, and starts the 'Death' coroutine.
+    /// </summary>
+    public void Ragdoll()
+    {
+        inputEnabled = false;
+        charRigidbody.constraints = RigidbodyConstraints.None;
+        charRigidbody.AddForceAtPosition(RandomForce(deathForce), transform.position);
+        StartCoroutine(Death(gameObject));
+    }
+
+    /// <summary>
+    /// Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.
+    /// </summary>
+    /// <param name="velocity">The maximum random force.</param>
+    /// <returns>Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.</returns>
+    private Vector3 RandomForce(float velocity)
+    {
+        return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
+    }
+
+    private IEnumerator Death(GameObject player)
+    {
+        yield return new WaitForSeconds(3f);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (PhotonNetwork.IsMasterClient) PhotonNetwork.Destroy(player);
+        if (photonView.IsMine) PhotonNetwork.LeaveRoom();
     }
 }

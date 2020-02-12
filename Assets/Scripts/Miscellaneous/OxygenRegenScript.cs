@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OxygenRegenScript : MonoBehaviour
 {
@@ -20,7 +18,10 @@ public class OxygenRegenScript : MonoBehaviour
             playerAttack = other.GetComponent<AlienController>().alienAttack;
         }
 
-        float oxygenIncrease = (playerAttack.resourcesScript.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime) + Time.deltaTime;
-        playerAttack.resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, oxygenIncrease);
+        if (playerAttack != null)
+        {
+            float oxygenIncrease = (playerAttack.resourcesScript.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime) + Time.deltaTime;
+            playerAttack.resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, oxygenIncrease);
+        }
     }
 }
