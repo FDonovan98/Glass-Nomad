@@ -189,7 +189,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         screenFader.color = Color.black;
 
         // Change scene.
-        if (PhotonNetwork.IsMasterClient) PhotonNetwork.LoadLevel(gameSceneName);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LoadLevel(gameSceneName);
+        }
     }
 
     public void OnQuitClick()
