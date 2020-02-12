@@ -223,7 +223,7 @@ MonoBehaviour:
     type: 3}
   inLobbyPanel: {fileID: 159537596}
   playerListPanel: {fileID: 1297819439514283767}
-  screenFader: {fileID: 3746684257558279937}
+  screenFader: {fileID: 1389488988}
 --- !u!4 &253880434
 Transform:
   m_ObjectHideFlags: 0
@@ -369,7 +369,7 @@ Camera:
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -406,6 +406,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2143543751}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1389488988 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3746684257558279937, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+    type: 3}
+  m_PrefabInstance: {fileID: 2143543751}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1786822555 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8930712226200546473, guid: 5b4a9295d6813be40ad97dbed5e8c615,
@@ -639,16 +651,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 253880433}
-    - target: {fileID: 1165056621446907349, guid: 5b4a9295d6813be40ad97dbed5e8c615,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3746684257558279937, guid: 5b4a9295d6813be40ad97dbed5e8c615,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b4a9295d6813be40ad97dbed5e8c615, type: 3}
 --- !u!224 &1297819439514283767 stripped
@@ -657,15 +659,3 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2143543751}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3746684257558279937 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3746684257558279937, guid: 5b4a9295d6813be40ad97dbed5e8c615,
-    type: 3}
-  m_PrefabInstance: {fileID: 2143543751}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
