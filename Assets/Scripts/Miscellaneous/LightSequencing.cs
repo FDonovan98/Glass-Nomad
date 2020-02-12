@@ -7,7 +7,7 @@ public class LightSequencing : MonoBehaviour
     public List<Light> lights = new List<Light>();
     public Color startingColour = Color.red;
     public Color endColour = Color.green;
-    public static float timeOnStartColour = 10.0f;
+    public float timeOnStartColour = 10.0f;
 
     private WaitForSeconds timeDelay;
     private IEnumerator coroutine;
