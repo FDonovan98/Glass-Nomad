@@ -5,6 +5,7 @@ using UnityEngine;
 public class LightSequencing : MonoBehaviour
 {
     public List<Light> lights = new List<Light>();
+    public ParticleSystem particleSystem;
     public Color startingColour = Color.red;
     public Color endColour = Color.green;
     public float timeBetweenFlashes = 1.0f;
