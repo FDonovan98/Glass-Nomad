@@ -25,7 +25,7 @@ public class MarineMovement : PlayerMovement
 
         if (!photonView.IsMine) return;
 
-        if (!inputEnabled) return;
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
 
         // If there is a step, and its height is correct, then try and apply force.
         if (CheckIfStep() && CheckStepHeight())

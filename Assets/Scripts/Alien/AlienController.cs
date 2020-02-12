@@ -81,11 +81,6 @@ public class AlienController : AlienMovement
         if (!photonView.IsMine) return;
 
         base.Update();
-        
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            ToggleTracker();
-        }
 
         if (emergencyHealingCurrentTickCount != emergencyHealingTickCount)
         {
@@ -101,6 +96,13 @@ public class AlienController : AlienMovement
         else
         {
             movementSpeed /= emergencySpeedMultiplier;
+        }
+
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
+        
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ToggleTracker();
         }
     }
 

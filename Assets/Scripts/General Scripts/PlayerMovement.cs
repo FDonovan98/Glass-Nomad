@@ -50,10 +50,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     protected Quaternion charCameraTargetRotation;
 
     // Enables/disables the players input.
-    protected bool inputEnabled = true;
-
-    // Toggles the menu and cursor visibilty.
-    private bool turnMenuOn = false;
+    public bool inputEnabled = true;
 
     // The characters normal.
     public Vector3 charNormal = Vector3.up;
@@ -102,7 +99,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         HandlePauseMenu();
 
         // If input is enabled, ignore player and camera rotation.
-        if (!inputEnabled) return;
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
 
         HandlePlayerRotation();
     }
@@ -146,22 +143,23 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
             if (Input.GetKeyDown(KeyCode.Comma))
             {
-                ToggleCursorAndMenu();
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true);
+                else ToggleCursorAndMenu(false);
             } 
         #elif UNITY_STANDALONE_WIN
             //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                ToggleCursorAndMenu();
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true);
+                else ToggleCursorAndMenu(false);
             } 
         #endif
     }
     
-    private void ToggleCursorAndMenu()
+    private void ToggleCursorAndMenu(bool turnOn)
     {
-        turnMenuOn = !turnMenuOn;
-        Cursor.lockState = turnMenuOn ? CursorLockMode.None : CursorLockMode.Locked;
-        ToggleMenu(turnMenuOn);
+        Cursor.lockState = turnOn ? CursorLockMode.None : CursorLockMode.Locked;
+        ToggleMenu(turnOn);
     }
 
     /// <summary>
@@ -218,7 +216,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         menu.SetActive(toggle);
         Cursor.visible = toggle;
-        inputEnabled = !toggle;
     }
 
     /// <summary>

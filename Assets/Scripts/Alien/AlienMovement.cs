@@ -48,8 +48,7 @@ public class AlienMovement : PlayerMovement
     {
         base.Update();
         if (!photonView.IsMine) return;
-
-        RotateTransformToSurfaceNormal();
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
 
         AlienJump();
     }
@@ -90,7 +89,8 @@ public class AlienMovement : PlayerMovement
         base.FixedUpdate();
 
         if (!photonView.IsMine) return;
-
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
+        
         RotateTransformToSurfaceNormal();
 
         XYMovement();

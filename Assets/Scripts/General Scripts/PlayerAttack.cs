@@ -77,6 +77,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private void Update()
     {
         if (!photonView.IsMine) return;
+        if (!gameObject.GetComponent<PlayerMovement>().inputEnabled) return;
 
         if (currTimeBetweenFiring <= currentWeapon.fireRate) currTimeBetweenFiring += Time.deltaTime;
 
