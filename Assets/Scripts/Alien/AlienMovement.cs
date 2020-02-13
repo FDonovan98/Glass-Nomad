@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-using System.Collections;
+using System.Collections.Generic;
 
 // Code initially based on code from here:
 // https://answers.unity.com/questions/155907/basic-movement-walking-on-walls.html
@@ -8,16 +8,20 @@ using System.Collections;
 [RequireComponent(typeof(Collider))]
 public class AlienMovement : PlayerMovement
 {
-    // Smoothing speed.
+    #region variable-declaration
+
+    // Smoothing speed of rotating to wall.
     public float lerpSpeed = 1;
-    public float gravConstant = 10;
-    private float gravity;
+
     // Char counts as grounded up to this distance from the ground.
     public float deltaGround = 0.1f;
+
     // Is the alien in contact with the ground.
     public bool isGrounded = false;
+
     // The range at which to detect a wall to stick to.
     public float jumpRange = 10;
+
     // Time it takes to transfer between two surfaces.
     public float transferTime = 1;
 
@@ -27,55 +31,38 @@ public class AlienMovement : PlayerMovement
     public float horizontalJumpMod = 1.0f;
     public float verticalJumpMod = 1.0f;
 
-    // The normal of the current surface.
-    private Vector3 surfaceNormal;
-    // The characters normal.
-    private Vector3 charNormal;
+    // Should the debug messages be displayed.
+    public bool debug = false;
 
-    // Flag for if the alien is currently jumping.
-    //private bool jumping;
-    // Current vertical speed.
-    //private float verticalSpeed;
+    #endregion
+
+    [SerializeField]
+    public float maxLength = 0;
 
     protected new void Start()
     {
         base.Start();
-        // Initialises the charNormal to the world normal.
-        charNormal = transform.up;
-        Debug.Log(distGround);
-        gravity = gravConstant;
-    }
-
-    protected void FixedUpdate()
-    {
-        // Calculate and apply force of gravity to char.
-        Vector3 gravForce = -gravity * charRigidbody.mass * charNormal;
-        charRigidbody.AddForce(gravForce);
     }
 
     protected new void Update()
-    {   
+    {
         base.Update();
-        Ray ray;
-        RaycastHit hit;
+        if (!photonView.IsMine) return;
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            // Creates a ray from the current position in the direction the char is facing.
-            ray = new Ray(transform.position, charCamera.transform.forward);
+        AlienJump();
+    }
 
-            // If there is a wall ahead then trigger JumpToWall script.
-            if (Physics.Raycast(ray, out hit, jumpRange) && hit.normal != this.transform.up)
-            {
-                StartCoroutine(JumpToWall(hit.point, hit.normal));
-            }
-        }
-
-        // When the jump key is pressed activate either a normal jump or a jump to a wall.
+    /// <summary>
+    /// Retrieves the jump input and determines whether to perform a normal
+    /// jump or a jump to a wall.
+    /// </summary>
+    private void AlienJump()
+    {
         if (Input.GetButton("Jump"))
         {
             jumpCharge += Time.deltaTime;
-            Debug.Log("Jump key pressed");
+            if (debug) Debug.Log("Jump key pressed");
         }
 
 
@@ -87,7 +74,7 @@ public class AlienMovement : PlayerMovement
             {
                 // Limits the jump multiplier.
                 jumpCharge = Mathf.Min(jumpCharge, jumpChargeTime);
-                Debug.Log("Applying Jump Force");
+                if (debug) Debug.Log("Applying Jump Force");
                 float jumpForce = jumpSpeed * jumpCharge;
                 charRigidbody.velocity += horizontalJumpMod * jumpForce * charCamera.transform.forward;
                 charRigidbody.velocity += verticalJumpMod * jumpForce * charNormal;
@@ -95,8 +82,109 @@ public class AlienMovement : PlayerMovement
                 jumpCharge = 0.0f;
             }
         }
+    }
+
+    protected new void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        if (!photonView.IsMine) return;
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
+        
+        RotateTransformToSurfaceNormal();
+
+        XYMovement();
+    }
+
+    /// <summary>
+    /// Retrieves the player's WASD input, translating the transform of the player.
+    /// Also multiplies the speed if the player is sprinting.
+    /// </summary>
+    private void XYMovement()
+    {
+        // Gets the horz and vert movement for char.
+        float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
+        float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
+
+        if (Input.GetAxisRaw("Sprint") != 0)
+        {
+            deltaX *= sprintSpeedMultiplier;
+            deltaZ *= sprintSpeedMultiplier;
+        }
+
+        transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
+    }
+
+    /// <summary>
+    /// Rotates the alien to the normal of the surface which the alien in on.
+    /// </summary>
+    private void RotateTransformToSurfaceNormal()
+    {
+        bool forwardRayHit = false;
+        Vector3 surfaceNormal = CalculateSurfaceNormal(ref forwardRayHit);
+        // Interpolate between the characters current normal and the surface normal.
+        //charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
+        // Debug.Log("Surface Normal: " + surfaceNormal);
+
+        // Vector2 startArc = new Vector2(charNormal.x, charNormal.y);
+        // Debug.Log("Start arc: " + startArc);
+
+        // Vector2 endArc = new Vector2(surfaceNormal.x, surfaceNormal.y);
+        // Debug.Log("End arc: " + endArc);
+
+        // Vector2 arcPoint = ArcLerp(startArc, endArc, lerpSpeed * Time.deltaTime);
+        // Debug.Log("Arc point: " + arcPoint);
+
+        // charNormal = new Vector3(arcPoint.x, arcPoint.y, charNormal.z);
+        // Debug.Log("Character normal: " + charNormal);
+
+        charNormal = surfaceNormal;
+
+        Quaternion targetRotation;
+        Vector3 charForward;
+
+        // // Get the direction the character faces.
+        // Vector3 charForward = Vector3.Cross(transform.InverseTransformDirection(transform.right), charNormal);
+        // Align the character to the surface normal while still looking forward.
+
+        if (forwardRayHit)
+        {
+            charForward = Vector3.Cross(transform.right, charNormal);
+        }
+        else
+        {
+            charForward = transform.forward;
+        }
+        
+        targetRotation = Quaternion.LookRotation(charForward, charNormal);  
+        
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+    }
+
+    private Vector2 ArcLerp(Vector2 startVector, Vector2 endVector, float angleStep)
+    {
+        startVector = startVector.normalized;
+        endVector = endVector.normalized;
+        float startX = startVector.x;
+        float startY  = startVector.y;
+        float targetX;
+        float targetY;
+        
+        float angle = Mathf.Acos(Vector2.Dot(startVector, endVector));
+        if (angle <= angleStep)
+        {
+            return endVector;
+        }
+
+        targetX = startX + startVector.magnitude * Mathf.Cos(angleStep);
+        targetY = startY + startVector.magnitude * Mathf.Sin(angleStep);
+
+        return new Vector2(-targetX, -targetY);
+    }
 
 
+    private Vector3 CalculateSurfaceNormal(ref bool forwardRayHit)
+    {
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
         Vector3[] testVectors = new Vector3 [6] 
@@ -111,12 +199,18 @@ public class AlienMovement : PlayerMovement
 
         Vector3 averageRayDirection = new Vector3(0, 0, 0);
         int ventCount = 0;
-        gravity = gravConstant;
+
+        RaycastHit hit;
 
         foreach (Vector3 element in testVectors)
         {
             if (Physics.Raycast(transform.position, element, out hit, distGround + deltaGround))
             {
+                if (element == transform.forward)
+                {
+                    forwardRayHit = true;
+                }
+
                 if (hit.transform.gameObject.tag == "Vent")
                 {
                     ventCount++;
@@ -126,7 +220,7 @@ public class AlienMovement : PlayerMovement
                 // Gravity is disabled and alien just sticks to the surface below it.
                 if (ventCount <= 2)
                 {
-                    averageRayDirection += hit.normal;
+                    averageRayDirection += hit.normal * ((distGround + deltaGround) - hit.distance);
                 }
                 else
                 {
@@ -141,71 +235,14 @@ public class AlienMovement : PlayerMovement
         if (averageRayDirection.magnitude > 0)
         {
             isGrounded = true;
-            surfaceNormal = averageRayDirection.normalized;
+            return averageRayDirection.normalized;
         }    
         else
         {
             // If the character isn't grounded resets surface normal.
             isGrounded = false;
-            surfaceNormal = Vector3.up;
+            return Vector3.up;
         }
 
-        // Interpolate between the characters current normal and the surface normal.
-        charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
-        // Get the direction the character faces.
-        Vector3 charForward = Vector3.Cross(transform.right, charNormal);
-        // Align the character to the surface normal while still looking forward.
-        Quaternion targetRotation = Quaternion.LookRotation(charForward, charNormal);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
-        
-
-        // Gets the horz and vert movement for char.
-        float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
-        float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
-
-        transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
-    }
-
-    IEnumerator JumpToWall(Vector3 point, Vector3 normal)
-    {
-        Debug.Log("JumpToWall");
-        // Enables the flag saying the char is jumping.
-        //jumping = true;
-
-        // Disables physics while jumping.
-        charRigidbody.isKinematic = true;
-        
-        // Gets the original position and rotation of char.
-        Vector3 originalPos = transform.position;
-        Quaternion originalRotation = charCamera.transform.rotation;
-
-        // Gets the point at which the function should give up control.
-        float finalGroundOffset = 0.5f;
-        Vector3 farPos = point + normal * (distGround + finalGroundOffset);
-
-        // Gets the char forward facing and the rotation at the far point
-        Vector3 charForward = charCamera.transform.forward;
-        Quaternion farRotation = Quaternion.LookRotation(charForward, normal);
-
-        // Interpolates between current position and target position for a second.
-        float timeElapsed = 0.0f;
-
-        do
-        {
-            timeElapsed += Time.deltaTime / transferTime;
-
-            transform.position = Vector3.Lerp(originalPos, farPos, timeElapsed);
-            transform.rotation = Quaternion.Slerp(originalRotation, farRotation, timeElapsed);
-            
-            yield return null; 
-
-        } while (timeElapsed < 1.0f);
-
-        // Update charNormal.
-        charNormal = normal;
-        // Re-enables physics.
-        charRigidbody.isKinematic = false;
-        // Signals the jump to the wall has finished.
-        //jumping = false;
     }
 }

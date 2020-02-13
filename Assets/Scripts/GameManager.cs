@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
@@ -9,43 +8,53 @@ using TMPro;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
-    [SerializeField] private string lobbySceneName = "SCN_Lobby"; // Used to change scene when we leave a room.
-    [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero; // Used to spawn the alien.
-    [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero; // Used to spawn the marines.
-    [SerializeField] private TMP_Dropdown resolutionDropdown = null; // Used to change the video resolution.
-    [SerializeField] private TMP_Dropdown qualityDropdown = null; // Used to change the video quality.
-    [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
-    public GameObject pauseMenu; // Used by PlayerMovement to access the pause menu gameobject.
-    private Resolution[] resolutions; // Used to retrieve all the available resolutions.
-    private Camera cam; // Used to change the FOV of the camera.
+    // Changes to this scene when we leave a room.
+    [SerializeField] private string lobbySceneName = "SCN_Lobby";
 
-    #region devtools
-    [Header("Developer Tools")]
-    [SerializeField] private bool singlePlayerMarine = false; // Used to test the marine player, in testing.
-    #endregion
+    // Spawn points for the alien and marines.
+    [SerializeField] private GameObject alienSpawnPoint = null;
+    [SerializeField] private GameObject marineSpawnPoint = null;
+
+    // Changes the video resolution.
+    [SerializeField] private TMP_Dropdown resolutionDropdown = null;
+
+    // Changes the video quality.
+    [SerializeField] private TMP_Dropdown qualityDropdown = null;
+
+    // Used to change the audio volume.
+    [SerializeField] private AudioMixer audioMixer = null;
+
+    // Used by PlayerMovement to access the pause menu gameobject.
+    public GameObject pauseMenu;
+
+    // Retrieves all the available resolutions.
+    private Resolution[] resolutions;
+
+    // Changes the FOV of the camera.
+    private Camera cam;
+
+    // Should we switch a marine to the alien, when the alien dies.
+    public bool switchToAlien = false;
 
     private void Start()
     {
-        // Dev tool
-        if (singlePlayerMarine)
-        {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
-            return;
-        }
-
         // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint, new Quaternion());
+            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint, new Quaternion());
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
         }
-        
-        Debug.Log(PhotonNetwork.CountOfPlayers.ToString() + " player(s) in game");
 
-        // Setting up the resolution options
+        SetupResolutionDropdown();
+
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+    }
+
+    private void SetupResolutionDropdown()
+    {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
@@ -67,7 +76,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         resolutionDropdown.value = currentResIndex;
         resolutionDropdown.RefreshShownValue();
         qualityDropdown.value = QualitySettings.GetQualityLevel();
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     public override void OnLeftRoom()
@@ -95,34 +103,41 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         Debug.LogFormat("{0} left the game room", other.NickName); // seen when other disconnects
     }
 
+    /// <summary>
+    /// Changes the model of the new master client, when the old one leaves.
+    /// </summary>
+    /// <param name="newMasterClient"></param>
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (switchToAlien)
         {
-            Debug.LogFormat("CHANGING MODEL");
-
-            GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject element in playerObjects)
+            if (PhotonNetwork.IsMasterClient)
             {
-                if (element.GetComponent<PhotonView>().IsMine)
+                Debug.LogFormat("CHANGING MODEL");
+
+                GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+                foreach (GameObject element in playerObjects)
                 {
-                    Vector3 playerPos = alienSpawnPoint;
-                    Quaternion playerRot = element.transform.rotation;
-                    string prefabName;
-
-                    if (element.GetComponent<AlienController>() != null)
+                    if (element.GetComponent<PhotonView>().IsMine)
                     {
-                        prefabName = "Marine (Cylinder)";
-                    }
-                    else
-                    {
-                        prefabName = "Alien (Cylinder)";
-                    }
+                        Vector3 playerPos = alienSpawnPoint.transform.position;
+                        Quaternion playerRot = element.transform.rotation;
+                        string prefabName;
 
-                    PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
-                    PhotonNetwork.Instantiate(prefabName, playerPos, playerRot);
+                        if (element.GetComponent<AlienController>() != null)
+                        {
+                            prefabName = "Marine (Cylinder)";
+                        }
+                        else
+                        {
+                            prefabName = "Alien (Cylinder)";
+                        }
 
-                    return;
+                        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+                        PhotonNetwork.Instantiate(prefabName, playerPos, playerRot);
+
+                        return;
+                    }
                 }
             }
         }

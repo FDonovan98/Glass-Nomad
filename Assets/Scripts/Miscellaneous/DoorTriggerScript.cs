@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using Photon.Pun;
 
-public class DoorTriggerScript : MonoBehaviourPunCallbacks
+public class DoorTriggerScript : TriggerInteractionScript
 {
+    // Plays the animation of the door opening.
     private Animator anim;
+
+    // Keeps track of whether the door is open or not.
     private bool isDoorOpen = false;
-    private float timeToOpen = 5f;
-    private float currentTime = 0;
 
     public bool GetDoorOpen() { return isDoorOpen; }
 
@@ -15,29 +15,12 @@ public class DoorTriggerScript : MonoBehaviourPunCallbacks
         anim = GetComponent<Animator>();
     }
 
-    private void OnTriggerEnter(Collider coll)
+    protected override void LeftTriggerArea()
     {
-        if (isDoorOpen) { return; } // if the door is already open,
-                                    // we don't need to open it again.
-
-        currentTime = 0f; // Starts the countdown timer until the door opens.
+        if (isDoorOpen) ChangeDoorState();
     }
 
-    private void OnTriggerStay(Collider coll)
-    {
-        if (Input.GetKey(KeyCode.E) && !isDoorOpen && coll.gameObject.tag == "Player")
-        {
-            currentTime += Time.deltaTime;
-            Debug.Log("Door progress: " + (currentTime / timeToOpen) * 100 + "%");
-
-            if (currentTime >= timeToOpen)
-            {
-                ChangeDoorState();
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider coll)
+    protected override void InteractionComplete(GameObject player)
     {
         ChangeDoorState();
     }

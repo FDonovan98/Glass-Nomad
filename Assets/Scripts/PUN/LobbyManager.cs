@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.UI;
+using System.Collections;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private string gameSceneName = "SCN_Blockout"; // Used to change scene when we are join a room.
-    [SerializeField] private GameObject controlPanel = null; // Used to show/hide the play button and input field.
-    [SerializeField] private GameObject progressLabel = null; // Used to display "Connecting..." to once the Connect() funtion is called.
-    [SerializeField] private GameObject playerItemPrefab = null; // Used to display the players in the lobby.
-    [SerializeField] private GameObject inLobbyPanel = null; // Used to display the lobby buttons when you join a room.
-    [SerializeField] private Transform playerListPanel = null; // Used to contain all the playeritem prefabs.
+    [SerializeField] private string gameSceneName = "SCN_Blockout"; // Changes scene when we are join a room.
+    [SerializeField] private GameObject controlPanel = null; // Shows/hides the play button and input field.
+    [SerializeField] private GameObject progressLabel = null; // Displays "Connecting..." to once the Connect() funtion is called.
+    [SerializeField] private GameObject playerItemPrefab = null; // Displays the players in the lobby.
+    [SerializeField] private GameObject inLobbyPanel = null; // Displays the lobby buttons when you join a room.
+    [SerializeField] private Transform playerListPanel = null; // Contains all the playeritem prefabs.
+    [SerializeField] private Image screenFader = null; // Fades the screen to black, when entering the game.
 
     private const string playerNamePrefKey = "Player Name";
-    private byte maxPlayersPerRoom = 5; // Used to set a limit to the number of players in a room.
-    private string gameVersion = "1"; // Used to separate users from each other by gameVersion.
-    private bool isConnection = false; // Used to stop us from immediately joining the room if we leave it.
+    private byte maxPlayersPerRoom = 5; // Sets a limit to the number of players in a room.
+    private string gameVersion = "1"; // Separates users from each other by gameVersion.
+    private bool isConnection = false; // Stop us from immediately joining the room if we leave it.
     
     private void Awake()
     {
@@ -59,8 +61,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
         }
-
-        OnLoadGameClick();
     }
 
     public override void OnConnectedToMaster()
@@ -143,6 +143,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.LogFormat("You are the master client");
+            inLobbyPanel.transform.GetChild(0).gameObject.SetActive(true);
         }
 
         UpdatePlayerList();
@@ -173,8 +174,24 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnLoadGameClick()
     {
+        // Fade screen to black and change the scene.
+        screenFader.gameObject.SetActive(true);
+        StartCoroutine(FadeScreenToBlack());
+    }
+
+    private IEnumerator FadeScreenToBlack()
+    {
+        for (float t = 0; t <= 1f; t += Time.deltaTime)
+        {
+            screenFader.color = Color.Lerp(Color.clear, Color.black, t / 1f);
+            yield return null;
+        }
+        screenFader.color = Color.black;
+
+        // Change scene.
         if (PhotonNetwork.IsMasterClient)
         {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.LoadLevel(gameSceneName);
         }
     }

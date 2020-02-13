@@ -1,116 +1,195 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
-    [SerializeField] public float movementSpeed = 10; // Used to control the movement movementSpeed of the player.
-    [SerializeField] protected int mouseSensitivity = 1; // Used to control the sensitivity of the mouse.
-    [SerializeField] protected float jumpSpeed = 10; // Used to control the jumping force of the player.
-    [SerializeField] protected float yRotationClamp = 30; // Used to stop the player looking 'underneath' themselves.
-    [SerializeField] private GameObject menu = null; // Used to hide and show the menu options.
+    // The movement of the player.
+    [SerializeField] 
+    public float movementSpeed = 10;     
+    
+    // The sensitivity of the mouse.
+    [SerializeField] 
+    protected int mouseSensitivity = 1; 
 
-    protected Rigidbody charRigidbody; // Used to apply physics to the player, e.g. movement.
-    protected float distGround; // Used for the ground raycast.
+    // The jumping force of the player.
+    [SerializeField] 
+    protected float jumpSpeed = 10; 
+
+    // Stops the player looking 'underneath' themselves.
+    [SerializeField] 
+    protected float yRotationClamp = 30; 
+
+    // Multiplies the players current speed, when sprinting.
+    [SerializeField] 
+    protected float sprintSpeedMultiplier = 1.5f;
+
+    // Hides and shows the menu options.
+    [SerializeField] 
+    private GameObject menu = null; 
+
+    // Applies physics to the player, e.g. movement.
+    protected Rigidbody charRigidbody; 
+
+    // Used for the ground raycast.
+    protected float distGround; 
+
+    // The characters collider.
     protected Collider charCollider;
-    protected Camera charCamera; // Used to disable/enable the camera so that we only control our local player's camera.
-    protected Vector3 mouseRotationInput; // Used to store rotation of the player and the camera.
+
+    // Disables/enables the camera so that we only control our local player's camera.
+    protected Camera charCamera; 
+    
+    // Stores rotation of the player and the camera.
+    protected Vector3 mouseRotationInput; 
+
+    // How far off the ground counts as 'grounded'.
     protected float groundDelta = 1.0f;
-    protected float cameraRotation = 0f;
-    protected Quaternion charCamTarRot;
-    protected bool inputEnabled = true;
+
+    // The x-axis rotation of the players camera.
+    protected Quaternion charCameraTargetRotation;
+
+    // Enables/disables the players input.
+    public bool inputEnabled = true;
+
+    // The characters normal.
+    public Vector3 charNormal = Vector3.up;
+
+    // The gravity scale that's applied to the player.
+    public float gravity = -10;
+
+    // How much force should be applied randomly to player upon death.
+    [SerializeField] private float deathForce = 150f;
 
     protected void Start()
     {
-        gameObject.name = photonView.Owner.NickName; // Sets the gameobject name to the player's username.
-        charCamera = gameObject.GetComponentInChildren<Camera>(); // Gets the camera child on the player.
-        charCollider = gameObject.GetComponent<CapsuleCollider>();
-        distGround =  charCollider.bounds.extents.y;
-        Debug.Log("distGround: " + distGround);
-        charRigidbody = gameObject.GetComponent<Rigidbody>(); // Gets the rigidbody component of the player.
-        Cursor.lockState = CursorLockMode.Locked;   //Cursor starts off locked to the center of the game window and invisible
+        InitialiseGlobals();
 
         if (!photonView.IsMine)
         {
-            charCamera.GetComponent<Camera>().enabled = false; // Disables the camera on every client that isn't our own.
+            // Disables the camera on every client that isn't our own.
+            charCamera.GetComponent<AudioListener>().enabled = false; // Disables the audio listener on every client that isn't our own.
+            charCamera.GetComponent<Camera>().enabled = false; 
         }
 
-        charCamTarRot = charCamera.transform.localRotation;
+        // Forces every player's mouse to the center of the window and hides it when the player is created.
+        Cursor.lockState = CursorLockMode.Locked; 
+        Cursor.visible = false;
+    }
+
+    private void InitialiseGlobals()
+    {
+        // Sets the gameobject name to the player's username.
+        gameObject.name = photonView.Owner.NickName; 
+
+        charCamera = gameObject.GetComponentInChildren<Camera>(); 
+        charCollider = gameObject.GetComponent<Collider>();
+        distGround =  charCollider.bounds.extents.y;
+        charRigidbody = gameObject.GetComponent<Rigidbody>(); 
 
         menu = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().pauseMenu;
-        Cursor.lockState = CursorLockMode.Locked; // Forces every player's mouse to the center of the window and hides it when the player is created
-        Cursor.visible = false;
+
+        charCameraTargetRotation = charCamera.transform.localRotation;
     }
 
     protected void Update()
     {
-#if UNITY_EDITOR
-        //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
-        if (Input.GetKeyDown(KeyCode.Comma))
-        {
-            if (Cursor.lockState == CursorLockMode.Locked)
-            {
-                ToggleMenu(true);
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else if (Cursor.lockState == CursorLockMode.None)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                ToggleMenu(false);
-            }
-        }
-#elif UNITY_STANDALONE_WIN
-        //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (menu.activeSelf) // Menu is open, so close it.
-            {
-                ToggleMenu(false);
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else // Menu is closed, so open it.
-            {
-                ToggleMenu(true);
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
-#endif
+        if (!photonView.IsMine) return;
 
+        HandlePauseMenu();
 
-        if (!inputEnabled) { return; } // If input is enabled, ignore all of the below.
+        // If input is enabled, ignore player and camera rotation.
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
 
-        MouseInput(); // Gets player movement
+        HandlePlayerRotation();
+    }
+
+    /// <summary>
+    /// Rotates the players gameobject around the y-axis, and the players camera
+    /// around the x-axis.
+    /// </summary>
+    protected void FixedUpdate()
+    {
+        if (!photonView.IsMine) return;
+
+        // Calculate and apply force of gravity to char.
+        Vector3 gravForce = gravity * charRigidbody.mass * charNormal;
+        charRigidbody.AddForce(gravForce);
+    }
+
+    private void HandlePlayerRotation()
+    {
+        Vector3 mouseRotationInput = GetMouseInput(); 
 
         // Player rotation
         Vector3 playerRotation = new Vector3(0, mouseRotationInput.x, 0) * mouseSensitivity;
         transform.Rotate(playerRotation);
 
-        // Camera rotation - means that the player can't look underneath themself.
-        cameraRotation = -mouseRotationInput.y * mouseSensitivity;
-
-        // Modifies target from current direction to desired direction.
-        charCamTarRot *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
-
-        charCamTarRot = ClampRotationAroundXAxis(charCamTarRot);
+        // Camera rotation
+        float cameraRotation = -mouseRotationInput.y * mouseSensitivity;
+        charCameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
+        charCameraTargetRotation = ClampRotationAroundXAxis(charCameraTargetRotation);
 
         // Use of localRotation allows movement around y axis.
-        charCamera.transform.localRotation = charCamTarRot;
+        charCamera.transform.localRotation = charCameraTargetRotation;
     }
 
-    protected virtual void MouseInput()
-    {        
-        // Mouse rotation
+    /// <summary>
+    /// Retrieves the platform specific input for toggling the pause menu.
+    /// </summary>
+    private void HandlePauseMenu()
+    {
+        #if UNITY_EDITOR
+            //Press the Comma key (,) to unlock the cursor. If it's unlocked, lock it again
+            if (Input.GetKeyDown(KeyCode.Comma))
+            {
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true);
+                else ToggleCursorAndMenu(false);
+            } 
+        #elif UNITY_STANDALONE_WIN
+            //Press the Escape key to unlock the cursor. If it's unlocked, lock it again
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true);
+                else ToggleCursorAndMenu(false);
+            } 
+        #endif
+    }
+    
+    private void ToggleCursorAndMenu(bool turnOn)
+    {
+        Cursor.lockState = turnOn ? CursorLockMode.None : CursorLockMode.Locked;
+        ToggleMenu(turnOn);
+    }
+
+    /// <summary>
+    /// Retrieves the x and y input of the mouse and returns it as a Vector3.
+    /// </summary>
+    /// <returns>The mouse input as a Vector3.</returns>
+    protected Vector3 GetMouseInput()
+    {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-        mouseRotationInput = new Vector3(mouseX, mouseY, 0);
+        return new Vector3(mouseX, mouseY, 0);
     }
 
-    protected bool IsGrounded(Vector3 dirOfRay)
+    /// <summary>
+    /// Sends a raycast from 'origin' in the direction of 'dirOfRay'.
+    /// Predominantly used to check if the player is on the floor.
+    /// </summary>
+    /// <param name="origin">The starting position for the raycast.</param>
+    /// <param name="dirOfRay">The direction of the raycast.</param>
+    /// <returns>True if the player is grounded, false if not.</returns>
+    protected bool IsGrounded(Vector3 origin, Vector3 dirOfRay)
     {
-        // Sends a raycast directing down, checking for a floor.
-        return Physics.Raycast(transform.position, dirOfRay, distGround + groundDelta);
+        return Physics.Raycast(origin, dirOfRay, distGround + groundDelta);
     }
 
+    /// <summary>
+    /// Clamps the given quaternion within the value of the 'yRotationClamp' variable.
+    /// </summary>
+    /// <param name="q">The quaternion to clamp.</param>
+    /// <returns>The clamped quaternion.</returns>
     private Quaternion ClampRotationAroundXAxis(Quaternion q)
     {
         // Quaternion is 4x4 matrix.
@@ -129,10 +208,44 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         return q;
     }
 
+    /// <summary>
+    /// Toggles the visibility of the pause menu.
+    /// </summary>
+    /// <param name="toggle">Whether to turn the pause menu on or off.</param>
     private void ToggleMenu(bool toggle)
     {
         menu.SetActive(toggle);
         Cursor.visible = toggle;
-        inputEnabled = !toggle;
+    }
+
+    /// <summary>
+    /// Disables the player's input, enables rotations in the rigidbody, adds a random force to the
+    /// rigidbody, and starts the 'Death' coroutine.
+    /// </summary>
+    public void Ragdoll()
+    {
+        inputEnabled = false;
+        charRigidbody.constraints = RigidbodyConstraints.None;
+        charRigidbody.AddForceAtPosition(RandomForce(deathForce), transform.position);
+        StartCoroutine(Death(gameObject));
+    }
+
+    /// <summary>
+    /// Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.
+    /// </summary>
+    /// <param name="velocity">The maximum random force.</param>
+    /// <returns>Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.</returns>
+    private Vector3 RandomForce(float velocity)
+    {
+        return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
+    }
+
+    private IEnumerator Death(GameObject player)
+    {
+        yield return new WaitForSeconds(3f);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (PhotonNetwork.IsMasterClient) PhotonNetwork.Destroy(player);
+        if (photonView.IsMine) PhotonNetwork.LeaveRoom();
     }
 }

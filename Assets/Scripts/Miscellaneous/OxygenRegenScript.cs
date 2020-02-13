@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OxygenRegenScript : MonoBehaviour
 {
@@ -8,16 +6,22 @@ public class OxygenRegenScript : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        PlayerAttack playerAttack;
+
         // Layer 8 is MarineCharacter. Harry made me type this.
-        if (other.gameObject.layer == 8 && other.CompareTag("Player"))
+        if (other.gameObject.layer == 8 && other.CompareTag("Player")) // Marine regen
         {
-            MarineController marineController = other.GetComponent<MarineController>();
-            marineController.oxygenAmountSeconds += marineController.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime;
-            marineController.oxygenAmountSeconds += Time.deltaTime;
-            if (marineController.oxygenAmountSeconds > marineController.maxOxygenAmountSeconds)
-            {
-                marineController.oxygenAmountSeconds = marineController.maxOxygenAmountSeconds;
-            }
+            playerAttack = other.GetComponent<MarineController>().marineAttack;
+        }
+        else // Alien regen
+        {
+            playerAttack = other.GetComponent<AlienController>().alienAttack;
+        }
+
+        if (playerAttack != null)
+        {
+            float oxygenIncrease = (playerAttack.resourcesScript.maxOxygenAmountSeconds * PercentageOxygenRegenPerSecond * Time.deltaTime) + Time.deltaTime;
+            playerAttack.resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, oxygenIncrease);
         }
     }
 }
