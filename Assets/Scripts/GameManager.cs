@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using Photon.Pun;
@@ -21,6 +22,12 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     // Changes the video quality.
     [SerializeField] private TMP_Dropdown qualityDropdown = null;
 
+    // Changes the fullscreen mode.
+    [SerializeField] private Toggle fullscreenToggle = null;
+
+    // Changes the FOV of the camera.
+    [SerializeField] private Slider fovSlider = null;
+
     // Used to change the audio volume.
     [SerializeField] private AudioMixer audioMixer = null;
 
@@ -29,9 +36,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     // Retrieves all the available resolutions.
     private Resolution[] resolutions;
-
-    // Changes the FOV of the camera.
-    private Camera cam;
 
     // Should we switch a marine to the alien, when the alien dies.
     public bool switchToAlien = false;
@@ -50,7 +54,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
         SetupResolutionDropdown();
 
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     private void SetupResolutionDropdown()
@@ -71,11 +74,12 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
                 currentResIndex = i;
             }
         }
-
+        
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResIndex;
-        resolutionDropdown.RefreshShownValue();
-        qualityDropdown.value = QualitySettings.GetQualityLevel();
+        resolutionDropdown.SetValueWithoutNotify(currentResIndex);
+        qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
+        fullscreenToggle.isOn = Screen.fullScreen;
+        fovSlider.value = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().fieldOfView;
     }
 
     public override void OnLeftRoom()
@@ -175,7 +179,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public void SetFOV(float fov)
     {
-        cam.fieldOfView = fov;
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().fieldOfView = fov;
     }
 
     #endregion
