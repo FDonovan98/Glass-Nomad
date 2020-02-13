@@ -4,6 +4,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -14,6 +15,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject inLobbyPanel = null; // Displays the lobby buttons when you join a room.
     [SerializeField] private Transform playerListPanel = null; // Contains all the playeritem prefabs.
     [SerializeField] private Image screenFader = null; // Fades the screen to black, when entering the game.
+    [SerializeField] private GameObject title = null; // Disables the title when in a lobby.
+    [SerializeField] private GameObject loadoutDropdowns = null; // Displays the loadout dropdowns.
 
     private const string playerNamePrefKey = "Player Name";
     private byte maxPlayersPerRoom = 5; // Sets a limit to the number of players in a room.
@@ -29,8 +32,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     // Makes sure the correct elements of the UI are visible.
     private void Start()
     {
-        progressLabel.SetActive(false);
-        controlPanel.SetActive(true);
+        ToggleMenuItems(false);
     }
 
     public void Connect()
@@ -42,8 +44,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
 
         // Switches which UI elements are visable.
-        progressLabel.SetActive(true);
-        controlPanel.SetActive(false);
+        ToggleMenuItems(true);
 
         // The button has been pressed so we want the user to connect to a room.
         isConnection = true;
@@ -77,8 +78,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.LogWarningFormat("Disconnected with reason:" + cause);
-        progressLabel.SetActive(false);
-        controlPanel.SetActive(true);
+        ToggleMenuItems(false);
+        inLobbyPanel.SetActive(false);
+        loadoutDropdowns.SetActive(false);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -93,7 +95,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log("Room joined successfully");
         progressLabel.SetActive(false);
         inLobbyPanel.SetActive(true);
-
+        loadoutDropdowns.SetActive(true);
 
         if (!PhotonNetwork.IsMasterClient)
         {
@@ -124,8 +126,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         isConnection = false;
 
         inLobbyPanel.SetActive(false);
-        progressLabel.SetActive(false);
-        controlPanel.SetActive(true);
+        loadoutDropdowns.SetActive(false);
+        ToggleMenuItems(false);
 
         // Delete all player items from the player list panel.
         for (int i = 0; i < playerListPanel.childCount; i++)
@@ -175,12 +177,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void OnLoadGameClick()
     {
         // Fade screen to black and change the scene.
-        screenFader.gameObject.SetActive(true);
-        StartCoroutine(FadeScreenToBlack());
+        photonView.RPC("MasterClientClickedLoadGame", RpcTarget.All);
     }
 
     private IEnumerator FadeScreenToBlack()
     {
+        screenFader.gameObject.SetActive(true);
         for (float t = 0; t <= 1f; t += Time.deltaTime)
         {
             screenFader.color = Color.Lerp(Color.clear, Color.black, t / 1f);
@@ -188,12 +190,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
         screenFader.color = Color.black;
 
-        // Change scene.
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.LoadLevel(gameSceneName);
-        }
+        // Close room, call the RPC, and change the scene.
+        if (PhotonNetwork.IsMasterClient) ScreenFadeFinished();
     }
 
     public void OnQuitClick()
@@ -203,5 +201,32 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 #else
         Application.Quit();
 #endif
+    }
+
+    private void ToggleMenuItems(bool toggle)
+    {
+        progressLabel.SetActive(toggle);
+        controlPanel.SetActive(!toggle);
+        title.SetActive(!toggle);
+    }    
+
+    [PunRPC]
+    private void MasterClientClickedLoadGame()
+    {
+        PickAlien();
+        
+        // Fade screen.
+        StartCoroutine(FadeScreenToBlack());
+    }
+
+    private void PickAlien()
+    {
+        Debug.LogError("The method or operation is not implemented.");
+    }
+
+    private void ScreenFadeFinished()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.LoadLevel(gameSceneName);
     }
 }

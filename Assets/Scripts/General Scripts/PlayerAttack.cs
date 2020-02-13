@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using System.Collections;
 using System;
+using System.Linq;
 
 public class PlayerAttack : MonoBehaviourPunCallbacks
 {
@@ -63,15 +64,37 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // The muzzle flash will appear at the same spot as the flashlight
         flashlight = gameObject.GetComponentInChildren<Light>();
 
+        AllocatePlayersItems();
+
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
 
         weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
         weaponAudio.clip = currentWeapon.weaponSound;
+        currentWeapon.bulletsInCurrentMag = currentWeapon.magSize;
         currentWeapon.magsLeft = currentWeapon.magCount;
         currTimeBetweenFiring = currentWeapon.fireRate;
 
         resourcesScript.hudCanvas.UpdateUI(GetComponent<PlayerAttack>());
+    }
+
+    private void AllocatePlayersItems()
+    {
+        BaseObject[] baseObjects = Resources.LoadAll("Items", typeof(BaseObject)).Cast<BaseObject>().ToArray();
+        string primary = PlayerPrefs.GetString("Primary");
+        string secondary = PlayerPrefs.GetString("Secondary");
+        string armour = PlayerPrefs.GetString("Armour");
+        
+        foreach (BaseObject obj in baseObjects)
+        {
+            if (obj.name == primary)
+            {
+
+            }
+        }
+
+        BaseObject prim = baseObjects.Where(a => a.name == primary).FirstOrDefault();
+        currentWeapon = (Weapon)prim;
     }
 
     private void Update()
