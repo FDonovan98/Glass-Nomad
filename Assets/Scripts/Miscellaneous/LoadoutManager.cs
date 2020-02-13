@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class LoadoutManager : MonoBehaviour
 {
@@ -37,9 +38,7 @@ public class LoadoutManager : MonoBehaviour
 
     private void LoadAllItems()
     {
-        UnityEngine.Object[] objs = Resources.LoadAll("Items", typeof(BaseObject));
-        BaseObject[] baseObjects = new BaseObject[objs.Length]; 
-        objs.CopyTo(baseObjects, 0);
+        BaseObject[] baseObjects = Resources.LoadAll("Items", typeof(BaseObject)).Cast<BaseObject>().ToArray();
         AddItemsToLists(baseObjects);
 
         if (debug) Debug.Log(baseObjects.Length + " items found in the Resources/Items folder.");
