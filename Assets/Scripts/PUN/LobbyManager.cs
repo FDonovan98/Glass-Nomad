@@ -4,6 +4,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -78,6 +79,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         Debug.LogWarningFormat("Disconnected with reason:" + cause);
         ToggleMenuItems(false);
+        inLobbyPanel.SetActive(false);
+        loadoutDropdowns.SetActive(false);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -174,23 +177,21 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void OnLoadGameClick()
     {
         // Fade screen to black and change the scene.
-        screenFader.gameObject.SetActive(true);
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC("MasterClientClickedLoadGame", RpcTarget.All);
-        }
+        photonView.RPC("MasterClientClickedLoadGame", RpcTarget.All);
     }
 
     private IEnumerator FadeScreenToBlack()
     {
+        screenFader.gameObject.SetActive(true);
         for (float t = 0; t <= 1f; t += Time.deltaTime)
         {
             screenFader.color = Color.Lerp(Color.clear, Color.black, t / 1f);
             yield return null;
         }
         screenFader.color = Color.black;
-        ScreenFadeFinished();
+
+        // Close room, call the RPC, and change the scene.
+        if (PhotonNetwork.IsMasterClient) ScreenFadeFinished();
     }
 
     public void OnQuitClick()
@@ -212,19 +213,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void MasterClientClickedLoadGame()
     {
-        // pick alien?
-
-        // fade screen
+        PickAlien();
+        
+        // Fade screen.
         StartCoroutine(FadeScreenToBlack());
+    }
+
+    private void PickAlien()
+    {
+        Debug.LogError("The method or operation is not implemented.");
     }
 
     private void ScreenFadeFinished()
     {
-        // Close room, call the RPC, and change the scene.
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.LoadLevel(gameSceneName);
-        }
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.LoadLevel(gameSceneName);
     }
 }
