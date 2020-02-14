@@ -44,15 +44,30 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     private void Start()
     {
-        // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                if (player.NickName.StartsWith("ALI_"))
+                {
+                    PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
+                }
+                else if (player.NickName.StartsWith("MAR_"))
+                {
+                    PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
+                }
+            }
         }
-        else
-        {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
-        }
+
+        // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
+        // if (PhotonNetwork.IsMasterClient)
+        // {
+        //     PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
+        // }
+        // else
+        // {
+        //     PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
+        // }
 
         settingsPath = Application.persistentDataPath + "/game_data";
         SetupResolutionDropdown();

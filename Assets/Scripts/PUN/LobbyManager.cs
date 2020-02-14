@@ -48,6 +48,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         // The button has been pressed so we want the user to connect to a room.
         isConnection = true;
+
+        PhotonNetwork.NickName = "MAR_" + PhotonNetwork.NickName;
         
         // Checks if the client is aleady connected
         if (PhotonNetwork.IsConnected)
@@ -101,7 +103,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             inLobbyPanel.transform.GetChild(0).gameObject.SetActive(false);
         }
-
+        else
+        {
+            // Master is initialised as the Alien.
+            PhotonNetwork.NickName = PhotonNetwork.NickName.Replace("MAR", "ALI");
+        }
 
         UpdatePlayerList();
     }
@@ -161,15 +167,25 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             GameObject go = Instantiate(playerItemPrefab, playerListPanel);
+            go.GetComponent<Button>().onClick.AddListener(() => photonView.RPC("OnAlienChanged", RpcTarget.All));
             if (player.IsMasterClient)
             {
                 Debug.Log("MASTER IN ROOM:: " + player.NickName);
-                go.GetComponentInChildren<TMP_Text>().text = "Room owner: " + player.NickName;
+                go.GetComponentInChildren<TMP_Text>().text = "Room owner: " + player.NickName.Substring(4);
             }
             else
             {
                 Debug.Log("PLAYER IN ROOM:: " + player.NickName);
-                go.GetComponentInChildren<TMP_Text>().text = player.NickName;
+                go.GetComponentInChildren<TMP_Text>().text = player.NickName.Substring(4);
+            }
+
+            if (go.GetComponentInChildren<TMP_Text>().text.StartsWith("ALI"))
+            {
+                go.GetComponent<Image>().color = Color.green;
+            }
+            else
+            {
+                go.GetComponent<Image>().color = Color.white;
             }
         }
     }
@@ -212,21 +228,34 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     [PunRPC]
     private void MasterClientClickedLoadGame()
-    {
-        PickAlien();
-        
+    {        
         // Fade screen.
         StartCoroutine(FadeScreenToBlack());
-    }
-
-    private void PickAlien()
-    {
-        Debug.LogError("The method or operation is not implemented.");
     }
 
     private void ScreenFadeFinished()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel(gameSceneName);
+    }
+
+    [PunRPC]
+    private void OnAlienChanged()
+    {
+        // GameObject newAlien;
+        // // Find the current alien and change it for a marine.
+        // foreach (Player player in PhotonNetwork.PlayerList)
+        // {
+        //     if (player.NickName.StartsWith("ALI"))
+        //     {
+        //         player.NickName = player.NickName.Replace("ALI", "MAR");
+        //         break;
+        //     }
+        // }
+
+        // // Change the desired marine to an alien. 
+        // newAlien.GetComponent<TMP_Text>().text = newAlien.GetComponent<TMP_Text>().text.Replace("MAR", "ALI");
+        // Debug.Log("Alien changed to: " + newAlien.GetComponent<TMP_Text>().text.Replace("ALI_", "").Replace("Room owner: ", ""));
+        // UpdatePlayerList();
     }
 }
