@@ -7,6 +7,11 @@ public class PlayersInLobby : MonoBehaviour
 {
     public List<PlayerInfo> playerInfos = new List<PlayerInfo>();
 
+    private void Start()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     public string[] GetPlayerNames()
     {
         return (from player in playerInfos select player.name).ToArray();

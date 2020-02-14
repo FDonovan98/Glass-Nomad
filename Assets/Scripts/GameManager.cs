@@ -6,6 +6,8 @@ using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using System;
+using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
@@ -44,33 +46,23 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            foreach (Player player in PhotonNetwork.PlayerList)
-            {
-                if (player.NickName.StartsWith("ALI_"))
-                {
-                    PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
-                }
-                else if (player.NickName.StartsWith("MAR_"))
-                {
-                    PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
-                }
-            }
-        }
-
-        // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
-        // if (PhotonNetwork.IsMasterClient)
-        // {
-        //     PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
-        // }
-        // else
-        // {
-        //     PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
-        // }
+        SpawnLocalPlayer();
 
         settingsPath = Application.persistentDataPath + "/game_data";
         SetupResolutionDropdown();
+    }
+
+    private void SpawnLocalPlayer()
+    {
+        PlayersInLobby lobbyRoom = GameObject.Find("Lobby").GetComponent<PlayersInLobby>();
+        if (lobbyRoom.IsPlayerAlien(PhotonNetwork.NickName))
+        {
+            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
+        }
+        else
+        {
+            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
+        }
     }
 
     private void SetupResolutionDropdown()
