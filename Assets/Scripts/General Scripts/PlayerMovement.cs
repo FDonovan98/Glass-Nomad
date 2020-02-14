@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     public bool inputEnabled = true;
 
     // The characters normal.
-    public Vector3 charNormal = Vector3.up;
+    public Vector3 charNormal;
 
     // The gravity scale that's applied to the player.
     public float gravity = -100;
@@ -81,6 +81,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     private void InitialiseGlobals()
     {
+        charNormal = Vector3.up;
         // Sets the gameobject name to the player's username.
         gameObject.name = photonView.Owner.NickName; 
 
@@ -116,7 +117,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Calculate and apply force of gravity to char.
         gravForce = gravity * charNormal;
-        //charRigidbody.velocity -= transform.TransformDirection(new Vector3(0.0f, -gravity, 0.0f)) / 50;
+
         charRigidbody.AddForce(gravForce, ForceMode.Acceleration);
     }
 

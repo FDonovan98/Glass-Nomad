@@ -34,16 +34,16 @@ public class MarineMovement : PlayerMovement
         }
 
         if (debug) Debugging();
-
-
-        // Player movement
-        charRigidbody.velocity = transform.TransformDirection(GetPlayerInput());
     }
 
     protected new void FixedUpdate()
     {
-        if (!photonView.IsMine) return;
         base.FixedUpdate();
+        if (!photonView.IsMine) return;
+
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
+        // Player movement
+        charRigidbody.velocity = transform.TransformDirection(GetPlayerInput());
     }
 
     /// <summary>
