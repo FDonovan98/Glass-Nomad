@@ -131,7 +131,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.LogFormat("You are the master client");
+            photonView.RPC("NewPlayerEnteredRoom", RpcTarget.All, lobbyRoom.GetPlayerNames(), lobbyRoom.GetPlayerBools());
         }
 
         UpdatePlayerList();
@@ -152,6 +152,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             Destroy(playerListPanel.GetChild(i).gameObject);
         }
+
+        lobbyRoom.ReconstructList(new string[] {}, new bool[] {});
     }
 
     public override void OnPlayerLeftRoom(Player other)
@@ -179,17 +181,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             GameObject go = Instantiate(playerItemPrefab, playerListPanel);
 
-            // Add the OnAlienChanged function to the OnClick event on the button.
-            go.GetComponent<Button>().onClick.AddListener(() => photonView.RPC("OnAlienChanged",RpcTarget.All, lobbyRoom.GetPlayerNames(), lobbyRoom.GetPlayerBools(), go.GetComponentInChildren<TMP_Text>().text));
+            if (PhotonNetwork.IsMasterClient)
+            {
+                // Add the OnAlienChanged function to the OnClick event on the button.
+                go.GetComponent<Button>().onClick.AddListener(() => photonView.RPC("OnAlienChanged", RpcTarget.All, lobbyRoom.GetPlayerNames(), lobbyRoom.GetPlayerBools(), go.GetComponentInChildren<TMP_Text>().text));
+            }
 
             if (player.IsMasterClient)
             {
-                Debug.Log("MASTER IN ROOM:: " + player.NickName);
                 go.GetComponentInChildren<TMP_Text>().text = "Room owner: " + player.NickName;
             }
             else
             {
-                Debug.Log("PLAYER IN ROOM:: " + player.NickName);
                 go.GetComponentInChildren<TMP_Text>().text = player.NickName;
             }
 
@@ -258,6 +261,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         lobbyRoom.ReconstructList(names, bools);
         lobbyRoom.AlienChanged(newAlien);
+        UpdatePlayerList();
+    }
+
+    [PunRPC]
+    private void NewPlayerEnteredRoom(string[] names, bool[] bools)
+    {
+        lobbyRoom.ReconstructList(names, bools);
         UpdatePlayerList();
     }
 }
