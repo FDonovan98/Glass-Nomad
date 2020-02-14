@@ -43,7 +43,7 @@ public class MarineMovement : PlayerMovement
 
         if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
         // Player movement
-        charRigidbody.velocity = transform.TransformDirection(GetPlayerInput());
+        charRigidbody.AddForce(transform.TransformDirection(GetPlayerInput()), ForceMode.Acceleration);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class MarineMovement : PlayerMovement
         // Jump and ground detection
         if (IsGrounded(transform.position, -Vector3.up) && Input.GetKeyDown(KeyCode.Space))
         {
-            charRigidbody.velocity += new Vector3(0, jumpSpeed, 0);
+            y = jumpSpeed;
         }
         else
         {
@@ -73,7 +73,7 @@ public class MarineMovement : PlayerMovement
             z *= sprintSpeedMultiplier;
         }   
 
-        return new Vector3(x, charRigidbody.velocity.y, z);
+        return new Vector3(x, y, z);
     }
 
     #region stairs
