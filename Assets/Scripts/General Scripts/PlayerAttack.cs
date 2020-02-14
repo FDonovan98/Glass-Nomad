@@ -46,6 +46,9 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     // Spawned when a bullet hits a wall.
     public GameObject bulletHolePrefab;
 
+    // Name for the weapon of the alien.
+    private string alienWeapon = "Claws";
+
     #endregion
 
     /// <summary>
@@ -84,17 +87,20 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         string primary = PlayerPrefs.GetString("Primary");
         string secondary = PlayerPrefs.GetString("Secondary");
         string armour = PlayerPrefs.GetString("Armour");
-        
-        foreach (BaseObject obj in baseObjects)
+
+        //Layer 8 is MarineCharacter
+        if (gameObject.layer == 8)
         {
-            if (obj.name == primary)
-            {
-
-            }
+            BaseObject prim = baseObjects.Where(a => a.name == primary).FirstOrDefault();
+            currentWeapon = (Weapon)prim;
         }
-
-        BaseObject prim = baseObjects.Where(a => a.name == primary).FirstOrDefault();
-        currentWeapon = (Weapon)prim;
+        //Layer 9 is AlienCharacter
+        //Currently bandage fix because couldn't immediately think of a better solution
+        else if (gameObject.layer == 9)
+        {
+            BaseObject prim = baseObjects.Where(a => a.name == alienWeapon).FirstOrDefault();
+            currentWeapon = (Weapon)prim;
+        }
     }
 
     private void Update()
