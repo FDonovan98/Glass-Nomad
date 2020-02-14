@@ -8,6 +8,8 @@ using System;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
+    #region variable-declarations
+
     [SerializeField] private string gameSceneName = "SCN_Blockout"; // Changes scene when we are join a room.
     [SerializeField] private GameObject controlPanel = null; // Shows/hides the play button and input field.
     [SerializeField] private GameObject progressLabel = null; // Displays "Connecting..." to once the Connect() funtion is called.
@@ -22,7 +24,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private byte maxPlayersPerRoom = 5; // Sets a limit to the number of players in a room.
     private string gameVersion = "1"; // Separates users from each other by gameVersion.
     private bool isConnection = false; // Stop us from immediately joining the room if we leave it.
+
+    #endregion
     
+    public PlayersInLobby lobbyRoom = null;
+
     private void Awake()
     {
         // Means we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
@@ -49,8 +55,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         // The button has been pressed so we want the user to connect to a room.
         isConnection = true;
 
-        PhotonNetwork.NickName = "MAR_" + PhotonNetwork.NickName;
-        
         // Checks if the client is aleady connected
         if (PhotonNetwork.IsConnected)
         {
@@ -102,11 +106,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsMasterClient)
         {
             inLobbyPanel.transform.GetChild(0).gameObject.SetActive(false);
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                lobbyRoom.PlayerJoinedLobby(player.NickName, false);
+            }
         }
         else
         {
             // Master is initialised as the Alien.
-            PhotonNetwork.NickName = PhotonNetwork.NickName.Replace("MAR", "ALI");
+            lobbyRoom.PlayerJoinedLobby(PhotonNetwork.NickName, true);
         }
 
         UpdatePlayerList();
@@ -116,6 +124,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         Debug.LogFormat("{0} entered the room", other.NickName); // not seen if you're the player connecting
 
+        if (!other.IsMasterClient)
+        {
+            lobbyRoom.PlayerJoinedLobby(other.NickName, false);
+        }
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -139,14 +151,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         for (int i = 0; i < playerListPanel.childCount; i++)
         {
             Destroy(playerListPanel.GetChild(i).gameObject);
-
         }
     }
 
     public override void OnPlayerLeftRoom(Player other)
     {
         Debug.LogFormat("{0} left the room", other.NickName); // seen when other disconnects
-
+        lobbyRoom.PlayerLeftLobby(other.NickName);
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -167,19 +178,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             GameObject go = Instantiate(playerItemPrefab, playerListPanel);
-            go.GetComponent<Button>().onClick.AddListener(() => photonView.RPC("OnAlienChanged", RpcTarget.All));
+
+            // Add the OnAlienChanged function to the OnClick event on the button.
+            go.GetComponent<Button>().onClick.AddListener(() => photonView.RPC("OnAlienChanged",RpcTarget.All, lobbyRoom.GetPlayerNames(), lobbyRoom.GetPlayerBools(), go.GetComponentInChildren<TMP_Text>().text));
+
             if (player.IsMasterClient)
             {
                 Debug.Log("MASTER IN ROOM:: " + player.NickName);
-                go.GetComponentInChildren<TMP_Text>().text = "Room owner: " + player.NickName.Substring(4);
+                go.GetComponentInChildren<TMP_Text>().text = "Room owner: " + player.NickName;
             }
             else
             {
                 Debug.Log("PLAYER IN ROOM:: " + player.NickName);
-                go.GetComponentInChildren<TMP_Text>().text = player.NickName.Substring(4);
+                go.GetComponentInChildren<TMP_Text>().text = player.NickName;
             }
 
-            if (go.GetComponentInChildren<TMP_Text>().text.StartsWith("ALI"))
+            if (lobbyRoom.IsPlayerAlien(player.NickName))
             {
                 go.GetComponent<Image>().color = Color.green;
             }
@@ -240,22 +254,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void OnAlienChanged()
+    private void OnAlienChanged(string[] names, bool[] bools, string newAlien)
     {
-        // GameObject newAlien;
-        // // Find the current alien and change it for a marine.
-        // foreach (Player player in PhotonNetwork.PlayerList)
-        // {
-        //     if (player.NickName.StartsWith("ALI"))
-        //     {
-        //         player.NickName = player.NickName.Replace("ALI", "MAR");
-        //         break;
-        //     }
-        // }
-
-        // // Change the desired marine to an alien. 
-        // newAlien.GetComponent<TMP_Text>().text = newAlien.GetComponent<TMP_Text>().text.Replace("MAR", "ALI");
-        // Debug.Log("Alien changed to: " + newAlien.GetComponent<TMP_Text>().text.Replace("ALI_", "").Replace("Room owner: ", ""));
-        // UpdatePlayerList();
+        lobbyRoom.ReconstructList(names, bools);
+        lobbyRoom.AlienChanged(newAlien);
+        UpdatePlayerList();
     }
 }

@@ -3,13 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PlayersInLobby : ScriptableObject
+public class PlayersInLobby : MonoBehaviour
 {
-    List<PlayerInfo> playerInfos = new List<PlayerInfo>();
+    public List<PlayerInfo> playerInfos = new List<PlayerInfo>();
+
+    public string[] GetPlayerNames()
+    {
+        return (from player in playerInfos select player.name).ToArray();
+    }
+
+    public bool[] GetPlayerBools()
+    {
+        return (from player in playerInfos select player.isAlien).ToArray();
+    }
 
     public void PlayerJoinedLobby(string playerName, bool alien)
     {
         playerInfos.Add(new PlayerInfo(playerName, alien));
+        Debug.Log(playerName + " has joined the lobby.");
     }
 
     public void PlayerLeftLobby(string playerName)
@@ -18,8 +29,12 @@ public class PlayersInLobby : ScriptableObject
         
         if (playerToRemove.isAlien && playerInfos.Count > 1)
         {
-            // allocate new alien
+            // Finds the first player that isn't an alien, and assigns it as the new alien.
+            PlayerInfo newAlien = playerInfos.First(player => !player.isAlien);
+            AlienChanged(newAlien.name);
         }
+
+        Debug.Log(playerToRemove.name + " has left the lobby.");
 
         playerInfos.Remove(playerToRemove);
     }
@@ -34,13 +49,26 @@ public class PlayersInLobby : ScriptableObject
         PlayerInfo oldAlien = playerInfos.Single(player => player.isAlien);
         oldAlien.isAlien = false;
 
+        nameOfNewAlien = nameOfNewAlien.Replace("Room owner: ", "");
+
         PlayerInfo newAlien = playerInfos.Single(player => player.name == nameOfNewAlien);
         newAlien.isAlien = true;
+
+        Debug.LogFormat("Player '{0}' has replaced '{1}' as the alien.", oldAlien.name, newAlien.name);
+    }
+
+    public void ReconstructList(string[] s, bool[] b)
+    {
+        playerInfos.Clear();
+        for (int i = 0; i < s.Length; i++)
+        {
+            playerInfos.Add(new PlayerInfo(s[i], b[i]));
+        }
     }
 }
 
 [Serializable]
-class PlayerInfo
+public class PlayerInfo
 {
     public string name;
     public bool isAlien;
