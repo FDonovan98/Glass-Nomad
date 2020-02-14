@@ -184,7 +184,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             if (PhotonNetwork.IsMasterClient)
             {
                 // Add the OnAlienChanged function to the OnClick event on the button.
+                go.GetComponent<Button>().interactable = true;
                 go.GetComponent<Button>().onClick.AddListener(() => photonView.RPC("OnAlienChanged", RpcTarget.All, lobbyRoom.GetPlayerNames(), lobbyRoom.GetPlayerBools(), go.GetComponentInChildren<TMP_Text>().text));
+            }
+            else
+            {
+                go.GetComponent<Button>().interactable = false;
             }
 
             if (player.IsMasterClient)
