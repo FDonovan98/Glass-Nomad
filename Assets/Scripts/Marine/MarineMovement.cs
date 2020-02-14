@@ -40,6 +40,12 @@ public class MarineMovement : PlayerMovement
         charRigidbody.velocity = transform.TransformDirection(GetPlayerInput());
     }
 
+    protected new void FixedUpdate()
+    {
+        if (!photonView.IsMine) return;
+        base.FixedUpdate();
+    }
+
     /// <summary>
     /// Retrieves the player's WASD and jump input, applying forces where necessary.
     /// </summary>
