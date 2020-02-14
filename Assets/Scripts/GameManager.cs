@@ -6,6 +6,8 @@ using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using System;
+using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
@@ -44,8 +46,16 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     private void Start()
     {
-        // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
-        if (PhotonNetwork.IsMasterClient)
+        SpawnLocalPlayer();
+
+        settingsPath = Application.persistentDataPath + "/game_data";
+        SetupResolutionDropdown();
+    }
+
+    private void SpawnLocalPlayer()
+    {
+        PlayersInLobby lobbyRoom = GameObject.Find("Lobby").GetComponent<PlayersInLobby>();
+        if (lobbyRoom.IsPlayerAlien(PhotonNetwork.NickName))
         {
             PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
         }
@@ -53,9 +63,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
         }
-
-        settingsPath = Application.persistentDataPath + "/game_data";
-        SetupResolutionDropdown();
     }
 
     private void SetupResolutionDropdown()
