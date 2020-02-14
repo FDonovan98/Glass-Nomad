@@ -43,7 +43,7 @@ public class PlayerResources
     {
         if (playerResource == PlayerResource.OxygenLevel)
         {
-            UpdateOxygen((int)value);
+            UpdateOxygen(value);
         }
         else if (playerResource == PlayerResource.Health)
         {
@@ -52,7 +52,7 @@ public class PlayerResources
         hudCanvas.UpdateUI(player.GetComponent<PlayerAttack>());
     }
 
-    private void UpdateOxygen(int value)
+    private void UpdateOxygen(float value)
     {
         oxygenAmountSeconds += value;
         if (oxygenAmountSeconds < 0)
