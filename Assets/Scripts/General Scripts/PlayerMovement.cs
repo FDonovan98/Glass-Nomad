@@ -53,13 +53,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     public bool inputEnabled = true;
 
     // The characters normal.
-    public Vector3 charNormal = Vector3.up;
+    public Vector3 charNormal;
 
     // The gravity scale that's applied to the player.
-    public float gravity = -10;
+    public float gravity = -100;
 
     // How much force should be applied randomly to player upon death.
     [SerializeField] private float deathForce = 150f;
+
+    protected Vector3 gravForce;
 
     protected void Start()
     {
@@ -79,6 +81,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     private void InitialiseGlobals()
     {
+        charNormal = Vector3.up;
         // Sets the gameobject name to the player's username.
         gameObject.name = photonView.Owner.NickName; 
 
@@ -113,8 +116,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
 
         // Calculate and apply force of gravity to char.
-        Vector3 gravForce = gravity * charRigidbody.mass * charNormal;
-        charRigidbody.AddForce(gravForce);
+        gravForce = gravity * charNormal;
+
+        charRigidbody.AddForce(gravForce, ForceMode.Acceleration);
     }
 
     private void HandlePlayerRotation()
