@@ -206,8 +206,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             }
             else // A wall was hit.
             {
-                BulletHole(hit); 
-                RicochetVisual(hit);               
+                Vector3[] effectSpawnPos = CalculateEffectSpawnPos(hit);
+                BulletHole(effectSpawnPos); 
+
+                if (hit.transform.gameObject.tag != "Not Metal")
+                {
+                    RicochetVisual(effectSpawnPos);     
+                }          
             }
         }
 
@@ -215,29 +220,29 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (weaponAudio.clip != null) weaponAudio.Play();
     }
 
-    private void BulletHole(RaycastHit hit)
+    private Vector3[] CalculateEffectSpawnPos(RaycastHit hit)
+    {
+        int temp = hit.normal.z == -1 ? 2 : 0;
+        int temp1 = hit.normal.x != 0 ? 2 : 0;
+        Vector3 spawnRotation = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
+        Vector3 spawnPosition = hit.point + (hit.normal * 0.001f);
+        return new Vector3[] {spawnPosition, spawnRotation};
+    }
+
+    private void BulletHole(Vector3[] spawnPos)
     {
         if (GetComponent<MarineController>() != null) // If this is the marine shooting...
         {
-            int temp = hit.normal.z == -1 ? 2 : 0;
-            int temp1 = hit.normal.x != 0 ? 2 : 0;
-            Vector3 spawnPos = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
-            GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + (hit.normal * 0.001f), Quaternion.Euler(spawnPos));
+            GameObject bulletHole = Instantiate(bulletHolePrefab, spawnPos[0], Quaternion.Euler(spawnPos[1]));
             StartCoroutine(FadeBulletOut(bulletHole, 1f));
             Destroy(bulletHole, 1f);
         }
     }
 
-    private void RicochetVisual(RaycastHit hit)
+    private void RicochetVisual(Vector3[] spawnPos)
     {
-        if (hit.transform.gameObject.tag != "Not Metal")
-        {
-            int temp = hit.normal.z == -1 ? 2 : 0;
-            int temp1 = hit.normal.x != 0 ? 2 : 0;
-            Vector3 spawnPos = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
-            GameObject bulletSpark = Instantiate(bulletRicochetSpark, hit.point + (hit.normal * 0.001f), Quaternion.Euler(spawnPos));
-            Destroy(bulletSpark, 0.1f);
-        }
+        GameObject bulletSpark = Instantiate(bulletRicochetSpark, spawnPos[0], Quaternion.Euler(spawnPos[1]));
+        Destroy(bulletSpark, 0.1f);
     }
 
     /// <summary>
