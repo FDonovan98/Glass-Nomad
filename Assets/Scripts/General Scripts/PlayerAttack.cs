@@ -45,6 +45,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     // Spawned when a bullet hits a wall.
     public GameObject bulletHolePrefab;
+    public GameObject bulletRicochetSpark;
 
     // Name for the weapon of the alien.
     private string alienWeapon = "Claws";
@@ -205,7 +206,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             }
             else // A wall was hit.
             {
-                BulletHole(hit);                
+                BulletHole(hit); 
+                RicochetVisual(hit);               
             }
         }
 
@@ -219,10 +221,22 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             int temp = hit.normal.z == -1 ? 2 : 0;
             int temp1 = hit.normal.x != 0 ? 2 : 0;
-            Vector3 holeSpawn = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
-            GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + (hit.normal * 0.001f), Quaternion.Euler(holeSpawn));
+            Vector3 spawnPos = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
+            GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + (hit.normal * 0.001f), Quaternion.Euler(spawnPos));
             StartCoroutine(FadeBulletOut(bulletHole, 1f));
             Destroy(bulletHole, 1f);
+        }
+    }
+
+    private void RicochetVisual(RaycastHit hit)
+    {
+        if (hit.transform.gameObject.tag != "Not Metal")
+        {
+            int temp = hit.normal.z == -1 ? 2 : 0;
+            int temp1 = hit.normal.x != 0 ? 2 : 0;
+            Vector3 spawnPos = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
+            GameObject bulletSpark = Instantiate(bulletRicochetSpark, hit.point + (hit.normal * 0.001f), Quaternion.Euler(spawnPos));
+            Destroy(bulletSpark, 0.1f);
         }
     }
 
