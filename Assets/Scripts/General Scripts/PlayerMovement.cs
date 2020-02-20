@@ -82,6 +82,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private void InitialiseGlobals()
     {
         charNormal = Vector3.up;
+        Debug.Log(charNormal);
         // Sets the gameobject name to the player's username.
         gameObject.name = photonView.Owner.NickName; 
 
@@ -118,7 +119,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         // Calculate and apply force of gravity to char.
         gravForce = gravity * charNormal;
 
-        charRigidbody.AddForce(gravForce, ForceMode.Acceleration);
+        charRigidbody.velocity += gravForce * Time.fixedDeltaTime;
     }
 
     private void HandlePlayerRotation()
