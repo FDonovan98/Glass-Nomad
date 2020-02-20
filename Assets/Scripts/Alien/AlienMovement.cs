@@ -94,26 +94,7 @@ public class AlienMovement : PlayerMovement
         charRigidbody.AddForce(transform.TransformDirection(GetPlayerInput()), ForceMode.Acceleration);
     }
 
-    /// <summary>
-    /// Retrieves the player's WASD input, translating the transform of the player.
-    /// Also multiplies the speed if the player is sprinting.
-    /// </summary>
-    private Vector3 GetPlayerInput()
-    {
-        float x, z;
 
-        // Player movement
-        x = Input.GetAxisRaw("Horizontal") * movementSpeed;
-        z = Input.GetAxisRaw("Vertical") * movementSpeed;
-
-        if (Input.GetAxis("Sprint") >= 1)
-        {
-            x *= sprintSpeedMultiplier;
-            z *= sprintSpeedMultiplier;
-        }   
-
-        return new Vector3(x, charRigidbody.velocity.y, z);
-    }
 
     /// <summary>
     /// Rotates the alien to the normal of the surface which the alien in on.
