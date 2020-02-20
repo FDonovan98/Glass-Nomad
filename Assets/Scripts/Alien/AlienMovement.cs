@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using System.Collections.Generic;
-
 // Code initially based on code from here:
 // https://answers.unity.com/questions/155907/basic-movement-walking-on-walls.html
 
