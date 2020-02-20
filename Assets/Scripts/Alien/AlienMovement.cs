@@ -91,26 +91,28 @@ public class AlienMovement : PlayerMovement
         
         RotateTransformToSurfaceNormal();
 
-        XYMovement();
+        charRigidbody.AddForce(transform.TransformDirection(GetPlayerInput()), ForceMode.Acceleration);
     }
 
     /// <summary>
     /// Retrieves the player's WASD input, translating the transform of the player.
     /// Also multiplies the speed if the player is sprinting.
     /// </summary>
-    private void XYMovement()
+    private Vector3 GetPlayerInput()
     {
-        // Gets the horz and vert movement for char.
-        float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
-        float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
+        float x, z;
 
-        if (Input.GetAxisRaw("Sprint") != 0)
+        // Player movement
+        x = Input.GetAxisRaw("Horizontal") * movementSpeed;
+        z = Input.GetAxisRaw("Vertical") * movementSpeed;
+
+        if (Input.GetAxis("Sprint") >= 1)
         {
-            deltaX *= sprintSpeedMultiplier;
-            deltaZ *= sprintSpeedMultiplier;
-        }
+            x *= sprintSpeedMultiplier;
+            z *= sprintSpeedMultiplier;
+        }   
 
-        transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
+        return new Vector3(x, charRigidbody.velocity.y, z);
     }
 
     /// <summary>
