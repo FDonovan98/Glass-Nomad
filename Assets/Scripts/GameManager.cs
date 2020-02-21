@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using System;
+using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
@@ -21,8 +24,14 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     // Changes the video quality.
     [SerializeField] private TMP_Dropdown qualityDropdown = null;
 
-    // Used to change the audio volume.
-    [SerializeField] private AudioMixer audioMixer = null;
+    // Changes the fullscreen mode.
+    [SerializeField] private Toggle fullscreenToggle = null;
+
+    // Changes the FOV of the camera.
+    [SerializeField] private Slider fovSlider = null;
+
+    // Changes the volume of the AudioListener.
+    [SerializeField] private Slider volumeSlider = null;
 
     // Used by PlayerMovement to access the pause menu gameobject.
     public GameObject pauseMenu;
@@ -30,16 +39,23 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     // Retrieves all the available resolutions.
     private Resolution[] resolutions;
 
-    // Changes the FOV of the camera.
-    private Camera cam;
-
     // Should we switch a marine to the alien, when the alien dies.
     public bool switchToAlien = false;
 
+    private string settingsPath;
+
     private void Start()
     {
-        // Spawns a Alien prefab if the player is the master client, otherwise it spawns a Marine prefab.
-        if (PhotonNetwork.IsMasterClient)
+        SpawnLocalPlayer();
+
+        settingsPath = Application.persistentDataPath + "/game_data";
+        SetupResolutionDropdown();
+    }
+
+    private void SpawnLocalPlayer()
+    {
+        PlayersInLobby lobbyRoom = GameObject.Find("Lobby").GetComponent<PlayersInLobby>();
+        if (lobbyRoom.IsPlayerAlien(PhotonNetwork.NickName))
         {
             PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
         }
@@ -47,10 +63,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
         }
-
-        SetupResolutionDropdown();
-
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     private void SetupResolutionDropdown()
@@ -58,6 +70,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
+
+        SaveLoadSettings.LoadData(settingsPath);
+        fovSlider.value = Camera.main.fieldOfView;
+        volumeSlider.value = AudioListener.volume;
 
         int currentResIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
@@ -72,10 +88,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
             }
         }
 
+        // Sets the default value of the dropdowns or toggles to the current settings.
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResIndex;
-        resolutionDropdown.RefreshShownValue();
-        qualityDropdown.value = QualitySettings.GetQualityLevel();
+        resolutionDropdown.SetValueWithoutNotify(currentResIndex);
+        qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
+        fullscreenToggle.isOn = Screen.fullScreen;
     }
 
     public override void OnLeftRoom()
@@ -143,15 +160,16 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
     }
 
-    #region menu_options
+#region menu_options
     public void ToggleOptionMenu(GameObject menu)
     {
         menu.SetActive(!menu.activeSelf);
+        SaveLoadSettings.SaveData(settingsPath);
     }
 
     public void SetVolume(float volume)
     {
-        audioMixer.SetFloat("volume", volume);
+        AudioListener.volume = volume;
     }
 
     public void SetResolution(int resolutionIndex)
@@ -175,8 +193,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public void SetFOV(float fov)
     {
-        cam.fieldOfView = fov;
+        Camera.main.fieldOfView = fov;
     }
 
-    #endregion
+#endregion
 }

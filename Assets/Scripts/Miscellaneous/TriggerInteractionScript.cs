@@ -91,6 +91,8 @@ abstract public class TriggerInteractionScript : MonoBehaviour
         {
             currInteractTime = 0f;
             interactionComplete = false;
+            coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+            ReticleProgress.UpdateReticleProgress(0, outerReticle);
             LeftTriggerArea();
         }
     }

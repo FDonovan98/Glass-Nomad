@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Weapon", menuName = "Weapons/Create New Weapon")]
-public class Weapon : ScriptableObject
+[CreateAssetMenu(fileName = "New Weapon", menuName = "Objects/Create New Weapon")]
+public class Weapon : BaseObject
 {
     // Used to control whether you can hold down mouse to fire or you have to click.
     public enum FireType

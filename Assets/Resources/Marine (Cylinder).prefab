@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 6536323778183105852}
   - component: {fileID: 2477827166681184470}
   - component: {fileID: 7988140017429761338}
+  - component: {fileID: 2648041720830852438}
   m_Layer: 8
   m_Name: Camera
   m_TagString: MainCamera
@@ -322,6 +323,23 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!114 &2648041720830852438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4390003744034751614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: bfdfd84c29c4eda44a0df430222046aa, type: 2}
+  isGlobal: 0
+  blendDistance: 0
+  weight: 1
+  priority: 0
 --- !u!1 &6058927502951854039
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,10 +725,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833018608841414331}
   serializedVersion: 2
-  m_Mass: 10
-  m_Drag: 0
+  m_Mass: 100
+  m_Drag: 10
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -778,19 +796,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9de75805ba4ee48870873de3b3fe90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 27
-  mouseSensitivity: 10
-  jumpSpeed: 25
-  yRotationClamp: 90
-  sprintSpeedMultiplier: 1.5
-  menu: {fileID: 0}
-  inputEnabled: 1
-  charNormal: {x: 0, y: 0, z: 0}
-  gravity: -10
-  deathForce: 150
   distanceBetweenStep: 2
   upForce: 1.5
   debug: 0
+  movementSpeed: 500
+  mouseSensitivity: 10
+  jumpSpeed: 8.75
+  yRotationClamp: 90
+  sprintSpeedMultiplier: 2
+  menu: {fileID: 0}
+  inputEnabled: 1
+  charNormal: {x: 0, y: 0, z: 0}
+  gravity: -100
+  deathForce: 150
   marineAttack: {fileID: 6820651075571509334}
 --- !u!114 &6820651075571509334
 MonoBehaviour:
@@ -808,6 +826,8 @@ MonoBehaviour:
   healthSlider: {fileID: 8187056976602975490}
   currentWeapon: {fileID: 11400000, guid: f07ed8fadc5211d47885c7f535b3d0f8, type: 2}
   bulletHolePrefab: {fileID: 8801075028534077450, guid: f34524b31a249bc4390924096267d0d4,
+    type: 3}
+  bulletRicochetSpark: {fileID: 7992513011299317479, guid: ce143359d3d79284480c3c04d590b797,
     type: 3}
 --- !u!33 &8238451842474713795
 MeshFilter:

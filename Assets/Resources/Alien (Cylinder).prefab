@@ -57,13 +57,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fe1af11b1a69347ae03378c5572fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 200
-  width: 7
+  range: 400
+  width: 50
   tagMask: Player
   canvas: {fileID: 0}
   redDot: {fileID: 3378461893015919104, guid: b9517dc6a0ae0474184fd6cdb55c4be9, type: 3}
-  dotScaler: 3
-  dotOpacity: 3
+  dotScaler: 4
+  dotOpacity: 4
 --- !u!1 &2584912031797641484
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,8 +442,8 @@ Rigidbody:
   m_GameObject: {fileID: 4364988366066350752}
   serializedVersion: 2
   m_Mass: 10
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 1
+  m_AngularDrag: 1.5
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -456,7 +456,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4364988366066350752}
-  m_Material: {fileID: 13400000, guid: 51b40067fe98d2b478d02af103cde26e, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -517,6 +517,7 @@ MonoBehaviour:
   currentWeapon: {fileID: 11400000, guid: c97386eb027242b41992e743522b1ddf, type: 2}
   bulletHolePrefab: {fileID: 8801075028534077450, guid: f34524b31a249bc4390924096267d0d4,
     type: 3}
+  bulletRicochetSpark: {fileID: 0}
 --- !u!114 &5780684092325464000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,27 +530,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be4b5dadeabdad49a60648290dbeddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 25
+  distanceBetweenStep: 2
+  upForce: 1.5
+  debug: 0
+  movementSpeed: 100
   mouseSensitivity: 10
   jumpSpeed: 34
   yRotationClamp: 80
-  sprintSpeedMultiplier: 1.675
+  sprintSpeedMultiplier: 1.5
   menu: {fileID: 0}
   inputEnabled: 1
   charNormal: {x: 0, y: 0, z: 0}
-  gravity: -10
+  gravity: -100
   deathForce: 150
-  lerpSpeed: 10
+  lerpSpeed: 12.5
   deltaGround: 1
   isGrounded: 1
   jumpRange: 3
-  transferTime: 0.2
+  transferTime: 0.1
   jumpChargeTime: 1
   horizontalJumpMod: 1.35
   verticalJumpMod: 1.35
   debug: 0
   maxLength: 0
-  alienVision: {r: 1, g: 0.6745283, b: 0.6745283, a: 0}
+  alienVision: {r: 0.32607245, g: 0.4245283, b: 0.3063813, a: 0}
   transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
   alienAttack: {fileID: 0}
   emergencyHealingThreshold: 60
@@ -773,10 +777,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 0}
+  volumeTrigger: {fileID: 7188227636938248307}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1792
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 1
@@ -788,7 +792,7 @@ MonoBehaviour:
   subpixelMorphologicalAntialiasing:
     quality: 2
   fastApproximateAntialiasing:
-    fastMode: 1
+    fastMode: 0
     keepAlpha: 0
   fog:
     enabled: 1

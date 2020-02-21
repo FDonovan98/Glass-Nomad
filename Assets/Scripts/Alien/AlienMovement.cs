@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using System.Collections.Generic;
-
 // Code initially based on code from here:
 // https://answers.unity.com/questions/155907/basic-movement-walking-on-walls.html
 
@@ -93,61 +91,27 @@ public class AlienMovement : PlayerMovement
         
         RotateTransformToSurfaceNormal();
 
-        XYMovement();
+        charRigidbody.AddForce(transform.TransformDirection(GetPlayerInput()), ForceMode.Acceleration);
     }
 
-    /// <summary>
-    /// Retrieves the player's WASD input, translating the transform of the player.
-    /// Also multiplies the speed if the player is sprinting.
-    /// </summary>
-    private void XYMovement()
-    {
-        // Gets the horz and vert movement for char.
-        float deltaX = Input.GetAxisRaw("Horizontal") * movementSpeed * Time.deltaTime;
-        float deltaZ = Input.GetAxisRaw("Vertical") * movementSpeed * Time.deltaTime;
 
-        if (Input.GetAxisRaw("Sprint") != 0)
-        {
-            deltaX *= sprintSpeedMultiplier;
-            deltaZ *= sprintSpeedMultiplier;
-        }
-
-        transform.Translate(new Vector3(deltaX, 0.0f, deltaZ));
-    }
 
     /// <summary>
     /// Rotates the alien to the normal of the surface which the alien in on.
     /// </summary>
     private void RotateTransformToSurfaceNormal()
     {
-        bool forwardRayHit = false;
-        Vector3 surfaceNormal = CalculateSurfaceNormal(ref forwardRayHit);
-        // Interpolate between the characters current normal and the surface normal.
-        //charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
-        // Debug.Log("Surface Normal: " + surfaceNormal);
-
-        // Vector2 startArc = new Vector2(charNormal.x, charNormal.y);
-        // Debug.Log("Start arc: " + startArc);
-
-        // Vector2 endArc = new Vector2(surfaceNormal.x, surfaceNormal.y);
-        // Debug.Log("End arc: " + endArc);
-
-        // Vector2 arcPoint = ArcLerp(startArc, endArc, lerpSpeed * Time.deltaTime);
-        // Debug.Log("Arc point: " + arcPoint);
-
-        // charNormal = new Vector3(arcPoint.x, arcPoint.y, charNormal.z);
-        // Debug.Log("Character normal: " + charNormal);
+        bool zAxisRayHit = false;
+        Vector3 surfaceNormal = CalculateSurfaceNormal(ref zAxisRayHit);
 
         charNormal = surfaceNormal;
 
         Quaternion targetRotation;
         Vector3 charForward;
 
-        // // Get the direction the character faces.
-        // Vector3 charForward = Vector3.Cross(transform.InverseTransformDirection(transform.right), charNormal);
         // Align the character to the surface normal while still looking forward.
 
-        if (forwardRayHit)
+        if (zAxisRayHit)
         {
             charForward = Vector3.Cross(transform.right, charNormal);
         }
@@ -161,29 +125,7 @@ public class AlienMovement : PlayerMovement
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
     }
 
-    private Vector2 ArcLerp(Vector2 startVector, Vector2 endVector, float angleStep)
-    {
-        startVector = startVector.normalized;
-        endVector = endVector.normalized;
-        float startX = startVector.x;
-        float startY  = startVector.y;
-        float targetX;
-        float targetY;
-        
-        float angle = Mathf.Acos(Vector2.Dot(startVector, endVector));
-        if (angle <= angleStep)
-        {
-            return endVector;
-        }
-
-        targetX = startX + startVector.magnitude * Mathf.Cos(angleStep);
-        targetY = startY + startVector.magnitude * Mathf.Sin(angleStep);
-
-        return new Vector2(-targetX, -targetY);
-    }
-
-
-    private Vector3 CalculateSurfaceNormal(ref bool forwardRayHit)
+    private Vector3 CalculateSurfaceNormal(ref bool zAxisRayHit)
     {
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
@@ -194,7 +136,7 @@ public class AlienMovement : PlayerMovement
             transform.forward,
             -transform.forward,
             charNormal,
-            -charNormal
+            -charNormal,
         };
 
         Vector3 averageRayDirection = new Vector3(0, 0, 0);
@@ -206,9 +148,9 @@ public class AlienMovement : PlayerMovement
         {
             if (Physics.Raycast(transform.position, element, out hit, distGround + deltaGround))
             {
-                if (element == transform.forward)
+                if (element == transform.forward || element == -transform.forward)
                 {
-                    forwardRayHit = true;
+                    zAxisRayHit = true;
                 }
 
                 if (hit.transform.gameObject.tag == "Vent")
@@ -227,6 +169,8 @@ public class AlienMovement : PlayerMovement
                     gravity = 0;
                     averageRayDirection = hit.normal;
                 }
+
+                if(debug) Debug.DrawRay(transform.position, element * (distGround + deltaGround), Color.red);
             }
         }
 
@@ -235,6 +179,9 @@ public class AlienMovement : PlayerMovement
         if (averageRayDirection.magnitude > 0)
         {
             isGrounded = true;
+
+            if(debug) Debug.DrawRay(transform.position, averageRayDirection.normalized * (distGround + deltaGround), Color.green);
+            
             return averageRayDirection.normalized;
         }    
         else

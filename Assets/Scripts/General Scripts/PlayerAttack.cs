@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using System.Collections;
 using System;
+using System.Linq;
 
 public class PlayerAttack : MonoBehaviourPunCallbacks
 {
@@ -44,6 +45,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     // Spawned when a bullet hits a wall.
     public GameObject bulletHolePrefab;
+    public GameObject bulletRicochetSpark;
+
+    // Name for the weapon of the alien.
+    private string alienWeapon = "Claws";
 
     #endregion
 
@@ -63,15 +68,40 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // The muzzle flash will appear at the same spot as the flashlight
         flashlight = gameObject.GetComponentInChildren<Light>();
 
+        AllocatePlayersItems();
+
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
 
         weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
         weaponAudio.clip = currentWeapon.weaponSound;
+        currentWeapon.bulletsInCurrentMag = currentWeapon.magSize;
         currentWeapon.magsLeft = currentWeapon.magCount;
         currTimeBetweenFiring = currentWeapon.fireRate;
 
         resourcesScript.hudCanvas.UpdateUI(GetComponent<PlayerAttack>());
+    }
+
+    private void AllocatePlayersItems()
+    {
+        BaseObject[] baseObjects = Resources.LoadAll("Items", typeof(BaseObject)).Cast<BaseObject>().ToArray();
+        string primary = PlayerPrefs.GetString("Primary");
+        string secondary = PlayerPrefs.GetString("Secondary");
+        string armour = PlayerPrefs.GetString("Armour");
+
+        //Layer 8 is MarineCharacter
+        if (gameObject.layer == 8)
+        {
+            BaseObject prim = baseObjects.Where(a => a.name == primary).FirstOrDefault();
+            currentWeapon = (Weapon)prim;
+        }
+        //Layer 9 is AlienCharacter
+        //Currently bandage fix because couldn't immediately think of a better solution
+        else if (gameObject.layer == 9)
+        {
+            BaseObject prim = baseObjects.Where(a => a.name == alienWeapon).FirstOrDefault();
+            currentWeapon = (Weapon)prim;
+        }
     }
 
     private void Update()
@@ -176,7 +206,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             }
             else // A wall was hit.
             {
-                BulletHole(hit);                
+                Vector3[] effectSpawnPos = CalculateEffectSpawnPos(hit);
+                BulletHole(effectSpawnPos); 
+
+                if (hit.transform.gameObject.tag != "Not Metal")
+                {
+                    RicochetVisual(effectSpawnPos);     
+                }          
             }
         }
 
@@ -184,17 +220,29 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (weaponAudio.clip != null) weaponAudio.Play();
     }
 
-    private void BulletHole(RaycastHit hit)
+    private Vector3[] CalculateEffectSpawnPos(RaycastHit hit)
+    {
+        int temp = hit.normal.z == -1 ? 2 : 0;
+        int temp1 = hit.normal.x != 0 ? 2 : 0;
+        Vector3 spawnRotation = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
+        Vector3 spawnPosition = hit.point + (hit.normal * 0.001f);
+        return new Vector3[] {spawnPosition, spawnRotation};
+    }
+
+    private void BulletHole(Vector3[] spawnPos)
     {
         if (GetComponent<MarineController>() != null) // If this is the marine shooting...
         {
-            int temp = hit.normal.z == -1 ? 2 : 0;
-            int temp1 = hit.normal.x != 0 ? 2 : 0;
-            Vector3 holeSpawn = new Vector3(-1 + temp + hit.normal.y, temp1 + hit.normal.x, 0) * -90;
-            GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point + (hit.normal * 0.001f), Quaternion.Euler(holeSpawn));
+            GameObject bulletHole = Instantiate(bulletHolePrefab, spawnPos[0], Quaternion.Euler(spawnPos[1]));
             StartCoroutine(FadeBulletOut(bulletHole, 1f));
             Destroy(bulletHole, 1f);
         }
+    }
+
+    private void RicochetVisual(Vector3[] spawnPos)
+    {
+        GameObject bulletSpark = Instantiate(bulletRicochetSpark, spawnPos[0], Quaternion.Euler(spawnPos[1]));
+        Destroy(bulletSpark, 0.1f);
     }
 
     /// <summary>
