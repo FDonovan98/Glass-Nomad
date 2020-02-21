@@ -169,6 +169,8 @@ public class AlienMovement : PlayerMovement
                     gravity = 0;
                     averageRayDirection = hit.normal;
                 }
+
+                if(debug) Debug.DrawRay(transform.position, element * (distGround + deltaGround), Color.red);
             }
         }
 
@@ -177,6 +179,9 @@ public class AlienMovement : PlayerMovement
         if (averageRayDirection.magnitude > 0)
         {
             isGrounded = true;
+
+            if(debug) Debug.DrawRay(transform.position, averageRayDirection.normalized * (distGround + deltaGround), Color.green);
+            
             return averageRayDirection.normalized;
         }    
         else
