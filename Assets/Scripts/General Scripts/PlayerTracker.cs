@@ -41,6 +41,7 @@ public class PlayerTracker : MonoBehaviour
 
         cam = GetComponentInParent<Camera>();
         this.gameObject.SetActive(false);
+        canvas = GameObject.Find("EMP_UI").GetComponentInChildren<UIBehaviour>().gameObject.transform;
     }
 
     /// <summary>

@@ -101,34 +101,17 @@ public class AlienMovement : PlayerMovement
     /// </summary>
     private void RotateTransformToSurfaceNormal()
     {
-        bool forwardRayHit = false;
-        Vector3 surfaceNormal = CalculateSurfaceNormal(ref forwardRayHit);
-        // Interpolate between the characters current normal and the surface normal.
-        //charNormal = Vector3.Lerp(charNormal, surfaceNormal, lerpSpeed * Time.deltaTime);
-        // Debug.Log("Surface Normal: " + surfaceNormal);
-
-        // Vector2 startArc = new Vector2(charNormal.x, charNormal.y);
-        // Debug.Log("Start arc: " + startArc);
-
-        // Vector2 endArc = new Vector2(surfaceNormal.x, surfaceNormal.y);
-        // Debug.Log("End arc: " + endArc);
-
-        // Vector2 arcPoint = ArcLerp(startArc, endArc, lerpSpeed * Time.deltaTime);
-        // Debug.Log("Arc point: " + arcPoint);
-
-        // charNormal = new Vector3(arcPoint.x, arcPoint.y, charNormal.z);
-        // Debug.Log("Character normal: " + charNormal);
+        bool zAxisRayHit = false;
+        Vector3 surfaceNormal = CalculateSurfaceNormal(ref zAxisRayHit);
 
         charNormal = surfaceNormal;
 
         Quaternion targetRotation;
         Vector3 charForward;
 
-        // // Get the direction the character faces.
-        // Vector3 charForward = Vector3.Cross(transform.InverseTransformDirection(transform.right), charNormal);
         // Align the character to the surface normal while still looking forward.
 
-        if (forwardRayHit)
+        if (zAxisRayHit)
         {
             charForward = Vector3.Cross(transform.right, charNormal);
         }
@@ -142,29 +125,7 @@ public class AlienMovement : PlayerMovement
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
     }
 
-    private Vector2 ArcLerp(Vector2 startVector, Vector2 endVector, float angleStep)
-    {
-        startVector = startVector.normalized;
-        endVector = endVector.normalized;
-        float startX = startVector.x;
-        float startY  = startVector.y;
-        float targetX;
-        float targetY;
-        
-        float angle = Mathf.Acos(Vector2.Dot(startVector, endVector));
-        if (angle <= angleStep)
-        {
-            return endVector;
-        }
-
-        targetX = startX + startVector.magnitude * Mathf.Cos(angleStep);
-        targetY = startY + startVector.magnitude * Mathf.Sin(angleStep);
-
-        return new Vector2(-targetX, -targetY);
-    }
-
-
-    private Vector3 CalculateSurfaceNormal(ref bool forwardRayHit)
+    private Vector3 CalculateSurfaceNormal(ref bool zAxisRayHit)
     {
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
@@ -175,7 +136,7 @@ public class AlienMovement : PlayerMovement
             transform.forward,
             -transform.forward,
             charNormal,
-            -charNormal
+            -charNormal,
         };
 
         Vector3 averageRayDirection = new Vector3(0, 0, 0);
@@ -187,9 +148,9 @@ public class AlienMovement : PlayerMovement
         {
             if (Physics.Raycast(transform.position, element, out hit, distGround + deltaGround))
             {
-                if (element == transform.forward)
+                if (element == transform.forward || element == -transform.forward)
                 {
-                    forwardRayHit = true;
+                    zAxisRayHit = true;
                 }
 
                 if (hit.transform.gameObject.tag == "Vent")
