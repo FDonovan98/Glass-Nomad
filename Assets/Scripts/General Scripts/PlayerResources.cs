@@ -6,7 +6,9 @@ public class PlayerResources
     public enum PlayerResource
     {
         Health,
-        OxygenLevel
+        OxygenLevel,
+        Ammo,
+        Magazines
     }
 
     // Initialises the players health and ensure that we don't over-regen.
@@ -49,6 +51,14 @@ public class PlayerResources
         {
             UpdateHealth((int)value);
         }
+        else if (playerResource == PlayerResource.Ammo)
+        {
+            UpdateAmmo((int)value);
+        }
+        else if (playerResource == PlayerResource.Magazines)
+        {
+            UpdateMagazines((int)value);
+        }
         hudCanvas.UpdateUI(player.GetComponent<PlayerAttack>());
     }
 
@@ -86,5 +96,44 @@ public class PlayerResources
 
         // Update the health slider.
         fillAmount = (float)currentHealth / maxHealth;
+    }
+
+    private void UpdateAmmo(int value)
+    {
+        currentWeapon.bulletsInCurrentMag += value;
+        if (currentWeapon.bulletsInCurrentMag > currentWeapon.magSize)
+        {
+            currentWeapon.bulletsInCurrentMag = currentWeapon.magSize;
+        }
+        if (currentWeapon.bulletsInCurrentMag < 0)
+        {
+            currentWeapon.bulletsInCurrentMag = 0;
+        }
+    }
+
+    private void UpdateMagazines(int value)
+    {
+        currentWeapon.magsLeft += value;
+        if (currentWeapon.magsLeft < 0)
+        {
+            currentWeapon.magsLeft = 0;
+        }
+    }
+
+    /// <summary>
+    /// Deducts the amount of magazines you have left, and refills the bullets in your
+    /// current magazine. Prints a message if you have no more magazines.
+    /// </summary>
+    public void Reload()
+    {
+        if (currentWeapon.magsLeft > 0)
+        {
+            UpdatePlayerResource(PlayerResource.Ammo, currentWeapon.magSize);
+            UpdatePlayerResource(PlayerResource.Magazines, -1);
+        }
+        else
+        {
+            Debug.Log("You are out of magazines for this weapon. Find more ammo.");
+        }
     }
 }

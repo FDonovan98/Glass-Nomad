@@ -12,8 +12,8 @@ public class UIBehaviour : MonoBehaviour
     
     public void UpdateUI(PlayerAttack attackScript = null)
     {
-        remainingClipsText.text = "Remaining clips: " + attackScript.currentWeapon.magsLeft;
-        currentClipText.text = "Current clip: " + attackScript.currentWeapon.bulletsInCurrentMag + "/" + attackScript.currentWeapon.magSize;
+        remainingClipsText.text = "Remaining clips: " + attackScript.resourcesScript.currentWeapon.magsLeft;
+        currentClipText.text = "Current clip: " + attackScript.resourcesScript.currentWeapon.bulletsInCurrentMag + "/" + attackScript.resourcesScript.currentWeapon.magSize;
         healthText.text = "Health: " + attackScript.resourcesScript.currentHealth;
         oxygenSlider.value = attackScript.resourcesScript.oxygenAmountSeconds / attackScript.resourcesScript.maxOxygenAmountSeconds * 100; // Gets the percentage
         oxygenPercentage.text = Mathf.Floor(oxygenSlider.value).ToString();

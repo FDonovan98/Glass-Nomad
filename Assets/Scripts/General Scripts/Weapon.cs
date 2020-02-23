@@ -68,21 +68,4 @@ public class Weapon : BaseObject
 
         return false;
     }
-
-    /// <summary>
-    /// Deducts the amount of magazines you have left, and refills the bullets in your
-    /// current magazine. Prints a message if you have no more magazines.
-    /// </summary>
-    public void Reload()
-    {
-        if (magsLeft > 0)
-        {
-            bulletsInCurrentMag = magSize;
-            magsLeft--;
-        }
-        else
-        {
-            Debug.Log("You are out of magazines for this weapon. Find more ammo.");
-        }
-    }
 }
