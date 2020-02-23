@@ -21,9 +21,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     // Used to disable/enable the camera so that we only control our local player's camera.
     private GameObject cameraGO;
 
-    // Used to control the rate of fire, reload time, audio clip, etc.
-    public Weapon currentWeapon;
-
     // Used to play the current weapons audio clip.
     private AudioSource weaponAudio;
 
@@ -57,6 +54,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// </summary>
     private new void OnEnable()
     {
+        AllocatePlayersItems();
         resourcesScript = new PlayerResources(this.gameObject, maxHealth);
     }
 
@@ -68,16 +66,15 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // The muzzle flash will appear at the same spot as the flashlight
         flashlight = gameObject.GetComponentInChildren<Light>();
 
-        AllocatePlayersItems();
 
         // Gets the camera child on the player.
         cameraGO = this.GetComponentInChildren<Camera>().gameObject;
 
         weaponAudio = cameraGO.GetComponentInChildren<AudioSource>();
-        weaponAudio.clip = currentWeapon.weaponSound;
-        currentWeapon.bulletsInCurrentMag = currentWeapon.magSize;
-        currentWeapon.magsLeft = currentWeapon.magCount;
-        currTimeBetweenFiring = currentWeapon.fireRate;
+        weaponAudio.clip = resourcesScript.currentWeapon.weaponSound;
+        resourcesScript.currentWeapon.bulletsInCurrentMag = resourcesScript.currentWeapon.magSize;
+        resourcesScript.currentWeapon.magsLeft = resourcesScript.currentWeapon.magCount;
+        currTimeBetweenFiring = resourcesScript.currentWeapon.fireRate;
 
         resourcesScript.hudCanvas.UpdateUI(GetComponent<PlayerAttack>());
     }
@@ -93,14 +90,14 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (gameObject.layer == 8)
         {
             BaseObject prim = baseObjects.Where(a => a.name == primary).FirstOrDefault();
-            currentWeapon = (Weapon)prim;
+            resourcesScript.currentWeapon = (Weapon)prim;
         }
         //Layer 9 is AlienCharacter
         //Currently bandage fix because couldn't immediately think of a better solution
         else if (gameObject.layer == 9)
         {
             BaseObject prim = baseObjects.Where(a => a.name == alienWeapon).FirstOrDefault();
-            currentWeapon = (Weapon)prim;
+            resourcesScript.currentWeapon = (Weapon)prim;
         }
     }
 
@@ -109,18 +106,18 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
         if (!gameObject.GetComponent<PlayerMovement>().inputEnabled) return;
 
-        if (currTimeBetweenFiring <= currentWeapon.fireRate) currTimeBetweenFiring += Time.deltaTime;
+        if (currTimeBetweenFiring <= resourcesScript.currentWeapon.fireRate) currTimeBetweenFiring += Time.deltaTime;
 
-        if (currentWeapon.CanFire(currTimeBetweenFiring))
+        if (resourcesScript.currentWeapon.CanFire(currTimeBetweenFiring))
         {
-            if (currentWeapon.fireMode == Weapon.FireType.Single)
+            if (resourcesScript.currentWeapon.fireMode == Weapon.FireType.Single)
             {
                 if (Input.GetButtonDown("Fire1"))
                 {
                     Shoot();
                 }
             }
-            else if (currentWeapon.fireMode == Weapon.FireType.FullAuto)
+            else if (resourcesScript.currentWeapon.fireMode == Weapon.FireType.FullAuto)
             {
                 if (Input.GetButton("Fire1"))
                 {
@@ -133,7 +130,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         if (recoil > 0) RecoilWeapon();
 
-        if (Input.GetKeyDown(KeyCode.R)) currentWeapon.Reload();
+        if (Input.GetKeyDown(KeyCode.R)) resourcesScript.Reload();
 
         ReduceOxygen();
     }
@@ -146,10 +143,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     {
         // Calls the 'FireWeapon' method on all clients, meaning that the health and gun shot will be synced across all clients.
         photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward,
-                    currentWeapon.range, currentWeapon.damage);
+                    resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
 
-        recoil += currentWeapon.recoilForce;
-        currentWeapon.bulletsInCurrentMag--;
+        recoil += resourcesScript.currentWeapon.recoilForce;
+        resourcesScript.currentWeapon.bulletsInCurrentMag--;
 
         if (muzzleFlash != null)
         {
