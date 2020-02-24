@@ -54,8 +54,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// </summary>
     private new void OnEnable()
     {
-        AllocatePlayersItems();
         resourcesScript = new PlayerResources(this.gameObject, maxHealth);
+        AllocatePlayersItems();
     }
 
     /// <summary>

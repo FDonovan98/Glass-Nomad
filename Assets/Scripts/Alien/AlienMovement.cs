@@ -29,9 +29,6 @@ public class AlienMovement : PlayerMovement
     public float horizontalJumpMod = 1.0f;
     public float verticalJumpMod = 1.0f;
 
-    // Should the debug messages be displayed.
-    public bool debug = false;
-
     #endregion
 
     [SerializeField]

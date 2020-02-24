@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] private float upForce = 1.5f;
 
     // Should the debug rays and console messages be shown.
-    [SerializeField] private bool debug = false;
+    [SerializeField] protected bool debug = false;
 
     // The movement of the player.
     [SerializeField] 
