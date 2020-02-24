@@ -443,7 +443,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 10
   m_Drag: 1
-  m_AngularDrag: 1.5
+  m_AngularDrag: 2
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -514,7 +514,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   healthSlider: {fileID: 6329036609802932500}
-  currentWeapon: {fileID: 11400000, guid: c97386eb027242b41992e743522b1ddf, type: 2}
   bulletHolePrefab: {fileID: 8801075028534077450, guid: f34524b31a249bc4390924096267d0d4,
     type: 3}
   bulletRicochetSpark: {fileID: 0}
@@ -551,9 +550,8 @@ MonoBehaviour:
   jumpChargeTime: 1
   horizontalJumpMod: 1.35
   verticalJumpMod: 1.35
-  debug: 0
   maxLength: 0
-  alienVision: {r: 0.6239765, g: 0.7169812, b: 0.6053756, a: 0}
+  alienVision: {r: 0.45976606, g: 0.8113208, b: 0.38652548, a: 0}
   transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
   alienAttack: {fileID: 0}
   emergencyHealingThreshold: 60
