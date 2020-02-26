@@ -7,6 +7,8 @@ public class MarineController : MarineMovement
 
     private float oxygenDamageTime = 0f;
 
+    private Light flashlight;
+
 
     private new void Start()
     {
@@ -17,6 +19,8 @@ public class MarineController : MarineMovement
         SpawnFadeFromBlack.Fade(Color.black, Color.clear, 3, this);
 
         marineAttack = GetComponent<PlayerAttack>();
+
+        flashlight = GetComponentInChildren<Light>();
     }
 
     private new void Update()
@@ -40,5 +44,10 @@ public class MarineController : MarineMovement
         }
         
         if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
+
+        if (Input.GetButtonDown("Flashlight"))
+        {
+            flashlight.enabled = !flashlight.enabled;
+        }
     }
 }
