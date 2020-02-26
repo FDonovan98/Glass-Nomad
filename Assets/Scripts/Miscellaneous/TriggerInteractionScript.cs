@@ -75,6 +75,11 @@ abstract public class TriggerInteractionScript : MonoBehaviour
             return;
         }
 
+        if (coll.tag == "Player" && interactionComplete)
+        {
+            coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+        }
+
         if (debug) Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
     }
 
