@@ -13,6 +13,11 @@ public class UIBehaviour : MonoBehaviour
     
     public void UpdateUI(PlayerAttack attackScript = null)
     {
+        if (!attackScript.photonView.IsMine)
+        {
+            return;
+        }
+        
         remainingClipsText.text = "Remaining clips: " + attackScript.resourcesScript.currentWeapon.magsLeft;
         currentClipText.text = "Current clip: " + attackScript.resourcesScript.currentWeapon.bulletsInCurrentMag + "/" + attackScript.resourcesScript.currentWeapon.magSize;
         healthText.text = "Health: " + attackScript.resourcesScript.currentHealth;
@@ -20,7 +25,7 @@ public class UIBehaviour : MonoBehaviour
         oxygenPercentage.text = Mathf.Floor(oxygenSlider.value).ToString();
 
         //Layer 9 is AlienCharacter. Alien's don't breathe :/
-        if (attackScript.gameObject.layer == 9 && oxygenSlider.IsActive() && attackScript.photonView.IsMine)
+        if (attackScript.gameObject.layer == 9 && oxygenSlider.IsActive())
         {
             oxygenSlider.gameObject.SetActive(false);
             objectiveText.gameObject.SetActive(false);
