@@ -19,7 +19,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     public PlayerResources resourcesScript;
 
     // Used to disable/enable the camera so that we only control our local player's camera.
-    private GameObject cameraGO;
+    [SerializeField] private GameObject cameraGO;
 
     // Used to play the current weapons audio clip.
     private AudioSource weaponAudio;
@@ -128,11 +128,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             currTimeBetweenFiring = 0;
         }
 
-        if (recoil > 0) RecoilWeapon();
-
         if (Input.GetKeyDown(KeyCode.R)) resourcesScript.Reload();
 
         ReduceOxygen();
+
+        if (recoil > 0) RecoilWeapon();
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// This also reduces the players ammo count and adds recoil, as well as spawning the muzzle flash.
     /// </summary>
     private void Shoot()
-    {
+    {     
         // Calls the 'FireWeapon' method on all clients, meaning that the health and gun shot will be synced across all clients.
         photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward,
                     resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
@@ -163,7 +163,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         recoil *= 10 * Time.deltaTime; // This dampens the recoil until it is (almost) zero.
         recoilRotation += recoil;
         recoilRotation *= 0.95f; // Gets smaller every frame.
-        cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoilRotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
+        //cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoilRotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
+        cameraGO.transform.Rotate(-recoilRotation, 0, 0);
     }
 
     private void ReduceOxygen()
