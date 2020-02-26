@@ -27,6 +27,7 @@ public class DoorTriggerScript : TriggerInteractionScript
 
     public void ChangeDoorState()
     {
+        interactionComplete = true;
         isDoorOpen = !isDoorOpen;
         Debug.Log(isDoorOpen ? "Door opening" : "Door closing");
         anim.SetBool("doorOpen", isDoorOpen);
