@@ -21,6 +21,11 @@ public class LoadoutManager : MonoBehaviour
         InitialiseDropdown(primaryDropdown, primaryItems, "Primary");
         InitialiseDropdown(secondaryDropdown, secondaryItems, "Secondary");
         InitialiseDropdown(armourDropdown, armourItems, "Armour");
+
+        if (!PlayerPrefsExist())
+        {
+            UpdatePlayerPrefs();
+        }
     }
 
     private void InitialiseDropdown(TMP_Dropdown dropdown, List<string> items, string prefString)
@@ -81,5 +86,15 @@ public class LoadoutManager : MonoBehaviour
     private void SetPlayerPrefs(TMP_Dropdown dropdown, string prefString)
     {
         PlayerPrefs.SetString(prefString, dropdown.captionText.text);
+    }
+
+    private bool PlayerPrefsExist()
+    {
+        string primary = PlayerPrefs.GetString("Primary", null);
+        if (string.IsNullOrEmpty(primary))
+        {
+            return false;
+        }
+        return true;
     }
 }
