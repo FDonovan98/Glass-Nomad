@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using TMPro;
+using System.Collections;
+using System.Threading.Tasks;
 
 public class Objectives : MonoBehaviour
 {
@@ -11,11 +14,18 @@ public class Objectives : MonoBehaviour
     // A list of all of the objectives.
     private static List<Objective> objectives = new List<Objective>();
 
+    private static float timePerLetter = 0.05f;
+    private static float timeToDisappear = 0.5f;
+    [SerializeField] private TMP_Text objectiveText = null;
+    private static TMP_Text captionText = null;
+
+
     /// <summary>
     /// Reads all the data from the CSV file, and calls the 'START' objective.
     /// </summary>
     private void Start()
     {
+        captionText = objectiveText;
         ReadData();
         ObjectiveComplete("START"); // Displays the starting text.
     }
@@ -52,13 +62,14 @@ public class Objectives : MonoBehaviour
         Objective objectiveCompleted = GetObjective(objName);
         Objective objectiveRequired = GetObjective(requiredObjective);
 
-        if (objectiveRequired.title != "ERROR" && objectiveRequired.completed == true)
+        if (objectiveRequired.title == "" || (objectiveRequired.title != "ERROR" && objectiveRequired.completed == true))
         {
             if (objectiveCompleted.title != "ERROR" && objectiveCompleted.completed != true)
             {
                 try
                 {
                     objectiveCompleted.Say();
+                    WriteTextToHud(objectiveCompleted.dialogue);
                 }
                 catch (Exception e)
                 {
@@ -89,6 +100,19 @@ public class Objectives : MonoBehaviour
         }
 
         return new Objective("ERROR", "");
+    }
+
+    private static async void WriteTextToHud(string text)
+    {
+        string currText = "";
+        foreach (Char letter in text.ToCharArray())
+        {
+            currText += letter;
+            captionText.text = "<mark=#000000aa>" + currText + "</mark>";
+            await Task.Delay(TimeSpan.FromSeconds(timePerLetter));
+        }
+        await Task.Delay(TimeSpan.FromSeconds(timeToDisappear));
+        captionText.text = "";
     }
 }
 
