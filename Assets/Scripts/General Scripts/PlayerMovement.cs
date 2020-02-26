@@ -116,11 +116,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         HandlePlayerRotation();
 
-        // If there is a step, and its height is correct, then try and apply force.
-        if (CheckIfStep() && CheckStepHeight())
-        {
-            ApplyUpwardsForce();
-        }
+        // // If there is a step, and its height is correct, then try and apply force.
+        // if (CheckIfStep() && CheckStepHeight())
+        // {
+        //     ApplyUpwardsForce();
+        // }
 
         if (debug) Debugging();
     }

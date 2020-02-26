@@ -119,21 +119,32 @@ public class AlienMovement : PlayerMovement
         
         targetRotation = Quaternion.LookRotation(charForward, charNormal);  
         
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.deltaTime);
+        if (transform.rotation != targetRotation)
+        {
+            charRigidbody.velocity += charNormal * Time.fixedDeltaTime;
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed * Time.fixedDeltaTime);
+        }
+        
     }
 
     private Vector3 CalculateSurfaceNormal(ref bool zAxisRayHit)
     {
         // Vectors needed to cast rays in six directions around the alien.
         // -charNormal needs to be last for movement to work well within vents.
-        Vector3[] testVectors = new Vector3 [6] 
+        // Vector3[] testVectors = new Vector3 [6] 
+        // {
+        //     transform.right,
+        //     -transform.right, 
+        //     transform.forward,
+        //     -transform.forward,
+        //     charNormal,
+        //     -charNormal,
+        // };
+
+        Vector3[] testVectors = new Vector3[2]
         {
-            transform.right,
-            -transform.right, 
-            transform.forward,
-            -transform.forward,
-            charNormal,
             -charNormal,
+            charRigidbody.velocity.normalized
         };
 
         Vector3 averageRayDirection = new Vector3(0, 0, 0);
@@ -159,7 +170,7 @@ public class AlienMovement : PlayerMovement
                 // Gravity is disabled and alien just sticks to the surface below it.
                 if (ventCount <= 2)
                 {
-                    averageRayDirection += hit.normal * ((distGround + deltaGround) - hit.distance);
+                    averageRayDirection += hit.normal;
                 }
                 else
                 {
