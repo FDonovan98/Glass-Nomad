@@ -4,11 +4,12 @@ using TMPro;
 
 public class UIBehaviour : MonoBehaviour
 {
-    public TMP_Text healthText;
-    public TMP_Text currentClipText;
-    public TMP_Text remainingClipsText;
-    public Slider oxygenSlider;
-    public TMP_Text oxygenPercentage;
+    [SerializeField] private TMP_Text healthText;
+    [SerializeField] private TMP_Text currentClipText;
+    [SerializeField] private TMP_Text remainingClipsText;
+    [SerializeField] private Slider oxygenSlider;
+    [SerializeField] private TMP_Text oxygenPercentage;
+    [SerializeField] private TMP_Text objectiveText;
     
     public void UpdateUI(PlayerAttack attackScript = null)
     {
@@ -22,6 +23,7 @@ public class UIBehaviour : MonoBehaviour
         if (attackScript.gameObject.layer == 9 && oxygenSlider.IsActive() && attackScript.photonView.IsMine)
         {
             oxygenSlider.gameObject.SetActive(false);
+            objectiveText.gameObject.SetActive(false);
         }
     }
 }
