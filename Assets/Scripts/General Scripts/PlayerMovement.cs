@@ -37,6 +37,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     [SerializeField] 
     private GameObject menu = null; 
 
+    // How much force should be applied randomly to player upon death.
+    [SerializeField]
+    private float deathForce = 150f;
+
+    // The gravity scale that's applied to the player.
+    [SerializeField]
+    protected float gravity = -100;
+
     // Applies physics to the player, e.g. movement.
     protected Rigidbody charRigidbody; 
 
@@ -58,19 +66,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     // The x-axis rotation of the players camera.
     protected Quaternion charCameraTargetRotation;
 
+    // The characters normal.
+    protected Vector3 charNormal;
+
     // Enables/disables the players input.
     public bool inputEnabled = true;
-
-    // The characters normal.
-    public Vector3 charNormal;
-
-    // The gravity scale that's applied to the player.
-    public float gravity = -100;
-
-    // How much force should be applied randomly to player upon death.
-    [SerializeField] private float deathForce = 150f;
-
-    protected Vector3 gravForce;
 
     protected void Start()
     {
@@ -133,10 +133,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         if (!photonView.IsMine) return;
 
-        // Calculate and apply force of gravity to char.
-        gravForce = gravity * charNormal;
-
-        charRigidbody.velocity += gravForce * Time.fixedDeltaTime;
+        charRigidbody.velocity += gravity * charNormal * Time.fixedDeltaTime;
     }
 
     private void HandlePlayerRotation()
@@ -307,7 +304,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Start the ray at the bottom center of the player.
         Vector3 playerFeet = transform.position;
-        playerFeet.y -= charCollider.bounds.extents.y;
+        playerFeet.y -= charCollider.bounds.extents.y + 0.1f;
 
         return Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep);
     }
@@ -321,12 +318,12 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         // Start the ray half way up the player, at the front.
         Vector3 startDir = transform.position;
-        startDir.z += charCollider.bounds.extents.z;
+        startDir += transform.forward * charCollider.bounds.extents.z;
 
-        // End the ray on the floor, 0.1 distance ahead of the player.
+        // End the ray on the floor, ahead of the player.
         Vector3 endDir = transform.position;
-        endDir.y -= charCollider.bounds.extents.y;
-        endDir.z += charCollider.bounds.extents.z + 0.1f;
+        endDir.y -= charCollider.bounds.extents.y + 0.1f;
+        endDir += transform.forward * (charCollider.bounds.extents.z + (distanceBetweenStep / 2f));
 
         // Cast the ray and output it to the hitInfo.
         RaycastHit hitInfo;
@@ -334,7 +331,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         if (debug) Debug.DrawRay(hitInfo.point, hitInfo.normal, Color.cyan);
 
         // If the step height is correct and the step's normal is the worlds up axis then return true.
-        return stepHeight && hitInfo.normal == Vector3.up; // ** THIS LINE MAY HAVE BROKEN IT **
+        return stepHeight /*&& hitInfo.normal == Vector3.up*/; // ** THIS LINE MAY HAVE BROKEN IT **
     }
 
     /// <summary>
@@ -361,20 +358,20 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         // Used to check the distance betweent the players feet and the step.
         Vector3 playerFeet = transform.position;
-        playerFeet.y -= charCollider.bounds.extents.y;
+        playerFeet.y -= charCollider.bounds.extents.y + 0.1f;
         Debug.DrawRay(playerFeet, transform.forward * (charCollider.bounds.extents.z + distanceBetweenStep), Color.magenta);
 
         // Used to check how steep the step is, and its height.
         Vector3 startDir = transform.position;
-        startDir.z += charCollider.bounds.extents.z;
+        startDir += transform.forward * charCollider.bounds.extents.z;
         Vector3 endDir = transform.position;
-        endDir.y -= charCollider.bounds.extents.y;
-        endDir.z += charCollider.bounds.extents.z + 0.1f;
+        endDir.y -= charCollider.bounds.extents.y + 0.1f;
+        endDir += transform.forward * (charCollider.bounds.extents.z + (distanceBetweenStep / 2f));
         Debug.DrawRay(startDir, endDir - startDir, Color.red);
 
         // Used to check is the player is on the ground.
         Vector3 frontOfPlayer = transform.position;
-        frontOfPlayer.z += charCollider.bounds.extents.z;
+        frontOfPlayer += transform.forward * charCollider.bounds.extents.z;
         Debug.DrawRay(frontOfPlayer, -Vector3.up * (charCollider.bounds.extents.y + 0.5f), Color.green);
 
         Debug.Log("IS GROUNDED: " + IsGrounded(frontOfPlayer, -Vector3.up));

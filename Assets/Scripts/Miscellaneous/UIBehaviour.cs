@@ -4,12 +4,12 @@ using TMPro;
 
 public class UIBehaviour : MonoBehaviour
 {
-    [SerializeField] private TMP_Text healthText;
-    [SerializeField] private TMP_Text currentClipText;
-    [SerializeField] private TMP_Text remainingClipsText;
-    [SerializeField] private Slider oxygenSlider;
-    [SerializeField] private TMP_Text oxygenPercentage;
-    [SerializeField] private TMP_Text objectiveText;
+    [SerializeField] private TMP_Text healthText = null;
+    [SerializeField] private TMP_Text currentClipText = null;
+    [SerializeField] private TMP_Text remainingClipsText = null;
+    [SerializeField] private Slider oxygenSlider = null;
+    [SerializeField] private TMP_Text oxygenPercentage = null;
+    [SerializeField] private TMP_Text objectiveText = null;
     
     public void UpdateUI(PlayerAttack attackScript = null)
     {
