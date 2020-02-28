@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using TMPro;
-using System.Collections;
 using System.Threading.Tasks;
 
 public class Objectives : MonoBehaviour
@@ -13,10 +12,17 @@ public class Objectives : MonoBehaviour
 
     // A list of all of the objectives.
     private static List<Objective> objectives = new List<Objective>();
-
+    
+    // The time it takes to display each letter.
     private static float timePerLetter = 0.05f;
-    private static float timeToDisappear = 0.5f;
+
+    // The time, after the whole text is diplayed, for it to vanish.
+    private static float timeToDisappear = 1f;
+
+    // The Text object which will display the text.
     [SerializeField] private TMP_Text objectiveText = null;
+
+    // The static text object as it needs to be static.
     private static TMP_Text captionText = null;
 
 

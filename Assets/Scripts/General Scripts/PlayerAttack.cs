@@ -140,7 +140,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private void Shoot()
     {
         // Calls the 'FireWeapon' method on all clients, meaning that the health and gun shot will be synced across all clients.
-        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward,
+        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, RandomBulletSpread(cameraGO.transform.rotation),
                     resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
 
         recoil += resourcesScript.currentWeapon.recoilForce;
@@ -151,6 +151,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             StartCoroutine(muzzleFlash.Flash(flashlight.gameObject.transform.position, flashlight.gameObject.transform.rotation));
         }
+    }
+
+    private Vector3 RandomBulletSpread(Quaternion cameraRot)
+    {
+        Vector3 deviation3D = UnityEngine.Random.insideUnitCircle * resourcesScript.currentWeapon.maxBulletSpread;
+        Quaternion rot = Quaternion.LookRotation(Vector3.forward * resourcesScript.currentWeapon.range + deviation3D);
+        return cameraRot * rot * Vector3.forward;
     }
 
     /// <summary>
@@ -187,10 +194,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// <param name="range"></param>
     /// <param name="damage"></param>
     [PunRPC]
-    protected void FireWeapon(Vector3 cameraPos, Vector3 cameraForward, float range, int damage)
+    protected void FireWeapon(Vector3 cameraPos, Vector3 bulletDir, float range, int damage)
     {
         RaycastHit hit;
-        if (Physics.Raycast(cameraPos, cameraForward, out hit, range))
+        if (Physics.Raycast(cameraPos, bulletDir, out hit, range))
         {
             PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
             if (hitPlayer != null && hitPlayer.gameObject != this.gameObject) // A player was hit
