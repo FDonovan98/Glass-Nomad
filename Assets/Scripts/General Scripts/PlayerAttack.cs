@@ -114,7 +114,21 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             {
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    Shoot();
+                    if (resourcesScript.currentWeapon.name == "Shotgun")
+                    {
+                        int numberOfBulletsToFire = 6;
+                        for (int i = 0; i < numberOfBulletsToFire; i++)
+                        {
+                            Shoot();
+                            resourcesScript.currentWeapon.bulletsInCurrentMag++;
+                        }
+                        
+                        resourcesScript.currentWeapon.bulletsInCurrentMag--;
+                    }
+                    else
+                    {
+                        Shoot();
+                    }
                 }
             }
             else if (resourcesScript.currentWeapon.fireMode == Weapon.FireType.FullAuto)
@@ -139,10 +153,12 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// </summary>
     private void Shoot()
     {
+        Vector3 bulletDir = RandomBulletSpread(cameraGO.transform.rotation);
         // Calls the 'FireWeapon' method on all clients, meaning that the health and gun shot will be synced across all clients.
-        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, RandomBulletSpread(cameraGO.transform.rotation),
+        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, bulletDir,
                     resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
 
+        Debug.DrawRay(cameraGO.transform.position, bulletDir * resourcesScript.currentWeapon.range, Color.cyan, 2f);
         recoil += resourcesScript.currentWeapon.recoilForce;
         resourcesScript.currentWeapon.bulletsInCurrentMag--;
         currTimeBetweenFiring = 0;
