@@ -106,7 +106,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
         if (!gameObject.GetComponent<PlayerMovement>().inputEnabled) return;
 
-        if (currTimeBetweenFiring <= resourcesScript.currentWeapon.fireRate) currTimeBetweenFiring += Time.deltaTime;
+        if (currTimeBetweenFiring < resourcesScript.currentWeapon.fireRate) currTimeBetweenFiring += Time.deltaTime;
 
         if (resourcesScript.currentWeapon.CanFire(currTimeBetweenFiring))
         {
@@ -124,8 +124,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                     Shoot();
                 }
             }
-
-            currTimeBetweenFiring = 0;
         }
 
         if (recoil > 0) RecoilWeapon();
@@ -147,6 +145,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         recoil += resourcesScript.currentWeapon.recoilForce;
         resourcesScript.currentWeapon.bulletsInCurrentMag--;
+        currTimeBetweenFiring = 0;
 
         if (muzzleFlash != null)
         {

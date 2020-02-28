@@ -53,7 +53,7 @@ public class Weapon : BaseObject
     /// <returns>True if you can fire, and false if you cannot.</returns>
     public bool CanFire(float currentTime)
     {
-        if (currentTime > fireRate)
+        if (currentTime >= fireRate)
         {
             if (magSize > 0)
             {
@@ -63,6 +63,10 @@ public class Weapon : BaseObject
                 }
 
                 Debug.Log("You need to reload.");
+            }
+            else if (magSize == -1)
+            {
+                return true;
             }
         }
 
