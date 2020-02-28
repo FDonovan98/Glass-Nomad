@@ -47,6 +47,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     // Name for the weapon of the alien.
     private string alienWeapon = "Claws";
 
+    private float currentRecoilTimeStamp = 0.0f;
+
     #endregion
 
     /// <summary>
@@ -103,6 +105,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        bool recoilUp = false;
         if (!photonView.IsMine) return;
         if (!gameObject.GetComponent<PlayerMovement>().inputEnabled) return;
 
@@ -115,6 +118,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 if (Input.GetButtonDown("Fire1"))
                 {
                     Shoot();
+                    recoilUp = true;
                 }
             }
             else if (resourcesScript.currentWeapon.fireMode == Weapon.FireType.FullAuto)
@@ -122,6 +126,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 if (Input.GetButton("Fire1"))
                 {
                     Shoot();
+                    recoilUp = true;
                 }
             }
 
@@ -132,7 +137,34 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         ReduceOxygen();
 
-        if (recoil > 0) RecoilWeapon();
+        RecoilWeapon(recoilUp);
+    }
+
+    private void RecoilWeapon(bool forceWeaponUp)
+    {
+        AnimationCurve weaponRecoilCurve = resourcesScript.currentWeapon.recoilCurve;
+        float timeDelta;
+
+        if (forceWeaponUp)
+        {
+            timeDelta = Time.deltaTime / resourcesScript.currentWeapon.upForceDuration;
+        }
+        else
+        {
+            timeDelta = -Time.deltaTime / resourcesScript.currentWeapon.downForceDuration;
+        }
+
+        float valueDelta = weaponRecoilCurve.Evaluate(currentRecoilTimeStamp + timeDelta) - weaponRecoilCurve.Evaluate(currentRecoilTimeStamp);
+
+        valueDelta *= -resourcesScript.currentWeapon.recoilForce;
+
+        cameraGO.transform.Rotate(valueDelta, 0.0f, 0.0f);
+
+        // Prevents index errors.
+        currentRecoilTimeStamp += timeDelta;
+        currentRecoilTimeStamp = Mathf.Clamp(currentRecoilTimeStamp, 0.0f, 1.0f);
+
+        Debug.Log(currentRecoilTimeStamp);
     }
 
     /// <summary>
@@ -142,10 +174,11 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private void Shoot()
     {     
         // Calls the 'FireWeapon' method on all clients, meaning that the health and gun shot will be synced across all clients.
-        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward,
-                    resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
+        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, cameraGO.transform.forward, resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
+        
+        // SUPER OVERKILL
+        // StartCoroutine(RecoilWeapon(resourcesScript.currentWeapon.recoilForce, resourcesScript.currentWeapon.upForceDuration, true));
 
-        recoil += resourcesScript.currentWeapon.recoilForce;
         resourcesScript.currentWeapon.bulletsInCurrentMag--;
 
         if (muzzleFlash != null)
@@ -154,18 +187,38 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         }
     }
 
-    /// <summary>
-    /// Recoils the players camera when they shoot.
-    /// </summary>
-    private void RecoilWeapon()
-    {
-        float xRotation = cameraGO.transform.localEulerAngles.x;
-        recoil *= 10 * Time.deltaTime; // This dampens the recoil until it is (almost) zero.
-        recoilRotation += recoil;
-        recoilRotation *= 0.95f; // Gets smaller every frame.
-        //cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoilRotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
-        cameraGO.transform.Rotate(-recoilRotation, 0, 0);
-    }
+    // SUPER OVERKILL
+    // private IEnumerator RecoilWeapon(float recoilForce, float recoilDuration, bool forceUp)
+    // {
+    //     for (float i = 0.0f; i < recoilDuration; i += Time.deltaTime)
+    //     {
+    //         float thisFrameRecoilForce = (recoilForce / recoilDuration) * Time.deltaTime;
+    //         cameraGO.transform.Rotate(thisFrameRecoilForce, 0.0f, 0.0f);
+    //         yield return null;
+    //     }
+
+    //     if (forceUp)
+    //     {
+    //         StartCoroutine(RecoilWeapon)
+    //     }
+    //     else
+    //     {
+    //         return null;
+    //     }
+    // }
+
+    // /// <summary>
+    // /// Recoils the players camera when they shoot.
+    // /// </summary>
+    // private void RecoilWeapon()
+    // {
+    //     float xRotation = cameraGO.transform.localEulerAngles.x;
+    //     recoil *= 10 * Time.deltaTime; // This dampens the recoil until it is (almost) zero.
+    //     recoilRotation += recoil;
+    //     recoilRotation *= 0.95f; // Gets smaller every frame.
+    //     //cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoilRotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
+    //     cameraGO.transform.Rotate(-recoilRotation, 0, 0);
+    // }
 
     private void ReduceOxygen()
     {
