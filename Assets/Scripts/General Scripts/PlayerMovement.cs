@@ -5,13 +5,16 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
     // The distance that the step is detected by the player.
-    [SerializeField] private float distanceBetweenStep = 2f;
+    [SerializeField]
+    private float distanceBetweenStep = 2f;
 
     // The upward force applied to the player when on stairs.
-    [SerializeField] private float upForce = 1.5f;
+    [SerializeField]
+    private float upForce = 1.5f;
 
     // Should the debug rays and console messages be shown.
-    [SerializeField] protected bool debug = false;
+    [SerializeField]
+    protected bool debug = false;
 
     // The movement of the player.
     [SerializeField] 
@@ -289,7 +292,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         return new Vector3(x, charRigidbody.velocity.y, z);
     }
 
-        #region stairs
+    #region stairs
 
     /// <summary>
     /// Casts a ray from the player's feet, forwards, to check if a step is infront of the player.
