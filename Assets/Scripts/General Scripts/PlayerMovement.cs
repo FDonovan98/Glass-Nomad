@@ -5,13 +5,16 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviourPunCallbacks
 {
     // The distance that the step is detected by the player.
-    [SerializeField] private float distanceBetweenStep = 2f;
+    [SerializeField]
+    private float distanceBetweenStep = 2f;
 
     // The upward force applied to the player when on stairs.
-    [SerializeField] private float upForce = 1.5f;
+    [SerializeField]
+    private float upForce = 1.5f;
 
     // Should the debug rays and console messages be shown.
-    [SerializeField] protected bool debug = false;
+    [SerializeField]
+    protected bool debug = false;
 
     // The movement of the player.
     [SerializeField] 
@@ -116,11 +119,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         HandlePlayerRotation();
 
-        // // If there is a step, and its height is correct, then try and apply force.
-        // if (CheckIfStep() && CheckStepHeight())
-        // {
-        //     ApplyUpwardsForce();
-        // }
+        // If there is a step, and its height is correct, then try and apply force.
+        if (CheckIfStep() && CheckStepHeight())
+        {
+            ApplyUpwardsForce();
+        }
 
         if (debug) Debugging();
     }
@@ -289,7 +292,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         return new Vector3(x, charRigidbody.velocity.y, z);
     }
 
-        #region stairs
+    #region stairs
 
     /// <summary>
     /// Casts a ray from the player's feet, forwards, to check if a step is infront of the player.
@@ -299,14 +302,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         // If the player isn't grounded, then force has (presumably) already been applied.
         Vector3 frontOfPlayer = transform.position;
-        frontOfPlayer.z += charCollider.bounds.extents.z;
+        frontOfPlayer += transform.forward * charCollider.bounds.extents.z;
         if (!IsGrounded(frontOfPlayer, -Vector3.up)) return false;
 
         // Start the ray at the bottom center of the player.
         Vector3 playerFeet = transform.position;
-        playerFeet.y -= charCollider.bounds.extents.y + 0.1f;
+        playerFeet.y -= charCollider.bounds.extents.y;
 
-        return Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep);
+        return Physics.Raycast(playerFeet, transform.forward, charCollider.bounds.extents.z + distanceBetweenStep);
     }
 
     /// <summary>
@@ -322,16 +325,16 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // End the ray on the floor, ahead of the player.
         Vector3 endDir = transform.position;
-        endDir.y -= charCollider.bounds.extents.y + 0.1f;
+        endDir.y -= charCollider.bounds.extents.y;
         endDir += transform.forward * (charCollider.bounds.extents.z + (distanceBetweenStep / 2f));
 
         // Cast the ray and output it to the hitInfo.
         RaycastHit hitInfo;
-        bool stepHeight = Physics.Raycast(startDir, endDir - startDir, out hitInfo, distanceBetweenStep);
+        bool stepHeight = Physics.Raycast(startDir, endDir - startDir, out hitInfo, Vector3.Distance(startDir, endDir));
         if (debug) Debug.DrawRay(hitInfo.point, hitInfo.normal, Color.cyan);
 
         // If the step height is correct and the step's normal is the worlds up axis then return true.
-        return stepHeight /*&& hitInfo.normal == Vector3.up*/; // ** THIS LINE MAY HAVE BROKEN IT **
+        return stepHeight && hitInfo.normal == Vector3.up; // ** THIS LINE MAY HAVE BROKEN IT **
     }
 
     /// <summary>
@@ -346,7 +349,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             if (GetPlayerInput().z > 0)
             {
                 // Apply an upwards force onto the player's rigidbody.
-                charRigidbody.velocity += transform.up * upForce;
+                charRigidbody.velocity += transform.up * upForce * charRigidbody.mass;
             }
         }
     }
@@ -358,14 +361,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         // Used to check the distance betweent the players feet and the step.
         Vector3 playerFeet = transform.position;
-        playerFeet.y -= charCollider.bounds.extents.y + 0.1f;
+        playerFeet.y -= charCollider.bounds.extents.y;
         Debug.DrawRay(playerFeet, transform.forward * (charCollider.bounds.extents.z + distanceBetweenStep), Color.magenta);
 
         // Used to check how steep the step is, and its height.
         Vector3 startDir = transform.position;
         startDir += transform.forward * charCollider.bounds.extents.z;
         Vector3 endDir = transform.position;
-        endDir.y -= charCollider.bounds.extents.y + 0.1f;
+        endDir.y -= charCollider.bounds.extents.y;
         endDir += transform.forward * (charCollider.bounds.extents.z + (distanceBetweenStep / 2f));
         Debug.DrawRay(startDir, endDir - startDir, Color.red);
 
