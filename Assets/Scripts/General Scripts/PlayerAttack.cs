@@ -142,19 +142,23 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private void RecoilWeapon(bool forceWeaponUp)
     {
-        AnimationCurve weaponRecoilCurve = resourcesScript.currentWeapon.recoilCurve;
+        AnimationCurve weaponRecoilCurveUp = resourcesScript.currentWeapon.recoilCurveUp;
+        AnimationCurve weaponRecoilCurveDown = resourcesScript.currentWeapon.recoilCurveDown;
+        
         float timeDelta;
+        float valueDelta;
 
         if (forceWeaponUp)
         {
             timeDelta = Time.deltaTime / resourcesScript.currentWeapon.upForceDuration;
+            valueDelta = weaponRecoilCurveUp.Evaluate(currentRecoilTimeStamp + timeDelta) - weaponRecoilCurveUp.Evaluate(currentRecoilTimeStamp);
         }
         else
         {
             timeDelta = -Time.deltaTime / resourcesScript.currentWeapon.downForceDuration;
+            valueDelta = weaponRecoilCurveDown.Evaluate(currentRecoilTimeStamp + timeDelta) - weaponRecoilCurveDown.Evaluate(currentRecoilTimeStamp);
         }
 
-        float valueDelta = weaponRecoilCurve.Evaluate(currentRecoilTimeStamp + timeDelta) - weaponRecoilCurve.Evaluate(currentRecoilTimeStamp);
 
         valueDelta *= -resourcesScript.currentWeapon.recoilForce;
 
