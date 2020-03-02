@@ -149,6 +149,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Camera rotation
         float cameraRotation = -mouseRotationInput.y * mouseSensitivity;
+        charCameraTargetRotation = charCamera.transform.localRotation;
         charCameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
         charCameraTargetRotation = ClampRotationAroundXAxis(charCameraTargetRotation);
 

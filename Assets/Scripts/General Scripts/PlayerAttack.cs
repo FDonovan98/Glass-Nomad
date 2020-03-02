@@ -19,7 +19,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     public PlayerResources resourcesScript;
 
     // Used to disable/enable the camera so that we only control our local player's camera.
-    private GameObject cameraGO;
+    [SerializeField] private GameObject cameraGO;
 
     // Used to play the current weapons audio clip.
     private AudioSource weaponAudio;
@@ -46,6 +46,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     // Name for the weapon of the alien.
     private string alienWeapon = "Claws";
+
+    private float currentRecoilTimeStamp = 0.0f;
 
     #endregion
 
@@ -103,6 +105,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        bool recoilUp = false;
         if (!photonView.IsMine) return;
         if (!gameObject.GetComponent<PlayerMovement>().inputEnabled) return;
 
@@ -122,12 +125,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                             Shoot();
                             resourcesScript.currentWeapon.bulletsInCurrentMag++;
                         }
-                        
+                        recoilUp = true;
                         resourcesScript.currentWeapon.bulletsInCurrentMag--;
                     }
                     else
                     {
                         Shoot();
+                        recoilUp = true;
                     }
                 }
             }
@@ -136,15 +140,47 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 if (Input.GetButton("Fire1"))
                 {
                     Shoot();
+                    recoilUp = true;
                 }
             }
         }
 
-        if (recoil > 0) RecoilWeapon();
-
         if (Input.GetKeyDown(KeyCode.R)) resourcesScript.Reload();
 
         ReduceOxygen();
+
+        RecoilWeapon(recoilUp);
+    }
+
+    private void RecoilWeapon(bool forceWeaponUp)
+    {
+        AnimationCurve weaponRecoilCurveUp = resourcesScript.currentWeapon.recoilCurveUp;
+        AnimationCurve weaponRecoilCurveDown = resourcesScript.currentWeapon.recoilCurveDown;
+        
+        float timeDelta;
+        float valueDelta;
+
+        if (forceWeaponUp)
+        {
+            timeDelta = Time.deltaTime / resourcesScript.currentWeapon.upForceDuration;
+            valueDelta = weaponRecoilCurveUp.Evaluate(currentRecoilTimeStamp + timeDelta) - weaponRecoilCurveUp.Evaluate(currentRecoilTimeStamp);
+        }
+        else
+        {
+            timeDelta = -Time.deltaTime / resourcesScript.currentWeapon.downForceDuration;
+            valueDelta = weaponRecoilCurveDown.Evaluate(currentRecoilTimeStamp + timeDelta) - weaponRecoilCurveDown.Evaluate(currentRecoilTimeStamp);
+        }
+
+
+        valueDelta *= -resourcesScript.currentWeapon.recoilForce;
+
+        cameraGO.transform.Rotate(valueDelta, 0.0f, 0.0f);
+
+        // Prevents index errors.
+        currentRecoilTimeStamp += timeDelta;
+        currentRecoilTimeStamp = Mathf.Clamp(currentRecoilTimeStamp, 0.0f, 1.0f);
+
+        Debug.Log(currentRecoilTimeStamp);
     }
 
     /// <summary>
@@ -152,14 +188,13 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// This also reduces the players ammo count and adds recoil, as well as spawning the muzzle flash.
     /// </summary>
     private void Shoot()
-    {
+    {     
         Vector3 bulletDir = RandomBulletSpread(cameraGO.transform.rotation);
         // Calls the 'FireWeapon' method on all clients, meaning that the health and gun shot will be synced across all clients.
-        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, bulletDir,
-                    resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
-
+        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, bulletDir, resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
+        
         Debug.DrawRay(cameraGO.transform.position, bulletDir * resourcesScript.currentWeapon.range, Color.cyan, 2f);
-        recoil += resourcesScript.currentWeapon.recoilForce;
+
         resourcesScript.currentWeapon.bulletsInCurrentMag--;
         currTimeBetweenFiring = 0;
 
@@ -174,18 +209,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         Vector3 deviation3D = UnityEngine.Random.insideUnitCircle * resourcesScript.currentWeapon.maxBulletSpread;
         Quaternion rot = Quaternion.LookRotation(Vector3.forward * resourcesScript.currentWeapon.range + deviation3D);
         return cameraRot * rot * Vector3.forward;
-    }
-
-    /// <summary>
-    /// Recoils the players camera when they shoot.
-    /// </summary>
-    private void RecoilWeapon()
-    {
-        float xRotation = cameraGO.transform.localEulerAngles.x;
-        recoil *= 10 * Time.deltaTime; // This dampens the recoil until it is (almost) zero.
-        recoilRotation += recoil;
-        recoilRotation *= 0.95f; // Gets smaller every frame.
-        cameraGO.transform.localEulerAngles = new Vector3(xRotation - recoilRotation, cameraGO.transform.localEulerAngles.y, cameraGO.transform.localEulerAngles.z);
     }
 
     private void ReduceOxygen()
