@@ -46,6 +46,11 @@ public class AlienController : AlienMovement
     // Slows the speed of the alien when in the emergency state.
     public float emergencySpeedMultiplier = 1.0f;
 
+    [SerializeField] private float trackerVisionDuration = 5f;
+    [SerializeField] private float trackerVisionCooldown = 10f;
+    private float currTrackerTime = 0f;
+    private float currTrackerCooldown = 0f;
+
     #endregion
 
     /// <summary>
@@ -102,7 +107,27 @@ public class AlienController : AlienMovement
         
         if (Input.GetKeyDown(KeyCode.F))
         {
-            ToggleTracker();
+            if (currTrackerCooldown > trackerVisionCooldown)
+            {
+                ToggleTracker();
+            }
+        }
+
+        if (isTrackerOn)
+        {
+            Debug.Log("TIME : " + currTrackerTime);
+            Debug.Log("COOLDOWN: " + currTrackerCooldown);
+            currTrackerTime += Time.deltaTime;
+            currTrackerCooldown = 0;
+            if (currTrackerTime  > trackerVisionDuration)
+            {
+                ToggleTracker(); // Turn the tracker off
+            }
+        }
+        else
+        {
+            currTrackerTime = 0;
+            currTrackerCooldown += Time.deltaTime;
         }
     }
 
