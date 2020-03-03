@@ -55,7 +55,7 @@ public class AlienController : AlienMovement
     {
         base.Start();
         
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode) return;
 
         SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
         
@@ -78,7 +78,7 @@ public class AlienController : AlienMovement
     private new void Update()
     {
         // If we are not the local client then don't compute any of this.
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode) return;
 
         base.Update();
 

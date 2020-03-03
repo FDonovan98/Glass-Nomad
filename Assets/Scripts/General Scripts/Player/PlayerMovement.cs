@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         InitialiseGlobals();
 
-        if (!photonView.IsMine)
+        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
         {
             // Disables the camera on every client that isn't our own.
             charCamera.GetComponent<AudioListener>().enabled = false; // Disables the audio listener on every client that isn't our own.
@@ -97,8 +97,9 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         charNormal = Vector3.up;
         if (debug) Debug.Log(charNormal);
+
         // Sets the gameobject name to the player's username.
-        gameObject.name = photonView.Owner.NickName; 
+        if (!PhotonNetwork.PhotonServerSettings.StartInOfflineMode) gameObject.name = photonView.Owner.NickName;
 
         charCamera = gameObject.GetComponentInChildren<Camera>(); 
         charCollider = gameObject.GetComponent<Collider>();
@@ -112,7 +113,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     protected void Update()
     {
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode) return;
 
         HandlePauseMenu();
 
@@ -136,7 +137,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     /// </summary>
     protected void FixedUpdate()
     {
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode) return;
 
         charRigidbody.velocity += gravity * charNormal * Time.fixedDeltaTime;
     }
