@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class stairtest : MonoBehaviour
+public class PlayerMovementTesting : MonoBehaviour
 {
     public float distanceBetweenStep;
     public float movementSpeed = 10;     
@@ -124,7 +124,7 @@ public class stairtest : MonoBehaviour
             if (GetPlayerInput().z > 0)
             {
                 // Apply an upwards force onto the player's rigidbody.
-                charRigidbody.velocity += transform.up * upForce;
+                charRigidbody.velocity += transform.up * upForce * charRigidbody.mass;
             }
         }
     }
@@ -160,7 +160,7 @@ public class stairtest : MonoBehaviour
         if (debug) Debug.DrawRay(hitInfo.point, hitInfo.normal, Color.cyan);
 
         // If the step height is correct and the step's normal is the worlds up axis then return true.
-        return stepHeight /*&& hitInfo.normal == Vector3.up*/; // ** THIS LINE MAY HAVE BROKEN IT **
+        return stepHeight && hitInfo.normal == Vector3.up; // ** THIS LINE MAY HAVE BROKEN IT **
     }
 
     private void Debugging()

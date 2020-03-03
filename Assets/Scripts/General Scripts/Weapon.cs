@@ -33,9 +33,17 @@ public class Weapon : BaseObject
 
     // How forceful the recoil of the weapon is.
     public float recoilForce = 5f;
+    public float upForceDuration = 1.0f;
+    public float downForceDuration = 2.0f;
+
+    // The maxium amount of bullet spread randomness.
+    public float maxBulletSpread = 10f;
 
     // The sound the weapon makes when you fire.
     public AudioClip weaponSound = null;
+
+    public AnimationCurve recoilCurveUp;
+    public AnimationCurve recoilCurveDown;
 
     // How many bullets you currently have in your magazine.
     [HideInInspector] public int bulletsInCurrentMag;
@@ -53,7 +61,7 @@ public class Weapon : BaseObject
     /// <returns>True if you can fire, and false if you cannot.</returns>
     public bool CanFire(float currentTime)
     {
-        if (currentTime > fireRate)
+        if (currentTime >= fireRate)
         {
             if (magSize > 0)
             {
@@ -63,6 +71,10 @@ public class Weapon : BaseObject
                 }
 
                 Debug.Log("You need to reload.");
+            }
+            else if (magSize == -1)
+            {
+                return true;
             }
         }
 

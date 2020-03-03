@@ -131,6 +131,10 @@ public class PlayerResources
             UpdatePlayerResource(PlayerResource.Ammo, currentWeapon.magSize);
             UpdatePlayerResource(PlayerResource.Magazines, -1);
         }
+        else if (currentWeapon.magsLeft == -1)
+        {
+            Debug.Log("MELEE");
+        }
         else
         {
             Debug.Log("You are out of magazines for this weapon. Find more ammo.");

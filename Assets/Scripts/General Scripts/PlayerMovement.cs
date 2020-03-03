@@ -75,6 +75,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     // Enables/disables the players input.
     public bool inputEnabled = true;
 
+    private float distanceBetweenPlayerAndStep = 0;
+
     protected void Start()
     {
         InitialiseGlobals();
@@ -94,7 +96,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private void InitialiseGlobals()
     {
         charNormal = Vector3.up;
-        Debug.Log(charNormal);
+        if (debug) Debug.Log(charNormal);
         // Sets the gameobject name to the player's username.
         gameObject.name = photonView.Owner.NickName; 
 
@@ -119,11 +121,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         HandlePlayerRotation();
 
-        // // If there is a step, and its height is correct, then try and apply force.
-        // if (CheckIfStep() && CheckStepHeight())
-        // {
-        //     ApplyUpwardsForce();
-        // }
+        // If there is a step, and its height is correct, then try and apply force.
+        if (CheckStepHeight())
+        {
+            ApplyUpwardsForce();
+        }
 
         if (debug) Debugging();
     }
@@ -149,6 +151,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         // Camera rotation
         float cameraRotation = -mouseRotationInput.y * mouseSensitivity;
+        charCameraTargetRotation = charCamera.transform.localRotation;
         charCameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
         charCameraTargetRotation = ClampRotationAroundXAxis(charCameraTargetRotation);
 
@@ -295,46 +298,32 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     #region stairs
 
     /// <summary>
-    /// Casts a ray from the player's feet, forwards, to check if a step is infront of the player.
-    /// </summary>
-    /// <returns>True if a step is infront of the player, false if not.</returns>
-    private bool CheckIfStep()
-    {
-        // If the player isn't grounded, then force has (presumably) already been applied.
-        Vector3 frontOfPlayer = transform.position;
-        frontOfPlayer.z += charCollider.bounds.extents.z;
-        if (!IsGrounded(frontOfPlayer, -Vector3.up)) return false;
-
-        // Start the ray at the bottom center of the player.
-        Vector3 playerFeet = transform.position;
-        playerFeet.y -= charCollider.bounds.extents.y + 0.1f;
-
-        return Physics.Raycast(playerFeet, transform.forward, distanceBetweenStep);
-    }
-
-    /// <summary>
     /// Casts a ray from the middle of the player, downwards, to check for the step height,
     /// and for the step's normal.
     /// </summary>
     /// <returns>True if the player can walk the step's height, false if not.</returns>
     private bool CheckStepHeight()
     {
-        // Start the ray half way up the player, at the front.
-        Vector3 startDir = transform.position;
-        startDir += transform.forward * charCollider.bounds.extents.z;
+        // If the player isn't grounded, then force has (presumably) already been applied.
+        Vector3 frontOfPlayer = transform.position;
+        frontOfPlayer += transform.forward * charCollider.bounds.extents.z;
+        if (!IsGrounded(frontOfPlayer, -Vector3.up)) return false;
 
         // End the ray on the floor, ahead of the player.
         Vector3 endDir = transform.position;
-        endDir.y -= charCollider.bounds.extents.y + 0.1f;
+        endDir.y -= charCollider.bounds.extents.y;
         endDir += transform.forward * (charCollider.bounds.extents.z + (distanceBetweenStep / 2f));
 
         // Cast the ray and output it to the hitInfo.
         RaycastHit hitInfo;
-        bool stepHeight = Physics.Raycast(startDir, endDir - startDir, out hitInfo, distanceBetweenStep);
+        bool isThereAStep = Physics.Raycast(frontOfPlayer, endDir - frontOfPlayer, out hitInfo, Vector3.Distance(frontOfPlayer, endDir) - 0.1f);
         if (debug) Debug.DrawRay(hitInfo.point, hitInfo.normal, Color.cyan);
+        if (debug) Debug.Log("IS THERE A STEP: " + isThereAStep);
+
+        distanceBetweenPlayerAndStep = Vector3.Distance(frontOfPlayer, hitInfo.point) < 1.5f ? 1.5f : Vector3.Distance(frontOfPlayer, hitInfo.point);
 
         // If the step height is correct and the step's normal is the worlds up axis then return true.
-        return stepHeight /*&& hitInfo.normal == Vector3.up*/; // ** THIS LINE MAY HAVE BROKEN IT **
+        return isThereAStep && hitInfo.normal == Vector3.up; // ** THIS LINE MAY HAVE BROKEN IT **
     }
 
     /// <summary>
@@ -349,7 +338,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             if (GetPlayerInput().z > 0)
             {
                 // Apply an upwards force onto the player's rigidbody.
-                charRigidbody.velocity += transform.up * upForce;
+                charRigidbody.velocity += transform.up * upForce * charRigidbody.mass * (1 / distanceBetweenPlayerAndStep);
             }
         }
     }
@@ -361,14 +350,14 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     {
         // Used to check the distance betweent the players feet and the step.
         Vector3 playerFeet = transform.position;
-        playerFeet.y -= charCollider.bounds.extents.y + 0.1f;
+        playerFeet.y -= charCollider.bounds.extents.y;
         Debug.DrawRay(playerFeet, transform.forward * (charCollider.bounds.extents.z + distanceBetweenStep), Color.magenta);
 
         // Used to check how steep the step is, and its height.
         Vector3 startDir = transform.position;
         startDir += transform.forward * charCollider.bounds.extents.z;
         Vector3 endDir = transform.position;
-        endDir.y -= charCollider.bounds.extents.y + 0.1f;
+        endDir.y -= charCollider.bounds.extents.y;
         endDir += transform.forward * (charCollider.bounds.extents.z + (distanceBetweenStep / 2f));
         Debug.DrawRay(startDir, endDir - startDir, Color.red);
 
@@ -378,8 +367,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         Debug.DrawRay(frontOfPlayer, -Vector3.up * (charCollider.bounds.extents.y + 0.5f), Color.green);
 
         Debug.Log("IS GROUNDED: " + IsGrounded(frontOfPlayer, -Vector3.up));
-        Debug.Log("IS THERE A STEP: " + CheckIfStep());
-        Debug.Log("STEP HEIGHT LOW ENOUGH: " + CheckStepHeight());
+        Debug.Log("STEP HEIGHT LOW ENOUGH: " + CheckStepHeight() + ", " + distanceBetweenPlayerAndStep);
     }
 
     #endregion

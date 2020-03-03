@@ -12,13 +12,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef411e071e5a68f47af6ef68ffc6a828, type: 3}
   m_Name: Assault Rifle
   m_EditorClassIdentifier: 
+  itemType: 0
   fireMode: 2
   fireRate: 0.16
   magSize: 30
   magCount: 3
   range: 500
-  damage: 50
+  damage: 15
   recoilForce: 40
+  upForceDuration: 0.05
+  downForceDuration: 2
+  maxBulletSpread: 10
   weaponSound: {fileID: 8300000, guid: 6dc46a7e7afe9cf41aa5ee1eb04812c0, type: 3}
-  bulletsInCurrentMag: 26
-  magsLeft: 99345
+  recoilCurveUp:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.28785685
+      value: 0.14478046
+      inSlope: 0.7147078
+      outSlope: 0.7147078
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2910308
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.64155954
+      value: 0.4757349
+      inSlope: 1.3307381
+      outSlope: 1.3307381
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  recoilCurveDown:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.99989456
+      value: 0.69695556
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bulletsInCurrentMag: 0
+  magsLeft: 0

@@ -104,7 +104,7 @@ public class AlienMovement : PlayerMovement
         float cosTheta = dotProduct / (charNormal.magnitude * surfaceNormal.magnitude);
         float theta = Mathf.Acos(cosTheta);
 
-        Debug.Log(Mathf.Rad2Deg * theta);
+        if (debug) Debug.Log(Mathf.Rad2Deg * theta);
         // charNormal is used when applying gravity so needs to be set.
         charNormal = surfaceNormal;
 
@@ -121,7 +121,7 @@ public class AlienMovement : PlayerMovement
         
         if (transform.rotation != targetRotation)
         {
-            Debug.Log("Lerping");
+            if (debug) Debug.Log("Lerping");
             charRigidbody.velocity += charNormal;
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lerpSpeed);
         }

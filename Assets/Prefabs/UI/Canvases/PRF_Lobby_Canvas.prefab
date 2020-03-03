@@ -1914,8 +1914,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -75}
-  m_SizeDelta: {x: 1250, y: -150}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1250, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &419455281666116674
 CanvasRenderer:
@@ -2417,7 +2417,7 @@ MonoBehaviour:
     m_Top: 150
     m_Bottom: 150
   m_ChildAlignment: 4
-  m_Spacing: 50
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
@@ -2542,17 +2542,17 @@ MonoBehaviour:
   m_VerticalScrollbar: {fileID: 0}
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 9
   m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 4
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 12
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -3080,11 +3080,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1931279072061792054, guid: 76395c7fe53f1e5438ec4da59c726012,
         type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931279072061792054, guid: 76395c7fe53f1e5438ec4da59c726012,
-        type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UpdatePlayerPrefs
       objectReference: {fileID: 0}
@@ -3247,11 +3242,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Options.m_Options.Array.size
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931279072061792054, guid: 76395c7fe53f1e5438ec4da59c726012,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1931279072061792054, guid: 76395c7fe53f1e5438ec4da59c726012,
         type: 3}
@@ -3420,11 +3410,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1931279072061792054, guid: 76395c7fe53f1e5438ec4da59c726012,
         type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931279072061792054, guid: 76395c7fe53f1e5438ec4da59c726012,
-        type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UpdatePlayerPrefs
       objectReference: {fileID: 0}
@@ -3432,6 +3417,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138953854311450652, guid: 76395c7fe53f1e5438ec4da59c726012,
+        type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7138953854311450652, guid: 76395c7fe53f1e5438ec4da59c726012,
         type: 3}
@@ -3457,11 +3447,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7138953854311450652, guid: 76395c7fe53f1e5438ec4da59c726012,
-        type: 3}
-      propertyPath: m_text
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76395c7fe53f1e5438ec4da59c726012, type: 3}
