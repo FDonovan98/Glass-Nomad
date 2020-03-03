@@ -46,7 +46,15 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     private void Start()
     {
-        SpawnLocalPlayer();
+        if (!PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
+        {
+            SpawnLocalPlayer();
+        }
+        else
+        {
+            Debug.Log("Spawning an alien, hopefully.");
+            Instantiate(Resources.Load("Alien (Cylinder)", typeof(GameObject)), alienSpawnPoint.transform.position, new Quaternion());
+        }
 
         settingsPath = Application.persistentDataPath + "/game_data";
         SetupResolutionDropdown();

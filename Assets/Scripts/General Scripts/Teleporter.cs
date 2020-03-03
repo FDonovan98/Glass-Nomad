@@ -16,6 +16,8 @@ public class Teleporter : TriggerInteractionScript
     protected override void InteractionComplete(GameObject player)
     {
         Debug.Log("teleporting player to: " + linkedTeleporter.transform.position);
-        player.transform.position = linkedTeleporter.transform.position;
+        Vector3 spawnLocation = linkedTeleporter.transform.position;
+        spawnLocation += new Vector3(0.0f, player.GetComponent<Collider>().bounds.extents.y, 0.0f);
+        player.transform.position = spawnLocation;
     }
 }
