@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 // Code initially based on code from here:
@@ -42,7 +43,7 @@ public class AlienMovement : PlayerMovement
     protected new void Update()
     {
         base.Update();
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode) return;
         if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
 
         AlienJump();
@@ -83,7 +84,7 @@ public class AlienMovement : PlayerMovement
     {
         base.FixedUpdate();
 
-        if (!photonView.IsMine) return;
+        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode) return;
         if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
         
         RotateTransformToSurfaceNormal();
