@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public class RedSwitchTriggerScript : TriggerInteractionScript
+public class SecuritySwitchTriggerScript : TriggerInteractionScript
 {
 
     // Tells the red switch manager when this switch has been (de)activated.
-    public RedSwitchManager switchManager = null;
+    public SecuritySwitchManager switchManager = null;
 
     /// <summary>
     /// Once the player enters the switch's collider and their holding 'E',

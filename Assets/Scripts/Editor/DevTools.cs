@@ -137,7 +137,7 @@ public class DevTools : EditorWindow
     /// </summary>
     private void OpenAllDoors()
     {
-        GameObject.Find("ObjectivesManager").GetComponent<RedSwitchManager>().OpenAllDoors();
+        GameObject.Find("ObjectivesManager").GetComponent<SecuritySwitchManager>().OpenAllDoors();
     }
 
     /// <summary>
@@ -145,6 +145,6 @@ public class DevTools : EditorWindow
     /// </summary>
     private void ActivateSwitches()
     {
-        GameObject.Find("ObjectivesManager").GetComponent<RedSwitchManager>().RedSwitchesCompleted();
+        GameObject.Find("ObjectivesManager").GetComponent<SecuritySwitchManager>().RedSwitchesCompleted();
     }
 }

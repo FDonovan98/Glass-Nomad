@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RedSwitchManager : MonoBehaviour
+public class SecuritySwitchManager : MonoBehaviour
 {
     // The number of switches that need to be activated to activate the doors.
     private int numberOfSwitches = 2;
