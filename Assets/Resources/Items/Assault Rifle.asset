@@ -19,8 +19,8 @@ MonoBehaviour:
   magCount: 3
   range: 500
   damage: 15
-  recoilForce: 1000
-  upForceDuration: 0.15
+  recoilForce: 40
+  upForceDuration: 0.05
   downForceDuration: 2
   maxBulletSpread: 10
   weaponSound: {fileID: 8300000, guid: 6dc46a7e7afe9cf41aa5ee1eb04812c0, type: 3}
@@ -36,6 +36,24 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    - serializedVersion: 3
+      time: 0.28785685
+      value: 0.14478046
+      inSlope: 0.7147078
+      outSlope: 0.7147078
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2910308
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.64155954
+      value: 0.4757349
+      inSlope: 1.3307381
+      outSlope: 1.3307381
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -62,7 +80,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 0.99989456
-      value: 0.9009427
+      value: 0.69695556
       inSlope: 2
       outSlope: 2
       tangentMode: 0
