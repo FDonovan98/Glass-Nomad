@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 public class Objectives : MonoBehaviour
 {
     // The CSV file to read the objectives from.
-    private string csvPath = "Assets/Scripts/Miscellaneous/objectivesTextFile.csv";
+    private string csvPath = "Assets/Scripts/Miscellaneous/Objectives/objectivesTextFile.csv";
 
     // A list of all of the objectives.
     private static List<Objective> objectives = new List<Objective>();
