@@ -2,12 +2,13 @@
 
 public class Teleporter : TriggerInteractionScript
 {
+    public bool powered = false;
     [SerializeField] private GameObject linkedTeleporter = null; // The destination of the TP.
     [SerializeField] private bool biDirectional = true; // If false, then this TP can ONLY be used TO teleport, and NOT FROM.
 
     private new void OnTriggerStay(Collider coll)
     {
-        if (biDirectional)
+        if (biDirectional && powered)
         {
             base.OnTriggerStay(coll);
         }
