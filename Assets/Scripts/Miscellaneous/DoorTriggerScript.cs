@@ -15,8 +15,9 @@ public class DoorTriggerScript : TriggerInteractionScript
         anim = GetComponent<Animator>();
     }
 
-    protected override void LeftTriggerArea()
+    protected override void LeftTriggerArea(Collider coll)
     {
+        base.LeftTriggerArea(coll);
         if (isDoorOpen) ChangeDoorState();
     }
 

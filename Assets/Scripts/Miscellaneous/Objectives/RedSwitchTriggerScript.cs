@@ -31,13 +31,18 @@ public class RedSwitchTriggerScript : TriggerInteractionScript
                     }
 
                     currInteractTime += Time.deltaTime;
-                    if (debug) Debug.LogFormat("Interaction progress: {0}%", (currInteractTime / interactTime) * 100);
+                    float percentage = (currInteractTime / interactTime) * 100;
+                    if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
+
+                    ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
+                    coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = false;
+                    return;
                 }
             }
             else // if the player is not pressing then reset the switch's state.
             {
                 currInteractTime = 0f;
-                LeftTriggerArea();
+                LeftTriggerArea(coll);
             }
         }
     }
@@ -52,7 +57,7 @@ public class RedSwitchTriggerScript : TriggerInteractionScript
     /// <summary>
     /// If the player exits the switch's collider, then reset the switch's state and timer.
     /// </summary>
-    protected override void LeftTriggerArea()
+    protected override void LeftTriggerArea(Collider coll)
     {
         if (interactionComplete)
         {
@@ -60,6 +65,6 @@ public class RedSwitchTriggerScript : TriggerInteractionScript
             switchManager.SwitchDeactivated();
             interactionComplete = false;
         }
-        currInteractTime = 0f;
+        base.LeftTriggerArea(coll);
     }
 }
