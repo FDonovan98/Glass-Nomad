@@ -137,19 +137,7 @@ public class DevTools : EditorWindow
     /// </summary>
     private void OpenAllDoors()
     {
-        Debug.Log("All doors are now opened");
-        GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
-        foreach (GameObject door in doors)
-        {
-            DoorTriggerScript doorTrigger = door.GetComponent<DoorTriggerScript>();
-
-            if (!doorTrigger.GetDoorOpen())
-            {
-                doorTrigger.ChangeDoorState();
-            }
-
-            doorTrigger.LockDoorOpen();
-        }
+        GameObject.Find("ObjectivesManager").GetComponent<RedSwitchManager>().OpenAllDoors();
     }
 
     /// <summary>
@@ -157,7 +145,6 @@ public class DevTools : EditorWindow
     /// </summary>
     private void ActivateSwitches()
     {
-        GameObject armoury = GameObject.FindGameObjectWithTag("ArmouryDoor");
-        armoury.GetComponentInChildren<RedSwitchManager>().OpenArmouryDoor();
+        GameObject.Find("ObjectivesManager").GetComponent<RedSwitchManager>().RedSwitchesCompleted();
     }
 }

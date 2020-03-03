@@ -18,7 +18,7 @@ public class RedSwitchManager : MonoBehaviour
         currentSwitchesActivated++;
         if (currentSwitchesActivated == numberOfSwitches)
         {
-            OpenArmouryDoor();
+            RedSwitchesCompleted();
         }
     }
 
@@ -29,12 +29,29 @@ public class RedSwitchManager : MonoBehaviour
 
     /// <summary>
     /// Changes the door state of the armoury door, and locks it open.
-    /// This function needs to be public as it is accessed by the dev tools.
     /// </summary>
-    public void OpenArmouryDoor() // needs to be public for devtools to access it.
+    public void RedSwitchesCompleted()
     {
-        GetComponentInParent<DoorTriggerScript>().ChangeDoorState();
-        GetComponentInParent<BoxCollider>().enabled = false;
         Objectives.ObjectiveComplete("RED SWITCH", "GENERATOR");
+        OpenAllDoors();
+        // Start generator sound effect.
+        // Start generator particle effects.
+        // Enable generator room emission material.
+    }
+
+    public void OpenAllDoors()
+    {
+        GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+        foreach (GameObject door in doors)
+        {
+            DoorTriggerScript doorTrigger = door.GetComponent<DoorTriggerScript>();
+
+            if (!doorTrigger.GetDoorOpen())
+            {
+                doorTrigger.ChangeDoorState();
+            }
+
+            doorTrigger.LockDoorOpen();
+        }
     }
 }

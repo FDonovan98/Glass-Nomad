@@ -18,7 +18,7 @@ abstract public class TriggerInteractionScript : MonoBehaviour
     /// </summary>
     protected void Update()
     {
-        if (currCooldownTime >= 0)
+        if (currCooldownTime > 0)
         {
             currCooldownTime -= Time.deltaTime;
         }
@@ -47,7 +47,7 @@ abstract public class TriggerInteractionScript : MonoBehaviour
     {
         if (coll.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
         {
-            if (Input.GetKey(inputKey))
+            if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
             {
                 if (currInteractTime >= interactTime)
                 {
