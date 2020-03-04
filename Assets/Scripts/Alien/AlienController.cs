@@ -47,9 +47,9 @@ public class AlienController : AlienMovement
     public float emergencySpeedMultiplier = 1.0f;
 
     [SerializeField] private float trackerVisionDuration = 5f;
-    [SerializeField] private float trackerVisionCooldown = 10f;
+    [SerializeField] private float trackerVisionRegenRate = 0.25f;
+    [SerializeField] private bool trackerNeedsToBeFullyRechargedBeforeUseAgain = true;
     private float currTrackerTime = 0f;
-    private float currTrackerCooldown = 0f;
 
     #endregion
 
@@ -107,27 +107,35 @@ public class AlienController : AlienMovement
         
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (currTrackerCooldown > trackerVisionCooldown)
+            if (trackerNeedsToBeFullyRechargedBeforeUseAgain)
+            {
+                if (currTrackerTime <= 0)
+                {
+                    ToggleTracker();
+                }
+            }
+            else 
             {
                 ToggleTracker();
             }
         }
+        
+        HandleTrackerVision();
+    }
 
+    private void HandleTrackerVision()
+    {
         if (isTrackerOn)
         {
-            Debug.Log("TIME : " + currTrackerTime);
-            Debug.Log("COOLDOWN: " + currTrackerCooldown);
             currTrackerTime += Time.deltaTime;
-            currTrackerCooldown = 0;
             if (currTrackerTime  > trackerVisionDuration)
             {
                 ToggleTracker(); // Turn the tracker off
             }
         }
-        else
+        else if (currTrackerTime > 0)
         {
-            currTrackerTime = 0;
-            currTrackerCooldown += Time.deltaTime;
+            currTrackerTime -= trackerVisionRegenRate * Time.deltaTime;
         }
     }
 
