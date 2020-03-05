@@ -108,6 +108,13 @@ public class Objectives : MonoBehaviour
         return new Objective("ERROR", "");
     }
 
+    public static bool IsObjectiveComplete(string objectiveName)
+    {
+        Objective obj = GetObjective(objectiveName);
+        if ((obj.title != "" || obj.title != "ERROR") && obj.completed) return true;
+        return false;
+    }
+
     private static async void WriteTextToHud(string text)
     {
         string currText = "";

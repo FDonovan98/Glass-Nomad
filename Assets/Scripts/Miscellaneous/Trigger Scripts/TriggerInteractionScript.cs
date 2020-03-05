@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 using UnityEngine.UI;
 
-abstract public class TriggerInteractionScript : MonoBehaviour
+public class TriggerInteractionScript : MonoBehaviour
 {
     [SerializeField] protected KeyCode inputKey = KeyCode.E; // Which key the player needs to be pressing to interact.
     [SerializeField] protected float interactTime; // The time needed to interact with the object to activate/open it.
@@ -12,6 +13,10 @@ abstract public class TriggerInteractionScript : MonoBehaviour
     [SerializeField] protected bool debug = false; // Should the debug messages be displayed.
     protected Image outerReticle = null;
     private GameObject hudCanvas = null;
+    [SerializeField] private string objectiveName = "";
+    [SerializeField] private string objectiveRequired = "";
+    [SerializeField] private bool destroyObjectAfter = true;
+    [SerializeField] private GameObject objectToDestroy = null;
 
     /// <summary>
     /// Constantly decreases the current cooldown time, unless its already 0.
@@ -95,7 +100,22 @@ abstract public class TriggerInteractionScript : MonoBehaviour
         }
     }
 
-    abstract protected void InteractionComplete(GameObject player);
+    virtual protected void InteractionComplete(GameObject player)
+    {
+        Objectives.ObjectiveComplete(objectiveName, objectiveRequired);
+        
+        // If the objective failed to be set as completed (e.g. a required objective hasn't been completed),
+        // then don't do anything else.
+        if (!Objectives.IsObjectiveComplete(objectiveName)) return;
+
+        GetComponent<Collider>().enabled = false;
+        if (destroyObjectAfter)
+        {
+            if (objectToDestroy == null) PhotonNetwork.Destroy(gameObject);
+            else PhotonNetwork.Destroy(objectToDestroy);
+        }
+    }
+    
     virtual protected void LeftTriggerArea(Collider coll)
     {
         currInteractTime = 0f;
