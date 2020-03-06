@@ -15,20 +15,5 @@ public class GeneratorObjective : TriggerInteractionScript
                 element.GetComponent<Teleporter>().powered = true;
             }
         }
-
-        // Open all doors.
-        if (debug) Debug.Log("All doors are now opened");
-        GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
-        foreach (GameObject door in doors)
-        {
-            DoorTriggerScript doorTrigger = door.GetComponent<DoorTriggerScript>();
-                
-            if (!doorTrigger.GetDoorOpen())
-            {
-                doorTrigger.ChangeDoorState();
-            }
-                
-            doorTrigger.LockDoorOpen();
-        }
     }
 }
