@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.Locked; 
         Cursor.visible = false;
 
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void InitialiseGlobals()

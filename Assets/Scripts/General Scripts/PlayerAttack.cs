@@ -58,7 +58,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// </summary>
     private new void OnEnable()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
         resourcesScript = new PlayerResources(this.gameObject, maxHealth);
         AllocatePlayersItems();
     }
@@ -192,7 +192,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         currentRecoilTimeStamp += timeDelta;
         currentRecoilTimeStamp = Mathf.Clamp(currentRecoilTimeStamp, 0.0f, 1.0f);
 
-        Debug.Log(currentRecoilTimeStamp);
+        //Debug.Log(currentRecoilTimeStamp);
     }
 
     /// <summary>
