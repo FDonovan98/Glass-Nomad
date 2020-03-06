@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class SecuritySwitchManager : MonoBehaviour
 {
@@ -7,6 +9,7 @@ public class SecuritySwitchManager : MonoBehaviour
 
     // The number of switches that are currently activated.
     private int currentSwitchesActivated = 0;
+    [SerializeField] private ParticleSystem[] generatorParticleSystems = null;
 
     /// <summary>
     /// Called by the RedSwitchTrigger.cs to increase the number of switches
@@ -33,9 +36,17 @@ public class SecuritySwitchManager : MonoBehaviour
     public void RedSwitchesCompleted()
     {
         Objectives.ObjectiveComplete("RED SWITCH", "GENERATOR");
+        if (Objectives.IsObjectiveComplete("RED SWITCH"))
+        {
+            PowerOn();
+        }
+    }
+
+    private void PowerOn()
+    {
         OpenAllDoors();
+        TurnOnGenerators();
         // Start generator sound effect.
-        // Start generator particle effects.
         // Enable generator room emission material.
     }
 
@@ -52,6 +63,14 @@ public class SecuritySwitchManager : MonoBehaviour
             }
 
             doorTrigger.LockDoorOpen();
+        }
+    }
+
+    private void TurnOnGenerators()
+    {
+        foreach (ParticleSystem ps in generatorParticleSystems)
+        {
+            ps.Play();
         }
     }
 }
