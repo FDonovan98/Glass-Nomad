@@ -49,6 +49,8 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
     private float currentRecoilTimeStamp = 0.0f;
 
+    private Animator anim;
+
     #endregion
 
     /// <summary>
@@ -56,6 +58,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// </summary>
     private new void OnEnable()
     {
+        anim = GetComponent<Animator>();
         resourcesScript = new PlayerResources(this.gameObject, maxHealth);
         AllocatePlayersItems();
     }
@@ -133,6 +136,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                         Shoot();
                         recoilUp = true;
                     }
+                    anim.SetTrigger("isShooting");
                 }
             }
             else if (resourcesScript.currentWeapon.fireMode == Weapon.FireType.FullAuto)
@@ -141,11 +145,19 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 {
                     Shoot();
                     recoilUp = true;
+                    anim.SetTrigger("isShooting");
                 }
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R)) resourcesScript.Reload();
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            resourcesScript.Reload();
+            if (anim != null)
+            {
+                anim.SetTrigger("isReloading");
+            }
+        }
 
         ReduceOxygen();
 
