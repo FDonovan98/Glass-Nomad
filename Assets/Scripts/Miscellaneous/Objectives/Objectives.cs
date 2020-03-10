@@ -23,7 +23,7 @@ public class Objectives : MonoBehaviour
     [SerializeField] private TMP_Text objectiveText = null;
 
     // The static text object as it needs to be static.
-    private static TMP_Text captionText = null;
+    public static TMP_Text captionText = null;
 
 
     /// <summary>
@@ -74,7 +74,9 @@ public class Objectives : MonoBehaviour
             {
                 try
                 {
-                    WriteTextToHud(objectiveCompleted);
+                    Debug.Log(objectiveCompleted.dialogue);
+                    objectiveCompleted.completed = true;
+                    WriteTextToHud(objectiveCompleted.dialogue, timePerLetter, timeToDisappear);
                 }
                 catch (Exception e)
                 {
@@ -114,18 +116,16 @@ public class Objectives : MonoBehaviour
         return false;
     }
 
-    private static async void WriteTextToHud(Objective obj)
+    public static async void WriteTextToHud(string diag, float perLetter, float toDisappear = 0f)
     {
-        Debug.Log(obj.dialogue);
-        obj.completed = true;
         string currText = "";
-        foreach (Char letter in obj.dialogue.ToCharArray())
+        foreach (Char letter in diag.ToCharArray())
         {
             currText += letter;
             captionText.text = "<mark=#000000aa>" + currText + "</mark>";
-            await Task.Delay(TimeSpan.FromSeconds(timePerLetter));
+            await Task.Delay(TimeSpan.FromSeconds(perLetter));
         }
-        await Task.Delay(TimeSpan.FromSeconds(timeToDisappear));
+        await Task.Delay(TimeSpan.FromSeconds(toDisappear));
         captionText.text = "";
     }
 }
