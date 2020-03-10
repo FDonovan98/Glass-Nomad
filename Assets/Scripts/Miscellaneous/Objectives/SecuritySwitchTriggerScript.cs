@@ -1,4 +1,5 @@
-﻿ using UnityEngine;
+﻿using UnityEngine;
+using Photon.Pun;
 
 public class SecuritySwitchTriggerScript : TriggerInteractionScript
 {
@@ -24,7 +25,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
                 {
                     if (currInteractTime >= interactTime)
                     {
-                        InteractionComplete(coll.gameObject);
+                        photonView.RPC("InteractionComplete", RpcTarget.All);
                         currInteractTime = 0f;
                         interactionComplete = true;
                         currCooldownTime = cooldownTime;
@@ -47,7 +48,8 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
         }
     }
 
-    protected override void InteractionComplete(GameObject player)
+    [PunRPC]
+    private void InteractionComplete()
     {
         if (debug) Debug.Log("Switch activated");
         interactionComplete = true;
@@ -61,10 +63,16 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     {
         if (interactionComplete)
         {
-            if (debug) Debug.Log("Switch deactivated");
-            switchManager.SwitchDeactivated();
-            interactionComplete = false;
+            photonView.RPC("Deactivate", RpcTarget.All);
         }
         base.LeftTriggerArea(coll);
+    }
+
+    [PunRPC]
+    private void Deactivate()
+    {
+        if (debug) Debug.Log("Switch deactivated");
+        switchManager.SwitchDeactivated();
+        interactionComplete = false;
     }
 }
