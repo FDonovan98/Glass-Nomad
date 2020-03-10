@@ -1,37 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Photon.Pun;
+﻿using UnityEngine;
 
 public class MarineMovement : PlayerMovement
-{
-    public float force = 150f;
-    protected Vector3 playerMovementInput; // Used to store the players movement input.
-
-    public bool InputEnabled = true;
-
+{       
     protected new void Start()
     {
         base.Start();
-    }
 
+        if (!photonView.IsMine) return;
+    }
+    
     protected new void Update()
     {
         base.Update();
-        
-        GetPlayerInput();
-        // Player movement
-        Vector3 dir = transform.TransformDirection(playerMovementInput);
-        charRigidbody.velocity = dir;
+
+        if (!photonView.IsMine) return;
+
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
     }
 
-    private void GetPlayerInput()
+    protected new void FixedUpdate()
     {
-        if (!InputEnabled) { return; }
-        float x, y, z; // Declare x, y and z axis variables for player movement.
+        base.FixedUpdate();
+        if (!photonView.IsMine) return;
+
+        if (!inputEnabled || Cursor.lockState == CursorLockMode.None) return;
+        // Player movement
+        charRigidbody.AddForce(transform.TransformDirection(GetPlayerInput()), ForceMode.Acceleration);
+    }
+
+    /// <summary>
+    /// Retrieves the player's WASD and jump input, applying forces where necessary.
+    /// </summary>
+    public override Vector3 GetPlayerInput()
+    {
+        Vector3 XZMovement = base.GetPlayerInput();
+        float y;
 
         // Jump and ground detection
-        if (IsGrounded(-Vector3.up) && Input.GetKeyDown(KeyCode.Space))
+        if (IsGrounded(transform.position, -Vector3.up) && Input.GetKeyDown(KeyCode.Space))
         {
             y = jumpSpeed;
         }
@@ -40,6 +46,7 @@ public class MarineMovement : PlayerMovement
             y = charRigidbody.velocity.y;
         }
 
+<<<<<<< HEAD
         // Player movement
         x = Input.GetAxisRaw("Horizontal") * movementSpeed;
         z = Input.GetAxisRaw("Vertical") * movementSpeed;
@@ -74,5 +81,8 @@ public class MarineMovement : PlayerMovement
         yield return new WaitForSeconds(3f);
         PhotonNetwork.Destroy(this.gameObject);
         PhotonNetwork.LeaveRoom();
+=======
+        return new Vector3(XZMovement.x, y, XZMovement.z);
+>>>>>>> master
     }
 }
