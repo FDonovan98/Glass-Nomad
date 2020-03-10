@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Photon.Pun;
 
 public class SecuritySwitchManager : MonoBehaviour
 {
@@ -50,7 +49,7 @@ public class SecuritySwitchManager : MonoBehaviour
         // Enable generator room emission material.
     }
 
-    public void OpenAllDoors()
+    public static void OpenAllDoors()
     {
         GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
         foreach (GameObject door in doors)
