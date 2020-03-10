@@ -15,7 +15,6 @@ public class SecuritySwitchManager : MonoBehaviour
     /// currently activated. If all switches are activated then we call open
     /// the armoury doors.
     /// </summary>
-    [PunRPC]
     public void SwitchActivated()
     {
         currentSwitchesActivated++;
@@ -25,7 +24,6 @@ public class SecuritySwitchManager : MonoBehaviour
         }
     }
 
-    [PunRPC]
     public void SwitchDeactivated()
     {
         currentSwitchesActivated--;
