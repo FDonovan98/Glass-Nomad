@@ -10,6 +10,7 @@ public class MarineController : MarineMovement
     private Light flashlight;
 
     private float movementAngle;
+    private float animSpeed;
 
 
     private new void Start()
@@ -52,7 +53,9 @@ public class MarineController : MarineMovement
             flashlight.enabled = !flashlight.enabled;
         }
 
-        movementAngle = Vector3.Angle(charRigidbody.velocity, transform.forward);
+        movementAngle = Vector3.SignedAngle(charRigidbody.velocity, transform.forward, Vector3.down);
         anim.SetFloat("runningDirection", movementAngle);
+        animSpeed = charRigidbody.velocity.magnitude;
+        anim.SetFloat("speed", animSpeed);
     }
 }
