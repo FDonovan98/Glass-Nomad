@@ -136,7 +136,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                         Shoot();
                         recoilUp = true;
                     }
-                    anim.SetTrigger("isShooting");
+                    if (anim != null)
+                    {
+                        anim.SetTrigger("isShooting");
+                    }
                 }
             }
             else if (resourcesScript.currentWeapon.fireMode == Weapon.FireType.FullAuto)
@@ -145,7 +148,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 {
                     Shoot();
                     recoilUp = true;
-                    anim.SetTrigger("isShooting");
+                    if (anim != null)
+                    {
+                        anim.SetTrigger("isShooting");
+                    }
                 }
             }
         }
