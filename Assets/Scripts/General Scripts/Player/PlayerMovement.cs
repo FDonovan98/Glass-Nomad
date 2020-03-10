@@ -77,6 +77,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     private float distanceBetweenPlayerAndStep = 0;
 
+    protected Animator anim;
+
     protected void Start()
     {
         InitialiseGlobals();
@@ -91,6 +93,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         // Forces every player's mouse to the center of the window and hides it when the player is created.
         Cursor.lockState = CursorLockMode.Locked; 
         Cursor.visible = false;
+
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void InitialiseGlobals()

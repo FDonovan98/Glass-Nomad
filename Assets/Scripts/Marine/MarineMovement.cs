@@ -40,6 +40,7 @@ public class MarineMovement : PlayerMovement
         if (IsGrounded(transform.position, -Vector3.up) && Input.GetKeyDown(KeyCode.Space))
         {
             y = jumpSpeed;
+            anim.SetBool("isJumping", true);
         }
         else
         {
