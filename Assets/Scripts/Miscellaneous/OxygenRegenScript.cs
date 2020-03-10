@@ -16,7 +16,7 @@ public class OxygenRegenScript : MonoBehaviour
         //I have no idea how many times I've had to fix this.
         else if (other.gameObject.layer == 9) // Alien regen
         {
-            playerAttack = other.GetComponent<AlienController>().alienAttack;
+            return;
         }
 
         if (playerAttack != null)
