@@ -69,8 +69,17 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
+            PhotonNetwork.Instantiate("Marine (Cylinder)", GetRandomSpawnPoint(), new Quaternion());
         }
+    }
+
+    private Vector3 GetRandomSpawnPoint()
+    {
+        Vector3 pos = marineSpawnPoint.transform.position;
+        Vector2 circle = UnityEngine.Random.insideUnitCircle * 1;
+        pos.x += circle.x;
+        pos.z += circle.y;
+        return pos;
     }
 
     private void SetupResolutionDropdown()
