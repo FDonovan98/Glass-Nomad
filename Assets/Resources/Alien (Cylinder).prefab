@@ -441,10 +441,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4364988366066350752}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 40
   m_Drag: 1
   m_AngularDrag: 2
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
@@ -533,7 +533,7 @@ MonoBehaviour:
   distanceBetweenStep: 2
   upForce: 2
   debug: 0
-  movementSpeed: 100
+  movementSpeed: 130
   mouseSensitivity: 10
   jumpSpeed: 40
   yRotationClamp: 80
@@ -548,8 +548,8 @@ MonoBehaviour:
   jumpRange: 4
   transferTime: 0.1
   jumpChargeTime: 1
-  horizontalJumpMod: 1.35
-  verticalJumpMod: 1.35
+  horizontalJumpMod: 2
+  verticalJumpMod: 2
   maxLength: 0
   alienVision: {r: 0.45976606, g: 0.8113208, b: 0.38652548, a: 0}
   transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
