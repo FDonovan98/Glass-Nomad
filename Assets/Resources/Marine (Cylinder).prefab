@@ -955,6 +955,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: aadc268325e99e241954cd736a3bfbf0, type: 2}
+    - target: {fileID: 13700000, guid: 22f895fc36dac1846821559bb04a0894, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22f895fc36dac1846821559bb04a0894, type: 3}
 --- !u!4 &2171136112761722195 stripped
@@ -970,6 +974,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 246526236530761477}
     m_Modifications:
+    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Flashlight
+      objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730582, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1024,11 +1033,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Flashlight
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8865416381457730581, guid: 332df5eb1fa7b2b408462605350b969d, type: 3}
