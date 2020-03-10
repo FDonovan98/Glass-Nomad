@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TriggerInteractionScript : MonoBehaviour
+public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 {
     [SerializeField] protected KeyCode inputKey = KeyCode.E; // Which key the player needs to be pressing to interact.
     [SerializeField] protected float interactTime; // The time needed to interact with the object to activate/open it.
@@ -13,7 +13,7 @@ public class TriggerInteractionScript : MonoBehaviour
     [SerializeField] protected bool debug = false; // Should the debug messages be displayed.
     protected Image outerReticle = null;
     private GameObject hudCanvas = null;
-    [SerializeField] private string objectiveName = "";
+    [SerializeField] protected string objectiveName = "";
     [SerializeField] private string objectiveRequired = "";
     [SerializeField] private bool destroyObjectAfter = true;
     [SerializeField] private GameObject objectToDestroy = null;
@@ -56,11 +56,7 @@ public class TriggerInteractionScript : MonoBehaviour
             {
                 if (currInteractTime >= interactTime)
                 {
-                    InteractionComplete(coll.gameObject);
-                    currInteractTime = 0f;
-                    interactionComplete = true;
-                    currCooldownTime = cooldownTime;
-                    coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+                    photonView.RPC("Completed", RpcTarget.All, coll.gameObject.GetPhotonView().ViewID);
                     return;
                 }
 
@@ -100,6 +96,17 @@ public class TriggerInteractionScript : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    public void Completed(int pv)
+    {
+        GameObject player = PhotonView.Find(pv).gameObject;
+        InteractionComplete(player);
+        currInteractTime = 0f;
+        interactionComplete = true;
+        currCooldownTime = cooldownTime;
+        player.GetComponent<PlayerMovement>().inputEnabled = true;
+    }
+
     virtual protected void InteractionComplete(GameObject player)
     {
         Objectives.ObjectiveComplete(objectiveName, objectiveRequired);
@@ -111,8 +118,8 @@ public class TriggerInteractionScript : MonoBehaviour
         GetComponent<Collider>().enabled = false;
         if (destroyObjectAfter)
         {
-            if (objectToDestroy == null) PhotonNetwork.Destroy(gameObject);
-            else PhotonNetwork.Destroy(objectToDestroy);
+            if (objectToDestroy == null) Destroy(gameObject);
+            else Destroy(objectToDestroy);
         }
     }
     

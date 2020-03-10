@@ -74,8 +74,7 @@ public class Objectives : MonoBehaviour
             {
                 try
                 {
-                    objectiveCompleted.Say();
-                    WriteTextToHud(objectiveCompleted.dialogue);
+                    WriteTextToHud(objectiveCompleted);
                 }
                 catch (Exception e)
                 {
@@ -115,10 +114,12 @@ public class Objectives : MonoBehaviour
         return false;
     }
 
-    private static async void WriteTextToHud(string text)
+    private static async void WriteTextToHud(Objective obj)
     {
+        Debug.Log(obj.dialogue);
+        obj.completed = true;
         string currText = "";
-        foreach (Char letter in text.ToCharArray())
+        foreach (Char letter in obj.dialogue.ToCharArray())
         {
             currText += letter;
             captionText.text = "<mark=#000000aa>" + currText + "</mark>";
@@ -150,15 +151,5 @@ public class Objective
         title = ttl;
         dialogue = diag;
         completed = false;
-    }
-
-    /// <summary>
-    /// Called when an objective is completed.
-    /// Displays the dialogue of the objective and marks it as completed.
-    /// </summary>
-    public void Say()
-    {
-        Debug.Log(dialogue);
-        completed = true;
     }
 }

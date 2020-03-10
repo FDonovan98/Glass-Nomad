@@ -15,6 +15,8 @@ public class FinalObjective : TriggerInteractionScript
     {
         base.InteractionComplete(player);
 
+        if (!Objectives.IsObjectiveComplete(objectiveName)) return;
+
         StartCoroutine(StartTimer());
     }
 
