@@ -236,7 +236,14 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             if (resourcesScript.oxygenAmountSeconds > 0)
             {
-                resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime);
+                if (Input.GetAxis("Sprint") >= 1)
+                {
+                    resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime * resourcesScript.sprintOxygenMultiplier);
+                }
+                else
+                {
+                    resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime);
+                }
             }
         }
     }

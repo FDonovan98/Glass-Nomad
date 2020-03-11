@@ -31,6 +31,7 @@ public class PlayerResources
     // Oxygen shenanigans
     public float maxOxygenAmountSeconds = 300f;
     public float oxygenAmountSeconds;
+    public float sprintOxygenMultiplier = 2f;
 
     public PlayerResources(GameObject attachedPlayer, int playerMaxHealth = 100)
     {
