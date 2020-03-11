@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     private Vector3 GetRandomSpawnPoint()
     {
-        int radius = 12;
+        int radius = 8;
         Vector3 pos = marineSpawnPoint.transform.position;
         Vector2 circle = UnityEngine.Random.insideUnitCircle * radius;
         pos.x += circle.x - (radius / 2);
