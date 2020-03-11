@@ -9,7 +9,7 @@ public class FinalObjective : TriggerInteractionScript
     [SerializeField] private float waitTimer = 10f;
     [SerializeField] private float timer = 30f;
     [SerializeField] private Collider evacZone = null;
-    [SerializeField] private TMP_Text gameoverText = null;
+    [SerializeField] private GameObject gameover = null;
 
     protected override void InteractionComplete(GameObject player)
     {
@@ -52,13 +52,13 @@ public class FinalObjective : TriggerInteractionScript
         Debug.Log("MARINE COUNT IN EVAC: " + evacZone.gameObject.GetComponent<EvacZone>().numberOfMarinesInEvac);
         if (evacZone.gameObject.GetComponent<EvacZone>().numberOfMarinesInEvac > 0)
         {
-            gameoverText.text = "Marines won!";
+            gameover.GetComponent<TMP_Text>().text = "Marines won!";
         }
         else
         {
-            gameoverText.text = "Alien won!";
+            gameover.GetComponent<TMP_Text>().text = "Alien won!";
         }
-        gameoverText.gameObject.SetActive(true);
+        gameover.gameObject.SetActive(true);
         StartCoroutine(SwitchToMainMenu());
     }
 

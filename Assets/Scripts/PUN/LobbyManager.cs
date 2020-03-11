@@ -24,6 +24,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject loadoutContainer = null;
     [SerializeField] private GameObject lobbyContainer = null;
     [SerializeField] private GameObject settingsContainer = null;
+
+    [SerializeField] private Color playerAlienButtonColor = Color.clear;
+    [SerializeField] private Color playerMarineButtonColor = Color.clear;
     
     public PlayersInLobby lobbyRoom = null;
 
@@ -207,11 +210,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             if (lobbyRoom.IsPlayerAlien(player.NickName))
             {
-                go.GetComponent<Image>().color = Color.green;
+                ColorBlock colBlock = go.GetComponent<Button>().colors;
+                colBlock.normalColor = playerAlienButtonColor;
+                go.GetComponent<Button>().colors = colBlock;
             }
             else
             {
-                go.GetComponent<Image>().color = Color.white;
+                ColorBlock colBlock = go.GetComponent<Button>().colors;
+                colBlock.normalColor = playerMarineButtonColor;
+                go.GetComponent<Button>().colors = colBlock;
             }
         }
     }

@@ -280,6 +280,8 @@ MonoBehaviour:
   loadoutContainer: {fileID: 1861475501}
   lobbyContainer: {fileID: 460747479}
   settingsContainer: {fileID: 196827902}
+  playerAlienButtonColor: {r: 0.0627451, g: 0.15294118, b: 0.078431375, a: 0.627451}
+  playerMarineButtonColor: {r: 0, g: 0, b: 0, a: 0.627451}
   lobbyRoom: {fileID: 1880791198}
 --- !u!4 &253880434
 Transform:
@@ -434,7 +436,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -478,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aed5f1abf62bf249b76c7a5e58d002e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 2
+  rotationSpeed: 2.5
 --- !u!1 &460747479 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 87369637170389533, guid: 5b4a9295d6813be40ad97dbed5e8c615,
@@ -1863,6 +1865,21 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 290
       objectReference: {fileID: 0}
+    - target: {fileID: 3045370845638589781, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_margin.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045370845638589781, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_margin.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045370845638589781, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_margin.z
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1667528315957127466, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -2702,11 +2719,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1029122984516127539, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b4a9295d6813be40ad97dbed5e8c615, type: 3}
 --- !u!114 &2143543752 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4903832977640362308, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+  m_CorrespondingSourceObject: {fileID: 3564632010793613888, guid: 5b4a9295d6813be40ad97dbed5e8c615,
     type: 3}
   m_PrefabInstance: {fileID: 2143543751}
   m_PrefabAsset: {fileID: 0}
