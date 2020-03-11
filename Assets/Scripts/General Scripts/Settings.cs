@@ -1,50 +1,109 @@
-﻿using System;
-using System.IO;
-using UnityEngine;
-using UnityEngine.Audio;
+﻿using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using Photon.Pun;
 
-[Serializable]
-public class Settings
+public class Settings : MonoBehaviour
 {
-    public FullScreenMode fullscreen = FullScreenMode.Windowed;
-    public int[] resolution = new int[2] { Screen.width, Screen.height };
-    //public Resolution resolution = Screen.currentResolution; // This isn't saved.
-    public int quality = QualitySettings.GetQualityLevel();
-    public float fieldOfView = Camera.main.fieldOfView;
-    public float volume = AudioListener.volume;
+    // Changes the video resolution.
+    [SerializeField] private GameObject settingsButtons = null;
 
-    public void UpdateSettings(FullScreenMode fs, int[] res, int qual, float fov)
+    // Changes the video resolution.
+    [SerializeField] private TMP_Dropdown resolutionDropdown = null;
+
+    // Changes the video quality.
+    [SerializeField] private TMP_Dropdown qualityDropdown = null;
+
+    // Changes the fullscreen mode.
+    [SerializeField] private Toggle fullscreenToggle = null;
+
+    // Changes the FOV of the camera.
+    [SerializeField] private Slider fovSlider = null;
+
+    // Changes the volume of the AudioListener.
+    [SerializeField] private Slider volumeSlider = null;
+
+    // Retrieves all the available resolutions.
+    private Resolution[] resolutions;
+
+    // The file path where the settings file will be stored and loaded.
+    private string settingsPath = "";
+
+    private void Start()
     {
-        Screen.SetResolution(res[0], res[1], fs);
-        QualitySettings.SetQualityLevel(qual);
+        settingsPath = Application.persistentDataPath + "/game_data";
+        SetupResolutionDropdown();
+    }
+
+    private void SetupResolutionDropdown()
+    {
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();
+        List<string> options = new List<string>();
+
+        SaveLoadSettings.LoadData(settingsPath);
+        fovSlider.value = Camera.main.fieldOfView;
+        volumeSlider.value = AudioListener.volume;
+
+        int currentResIndex = 0;
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + " x " + resolutions[i].height;
+            options.Add(option);
+
+            if (resolutions[i].width == Screen.currentResolution.width
+            && resolutions[i].height == Screen.currentResolution.height)
+            {
+                currentResIndex = i;
+            }
+        }
+
+        // Sets the default value of the dropdowns or toggles to the current settings.
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.SetValueWithoutNotify(currentResIndex);
+        qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
+        fullscreenToggle.isOn = Screen.fullScreen;
+    }
+    
+    public void ToggleOptionMenu(GameObject menu)
+    {
+        menu.SetActive(!menu.activeSelf);
+        settingsButtons.SetActive(!menu.activeSelf);
+        SaveLoadSettings.SaveData(settingsPath);
+    }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public void SetVolume(float volume)
+    {
+        AudioListener.volume = volume;
+    }
+
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution res = resolutions[resolutionIndex];
+        Debug.Log("Changing screen resolution to: " + res);
+        Screen.SetResolution(res.width, res.height, Screen.fullScreen);
+    }
+
+    public void SetQuality(int qualityIndex)
+    {
+        Debug.Log("Changing quality to: " + qualityDropdown.captionText.text);
+        QualitySettings.SetQualityLevel(qualityIndex);
+    }
+
+    public void SetFullscreenMode(bool isFullscreen)
+    {
+        Debug.Log("Changing fullscreen to: " + isFullscreen);
+        Screen.fullScreen = isFullscreen;
+    }
+
+    public void SetFOV(float fov)
+    {
         Camera.main.fieldOfView = fov;
-    }
-}
-
-public static class SaveLoadSettings
-{
-    private static Settings settings;
-
-    public static void SaveData(string filePath)
-    {
-        Debug.Log("Saving settings...");
-        settings = new Settings();
-        string jsonData = JsonUtility.ToJson(settings, true);
-        File.WriteAllText(filePath, jsonData);
-    }
-
-    public static void LoadData(string filePath)
-    {
-        Debug.Log("Loading settings...");
-        try
-        {
-            settings = JsonUtility.FromJson<Settings>(File.ReadAllText(filePath));
-            settings.UpdateSettings(settings.fullscreen, settings.resolution, settings.quality, settings.fieldOfView);
-            Debug.Log("Settings loaded.");
-        }
-        catch (FileNotFoundException)
-        {
-            Debug.LogWarning("File doesn't currently exist.");
-        }
     }
 }
