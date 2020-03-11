@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using Photon.Pun;
-using System;
 
 public class SecuritySwitchManager : MonoBehaviour
 {

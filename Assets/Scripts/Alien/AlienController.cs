@@ -107,19 +107,12 @@ public class AlienController : AlienMovement
         
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (trackerNeedsToBeFullyRechargedBeforeUseAgain)
-            {
-                if (currTrackerTime <= 0)
-                {
-                    ToggleTracker();
-                }
-            }
-            else 
+            if (CanToggleTrackerVision())
             {
                 ToggleTracker();
             }
         }
-        
+
         HandleTrackerVision();
     }
 
@@ -137,6 +130,29 @@ public class AlienController : AlienMovement
         {
             currTrackerTime -= trackerVisionRegenRate * Time.deltaTime;
         }
+    }
+
+    private bool CanToggleTrackerVision()
+    {
+        if (isTrackerOn) // You can always turn it off
+        {
+            return true;
+        }
+        else if (trackerNeedsToBeFullyRechargedBeforeUseAgain) // Tracker is cooling down
+        {
+            if (currTrackerTime > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        // If you don't need to fully recharged it, then wait a second so that transitions are smooth.
+        else if (currTrackerTime < trackerVisionDuration - 0.5f)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -187,13 +203,13 @@ public class AlienController : AlienMovement
         // When in tracker vision, vignette intensity = 1, lens distortion = 80
         if (isTrackerOn)
         {
-            StartCoroutine(FadeValue(result => vignette.intensity.value = result, vignette.intensity.value, 0.5f, 1f));
-            StartCoroutine(FadeValue(result => lensDistortion.intensity.value = result, lensDistortion.intensity.value, 25, 1f));
+            StartCoroutine(FadeValue(result => vignette.intensity.value = result, vignette.intensity.value, 0.5f, 0.5f));
+            StartCoroutine(FadeValue(result => lensDistortion.intensity.value = result, lensDistortion.intensity.value, 25, 0.5f));
         }
         else
         {
-            StartCoroutine(FadeValue(result => vignette.intensity.value = result, vignette.intensity.value, 1, 1f));
-            StartCoroutine(FadeValue(result => lensDistortion.intensity.value = result, lensDistortion.intensity.value, 80, 1f));
+            StartCoroutine(FadeValue(result => vignette.intensity.value = result, vignette.intensity.value, 1, 0.5f));
+            StartCoroutine(FadeValue(result => lensDistortion.intensity.value = result, lensDistortion.intensity.value, 80, 0.5f));
         }
         
         isTrackerOn = !isTrackerOn;
