@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using System;
 
 public class SecuritySwitchManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class SecuritySwitchManager : MonoBehaviour
     // The number of switches that are currently activated.
     private int currentSwitchesActivated = 0;
     [SerializeField] private ParticleSystem[] generatorParticleSystems = null;
+    [SerializeField] private GameObject[] emissiveObjects = null;
 
     /// <summary>
     /// Called by the RedSwitchTrigger.cs to increase the number of switches
@@ -45,8 +47,8 @@ public class SecuritySwitchManager : MonoBehaviour
     {
         OpenAllDoors();
         TurnOnGenerators();
-        // Start generator sound effect.
-        // Enable generator room emission material.
+        StartSoundEffect();
+        EnableEmissives();
     }
 
     public static void OpenAllDoors()
@@ -69,7 +71,22 @@ public class SecuritySwitchManager : MonoBehaviour
     {
         foreach (ParticleSystem ps in generatorParticleSystems)
         {
-            ps.Play();
+            if (ps != null) ps.Play();
+        }
+    }
+
+    private void StartSoundEffect()
+    {
+        // Start generator sound effect.
+    }
+
+    private void EnableEmissives()
+    {
+        // Enable generator room emission material.
+        foreach (GameObject mat in emissiveObjects)
+        {
+            Debug.Log("Enabling the emission on: " + mat.name + " on " + mat.GetComponent<Renderer>().materials[1].name);
+            mat.GetComponent<Renderer>().materials[1].EnableKeyword("_EMISSION");
         }
     }
 }
