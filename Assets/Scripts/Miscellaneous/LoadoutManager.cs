@@ -17,6 +17,8 @@ public class LoadoutManager : MonoBehaviour
     private void Start()
     {
         LoadAllItems();
+
+        RemoveAlienSpecific();
         
         InitialiseDropdown(primaryDropdown, primaryItems, "Primary");
         InitialiseDropdown(secondaryDropdown, secondaryItems, "Secondary");
@@ -96,5 +98,17 @@ public class LoadoutManager : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    private void RemoveAlienSpecific()
+    {
+        for (int i = 0; i < primaryItems.Count; i++)
+        {
+            if (primaryItems[i] == "Claws")
+            {
+                primaryItems.RemoveAt(i);
+                break;
+            }
+        }
     }
 }
