@@ -29,6 +29,8 @@ public class UIBehaviour : MonoBehaviour
         {
             oxygenSlider.gameObject.SetActive(false);
             objectiveText.gameObject.SetActive(false);
+            remainingClipsText.gameObject.SetActive(false);
+            currentClipText.gameObject.SetActive(false);
         }
     }
 }
