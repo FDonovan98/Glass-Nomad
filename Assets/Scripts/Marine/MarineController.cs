@@ -57,5 +57,10 @@ public class MarineController : MarineMovement
         anim.SetFloat("runningDirection", movementAngle);
         animSpeed = charRigidbody.velocity.magnitude;
         anim.SetFloat("speed", animSpeed);
+
+        if (anim.GetBool("isJumping") && IsGrounded(transform.position, -Vector3.up))
+        {
+            anim.SetBool("isJumping", false);
+        }
     }
 }
