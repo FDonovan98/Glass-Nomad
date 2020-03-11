@@ -10,12 +10,23 @@ public class UIBehaviour : MonoBehaviour
     [SerializeField] private Slider oxygenSlider = null;
     [SerializeField] private TMP_Text oxygenPercentage = null;
     [SerializeField] private TMP_Text objectiveText = null;
+    [SerializeField] private TMP_Text oxygenWarning = null;
+
+    private float warningTriggerAmount = 0.3f;
+    private PlayerAttack clientAttackScript = null;
+    private float warningFlashTimer = 1f;
+    private float time = 1f;
     
     public void UpdateUI(PlayerAttack attackScript = null)
     {
         if (!attackScript.photonView.IsMine)
         {
             return;
+        }
+
+        if (clientAttackScript == null && attackScript != null)
+        {
+            clientAttackScript = attackScript;
         }
         
         remainingClipsText.text = "Remaining clips: " + attackScript.resourcesScript.currentWeapon.magsLeft;
@@ -31,6 +42,38 @@ public class UIBehaviour : MonoBehaviour
             objectiveText.gameObject.SetActive(false);
             remainingClipsText.gameObject.SetActive(false);
             currentClipText.gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (clientAttackScript == null)
+        {
+            return;
+        }
+        if (!clientAttackScript.photonView.IsMine)
+        {
+            return;
+        }
+
+        if (clientAttackScript.resourcesScript.oxygenAmountSeconds / clientAttackScript.resourcesScript.maxOxygenAmountSeconds <= warningTriggerAmount)
+        {
+            FlashWarning();
+        }
+        else
+        {
+            time = warningTriggerAmount;
+            oxygenWarning.gameObject.SetActive(false);
+        }
+    }
+
+    private void FlashWarning()
+    {
+        time += Time.deltaTime;
+        if (time >= warningFlashTimer)
+        {
+            oxygenWarning.gameObject.SetActive(!oxygenWarning.gameObject.activeSelf);
+            time = 0f;
         }
     }
 }
