@@ -273,10 +273,16 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private IEnumerator Death(GameObject player)
     {
         yield return new WaitForSeconds(3f);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        if (PhotonNetwork.IsMasterClient) PhotonNetwork.Destroy(player);
-        if (photonView.IsMine) PhotonNetwork.LeaveRoom();
+        if (photonView.IsMine)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            PhotonNetwork.LeaveRoom();
+        }
+        else if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(player);
+        }
     }
 
     /// <summary>
