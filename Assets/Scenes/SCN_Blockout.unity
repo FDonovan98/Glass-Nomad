@@ -6543,6 +6543,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.560103
       objectReference: {fileID: 0}
+    - target: {fileID: 2330718, guid: dd00334dc8847b64e9bfde629fe1b8ef, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd00334dc8847b64e9bfde629fe1b8ef, type: 3}
 --- !u!4 &218997164 stripped
@@ -25780,6 +25784,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.418009
       objectReference: {fileID: 0}
+    - target: {fileID: 2330718, guid: dd00334dc8847b64e9bfde629fe1b8ef, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd00334dc8847b64e9bfde629fe1b8ef, type: 3}
 --- !u!4 &766883235 stripped
@@ -35745,6 +35753,7 @@ GameObject:
   - component: {fileID: 1099987959}
   - component: {fileID: 1099987962}
   - component: {fileID: 1099987961}
+  - component: {fileID: 1099987963}
   m_Layer: 0
   m_Name: EMP_GameManager
   m_TagString: GameManager
@@ -40451,6 +40460,36 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &1099987963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099987958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce430204764f408478fafb4e7cc4bdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sequenceType: 1
+  lights: []
+  lightStartingColour: {r: 1, g: 0, b: 0, a: 1}
+  lightEndColour: {r: 0, g: 1, b: 0, a: 1}
+  timeBetweenFlashes: 2.5
+  timeUntilFlashingEnds: 10
+  intensity:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  emmisiveMaterials:
+  - {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
+  - {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
+  - {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
+  - {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
+  - {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
 --- !u!43 &1105289067
 Mesh:
   m_ObjectHideFlags: 0
@@ -43172,6 +43211,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.064
       objectReference: {fileID: 0}
+    - target: {fileID: 5064178150932526685, guid: b480207ab45dced488ddab0a65c74623,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b480207ab45dced488ddab0a65c74623, type: 3}
 --- !u!4 &1202003208 stripped
@@ -70001,6 +70045,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.560103
       objectReference: {fileID: 0}
+    - target: {fileID: 1330809289674254339, guid: e66e25910d5c60845825cfa9ff3954f0,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d924a0516f9379848a65d06f2e29dd27, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e66e25910d5c60845825cfa9ff3954f0, type: 3}
 --- !u!4 &2007190159 stripped
@@ -79833,7 +79882,8 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1445758831}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4950002722457597842, guid: edf83466df55e07419c4417f2db98da4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: edf83466df55e07419c4417f2db98da4, type: 3}
 --- !u!1 &8920943969137967463
 GameObject:
