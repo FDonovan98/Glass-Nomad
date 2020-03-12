@@ -215,17 +215,16 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         // The shoot hit something
         if (Physics.Raycast(cameraGO.transform.position, bulletDir, out hit, resourcesScript.currentWeapon.range))
         {
+            Vector3[] effectSpawnPos = CalculateEffectSpawnPos(hit);
             PlayerAttack hitPlayer = hit.collider.gameObject.GetComponent<PlayerAttack>();
             if (hitPlayer != null && hitPlayer.gameObject != this.gameObject) // A player was hit
             {
                 // Calls the 'PlayerWasHit' method on all clients, meaning that the hit player's health will be updated on all clients.
-                photonView.RPC("PlayerWasHit", RpcTarget.All, resourcesScript.currentWeapon.damage);
+                photonView.RPC("PlayerWasHit", RpcTarget.All, hit.collider.gameObject.GetPhotonView(), resourcesScript.currentWeapon.damage, effectSpawnPos);
                 Debug.Log("Player was hit");
-                // Spawn hit mark on local client
             }
             else // A wall was hit
             {
-                Vector3[] effectSpawnPos = CalculateEffectSpawnPos(hit);
                 bool shouldRicochet = (hit.transform.gameObject.tag != "Not Metal") ? true : false;
                 photonView.RPC("WallWasHit", RpcTarget.All, effectSpawnPos, shouldRicochet);
                 Debug.Log("Wall was hit");
@@ -277,7 +276,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// <param name="hitPlayerViewID"></param>
     /// <param name="damage"></param>
     [PunRPC]
-    protected void PlayerWasHit(int hitPlayerViewID, int damage)
+    protected void PlayerWasHit(int hitPlayerViewID, int damage, Vector3[] ricochetPos)
     {
         PlayerAttack hitPlayer = PhotonNetwork.GetPhotonView(hitPlayerViewID).GetComponent<PlayerAttack>();
         PlayerResources hitPlayerResources = hitPlayer.resourcesScript;
@@ -285,16 +284,18 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         hitPlayerResources.UpdatePlayerResource(PlayerResources.PlayerResource.Health, -damage);
         hitPlayer.healthSlider.fillAmount = hitPlayerResources.fillAmount;
 
+        RicochetVisual(ricochetPos);
+
         // Play a gunshot sound.
         if (weaponAudio.clip != null) weaponAudio.Play();
     }
 
     [PunRPC]
-    protected void WallWasHit(Vector3[] tmep, bool ricochet)
+    protected void WallWasHit(Vector3[] ricochetPos, bool ricochet)
     {
-        BulletHole(tmep); 
+        BulletHole(ricochetPos); 
 
-        if (ricochet) RicochetVisual(tmep);
+        if (ricochet) RicochetVisual(ricochetPos);
 
         // Play a gunshot sound.
         if (weaponAudio.clip != null) weaponAudio.Play();
