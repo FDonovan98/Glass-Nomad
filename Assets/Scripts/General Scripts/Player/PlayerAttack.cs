@@ -182,7 +182,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
 
         if (forceWeaponUp)
         {
-            timeDelta = Time.deltaTime / resourcesScript.currentWeapon.upForceDuration;
+            timeDelta = resourcesScript.currentWeapon.upForceStep;
             valueDelta = weaponRecoilCurveUp.Evaluate(currentRecoilTimeStamp + timeDelta) - weaponRecoilCurveUp.Evaluate(currentRecoilTimeStamp);
         }
         else

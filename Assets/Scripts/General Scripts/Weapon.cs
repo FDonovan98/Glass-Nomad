@@ -33,7 +33,7 @@ public class Weapon : BaseObject
 
     // How forceful the recoil of the weapon is.
     public float recoilForce = 5f;
-    public float upForceDuration = 1.0f;
+    public float upForceStep = 1.0f;
     public float downForceDuration = 2.0f;
 
     // The maxium amount of bullet spread randomness.

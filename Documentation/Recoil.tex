@@ -12,13 +12,20 @@
 
     \newpage
 
-    \section{Recoil}
+    \section{Weapon Object}
     \begin{itemize}
         \item[Item Type - ] Whether the weapon is displayed as a primary or secondary weapon.
         \item[Fire Mode - ] Whether the weapon is able to fire in full auto or only single shot. Burst is not yet implemented.
         \item[Fire Rate - ] The minimum time in seconds between each shot.
-        \item[Mag Size -  ] The maximum number of bullets stored in a magazine.
+        \item[Mag Size - ] The maximum number of bullets stored in a magazine.
         \item[Mag Count - ] The number of magazines the player can hold/ will spawn with.    
+        \item[Range - ] The max range the weapon can hit an object at. Beyond this range the weapon will never hit. There is no drop off in damage.
+        \item[Damage - ] The amount of damage the weapon does per hit.
+        \item[Recoil Force - ] The value returned from the recoil curves is multiplied by this value. Controls how strong the recoil is.
+        \item[Up Force Step - ] The increase along the Recoil Curve axis each time the weapon is fired.
+        \item[Down Force Duration - ] The time it would take for the weapon to go from max recoil back to it's starting position.
+        \item[Weapon Sound - ] The sound played when the weapon is fired.
+        \item[Recoil Curve up - ]    
     \end{itemize}
 
 \end{document}
