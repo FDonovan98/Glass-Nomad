@@ -210,8 +210,27 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private void Shoot()
     {     
         Vector3 bulletDir = RandomBulletSpread(cameraGO.transform.rotation);
-        // Calls the 'FireWeapon' method on all clients, meaning that the health and gun shot will be synced across all clients.
-        photonView.RPC("FireWeapon", RpcTarget.All, cameraGO.transform.position, bulletDir, resourcesScript.currentWeapon.range, resourcesScript.currentWeapon.damage);
+
+        RaycastHit hit;
+        // The shoot hit something
+        if (Physics.Raycast(cameraGO.transform.position, bulletDir, out hit, resourcesScript.currentWeapon.range))
+        {
+            PlayerAttack hitPlayer = hit.collider.gameObject.GetComponent<PlayerAttack>();
+            if (hitPlayer != null && hitPlayer.gameObject != this.gameObject) // A player was hit
+            {
+                // Calls the 'PlayerWasHit' method on all clients, meaning that the hit player's health will be updated on all clients.
+                photonView.RPC("PlayerWasHit", RpcTarget.All, resourcesScript.currentWeapon.damage);
+                Debug.Log("Player was hit");
+                // Spawn hit mark on local client
+            }
+            else // A wall was hit
+            {
+                Vector3[] effectSpawnPos = CalculateEffectSpawnPos(hit);
+                bool shouldRicochet = (hit.transform.gameObject.tag != "Not Metal") ? true : false;
+                photonView.RPC("WallWasHit", RpcTarget.All, effectSpawnPos, shouldRicochet);
+                Debug.Log("Wall was hit");
+            }
+        }
         
         Debug.DrawRay(cameraGO.transform.position, bulletDir * resourcesScript.currentWeapon.range, Color.cyan, 2f);
 
@@ -255,35 +274,27 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     /// then the hit player's health is reduced, otherwise, if the bullet hit a wall, then
     /// a bullet hole is instantiated and faded out.
     /// </summary>
-    /// <param name="cameraPos"></param>
-    /// <param name="cameraForward"></param>
-    /// <param name="range"></param>
+    /// <param name="hitPlayerViewID"></param>
     /// <param name="damage"></param>
     [PunRPC]
-    protected void FireWeapon(Vector3 cameraPos, Vector3 bulletDir, float range, int damage)
+    protected void PlayerWasHit(int hitPlayerViewID, int damage)
     {
-        RaycastHit hit;
-        if (Physics.Raycast(cameraPos, bulletDir, out hit, range))
-        {
-            PlayerAttack hitPlayer = hit.transform.gameObject.GetComponent<PlayerAttack>();
-            if (hitPlayer != null && hitPlayer.gameObject != this.gameObject) // A player was hit
-            {
-                PlayerResources hitPlayerResources = hitPlayer.resourcesScript;
+        PlayerAttack hitPlayer = PhotonNetwork.GetPhotonView(hitPlayerViewID).GetComponent<PlayerAttack>();
+        PlayerResources hitPlayerResources = hitPlayer.resourcesScript;
 
-                hitPlayerResources.UpdatePlayerResource(PlayerResources.PlayerResource.Health, -damage);
-                hitPlayer.healthSlider.fillAmount = hitPlayerResources.fillAmount;
-            }
-            else // A wall was hit.
-            {
-                Vector3[] effectSpawnPos = CalculateEffectSpawnPos(hit);
-                BulletHole(effectSpawnPos); 
+        hitPlayerResources.UpdatePlayerResource(PlayerResources.PlayerResource.Health, -damage);
+        hitPlayer.healthSlider.fillAmount = hitPlayerResources.fillAmount;
 
-                if (hit.transform.gameObject.tag != "Not Metal")
-                {
-                    RicochetVisual(effectSpawnPos);     
-                }          
-            }
-        }
+        // Play a gunshot sound.
+        if (weaponAudio.clip != null) weaponAudio.Play();
+    }
+
+    [PunRPC]
+    protected void WallWasHit(Vector3[] tmep, bool ricochet)
+    {
+        BulletHole(tmep); 
+
+        if (ricochet) RicochetVisual(tmep);
 
         // Play a gunshot sound.
         if (weaponAudio.clip != null) weaponAudio.Play();
