@@ -110,6 +110,10 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     {
         bool recoilUp = false;
         if (!photonView.IsMine) return;
+
+        //Reducing oxygen has to happen regardless of input being enabled otherwise oxygen will not go down when interacting with objects.
+        ReduceOxygen();
+
         if (!gameObject.GetComponent<PlayerMovement>().inputEnabled) return;
 
         if (currTimeBetweenFiring < resourcesScript.currentWeapon.fireRate) currTimeBetweenFiring += Time.deltaTime;
@@ -164,8 +168,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
                 anim.SetTrigger("isReloading");
             }
         }
-
-        ReduceOxygen();
 
         RecoilWeapon(recoilUp);
     }
@@ -236,7 +238,14 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
         {
             if (resourcesScript.oxygenAmountSeconds > 0)
             {
-                resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime);
+                if (Input.GetAxis("Sprint") >= 1)
+                {
+                    resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime * resourcesScript.sprintOxygenMultiplier);
+                }
+                else
+                {
+                    resourcesScript.UpdatePlayerResource(PlayerResources.PlayerResource.OxygenLevel, -Time.fixedDeltaTime);
+                }
             }
         }
     }
