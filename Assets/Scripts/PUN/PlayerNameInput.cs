@@ -26,7 +26,7 @@ public class PlayerNameInput : MonoBehaviour
 
     public void SetPlayerName(string name)
     {
-        if (name != "")
+        if (string.IsNullOrEmpty(name))
         {
             Debug.Log("Player name is null or empty");
             return;
