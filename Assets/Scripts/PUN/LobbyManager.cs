@@ -212,12 +212,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             {
                 ColorBlock colBlock = go.GetComponent<Button>().colors;
                 colBlock.normalColor = playerAlienButtonColor;
+                colBlock.disabledColor = playerAlienButtonColor;
                 go.GetComponent<Button>().colors = colBlock;
             }
             else
             {
                 ColorBlock colBlock = go.GetComponent<Button>().colors;
                 colBlock.normalColor = playerMarineButtonColor;
+                colBlock.disabledColor = playerMarineButtonColor;
                 go.GetComponent<Button>().colors = colBlock;
             }
         }
