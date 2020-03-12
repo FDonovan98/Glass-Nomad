@@ -7,9 +7,22 @@ public class PlayersInLobby : MonoBehaviour
 {
     public List<PlayerInfo> playerInfos = new List<PlayerInfo>();
 
-    private void Start()
+    private static PlayersInLobby _instance;
+
+    private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        if (_instance != null)
+        {
+            Debug.Log("THIS COUNT: " + playerInfos.Count);
+            Destroy(_instance.gameObject);
+            _instance = this;
+            DontDestroyOnLoad(_instance);
+        } else
+        {
+            _instance = this;
+            Debug.Log("INSTANCE COUNT: " + _instance.playerInfos.Count);
+            DontDestroyOnLoad(_instance);
+        }
     }
 
     public string[] GetPlayerNames()
