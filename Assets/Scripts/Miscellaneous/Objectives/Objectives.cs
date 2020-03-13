@@ -50,7 +50,7 @@ public class Objectives : MonoBehaviour
             {
                 string line = reader.ReadLine();
                 string[] data = line.Split(new[] { ',' }, 2);
-                objectives.Add(new Objective(data[0], data[1]));
+                objectives.Add(new Objective(data[0], data[1], Resources.Load<AudioClip>("Audio/" + data[0].Replace(" ", "_"))));
             }
         }
     }
@@ -74,9 +74,11 @@ public class Objectives : MonoBehaviour
             {
                 try
                 {
+                    if (Camera.allCameras[0].GetComponentInParent<MarineController>() == null) return;
                     Debug.Log(objectiveCompleted.dialogue);
                     objectiveCompleted.completed = true;
                     WriteTextToHud(objectiveCompleted.dialogue, timePerLetter, timeToDisappear);
+                    PlaySpeechAudio(objectiveCompleted.speechAudio);
                 }
                 catch (Exception e)
                 {
@@ -128,6 +130,11 @@ public class Objectives : MonoBehaviour
         await Task.Delay(TimeSpan.FromSeconds(toDisappear));
         captionText.text = "";
     }
+
+    private static void PlaySpeechAudio(AudioClip speech)
+    {
+        Camera.allCameras[0].GetComponentInChildren<AudioSource>().PlayOneShot(speech);
+    }
 }
 
 /// <summary>
@@ -139,6 +146,7 @@ public class Objective
     public string title;
     public string dialogue;
     public bool completed;
+    public AudioClip speechAudio;
 
     /// <summary>
     /// Constructor method of this class. Assigns the title and dialogue strings, and the completed
@@ -146,10 +154,11 @@ public class Objective
     /// </summary>
     /// <param name="ttl"></param>
     /// <param name="diag"></param>
-    public Objective(string ttl, string diag)
+    public Objective(string ttl, string diag, AudioClip audioClip = null)
     {
         title = ttl;
         dialogue = diag;
+        speechAudio = audioClip;
         completed = false;
     }
 }

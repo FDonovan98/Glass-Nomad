@@ -9,7 +9,6 @@ public class UIBehaviour : MonoBehaviour
     [SerializeField] private TMP_Text remainingClipsText = null;
     [SerializeField] private Slider oxygenSlider = null;
     [SerializeField] private TMP_Text oxygenPercentage = null;
-    [SerializeField] private TMP_Text objectiveText = null;
     [SerializeField] private TMP_Text oxygenWarning = null;
 
     private float warningTriggerAmount = 0.3f;
@@ -39,7 +38,6 @@ public class UIBehaviour : MonoBehaviour
         if (attackScript.gameObject.layer == 9 && oxygenSlider.IsActive())
         {
             oxygenSlider.gameObject.SetActive(false);
-            objectiveText.gameObject.SetActive(false);
             remainingClipsText.gameObject.SetActive(false);
             currentClipText.gameObject.SetActive(false);
         }

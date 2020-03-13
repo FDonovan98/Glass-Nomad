@@ -13,14 +13,12 @@ public class PlayersInLobby : MonoBehaviour
     {
         if (_instance != null)
         {
-            Debug.Log("THIS COUNT: " + playerInfos.Count);
             Destroy(_instance.gameObject);
             _instance = this;
             DontDestroyOnLoad(_instance);
         } else
         {
             _instance = this;
-            Debug.Log("INSTANCE COUNT: " + _instance.playerInfos.Count);
             DontDestroyOnLoad(_instance);
         }
     }

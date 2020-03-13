@@ -61,7 +61,6 @@ public class LightSequencing : MonoBehaviour
 
         foreach (Material element in emmisiveMaterials)
         {
-            Debug.Log(element.color);
             element.SetColor("_EmissionColor", Color.Lerp(Color.black, materialStartColor, intensity.Evaluate(randTime)));
         }
     }
