@@ -77,7 +77,8 @@ public class SecuritySwitchManager : MonoBehaviour
 
     private void StartSoundEffect()
     {
-        generatorAudioSource.PlayOneShot(generatorSound);
+        generatorAudioSource.clip = generatorSound;
+        generatorAudioSource.Play();
     }
 
     private void EnableEmissives()
