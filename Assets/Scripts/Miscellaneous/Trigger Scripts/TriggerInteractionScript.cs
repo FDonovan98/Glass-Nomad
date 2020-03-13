@@ -57,6 +57,10 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
                 if (currInteractTime >= interactTime)
                 {
                     photonView.RPC("Completed", RpcTarget.All, coll.gameObject.GetPhotonView().ViewID);
+                    currInteractTime = 0f;
+                    interactionComplete = true;
+                    currCooldownTime = cooldownTime;
+                    coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
                     return;
                 }
 
@@ -101,10 +105,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     {
         GameObject player = PhotonView.Find(pv).gameObject;
         InteractionComplete(player);
-        currInteractTime = 0f;
-        interactionComplete = true;
-        currCooldownTime = cooldownTime;
-        player.GetComponent<PlayerMovement>().inputEnabled = true;
     }
 
     virtual protected void InteractionComplete(GameObject player)

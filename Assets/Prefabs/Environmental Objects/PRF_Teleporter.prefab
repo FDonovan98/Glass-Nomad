@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 8775776498337486601}
   - component: {fileID: 723019195524899062}
   - component: {fileID: 473242888379848272}
+  - component: {fileID: 2223799495798161474}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: NeedsPower
@@ -1652,9 +1653,35 @@ MonoBehaviour:
   interactTime: 5
   cooldownTime: 5
   debug: 0
-  teleportersEnabled: 0
+  objectiveName: 
+  objectiveRequired: 
+  destroyObjectAfter: 1
+  objectToDestroy: {fileID: 0}
+  powered: 0
   linkedTeleporter: {fileID: 0}
   biDirectional: 1
+--- !u!114 &2223799495798161474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2594540455969605090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8799750721116241808
 GameObject:
   m_ObjectHideFlags: 0
