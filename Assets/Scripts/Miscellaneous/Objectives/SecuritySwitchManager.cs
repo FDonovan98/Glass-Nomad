@@ -9,6 +9,8 @@ public class SecuritySwitchManager : MonoBehaviour
     private int currentSwitchesActivated = 0;
     [SerializeField] private ParticleSystem[] generatorParticleSystems = null;
     [SerializeField] private GameObject[] emissiveObjects = null;
+    [SerializeField] private AudioSource generatorAudioSource = null;
+    [SerializeField] private AudioClip generatorSound = null;
 
     /// <summary>
     /// Called by the RedSwitchTrigger.cs to increase the number of switches
@@ -75,7 +77,7 @@ public class SecuritySwitchManager : MonoBehaviour
 
     private void StartSoundEffect()
     {
-        // Start generator sound effect.
+        generatorAudioSource.PlayOneShot(generatorSound);
     }
 
     private void EnableEmissives()
