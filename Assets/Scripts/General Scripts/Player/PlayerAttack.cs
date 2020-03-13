@@ -220,7 +220,7 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             if (hitPlayer != null && hitPlayer.gameObject != this.gameObject) // A player was hit
             {
                 // Calls the 'PlayerWasHit' method on all clients, meaning that the hit player's health will be updated on all clients.
-                photonView.RPC("PlayerWasHit", RpcTarget.All, hit.collider.gameObject.GetPhotonView(), resourcesScript.currentWeapon.damage, effectSpawnPos);
+                photonView.RPC("PlayerWasHit", RpcTarget.All, hit.collider.gameObject.GetPhotonView().ViewID, resourcesScript.currentWeapon.damage, effectSpawnPos);
                 Debug.Log("Player was hit");
             }
             else // A wall was hit
