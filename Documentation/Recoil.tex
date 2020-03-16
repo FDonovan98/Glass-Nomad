@@ -3,7 +3,6 @@
 \begin{document}
     \title{Glass Nomad Documentation}
 
-
     \begin{titlepage}
         \maketitle
     \end{titlepage}
@@ -25,7 +24,9 @@
         \item[Up Force Step - ] The increase along the Recoil Curve axis each time the weapon is fired.
         \item[Down Force Duration - ] The time it would take for the weapon to go from max recoil back to it's starting position.
         \item[Weapon Sound - ] The sound played when the weapon is fired.
-        \item[Recoil Curve up - ]    
+        \item[Current Recoil Value - ] Hidden property. Used to track where on the x-axis of the recoil curves the weapon is currently at. Every time this value changes, the value on the y-axis for the old and new value is read. The difference between these values is then multiplied by Recoil Force, then applied to the weapon.
+        \item[Recoil Curve Up - ] The upwards recoil curve for the weapon. Every time the weapon is fired, the Current Recoil Value is increased by Up Force Step.
+        \item[Recoil Curve Down - ] The downwards recoil for this weapon. This force is applied each frame. It takes Down Force Duration number of seconds to go from a Current Recoil Value of one to a value of zero.
     \end{itemize}
 
 \end{document}
