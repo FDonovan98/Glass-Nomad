@@ -18,7 +18,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     // The movement of the player.
     [SerializeField] 
-    public float movementSpeed = 10;     
+    public float movementSpeed = 10.0f;     
+    [SerializeField]
+    private float velocityDegradation = 1.0f;
+    [SerializeField]
+    private bool scaleVelocityDegWithVel = true;
+    [SerializeField]
+    private bool reduceVelocityInAir = false;
     
     // The sensitivity of the mouse.
     [SerializeField] 
@@ -126,6 +132,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         HandlePlayerRotation();
 
+        HandleVelocityDegradation();
+
         // If there is a step, and its height is correct, then try and apply force.
         if (CheckStepHeight())
         {
@@ -144,6 +152,48 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode) return;
 
         charRigidbody.velocity += gravity * charNormal * Time.fixedDeltaTime;
+    }
+
+    private void HandleVelocityDegradation()
+    {
+        if (!Input.anyKey)
+        {
+            if (reduceVelocityInAir || IsGrounded(transform.position, -charNormal))
+            {
+                float[] xzVel = 
+                {
+                    charRigidbody.velocity.x,
+                    charRigidbody.velocity.z
+                };
+                float RelativeVelDeg;
+
+                if (scaleVelocityDegWithVel)
+                {
+                    RelativeVelDeg = velocityDegradation * Time.deltaTime * charRigidbody.velocity.magnitude;
+                }
+                else
+                {
+                    RelativeVelDeg = velocityDegradation * Time.deltaTime;
+                }
+
+                
+
+                for (int i = 0; i < 2; i++)
+                {
+                    if (xzVel[i] > 0.0f)
+                    {
+                        xzVel[i] = Mathf.Clamp(xzVel[i] - RelativeVelDeg, 0.0f, xzVel[i]);
+                    }
+                    else if (xzVel[i] < 0.0f)
+                    {
+                        xzVel[i] = Mathf.Clamp(xzVel[i] + RelativeVelDeg, xzVel[i], 0.0f);
+                    }
+                    
+                }
+
+                charRigidbody.velocity = new Vector3(xzVel[0], charRigidbody.velocity.y, xzVel[1]);
+            }
+        }
     }
 
     private void HandlePlayerRotation()
