@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private bool scaleVelocityDegWithVel = true;
     [SerializeField]
     private bool reduceVelocityInAir = false;
+    [SerializeField]
+    private float maxSpeed = 100.0f;
     
     // The sensitivity of the mouse.
     [SerializeField] 
@@ -138,6 +140,11 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         if (CheckStepHeight())
         {
             ApplyUpwardsForce();
+        }
+
+        if (charRigidbody.velocity.magnitude > maxSpeed)
+        {
+            charRigidbody.velocity = charRigidbody.velocity.normalized * maxSpeed;
         }
 
         if (debug) Debugging();
