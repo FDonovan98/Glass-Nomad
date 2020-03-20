@@ -13,6 +13,9 @@ public class MovementValues : ScriptableObject
     public float mouseSensitivity = 1.0f;
     public float yRotationClamp = 80.0f;
 
+    [Header("Misc")]
+    public GameObject menu = null;
+
     public void Initialise()
     {
         isSprinting = false;
