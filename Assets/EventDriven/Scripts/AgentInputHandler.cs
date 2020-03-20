@@ -3,25 +3,25 @@
 [RequireComponent(typeof(Rigidbody))]
 public class AgentInputHandler : MonoBehaviour
 {
-    public AgentValues movementValues;
+    public AgentValues agentValues;
     public CommandObject[] activeCommands;
     public CommandObject[] passiveCommands;
 
     private void Start()
     {
-        movementValues.Initialise();
+        agentValues.Initialise();
     }
 
     private void Update()
     {
         foreach (CommandObject element in activeCommands)
         {
-            element.Execute(this.gameObject, movementValues);
+            element.Execute(this.gameObject, agentValues);
         }
 
         foreach (CommandObject element in passiveCommands)
         {
-            element.Execute(this.gameObject, movementValues);
+            element.Execute(this.gameObject, agentValues);
         }
     }
 }
