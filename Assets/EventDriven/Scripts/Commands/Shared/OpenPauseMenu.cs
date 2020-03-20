@@ -8,18 +8,18 @@ public class OpenPauseMenu : CommandObject
     [SerializeField]
     private KeyCode openMenuKeyInEditor = KeyCode.Comma;
 
-    private MovementValues movementValuesRef = null;
+    private AgentValues agentValuesRef = null;
 
     protected override void OnEnable()
     {
         keyTable.Add("Pause", openMenuKey);
     }
 
-    public override void Execute(GameObject agent, MovementValues movementValues)
+    public override void Execute(GameObject agent, AgentValues agentValues)
     {
-        if (movementValuesRef == null)
+        if (agentValuesRef == null)
         {
-            movementValuesRef = movementValues;
+            agentValuesRef = agentValues;
         }
 
         #if UNITY_EDITOR
@@ -47,7 +47,7 @@ public class OpenPauseMenu : CommandObject
 
     private void ToggleMenu(bool toggle)
     {
-        movementValuesRef.menu.SetActive(toggle);
+        agentValuesRef.menu.SetActive(toggle);
         Cursor.visible = toggle;
     }
 }

@@ -9,7 +9,7 @@ public abstract class CommandObject : ScriptableObject
 
     protected abstract void OnEnable();
 
-    public abstract void Execute(GameObject agent, MovementValues movementValues);
+    public abstract void Execute(GameObject agent, AgentValues agentValues);
 
     public virtual void ChangeKeycode(string newKeycode)
     {

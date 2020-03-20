@@ -8,22 +8,22 @@ public class CameraControl : CommandObject
 
     }
 
-    public override void Execute(GameObject agent, MovementValues movementValues)
+    public override void Execute(GameObject agent, AgentValues agentValues)
     {
         Vector3 mouseRotationInput = GetMouseInput(agent);
 
         // Agent Rotation.
         Vector3 agentRotation = new Vector3(0.0f, mouseRotationInput.x, 0.0f);
-        agentRotation *= movementValues.mouseSensitivity;
+        agentRotation *= agentValues.mouseSensitivity;
         agent.transform.Rotate(agentRotation);
 
         // Camera Rotation.
         Camera agentCamera = agent.GetComponentInChildren<Camera>();
         Quaternion cameraTargetRotation = agentCamera.transform.localRotation;
 
-        float cameraRotation = -mouseRotationInput.y * movementValues.mouseSensitivity;
+        float cameraRotation = -mouseRotationInput.y * agentValues.mouseSensitivity;
         cameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
-        cameraTargetRotation = ClampRotationAroundXAxis(cameraTargetRotation, movementValues);
+        cameraTargetRotation = ClampRotationAroundXAxis(cameraTargetRotation, agentValues);
 
         agentCamera.transform.localRotation = cameraTargetRotation;
     }
@@ -35,7 +35,7 @@ public class CameraControl : CommandObject
         return new Vector3(mouseX, mouseY, 0);
     }
 
-    private Quaternion ClampRotationAroundXAxis(Quaternion q, MovementValues movementValues)
+    private Quaternion ClampRotationAroundXAxis(Quaternion q, AgentValues agentValues)
     {
         // Quaternion is 4x4 matrix.
         q.x /= q.w;
@@ -45,7 +45,7 @@ public class CameraControl : CommandObject
 
         float angleX = 2.0f * Mathf.Rad2Deg * Mathf.Atan(q.x);
 
-        angleX = Mathf.Clamp(angleX, -movementValues.yRotationClamp, movementValues.yRotationClamp);
+        angleX = Mathf.Clamp(angleX, -agentValues.yRotationClamp, agentValues.yRotationClamp);
 
         // Updates x.
         q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);

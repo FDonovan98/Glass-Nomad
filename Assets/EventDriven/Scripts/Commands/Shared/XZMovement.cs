@@ -20,15 +20,15 @@ public class XZMovement : CommandObject
         keyTable.Add("Move Right", MoveRight);
     }
 
-    public override void Execute(GameObject agent, MovementValues movementValues)
+    public override void Execute(GameObject agent, AgentValues agentValues)
     {
         Vector3 movementVector = GetKeyInput(agent);
 
-        movementVector *= movementValues.moveSpeed * Time.deltaTime;
+        movementVector *= agentValues.moveSpeed * Time.deltaTime;
 
-        if (movementValues.isSprinting)
+        if (agentValues.isSprinting)
         {
-            agent.GetComponent<Rigidbody>().velocity += movementVector * movementValues.sprintMultiplier;
+            agent.GetComponent<Rigidbody>().velocity += movementVector * agentValues.sprintMultiplier;
         }
         else
         {

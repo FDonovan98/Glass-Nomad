@@ -3,7 +3,7 @@
 [RequireComponent(typeof(Rigidbody))]
 public class AgentInputHandler : MonoBehaviour
 {
-    public MovementValues movementValues;
+    public AgentValues movementValues;
     public CommandObject[] activeCommands;
     public CommandObject[] passiveCommands;
 

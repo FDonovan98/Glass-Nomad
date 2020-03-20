@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "DefaultMovementValues", menuName = "Commands/Movement Values")]
-public class MovementValues : ScriptableObject
+[CreateAssetMenu(fileName = "DefaultAgentValues", menuName = "Commands/Agent Values")]
+public class AgentValues : ScriptableObject
 {
     [Header("XZ Movement")]
     public float moveSpeed = 1.0f;

@@ -11,25 +11,25 @@ public class ActivateSprint : CommandObject
         keyTable.Add("Sprint", sprintKeyCode);
     }
 
-    public override void Execute(GameObject agent, MovementValues movementValues)
+    public override void Execute(GameObject agent, AgentValues agentValues)
     {
-        if (movementValues.sprintingIsAToggle)
+        if (agentValues.sprintingIsAToggle)
         {
             if (Input.GetKeyDown(sprintKeyCode))
             {
-                movementValues.isSprinting = !movementValues.isSprinting;
+                agentValues.isSprinting = !agentValues.isSprinting;
             }
         }
         else
         {
             if (Input.GetKeyDown(sprintKeyCode))
             {
-                movementValues.isSprinting = true;
+                agentValues.isSprinting = true;
             }
 
             if (Input.GetKeyUp(sprintKeyCode))
             {
-                movementValues.isSprinting = false;
+                agentValues.isSprinting = false;
             }
         }
 
