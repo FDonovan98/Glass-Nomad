@@ -4,7 +4,8 @@
 public class AgentInputHandler : MonoBehaviour
 {
     public MovementValues movementValues;
-    public CommandObject[] commandList;
+    public CommandObject[] activeCommands;
+    public CommandObject[] passiveCommands;
 
     private void Start()
     {
@@ -13,7 +14,12 @@ public class AgentInputHandler : MonoBehaviour
 
     private void Update()
     {
-        foreach (CommandObject element in commandList)
+        foreach (CommandObject element in activeCommands)
+        {
+            element.Execute(this.gameObject, movementValues);
+        }
+
+        foreach (CommandObject element in passiveCommands)
         {
             element.Execute(this.gameObject, movementValues);
         }

@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 
+using System.Collections.Generic;
+
 public abstract class CommandObject : ScriptableObject
 {
-    [SerializeField]
-    public KeyCode keycode;
+    // Can then store master dictionary in keybind menu with each dictionary and a refrence to its scriptable object.
+    public Dictionary<string, KeyCode> keyTable = new Dictionary<string, KeyCode>();
+
+    protected abstract void OnEnable();
 
     public abstract void Execute(GameObject agent, MovementValues movementValues);
 
     public virtual void ChangeKeycode(string newKeycode)
     {
-        char[] charKeycode = newKeycode.ToCharArray();
-        keycode = (KeyCode)charKeycode[0];
+
     }
 
     // I am unsure whether this would be helpful or redundant. 
