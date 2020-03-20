@@ -4,8 +4,8 @@
 public class AgentInputHandler : MonoBehaviour
 {
     public AgentValues agentValues;
-    public CommandObject[] activeCommands;
-    public CommandObject[] passiveCommands;
+    public ActiveCommandObject[] activeCommands;
+    public ActiveCommandObject[] passiveCommands;
 
     private void Start()
     {
@@ -14,12 +14,12 @@ public class AgentInputHandler : MonoBehaviour
 
     private void Update()
     {
-        foreach (CommandObject element in activeCommands)
+        foreach (ActiveCommandObject element in activeCommands)
         {
             element.Execute(this.gameObject, agentValues);
         }
 
-        foreach (CommandObject element in passiveCommands)
+        foreach (ActiveCommandObject element in passiveCommands)
         {
             element.Execute(this.gameObject, agentValues);
         }

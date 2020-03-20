@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultActivateSprint", menuName = "Commands/Activate Sprint")]
-public class ActivateSprint : CommandObject
+public class ActivateSprint : ActiveCommandObject
 {
     [SerializeField]
     private KeyCode sprintKeyCode = KeyCode.LeftShift;

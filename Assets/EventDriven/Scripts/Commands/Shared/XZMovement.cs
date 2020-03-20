@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultXZMovement", menuName = "Commands/XZ Movement")]
-public class XZMovement : CommandObject
+public class XZMovement : ActiveCommandObject
 {
     [SerializeField]
     private KeyCode MoveForward = KeyCode.W;

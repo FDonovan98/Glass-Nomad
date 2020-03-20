@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultCameraMovement", menuName = "Commands/Camera Controls")]
-public class CameraControl : CommandObject
+public class CameraControl : ActiveCommandObject
 {
     protected override void OnEnable()
     {

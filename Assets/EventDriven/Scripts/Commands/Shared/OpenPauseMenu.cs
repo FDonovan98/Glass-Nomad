@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "OpenPauseMenu", menuName = "Commands/Open Pause Menu")]
-public class OpenPauseMenu : CommandObject
+public class OpenPauseMenu : ActiveCommandObject
 {
     [SerializeField]
     private KeyCode openMenuKey = KeyCode.Escape;
