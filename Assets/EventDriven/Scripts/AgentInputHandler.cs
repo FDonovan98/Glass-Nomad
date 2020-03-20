@@ -5,7 +5,7 @@ public class AgentInputHandler : MonoBehaviour
 {
     public AgentValues agentValues;
     public ActiveCommandObject[] activeCommands;
-    public ActiveCommandObject[] passiveCommands;
+    public PassiveCommandObject[] passiveCommands;
 
     private void Start()
     {
@@ -19,9 +19,19 @@ public class AgentInputHandler : MonoBehaviour
             element.Execute(this.gameObject, agentValues);
         }
 
-        foreach (ActiveCommandObject element in passiveCommands)
+        foreach (PassiveCommandObject element in passiveCommands)
         {
             element.Execute(this.gameObject, agentValues);
         }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        agentValues.isGrounded = true;
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        agentValues.isGrounded = false;
     }
 }
