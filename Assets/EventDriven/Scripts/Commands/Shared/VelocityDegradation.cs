@@ -10,11 +10,12 @@ public class VelocityDegradation : PassiveCommandObject
             if (agentValues.reduceVelocityInAir || agentValues.isGrounded)
             {
                 Rigidbody charRigidbody = agent.GetComponent<Rigidbody>();
+                Vector3 localVel = agent.transform.worldToLocalMatrix * charRigidbody.velocity;
 
                 float[] xzVel = 
                 {
-                    charRigidbody.velocity.x,
-                    charRigidbody.velocity.z
+                    localVel.x,
+                    localVel.z
                 };
 
                 float RelativeVelDeg = agentValues.velocityDegradationValue * Time.deltaTime;
@@ -37,7 +38,9 @@ public class VelocityDegradation : PassiveCommandObject
                     
                 }
 
-                charRigidbody.velocity = new Vector3(xzVel[0], charRigidbody.velocity.y, xzVel[1]);
+                localVel = new Vector3(xzVel[0], localVel.y, xzVel[1]);
+
+                charRigidbody.velocity = agent.transform.localToWorldMatrix * localVel;
             }
         }
     }

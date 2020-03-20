@@ -23,6 +23,9 @@ public class AgentInputHandler : MonoBehaviour
         {
             element.Execute(this.gameObject, agentValues);
         }
+
+        Debug.DrawRay(this.GetComponentInChildren<Camera>().gameObject.transform.position, this.GetComponentInChildren<Camera>().gameObject.transform.forward, Color.red);
+        Debug.DrawRay(this.transform.position, this.transform.forward, Color.yellow);
     }
 
     private void OnCollisionEnter(Collision other)
