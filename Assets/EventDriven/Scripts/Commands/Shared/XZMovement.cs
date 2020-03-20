@@ -22,17 +22,25 @@ public class XZMovement : ActiveCommandObject
 
     public override void Execute(GameObject agent, AgentValues agentValues)
     {
+        Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
+
+
         Vector3 movementVector = GetKeyInput(agent);
 
         movementVector *= agentValues.moveSpeed * Time.deltaTime;
 
         if (agentValues.isSprinting)
         {
-            agent.GetComponent<Rigidbody>().velocity += movementVector * agentValues.sprintMultiplier;
+            agentRigidbody.velocity += movementVector * agentValues.sprintMultiplier;
         }
         else
         {
-            agent.GetComponent<Rigidbody>().velocity += movementVector;
+            agentRigidbody.velocity += movementVector;
+        }
+
+        if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
+        {
+            agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
         }
     }
 

@@ -8,6 +8,7 @@ public class AgentValues : ScriptableObject
     public bool sprintingIsAToggle;
     public bool isSprinting = false;
     public float sprintMultiplier = 2.0f;
+    public float maxSpeed = 100.0f;
 
     [Header("Velocity Degradation")]
     public bool reduceVelocityInAir = true;
