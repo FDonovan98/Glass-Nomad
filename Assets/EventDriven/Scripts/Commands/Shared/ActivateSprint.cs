@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "DefaultActivateSprint", menuName = "Commands/Activate Sprint")]
+[CreateAssetMenu(fileName = "DefaultActivateSprint", menuName = "Commands/Active/Activate Sprint")]
 public class ActivateSprint : ActiveCommandObject
 {
     [SerializeField]

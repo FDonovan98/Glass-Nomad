@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "DefaultXZMovement", menuName = "Commands/XZ Movement")]
+[CreateAssetMenu(fileName = "DefaultXZMovement", menuName = "Commands/Active/XZ Movement")]
 public class XZMovement : ActiveCommandObject
 {
     [SerializeField]

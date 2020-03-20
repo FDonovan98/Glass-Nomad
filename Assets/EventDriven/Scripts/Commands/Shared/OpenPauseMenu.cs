@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "OpenPauseMenu", menuName = "Commands/Open Pause Menu")]
+[CreateAssetMenu(fileName = "OpenPauseMenu", menuName = "Commands/Active/Open Pause Menu")]
 public class OpenPauseMenu : ActiveCommandObject
 {
     [SerializeField]
