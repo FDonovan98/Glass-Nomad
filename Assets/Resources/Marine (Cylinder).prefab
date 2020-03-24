@@ -5065,6 +5065,10 @@ MonoBehaviour:
   upForce: 3
   debug: 0
   movementSpeed: 130
+  velocityDegradation: 1
+  scaleVelocityDegWithVel: 1
+  reduceVelocityInAir: 0
+  maxSpeed: 100
   mouseSensitivity: 10
   jumpSpeed: 8.75
   yRotationClamp: 90
@@ -5139,7 +5143,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833018608841414331}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 22f895fc36dac1846821559bb04a0894, type: 3}
   m_Controller: {fileID: 9100000, guid: 4ebff6a8961361b46b131fbfdbca1f7f, type: 2}
   m_CullingMode: 1
@@ -5256,6 +5260,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 246526236530761477}
     m_Modifications:
+    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Flashlight
+      objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730582, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5310,11 +5319,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Flashlight
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8865416381457730581, guid: 332df5eb1fa7b2b408462605350b969d, type: 3}
