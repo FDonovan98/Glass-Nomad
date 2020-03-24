@@ -5065,6 +5065,10 @@ MonoBehaviour:
   upForce: 3
   debug: 0
   movementSpeed: 130
+  velocityDegradation: 1
+  scaleVelocityDegWithVel: 1
+  reduceVelocityInAir: 0
+  maxSpeed: 100
   mouseSensitivity: 10
   jumpSpeed: 8.75
   yRotationClamp: 90
@@ -5256,6 +5260,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 246526236530761477}
     m_Modifications:
+    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Flashlight
+      objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730582, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5310,11 +5319,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Flashlight
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8865416381457730581, guid: 332df5eb1fa7b2b408462605350b969d, type: 3}
