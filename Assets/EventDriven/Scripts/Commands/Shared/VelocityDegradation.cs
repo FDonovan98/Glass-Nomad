@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "VelocityDegradation", menuName = "Commands/Passive/Velocity Degradation")]
+[CreateAssetMenu(fileName = "DefaultVelocityDegradation", menuName = "Commands/Passive/Velocity Degradation")]
 public class VelocityDegradation : PassiveCommandObject
 {
     public override void Execute(GameObject agent, AgentValues agentValues)
@@ -34,8 +34,7 @@ public class VelocityDegradation : PassiveCommandObject
                     else if (xzVel[i] < 0.0f)
                     {
                         xzVel[i] = Mathf.Clamp(xzVel[i] + RelativeVelDeg, xzVel[i], 0.0f);
-                    }
-                    
+                    } 
                 }
 
                 localVel = new Vector3(xzVel[0], localVel.y, xzVel[1]);
@@ -43,5 +42,15 @@ public class VelocityDegradation : PassiveCommandObject
                 charRigidbody.velocity = agent.transform.localToWorldMatrix * localVel;
             }
         }
+    }
+
+    void ReduceZ(float zInput)
+    {
+
+    }
+
+    void ReduceX(float xInput)
+    {
+
     }
 }

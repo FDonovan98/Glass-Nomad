@@ -25,17 +25,19 @@ public class XZMovement : ActiveCommandObject
         Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
 
 
-        Vector3 movementVector = GetKeyInput(agent);
+        Vector3 inputMovementVector = GetKeyInput(agent);
 
-        movementVector *= agentValues.moveSpeed * Time.deltaTime;
+        VelocityDegradation(agentRigidbody, agentValues, inputMovementVector);
+
+        inputMovementVector *= agentValues.moveSpeed * Time.deltaTime;
 
         if (agentValues.isSprinting)
         {
-            agentRigidbody.velocity += movementVector * agentValues.sprintMultiplier;
+            agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier;
         }
         else
         {
-            agentRigidbody.velocity += movementVector;
+            agentRigidbody.velocity += inputMovementVector;
         }
 
         if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
@@ -46,25 +48,74 @@ public class XZMovement : ActiveCommandObject
 
     Vector3 GetKeyInput(GameObject agent)
     {
-        Vector3 movementVector = Vector3.zero;
+        Vector3 inputMovementVector = Vector3.zero;
 
         if (Input.GetKey(MoveForward))
         {
-            movementVector += agent.transform.forward;
+            inputMovementVector += agent.transform.forward;
+            Debug.Log("Forward");
         }
         if (Input.GetKey(MoveBack))
         {
-            movementVector -= agent.transform.forward;
+            inputMovementVector -= agent.transform.forward;
         }
         if (Input.GetKey(MoveLeft))
         {
-            movementVector -= agent.transform.right;
+            inputMovementVector -= agent.transform.right;
         }
         if (Input.GetKey(MoveRight))
         {
-            movementVector += agent.transform.right;
+            inputMovementVector += agent.transform.right;
         }
 
-        return movementVector.normalized;
+        return inputMovementVector.normalized;
+    }
+
+    void VelocityDegradation(Rigidbody agentRigidbody, AgentValues agentValues, Vector3 inputMovementVector)
+    {
+        if (agentValues.reduceVelocityInAir || agentValues.isGrounded)
+        {
+            Vector3 localVel = agentRigidbody.transform.worldToLocalMatrix * agentRigidbody.velocity;
+            float RelativeVelDeg = agentValues.velocityDegradationValue * Time.deltaTime;
+
+            float[] xzVel = 
+            {
+                localVel.x,
+                localVel.z
+            };
+
+            float[] xzInput = 
+            {
+                inputMovementVector.x,
+                inputMovementVector.z
+            };
+
+            for (int i = 0; i < 2; i++)
+            {
+                if (xzInput[i] == 0.0f)
+                {
+                    if (xzVel[i] > 0.0f)
+                    {
+                        xzVel[i] = Mathf.Clamp(xzVel[i] - RelativeVelDeg, 0.0f, xzVel[i]);
+                    }
+                    else if (xzVel[i] < 0.0f)
+                    {
+                        xzVel[i] = Mathf.Clamp(xzVel[i] + RelativeVelDeg, xzVel[i], 0.0f);
+                    } 
+                }
+                else if (xzInput[i] > 0.0f && xzVel[i] < 0.0f)
+                {
+                    xzVel[i] = Mathf.Clamp(xzVel[i] + RelativeVelDeg, xzVel[i], 0.0f);
+                }
+                else if (xzInput[i] < 0.0f && xzVel[i] > 0.0f)
+                {
+                    xzVel[i] = Mathf.Clamp(xzVel[i] - RelativeVelDeg, 0.0f, xzVel[i]);
+                }
+            }
+
+            localVel = new Vector3(xzVel[0], localVel.y, xzVel[1]);
+
+            agentRigidbody.velocity = agentRigidbody.transform.localToWorldMatrix * localVel;
+        }
     }
 }
