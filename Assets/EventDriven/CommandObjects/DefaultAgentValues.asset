@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171629c624bafcf46ab823db4bea82dc, type: 3}
   m_Name: DefaultAgentValues
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 100
   sprintingIsAToggle: 0
   isSprinting: 0
   sprintMultiplier: 2
-  mouseSensitivity: 1
+  maxSpeed: 100
+  reduceVelocityInAir: 1
+  scaleVelocityDegWithVel: 1
+  velocityDegradationValue: 80
+  mouseSensitivity: 4
   yRotationClamp: 80
   menu: {fileID: 0}
+  isGrounded: 0
