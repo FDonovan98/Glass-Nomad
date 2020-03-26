@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 [RequireComponent(typeof(Rigidbody))]
-public class AgentInputHandler : MonoBehaviour
+public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
     public AgentValues agentValues;
     public ActiveCommandObject[] activeCommands;

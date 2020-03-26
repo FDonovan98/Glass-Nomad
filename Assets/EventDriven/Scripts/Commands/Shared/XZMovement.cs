@@ -29,7 +29,7 @@ public class XZMovement : ActiveCommandObject
 
         VelocityDegradation(agentRigidbody, agentValues, inputMovementVector);
 
-        inputMovementVector *= agentValues.moveSpeed * Time.deltaTime;
+        inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime;
 
         if (agentValues.isSprinting)
         {
