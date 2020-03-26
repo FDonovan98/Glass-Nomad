@@ -53,7 +53,6 @@ public class XZMovement : ActiveCommandObject
         if (Input.GetKey(MoveForward))
         {
             inputMovementVector += agent.transform.forward;
-            Debug.Log("Forward");
         }
         if (Input.GetKey(MoveBack))
         {
@@ -77,6 +76,7 @@ public class XZMovement : ActiveCommandObject
         {
             Vector3 localVel = agentRigidbody.transform.worldToLocalMatrix * agentRigidbody.velocity;
             float RelativeVelDeg = agentValues.velocityDegradationValue * Time.deltaTime;
+            inputMovementVector = agentRigidbody.transform.worldToLocalMatrix * inputMovementVector;
 
             float[] xzVel = 
             {
