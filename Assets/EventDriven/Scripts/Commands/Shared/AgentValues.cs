@@ -9,13 +9,25 @@ public class AgentValues : ScriptableObject
     public bool sprintingIsAToggle;
     public bool isSprinting = false;
     public float sprintMultiplier = 2.0f;
+
+    [Header("Spider Climb")]
     public float surfaceSwitchSpeed = 1.0f;
     public float gravityResetDelay = 0.5f;
+
+    [Header("ChargeLeap")]
+    public bool leapCanChargeInAir = true;
+    public float leapVelocity = 10.0f;
+    public float forwardLeapModifier = 1.0f;
+    public float verticalLeapModifier = 1.0f;
+    public float leapChargeDuration = 2.0f;
+    public float currentLeapCharge = 0.0f;
+     
 
     [Header("Velocity Degradation")]
     public bool reduceVelocityInAir = true;
     public bool scaleVelocityDegWithVel = true;
-    public float velocityDegradationValue = 80.0f;
+    public float velocityDegradationGrounded = 80.0f;
+    public float velocityDegradationInAir = 80.0f;
 
     [Header("Stairs")]
     public float maxStairHeight = 1.0f;
@@ -42,5 +54,6 @@ public class AgentValues : ScriptableObject
         isSprinting = false;
         gravityDirection = Vector3.down;
         allowInput = true;
+        currentLeapCharge = 0.0f;
     }
 }

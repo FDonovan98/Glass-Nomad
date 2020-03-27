@@ -27,15 +27,12 @@ public class XZMovement : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
     {
+        Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
+
+        Vector3 inputMovementVector = GetKeyInput(agent);
+
         if (agentValues.allowInput)
         {
-            Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
-
-
-            Vector3 inputMovementVector = GetKeyInput(agent);
-
-            VelocityDegradation(agentRigidbody, agentValues, inputMovementVector);
-
             inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime;
 
             if (agentValues.isSprinting)
@@ -51,6 +48,20 @@ public class XZMovement : ActiveCommandObject
             {
                 agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
             }
+        }
+        else
+        {
+            inputMovementVector = Vector3.zero;
+        }
+        
+
+        if (agentValues.isGrounded)
+        {
+            VelocityDegradation(agentRigidbody, agentValues.velocityDegradationGrounded, inputMovementVector);
+        }
+        else if (agentValues.reduceVelocityInAir)
+        {
+            VelocityDegradation(agentRigidbody, agentValues.velocityDegradationInAir, inputMovementVector);
         }
     }
 
@@ -78,52 +89,49 @@ public class XZMovement : ActiveCommandObject
         return inputMovementVector.normalized;
     }
 
-    void VelocityDegradation(Rigidbody agentRigidbody, AgentValues agentValues, Vector3 inputMovementVector)
+    void VelocityDegradation(Rigidbody agentRigidbody, float velocityDegradationValue, Vector3 inputMovementVector)
     {
-        if (agentValues.reduceVelocityInAir || agentValues.isGrounded)
+        Vector3 localVel = agentRigidbody.transform.worldToLocalMatrix * agentRigidbody.velocity;
+        float RelativeVelDeg = velocityDegradationValue * Time.deltaTime;
+        inputMovementVector = agentRigidbody.transform.worldToLocalMatrix * inputMovementVector;
+
+        float[] xzVel = 
         {
-            Vector3 localVel = agentRigidbody.transform.worldToLocalMatrix * agentRigidbody.velocity;
-            float RelativeVelDeg = agentValues.velocityDegradationValue * Time.deltaTime;
-            inputMovementVector = agentRigidbody.transform.worldToLocalMatrix * inputMovementVector;
+            localVel.x,
+            localVel.z
+        };
 
-            float[] xzVel = 
-            {
-                localVel.x,
-                localVel.z
-            };
+        float[] xzInput = 
+        {
+            inputMovementVector.x,
+            inputMovementVector.z
+        };
 
-            float[] xzInput = 
+        for (int i = 0; i < 2; i++)
+        {
+            if (xzInput[i] == 0.0f)
             {
-                inputMovementVector.x,
-                inputMovementVector.z
-            };
-
-            for (int i = 0; i < 2; i++)
-            {
-                if (xzInput[i] == 0.0f)
-                {
-                    if (xzVel[i] > 0.0f)
-                    {
-                        xzVel[i] = Mathf.Clamp(xzVel[i] - RelativeVelDeg, 0.0f, xzVel[i]);
-                    }
-                    else if (xzVel[i] < 0.0f)
-                    {
-                        xzVel[i] = Mathf.Clamp(xzVel[i] + RelativeVelDeg, xzVel[i], 0.0f);
-                    } 
-                }
-                else if (xzInput[i] > 0.0f && xzVel[i] < 0.0f)
-                {
-                    xzVel[i] = Mathf.Clamp(xzVel[i] + RelativeVelDeg, xzVel[i], 0.0f);
-                }
-                else if (xzInput[i] < 0.0f && xzVel[i] > 0.0f)
+                if (xzVel[i] > 0.0f)
                 {
                     xzVel[i] = Mathf.Clamp(xzVel[i] - RelativeVelDeg, 0.0f, xzVel[i]);
                 }
+                else if (xzVel[i] < 0.0f)
+                {
+                    xzVel[i] = Mathf.Clamp(xzVel[i] + RelativeVelDeg, xzVel[i], 0.0f);
+                } 
             }
-
-            localVel = new Vector3(xzVel[0], localVel.y, xzVel[1]);
-
-            agentRigidbody.velocity = agentRigidbody.transform.localToWorldMatrix * localVel;
+            else if (xzInput[i] > 0.0f && xzVel[i] < 0.0f)
+            {
+                xzVel[i] = Mathf.Clamp(xzVel[i] + RelativeVelDeg, xzVel[i], 0.0f);
+            }
+            else if (xzInput[i] < 0.0f && xzVel[i] > 0.0f)
+            {
+                xzVel[i] = Mathf.Clamp(xzVel[i] - RelativeVelDeg, 0.0f, xzVel[i]);
+            }
         }
+
+        localVel = new Vector3(xzVel[0], localVel.y, xzVel[1]);
+
+        agentRigidbody.velocity = agentRigidbody.transform.localToWorldMatrix * localVel;
     }
 }
