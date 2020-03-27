@@ -2,5 +2,5 @@ using UnityEngine;
 
 public abstract class CommandObject : ScriptableObject
 {
-    public abstract void Execute(GameObject agent, AgentValues agentValues);
+    public abstract void RunCommandOnStart(AgentInputHandler agentInputHandler);
 }

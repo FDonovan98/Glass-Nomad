@@ -20,7 +20,12 @@ public class XZMovement : ActiveCommandObject
         keyTable.Add("Move Right", MoveRight);
     }
 
-    public override void Execute(GameObject agent, AgentValues agentValues)
+    public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
+    {
+        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+    }
+
+    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
     {
         Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
 

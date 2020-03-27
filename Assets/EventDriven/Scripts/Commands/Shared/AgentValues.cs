@@ -15,6 +15,12 @@ public class AgentValues : ScriptableObject
     public bool scaleVelocityDegWithVel = true;
     public float velocityDegradationValue = 80.0f;
 
+    [Header("Stairs")]
+    public float maxStairHeight = 1.0f;
+    public float minDistanceToStair = 1.0f;
+    public float minLedgeWidth = 1.0f;
+    public float stepUpAcceleration = 1.0f;
+
     [Header("Gravity")]
     public bool applyGravity = true;
     public float gravityAcceleration = 10.0f;

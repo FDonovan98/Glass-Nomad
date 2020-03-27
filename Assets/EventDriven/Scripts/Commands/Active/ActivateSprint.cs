@@ -11,7 +11,12 @@ public class ActivateSprint : ActiveCommandObject
         keyTable.Add("Sprint", sprintKeyCode);
     }
 
-    public override void Execute(GameObject agent, AgentValues agentValues)
+    public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
+    {
+        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+    }
+
+    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
     {
         if (agentValues.sprintingIsAToggle)
         {

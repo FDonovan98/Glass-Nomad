@@ -8,7 +8,12 @@ public class CameraControl : ActiveCommandObject
 
     }
 
-    public override void Execute(GameObject agent, AgentValues agentValues)
+    public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
+    {
+        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+    }
+
+    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
     {
         Vector3 mouseRotationInput = GetMouseInput(agent);
 

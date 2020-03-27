@@ -12,15 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171629c624bafcf46ab823db4bea82dc, type: 3}
   m_Name: DefaultAgentValues
   m_EditorClassIdentifier: 
-  moveSpeed: 100
+  moveAcceleration: 100
+  maxSpeed: 50
   sprintingIsAToggle: 0
   isSprinting: 0
   sprintMultiplier: 2
-  maxSpeed: 100
   reduceVelocityInAir: 1
   scaleVelocityDegWithVel: 1
-  velocityDegradationValue: 80
+  velocityDegradationValue: 100
+  maxStairHeight: 0.4
+  minDistanceToStair: 0
+  minLedgeWidth: 0.3
+  stepUpAcceleration: 100
+  applyGravity: 1
+  gravityAcceleration: 10
+  gravityDirection: {x: 0, y: -1, z: 0}
   mouseSensitivity: 4
   yRotationClamp: 80
   menu: {fileID: 0}
-  isGrounded: 0
+  isGrounded: 1

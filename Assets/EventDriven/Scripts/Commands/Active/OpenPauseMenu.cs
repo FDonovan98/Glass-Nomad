@@ -15,7 +15,12 @@ public class OpenPauseMenu : ActiveCommandObject
         keyTable.Add("Pause", openMenuKey);
     }
 
-    public override void Execute(GameObject agent, AgentValues agentValues)
+    public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
+    {
+        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+    }
+
+    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
     {
         if (agentValuesRef == null)
         {
