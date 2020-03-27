@@ -8,8 +8,6 @@ public class OpenPauseMenu : ActiveCommandObject
     [SerializeField]
     private KeyCode openMenuKeyInEditor = KeyCode.Comma;
 
-    private AgentValues agentValuesRef = null;
-
     protected override void OnEnable()
     {
         keyTable.Add("Pause", openMenuKey);
@@ -22,37 +20,33 @@ public class OpenPauseMenu : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
     {
-        if (agentValuesRef == null)
-        {
-            agentValuesRef = agentValues;
-        }
-
         #if UNITY_EDITOR
             //Press the openMenuKeyInEditor to unlock the cursor. If it's unlocked, lock it again
             if (Input.GetKeyDown(openMenuKeyInEditor))
             {
-                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true);
-                else ToggleCursorAndMenu(false);
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true, agentValues);
+                else ToggleCursorAndMenu(false, agentValues);
             } 
         #elif UNITY_STANDALONE_WIN
             //Press the openMenuKey to unlock the cursor. If it's unlocked, lock it again
             if (Input.GetKeyDown(openMenuKey))
             {
-                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true);
-                else ToggleCursorAndMenu(false);
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true, agentValues);
+                else ToggleCursorAndMenu(false, agentValues);
             } 
         #endif
     }
 
-    private void ToggleCursorAndMenu(bool turnOn)
+    private void ToggleCursorAndMenu(bool turnOn, AgentValues agentValues)
     {
         Cursor.lockState = turnOn ? CursorLockMode.None : CursorLockMode.Locked;
-        ToggleMenu(turnOn);
+        ToggleMenu(turnOn, agentValues);
     }
 
-    private void ToggleMenu(bool toggle)
+    private void ToggleMenu(bool toggle, AgentValues agentValues)
     {
-        agentValuesRef.menu.SetActive(toggle);
+        agentValues.menu.SetActive(toggle);
+        agentValues.allowInput = !toggle;
         Cursor.visible = toggle;
     }
 }

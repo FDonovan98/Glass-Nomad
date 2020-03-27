@@ -4,6 +4,7 @@ using Photon.Pun;
 [RequireComponent(typeof(Rigidbody))]
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
+    public GameObject pauseMenu;
     public AgentValues agentValues;
     private GameObject agent;
     public ActiveCommandObject[] activeCommands;
@@ -22,16 +23,20 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        agent = this.gameObject;
-        agentValues.Initialise();
+        if (photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
+        {
+            agent = this.gameObject;
+            agentValues.menu = pauseMenu;
+            agentValues.Initialise();
 
-        foreach (ActiveCommandObject element in activeCommands)
-        {
-            element.RunCommandOnStart(this);
-        }
-        foreach (PassiveCommandObject element in passiveCommands)
-        {
-            element.RunCommandOnStart(this);
+            foreach (ActiveCommandObject element in activeCommands)
+            {
+                element.RunCommandOnStart(this);
+            }
+            foreach (PassiveCommandObject element in passiveCommands)
+            {
+                element.RunCommandOnStart(this);
+            }
         }
     }
 

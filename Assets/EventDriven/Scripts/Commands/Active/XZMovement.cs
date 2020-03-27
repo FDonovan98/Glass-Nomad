@@ -27,27 +27,30 @@ public class XZMovement : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
     {
-        Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
-
-
-        Vector3 inputMovementVector = GetKeyInput(agent);
-
-        VelocityDegradation(agentRigidbody, agentValues, inputMovementVector);
-
-        inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime;
-
-        if (agentValues.isSprinting)
+        if (agentValues.allowInput)
         {
-            agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier;
-        }
-        else
-        {
-            agentRigidbody.velocity += inputMovementVector;
-        }
+            Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
 
-        if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
-        {
-            agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
+
+            Vector3 inputMovementVector = GetKeyInput(agent);
+
+            VelocityDegradation(agentRigidbody, agentValues, inputMovementVector);
+
+            inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime;
+
+            if (agentValues.isSprinting)
+            {
+                agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier;
+            }
+            else
+            {
+                agentRigidbody.velocity += inputMovementVector;
+            }
+
+            if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
+            {
+                agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
+            }
         }
     }
 

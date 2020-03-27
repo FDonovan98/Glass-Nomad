@@ -15,22 +15,25 @@ public class CameraControl : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
     {
-        Vector3 mouseRotationInput = GetMouseInput(agent);
+        if (agentValues.allowInput)
+        {
+            Vector3 mouseRotationInput = GetMouseInput(agent);
 
-        // Agent Rotation.
-        Vector3 agentRotation = new Vector3(0.0f, mouseRotationInput.x, 0.0f);
-        agentRotation *= agentValues.mouseSensitivity;
-        agent.transform.Rotate(agentRotation);
+            // Agent Rotation.
+            Vector3 agentRotation = new Vector3(0.0f, mouseRotationInput.x, 0.0f);
+            agentRotation *= agentValues.mouseSensitivity;
+            agent.transform.Rotate(agentRotation);
 
-        // Camera Rotation.
-        Camera agentCamera = agent.GetComponentInChildren<Camera>();
-        Quaternion cameraTargetRotation = agentCamera.transform.localRotation;
+            // Camera Rotation.
+            Camera agentCamera = agent.GetComponentInChildren<Camera>();
+            Quaternion cameraTargetRotation = agentCamera.transform.localRotation;
 
-        float cameraRotation = -mouseRotationInput.y * agentValues.mouseSensitivity;
-        cameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
-        cameraTargetRotation = ClampRotationAroundXAxis(cameraTargetRotation, agentValues);
+            float cameraRotation = -mouseRotationInput.y * agentValues.mouseSensitivity;
+            cameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
+            cameraTargetRotation = ClampRotationAroundXAxis(cameraTargetRotation, agentValues);
 
-        agentCamera.transform.localRotation = cameraTargetRotation;
+            agentCamera.transform.localRotation = cameraTargetRotation;
+        }
     }
 
     private Vector3 GetMouseInput(GameObject agent)

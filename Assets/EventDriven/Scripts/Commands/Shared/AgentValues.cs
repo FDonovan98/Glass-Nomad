@@ -33,6 +33,7 @@ public class AgentValues : ScriptableObject
     [Header("Misc")]
     public GameObject menu = null;
     public bool isGrounded = true;
+    public bool allowInput = true;
 
     public void Initialise()
     {
