@@ -29,9 +29,9 @@ public class PlayerResources
     public Weapon currentWeapon;
 
     // Oxygen shenanigans
-    public float maxOxygenAmountSeconds = 300f;
+    public float maxOxygenAmountSeconds = 500f;
     public float oxygenAmountSeconds;
-    public float sprintOxygenMultiplier = 2f;
+    public float sprintOxygenMultiplier = 1.3f;
 
     public PlayerResources(GameObject attachedPlayer, int playerMaxHealth = 100)
     {
