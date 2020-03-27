@@ -15,15 +15,17 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public RunCommandOnUpdate runCommandOnUpdate;
     public delegate void RunCommandOnFixedUpdate(GameObject agent, AgentValues agentValues);
     public RunCommandOnFixedUpdate runCommandOnFixedUpdate;
-    public delegate void RunCommandOnCollisionStay(GameObject agent, AgentValues agentValues);
+    public delegate void RunCommandOnCollisionEnter(GameObject agent, AgentValues agentValues, Collision other);
+    public RunCommandOnCollisionStay runCommandOnCollisionEnter;
+    public delegate void RunCommandOnCollisionStay(GameObject agent, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionStay runCommandOnCollisionStay;
-    public delegate void RunCommandOnCollisionExit(GameObject agent, AgentValues agentValues);
+    public delegate void RunCommandOnCollisionExit(GameObject agent, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
 
 
     private void Start()
     {
-        if (photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
+        if (photonView.IsMine || PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
         {
             agent = this.gameObject;
             agentValues.menu = pauseMenu;
@@ -50,13 +52,18 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         runCommandOnFixedUpdate(agent, agentValues);
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        runCommandOnCollisionEnter(agent, agentValues, other);
+    }
+
     private void OnCollisionStay(Collision other)
     {
-        runCommandOnCollisionStay(agent, agentValues);
+        runCommandOnCollisionStay(agent, agentValues, other);
     }
 
     private void OnCollisionExit(Collision other)
     {
-        runCommandOnCollisionExit(agent, agentValues);
+        runCommandOnCollisionExit(agent, agentValues, other);
     }
 }

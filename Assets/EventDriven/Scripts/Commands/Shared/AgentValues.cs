@@ -9,6 +9,8 @@ public class AgentValues : ScriptableObject
     public bool sprintingIsAToggle;
     public bool isSprinting = false;
     public float sprintMultiplier = 2.0f;
+    public float surfaceSwitchSpeed = 1.0f;
+    public float gravityResetDelay = 0.5f;
 
     [Header("Velocity Degradation")]
     public bool reduceVelocityInAir = true;
@@ -39,5 +41,6 @@ public class AgentValues : ScriptableObject
     {
         isSprinting = false;
         gravityDirection = Vector3.down;
+        allowInput = true;
     }
 }
