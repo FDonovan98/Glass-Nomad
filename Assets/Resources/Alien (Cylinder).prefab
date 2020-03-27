@@ -512,13 +512,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eebc5e4e8cd09194d9c009fea322adde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 150
   healthSlider: {fileID: 6329036609802932500}
   cameraGO: {fileID: 0}
   bulletHolePrefab: {fileID: 8801075028534077450, guid: f34524b31a249bc4390924096267d0d4,
     type: 3}
   bulletRicochetSpark: {fileID: 7992513011299317479, guid: ce143359d3d79284480c3c04d590b797,
     type: 3}
+  hitSound: {fileID: 8300000, guid: b00372d398d32984aa22f2dfdc163246, type: 3}
 --- !u!114 &5780684092325464000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,12 +561,12 @@ MonoBehaviour:
   transparentVent: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
   alienAttack: {fileID: 0}
   emergencyHealingThreshold: 60
-  emergencyHealingAmount: 10
-  emergencyHealingTickCount: 10
-  emergencyHealingTickDelay: 0.1
-  emergencySpeedMultiplier: 1
-  trackerVisionDuration: 5
-  trackerVisionRegenRate: 0.25
+  emergencyHealingAmount: 130
+  emergencyHealingTickCount: 30
+  emergencyHealingTickDelay: 0.05
+  emergencySpeedMultiplier: 1.5
+  trackerVisionDuration: 15
+  trackerVisionRegenRate: 0.75
   trackerNeedsToBeFullyRechargedBeforeUseAgain: 1
 --- !u!1 &5905573862251080833
 GameObject:
