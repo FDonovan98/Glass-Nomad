@@ -5,17 +5,24 @@ using Photon.Pun;
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
     public AgentValues agentValues;
+    private GameObject agent;
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
 
     // Delegates used by commands.
-    public delegate void RunCommandOnFixedUpdate(GameObject agent, AgentValues agentValues);
-    public RunCommandOnFixedUpdate runCommandOnFixedUpdate;
     public delegate void RunCommandOnUpdate(GameObject agent, AgentValues agentValues);
     public RunCommandOnUpdate runCommandOnUpdate;
+    public delegate void RunCommandOnFixedUpdate(GameObject agent, AgentValues agentValues);
+    public RunCommandOnFixedUpdate runCommandOnFixedUpdate;
+    public delegate void RunCommandOnCollisionStay(GameObject agent, AgentValues agentValues);
+    public RunCommandOnCollisionStay runCommandOnCollisionStay;
+    public delegate void RunCommandOnCollisionExit(GameObject agent, AgentValues agentValues);
+    public RunCommandOnCollisionExit runCommandOnCollisionExit;
+
 
     private void Start()
     {
+        agent = this.gameObject;
         agentValues.Initialise();
 
         foreach (ActiveCommandObject element in activeCommands)
@@ -30,21 +37,21 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        runCommandOnUpdate(this.gameObject, agentValues);
+        runCommandOnUpdate(agent, agentValues);
     }
 
     private void FixedUpdate()
     {
-        runCommandOnFixedUpdate(this.gameObject, agentValues);
+        runCommandOnFixedUpdate(agent, agentValues);
     }
 
     private void OnCollisionStay(Collision other)
     {
-        agentValues.isGrounded = true;
+        runCommandOnCollisionStay(agent, agentValues);
     }
 
     private void OnCollisionExit(Collision other)
     {
-        agentValues.isGrounded = false;
+        runCommandOnCollisionExit(agent, agentValues);
     }
 }
