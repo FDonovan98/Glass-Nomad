@@ -7,9 +7,10 @@ public class Gravity : PassiveCommandObject
     {
         agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
     }
-    void RunCommandOnFixedUpdate(GameObject agent, AgentValues agentValues)
+    void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
-        agentRigidbody.velocity += agentValues.gravityDirection.normalized * agentValues.gravityAcceleration * Time.fixedDeltaTime;
+
+        agentRigidbody.velocity += agentInputHandler.gravityDirection.normalized * agentValues.gravityAcceleration * Time.fixedDeltaTime;
     }
 }

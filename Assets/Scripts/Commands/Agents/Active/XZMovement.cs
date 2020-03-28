@@ -25,17 +25,17 @@ public class XZMovement : ActiveCommandObject
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
     }
 
-    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
+    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
 
         Vector3 inputMovementVector = GetKeyInput(agent);
 
-        if (agentValues.allowInput)
+        if (agentInputHandler.allowInput)
         {
             inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime;
 
-            if (agentValues.isSprinting)
+            if (agentInputHandler.isSprinting)
             {
                 agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier;
             }
@@ -55,7 +55,7 @@ public class XZMovement : ActiveCommandObject
         }
         
 
-        if (agentValues.isGrounded)
+        if (agentInputHandler.isGrounded)
         {
             VelocityDegradation(agentRigidbody, agentValues.velocityDegradationGrounded, inputMovementVector);
         }

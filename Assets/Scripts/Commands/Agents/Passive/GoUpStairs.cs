@@ -8,9 +8,9 @@ public class GoUpStairs : PassiveCommandObject
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
     }
 
-    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
+    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (agentValues.isGrounded)
+        if (agentInputHandler.isGrounded)
         {
             Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
             Vector3 rayDirection = agentRigidbody.velocity.normalized;
@@ -48,17 +48,17 @@ public class GoUpStairs : PassiveCommandObject
 
                     float stairHeight = Mathf.Abs(localStairBottom.y - localStairTop.y);
 
-                    ApplyUpwardsForce(agent, agentValues, stairHeight);
+                    ApplyUpwardsForce(agent, agentInputHandler, agentValues, stairHeight);
                 }
             }
         }
     }
 
-    void ApplyUpwardsForce(GameObject agent, AgentValues agentValues, float stepHeight)
+    void ApplyUpwardsForce(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, float stepHeight)
     {
         Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
 
-        agentRigidbody.velocity += -agentValues.gravityDirection.normalized * (agentValues.gravityAcceleration + agentValues.stepUpAcceleration) * Time.deltaTime * (stepHeight / agentValues.maxStairHeight);
+        agentRigidbody.velocity += -agentInputHandler.gravityDirection.normalized * (agentValues.gravityAcceleration + agentValues.stepUpAcceleration) * Time.deltaTime * (stepHeight / agentValues.maxStairHeight);
     }
 
     // Currently assumes direction.y == 0.

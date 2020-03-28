@@ -13,9 +13,9 @@ public class CameraControl : ActiveCommandObject
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
     }
 
-    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
+    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (agentValues.allowInput)
+        if (agentInputHandler.allowInput)
         {
             Vector3 mouseRotationInput = GetMouseInput(agent);
 

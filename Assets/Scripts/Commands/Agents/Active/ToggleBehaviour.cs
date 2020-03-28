@@ -16,7 +16,7 @@ public class ToggleBehaviour : ActiveCommandObject
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
     }
 
-    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
+    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         if (Input.GetKeyDown(toggleBehaviour))
         {

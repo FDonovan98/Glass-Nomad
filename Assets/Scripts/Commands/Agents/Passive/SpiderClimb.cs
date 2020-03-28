@@ -15,15 +15,15 @@ public class SpiderClimb : PassiveCommandObject
         agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
     }
 
-    void RunCommandOnFixedUpdate(GameObject agent, AgentValues agentValues)
+    void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        SetGravityDirection(agentValues);
+        SetGravityDirection(agentInputHandler, agentValues);
 
-        if (-agent.transform.up != agentValues.gravityDirection)
+        if (-agent.transform.up != agentInputHandler.gravityDirection)
         {
-            Vector3 agentTargetForward = Vector3.Cross(agent.transform.right, -agentValues.gravityDirection);
+            Vector3 agentTargetForward = Vector3.Cross(agent.transform.right, -agentInputHandler.gravityDirection);
 
-            Quaternion agentTargetRotation = Quaternion.LookRotation(agentTargetForward, -agentValues.gravityDirection);
+            Quaternion agentTargetRotation = Quaternion.LookRotation(agentTargetForward, -agentInputHandler.gravityDirection);
             
             //agent.GetComponent<Rigidbody>().velocity -= agentValues.gravityDirection;
             agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation, agentTargetRotation, agentValues.surfaceSwitchSpeed);
@@ -31,7 +31,7 @@ public class SpiderClimb : PassiveCommandObject
         
     }
 
-    void SetGravityDirection(AgentValues agentValues)
+    void SetGravityDirection(AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         Vector3 averageNormal = Vector3.zero;
         foreach (ContactPoint element in allCPs)
@@ -41,7 +41,7 @@ public class SpiderClimb : PassiveCommandObject
 
         if (averageNormal != Vector3.zero)
         {
-            agentValues.gravityDirection = averageNormal.normalized;
+            agentInputHandler.gravityDirection = averageNormal.normalized;
             timeToGravityReset = agentValues.gravityResetDelay;
         }
         else 
@@ -51,19 +51,19 @@ public class SpiderClimb : PassiveCommandObject
 
         if (timeToGravityReset < 0.0f)
         {
-            agentValues.gravityDirection = Vector3.down;
+            agentInputHandler.gravityDirection = Vector3.down;
             timeToGravityReset = agentValues.gravityResetDelay;
         }
         
         allCPs.Clear();
     }
     
-    void RunCommandOnCollisionEnter(GameObject agent, AgentValues agentValues, Collision other)
+    void RunCommandOnCollisionEnter(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
     {
         allCPs.AddRange(other.contacts);
     }
 
-    void RunCommandOnCollisionStay(GameObject agent, AgentValues agentValues, Collision other)
+    void RunCommandOnCollisionStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
     {
         allCPs.AddRange(other.contacts);
     }

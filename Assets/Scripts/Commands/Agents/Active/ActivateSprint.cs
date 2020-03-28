@@ -16,25 +16,24 @@ public class ActivateSprint : ActiveCommandObject
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
     }
 
-    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
+    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         if (agentValues.sprintingIsAToggle)
         {
             if (Input.GetKeyDown(sprintKeyCode))
             {
-                agentValues.isSprinting = !agentValues.isSprinting;
+                agentInputHandler.isSprinting = !agentInputHandler.isSprinting;
             }
         }
         else
         {
             if (Input.GetKeyDown(sprintKeyCode))
             {
-                agentValues.isSprinting = true;
+                agentInputHandler.isSprinting = true;
             }
-
-            if (Input.GetKeyUp(sprintKeyCode))
+            else if (Input.GetKeyUp(sprintKeyCode))
             {
-                agentValues.isSprinting = false;
+                agentInputHandler.isSprinting = false;
             }
         }
 

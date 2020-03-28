@@ -15,19 +15,19 @@ public class ChargeLeap : ActiveCommandObject
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
     }
 
-    void RunCommandOnUpdate(GameObject agent, AgentValues agentValues)
-    {
-        if (agentValues.leapCanChargeInAir || agentValues.isGrounded)
+    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
+    {        
+        if (agentValues.leapCanChargeInAir || agentInputHandler.isGrounded)
             if (Input.GetKey(chargeLeap))
             {
-                agentValues.currentLeapCharge += Time.deltaTime;
+                agentInputHandler.currentLeapCharge += Time.deltaTime;
             }
 
             if (Input.GetKeyUp(chargeLeap))
             {
-                if (agentValues.isGrounded)
+                if (agentInputHandler.isGrounded)
                 {
-                    float jumpImpulse = Mathf.Min(agentValues.currentLeapCharge, agentValues.leapChargeDuration);
+                    float jumpImpulse = Mathf.Min(agentInputHandler.currentLeapCharge, agentValues.leapChargeDuration);
 
                     jumpImpulse /= agentValues.leapChargeDuration;
                     jumpImpulse *= agentValues.leapVelocity;
@@ -43,7 +43,7 @@ public class ChargeLeap : ActiveCommandObject
                     agentRigidbody.velocity += agentValues.verticalLeapModifier * jumpImpulse * agent.transform.up;
                 }
 
-                agentValues.currentLeapCharge = 0.0f;
+                agentInputHandler.currentLeapCharge = 0.0f;
             }
     }
 }

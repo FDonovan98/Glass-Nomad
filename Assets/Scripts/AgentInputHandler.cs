@@ -9,18 +9,25 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public AgentValues agentValues;
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
+
+    public bool isSprinting = false;
+    public bool isGrounded = true;
+    public Vector3 gravityDirection = Vector3.down;
+    public bool allowInput = true;
+    public float currentLeapCharge = 0.0f;
+    
     private GameObject agent;
 
     // Delegates used by commands.
-    public delegate void RunCommandOnUpdate(GameObject agent, AgentValues agentValues);
+    public delegate void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues);
     public RunCommandOnUpdate runCommandOnUpdate;
-    public delegate void RunCommandOnFixedUpdate(GameObject agent, AgentValues agentValues);
+    public delegate void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues);
     public RunCommandOnFixedUpdate runCommandOnFixedUpdate;
-    public delegate void RunCommandOnCollisionEnter(GameObject agent, AgentValues agentValues, Collision other);
+    public delegate void RunCommandOnCollisionEnter(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionStay runCommandOnCollisionEnter;
-    public delegate void RunCommandOnCollisionStay(GameObject agent, AgentValues agentValues, Collision other);
+    public delegate void RunCommandOnCollisionStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionStay runCommandOnCollisionStay;
-    public delegate void RunCommandOnCollisionExit(GameObject agent, AgentValues agentValues, Collision other);
+    public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
 
 
@@ -29,8 +36,6 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         agent = this.gameObject;
         agentValues.menu = pauseMenu;
         agentValues.behaviourToToggle = behaviourToToggle;
-
-        agentValues.Initialise();
 
         foreach (ActiveCommandObject element in activeCommands)
         {
@@ -44,26 +49,41 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        runCommandOnUpdate(agent, agentValues);
+        if (runCommandOnUpdate != null)
+        {
+            runCommandOnUpdate(agent, this, agentValues);
+        }
     }
 
     private void FixedUpdate()
     {
-        runCommandOnFixedUpdate(agent, agentValues);
+        if (runCommandOnFixedUpdate != null)
+        {
+            runCommandOnFixedUpdate(agent, this, agentValues);
+        }
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        runCommandOnCollisionEnter(agent, agentValues, other);
+        if (runCommandOnCollisionEnter != null)
+        {
+            runCommandOnCollisionEnter(agent, this, agentValues, other);
+        }
     }
 
     private void OnCollisionStay(Collision other)
     {
-        runCommandOnCollisionStay(agent, agentValues, other);
+        if (runCommandOnCollisionStay != null)
+        {
+            runCommandOnCollisionStay(agent, this, agentValues, other);
+        }
     }
 
     private void OnCollisionExit(Collision other)
     {
-        runCommandOnCollisionExit(agent, agentValues, other);
+        if (runCommandOnCollisionExit != null)
+        {
+            runCommandOnCollisionExit(agent, this, agentValues, other);
+        }
     }
 }

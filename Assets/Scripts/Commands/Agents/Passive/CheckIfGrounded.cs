@@ -9,13 +9,13 @@ public class CheckIfGrounded : PassiveCommandObject
         agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
     }
 
-    void RunCommandOnCollisionStay(GameObject agent, AgentValues agentValues, Collision other)
+    void RunCommandOnCollisionStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
     {
-        agentValues.isGrounded = true;
+        agentInputHandler.isGrounded = true;
     }
     
-    void RunCommandOnCollisionExit(GameObject agent, AgentValues agentValues, Collision other)
+    void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
     {
-        agentValues.isGrounded = false;
+        agentInputHandler.isGrounded = false;
     }
 }

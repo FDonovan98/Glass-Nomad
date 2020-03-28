@@ -2,7 +2,7 @@
 
 using Photon.Pun;
 
-public class AgentController : MonoBehaviourPunCallbacks
+public class AgentController : AgentInputHandler
 {
     public GameObject[] gameObjectsToDisableForPhoton;
     public Behaviour[] componentsToDisableForPhoton;

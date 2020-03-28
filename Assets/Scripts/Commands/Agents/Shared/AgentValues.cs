@@ -7,7 +7,6 @@ public class AgentValues : ScriptableObject
     public float moveAcceleration = 100.0f;
     public float maxSpeed = 50.0f;
     public bool sprintingIsAToggle;
-    public bool isSprinting = false;
     public float sprintMultiplier = 2.0f;
 
     [Header("Spider Climb")]
@@ -20,7 +19,6 @@ public class AgentValues : ScriptableObject
     public float forwardLeapModifier = 1.0f;
     public float verticalLeapModifier = 1.0f;
     public float leapChargeDuration = 2.0f;
-    public float currentLeapCharge = 0.0f;
      
     [Header("Camera")]
     public float mouseSensitivity = 1.0f;
@@ -44,19 +42,8 @@ public class AgentValues : ScriptableObject
     [Header("Gravity")]
     public bool applyGravity = true;
     public float gravityAcceleration = 10.0f;
-    public Vector3 gravityDirection = Vector3.down;
 
 
     [Header("Misc")]
     public GameObject menu = null;
-    public bool isGrounded = true;
-    public bool allowInput = true;
-
-    public void Initialise()
-    {
-        isSprinting = false;
-        gravityDirection = Vector3.down;
-        allowInput = true;
-        currentLeapCharge = 0.0f;
-    }
 }
