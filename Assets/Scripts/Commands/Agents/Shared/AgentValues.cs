@@ -22,6 +22,12 @@ public class AgentValues : ScriptableObject
     public float leapChargeDuration = 2.0f;
     public float currentLeapCharge = 0.0f;
      
+    [Header("Camera")]
+    public float mouseSensitivity = 1.0f;
+    public float yRotationClamp = 80.0f;
+
+    [Header("Toggleable Behaviours")]
+    public Behaviour behaviourToToggle;
 
     [Header("Velocity Degradation")]
     public bool reduceVelocityInAir = true;
@@ -40,9 +46,6 @@ public class AgentValues : ScriptableObject
     public float gravityAcceleration = 10.0f;
     public Vector3 gravityDirection = Vector3.down;
 
-    [Header("Camera")]
-    public float mouseSensitivity = 1.0f;
-    public float yRotationClamp = 80.0f;
 
     [Header("Misc")]
     public GameObject menu = null;

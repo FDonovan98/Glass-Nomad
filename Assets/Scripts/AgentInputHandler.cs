@@ -5,10 +5,11 @@ using Photon.Pun;
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
     public GameObject pauseMenu;
+    public Behaviour behaviourToToggle;
     public AgentValues agentValues;
-    private GameObject agent;
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
+    private GameObject agent;
 
     // Delegates used by commands.
     public delegate void RunCommandOnUpdate(GameObject agent, AgentValues agentValues);
@@ -27,6 +28,8 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     {
         agent = this.gameObject;
         agentValues.menu = pauseMenu;
+        agentValues.behaviourToToggle = behaviourToToggle;
+
         agentValues.Initialise();
 
         foreach (ActiveCommandObject element in activeCommands)
