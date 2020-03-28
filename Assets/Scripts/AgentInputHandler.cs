@@ -15,10 +15,13 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Vector3 gravityDirection = Vector3.down;
     public bool allowInput = true;
     public float currentLeapCharge = 0.0f;
+    public float currentOxygen = 0.0f;
+    public GameObject oxygenDisplay;
     
     private GameObject agent;
 
     // Delegates used by commands.
+    // Should add a delegate for UpdateUI(GameObject UIToUpdate, float newValue = 0.0f, int newIntValue = 0), maybe.
     public delegate void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues);
     public RunCommandOnUpdate runCommandOnUpdate;
     public delegate void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues);
@@ -34,8 +37,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     private void Start()
     {
         agent = this.gameObject;
-        agentValues.menu = pauseMenu;
-        agentValues.behaviourToToggle = behaviourToToggle;
+        currentOxygen = agentValues.maxOxygen;
 
         foreach (ActiveCommandObject element in activeCommands)
         {

@@ -24,9 +24,6 @@ public class AgentValues : ScriptableObject
     public float mouseSensitivity = 1.0f;
     public float yRotationClamp = 80.0f;
 
-    [Header("Toggleable Behaviours")]
-    public Behaviour behaviourToToggle;
-
     [Header("Velocity Degradation")]
     public bool reduceVelocityInAir = true;
     public bool scaleVelocityDegWithVel = true;
@@ -43,7 +40,7 @@ public class AgentValues : ScriptableObject
     public bool applyGravity = true;
     public float gravityAcceleration = 10.0f;
 
-
-    [Header("Misc")]
-    public GameObject menu = null;
+    [Header("Oxygen")]
+    public float maxOxygen = 100.0f;
+    public float oxygenRegenModifier = 1.0f;
 }

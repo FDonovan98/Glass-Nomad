@@ -24,28 +24,28 @@ public class OpenPauseMenu : ActiveCommandObject
             //Press the openMenuKeyInEditor to unlock the cursor. If it's unlocked, lock it again
             if (Input.GetKeyDown(openMenuKeyInEditor))
             {
-                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true, agentInputHandler, agentValues);
-                else ToggleCursorAndMenu(false, agentInputHandler, agentValues);
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true, agentInputHandler);
+                else ToggleCursorAndMenu(false, agentInputHandler);
             } 
         #elif UNITY_STANDALONE_WIN
             //Press the openMenuKey to unlock the cursor. If it's unlocked, lock it again
             if (Input.GetKeyDown(openMenuKey))
             {
-                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true, agentInputHandler, agentValues);
-                else ToggleCursorAndMenu(false, agentInputHandler, agentValues);
+                if (Cursor.lockState == CursorLockMode.Locked) ToggleCursorAndMenu(true, agentInputHandler);
+                else ToggleCursorAndMenu(false, agentInputHandler);
             } 
         #endif
     }
 
-    private void ToggleCursorAndMenu(bool turnOn, AgentInputHandler agentInputHandler, AgentValues agentValues)
+    private void ToggleCursorAndMenu(bool turnOn, AgentInputHandler agentInputHandler)
     {
         Cursor.lockState = turnOn ? CursorLockMode.None : CursorLockMode.Locked;
-        ToggleMenu(turnOn, agentInputHandler, agentValues);
+        ToggleMenu(turnOn, agentInputHandler);
     }
 
-    private void ToggleMenu(bool toggle, AgentInputHandler agentInputHandler, AgentValues agentValues)
+    private void ToggleMenu(bool toggle, AgentInputHandler agentInputHandler)
     {
-        agentValues.menu.SetActive(toggle);
+        agentInputHandler.pauseMenu.SetActive(toggle);
         agentInputHandler.allowInput = !toggle;
         Cursor.visible = toggle;
     }

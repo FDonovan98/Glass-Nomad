@@ -20,7 +20,7 @@ public class ToggleBehaviour : ActiveCommandObject
     {
         if (Input.GetKeyDown(toggleBehaviour))
         {
-            agentValues.behaviourToToggle.enabled = !agentValues.behaviourToToggle.isActiveAndEnabled;
+            agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
         }
     }
 }
