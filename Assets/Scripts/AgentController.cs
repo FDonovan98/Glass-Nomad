@@ -1,14 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
+using Photon.Pun;
 
 public class AgentController : MonoBehaviourPunCallbacks
 {
-    public delegate void RunCommandOnAwake();
-    public RunCommandOnAwake runCommandOnAwake;
+    public GameObject[] gameObjectsToDisableForPhoton;
+    public Behaviour[] componentsToDisableForPhoton;
 
     void Awake()
     {
+        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
+        {
+            DisableObjectsForPhoton();
+        }
+    }
 
+    void DisableObjectsForPhoton()
+    {
+        foreach (GameObject element in gameObjectsToDisableForPhoton)
+        {
+            element.SetActive(false);   
+        }
+        foreach (Behaviour element in componentsToDisableForPhoton)
+        {
+            element.enabled = false;   
+        }
     }
 }
