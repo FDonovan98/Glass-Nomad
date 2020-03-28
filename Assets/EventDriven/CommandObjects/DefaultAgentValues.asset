@@ -17,9 +17,18 @@ MonoBehaviour:
   sprintingIsAToggle: 0
   isSprinting: 0
   sprintMultiplier: 2
+  surfaceSwitchSpeed: 0.3
+  gravityResetDelay: 0.5
+  leapCanChargeInAir: 1
+  leapVelocity: 10
+  forwardLeapModifier: 1
+  verticalLeapModifier: 1
+  leapChargeDuration: 2
+  currentLeapCharge: 0
   reduceVelocityInAir: 1
   scaleVelocityDegWithVel: 1
-  velocityDegradationValue: 100
+  velocityDegradationGrounded: 100
+  velocityDegradationInAir: 40
   maxStairHeight: 0.4
   minDistanceToStair: 0
   minLedgeWidth: 0.3
@@ -31,3 +40,4 @@ MonoBehaviour:
   yRotationClamp: 80
   menu: {fileID: 0}
   isGrounded: 1
+  allowInput: 1
