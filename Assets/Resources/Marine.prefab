@@ -125,6 +125,13 @@ MonoBehaviour:
   passiveCommands:
   - {fileID: 11400000, guid: 72253c22aa75c6545a95bbab4cf2b3c9, type: 2}
   - {fileID: 11400000, guid: 4d901070f9dbacc4ca0791e50b6c844f, type: 2}
+  isSprinting: 0
+  isGrounded: 1
+  gravityDirection: {x: 0, y: -1, z: 0}
+  allowInput: 1
+  currentLeapCharge: 0
+  currentOxygen: 0
+  oxygenDisplay: {fileID: 0}
 --- !u!114 &7516700223204838228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +144,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb90d77780a50d14692de7038174298e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 3603213650526772772}
+  behaviourToToggle: {fileID: 3265372031546672090}
+  agentValues: {fileID: 11400000, guid: 2619dd74696273d458de85511e14002f, type: 2}
+  activeCommands:
+  - {fileID: 11400000, guid: bf6fceff59e91274c9906a9d7af26d34, type: 2}
+  - {fileID: 11400000, guid: 17c267cfc2e14ab4a91c7e748c5007d1, type: 2}
+  - {fileID: 11400000, guid: bb98300e2c3b89d4cb71c657fae92e88, type: 2}
+  - {fileID: 11400000, guid: 4f38eae32a1d26649b8817384f93f6f3, type: 2}
+  - {fileID: 11400000, guid: dba96bc1f16a077458b708a7e6242340, type: 2}
+  - {fileID: 11400000, guid: 9262c13e2a8af134dab43f87bfe8b43c, type: 2}
+  passiveCommands:
+  - {fileID: 11400000, guid: 72253c22aa75c6545a95bbab4cf2b3c9, type: 2}
+  - {fileID: 11400000, guid: 4d901070f9dbacc4ca0791e50b6c844f, type: 2}
+  - {fileID: 11400000, guid: e58a225121b9f014cb47070dc87c6033, type: 2}
+  isSprinting: 0
+  isGrounded: 1
+  gravityDirection: {x: 0, y: -1, z: 0}
+  allowInput: 1
+  currentLeapCharge: 0
+  currentOxygen: 0
+  oxygenDisplay: {fileID: 8751312000634277451}
   gameObjectsToDisableForPhoton:
   - {fileID: 7514713838188334132}
   componentsToDisableForPhoton:
@@ -274,11 +302,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4853435038723679330}
     m_Modifications:
-    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Flashlight
-      objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730582, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -333,6 +356,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Flashlight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 332df5eb1fa7b2b408462605350b969d, type: 3}
@@ -547,6 +575,12 @@ Transform:
 --- !u!1 &3603213650526772772 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5498559495682337215, guid: 2daed0a65b3d19e4cbd80473015e4037,
+    type: 3}
+  m_PrefabInstance: {fileID: 9101740779050874779}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8751312000634277451 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 521580717183400400, guid: 2daed0a65b3d19e4cbd80473015e4037,
     type: 3}
   m_PrefabInstance: {fileID: 9101740779050874779}
   m_PrefabAsset: {fileID: 0}
