@@ -5051,17 +5051,17 @@ MonoBehaviour:
   distanceBetweenStep: 1
   upForce: 0
   debug: 0
-  movementSpeed: 130
-  velocityDegradation: 1
+  movementSpeed: 60
+  velocityDegradation: 1.8
   scaleVelocityDegWithVel: 1
-  reduceVelocityInAir: 0
-  maxSpeed: 100
-  mouseSensitivity: 10
+  reduceVelocityInAir: 1
+  maxSpeed: 50
+  mouseSensitivity: 2
   jumpSpeed: 8.75
   yRotationClamp: 90
-  sprintSpeedMultiplier: 1.2
+  sprintSpeedMultiplier: 15
   menu: {fileID: 0}
-  deathForce: 150
+  deathForce: 300
   gravity: -50
   inputEnabled: 1
   marineAttack: {fileID: 6820651075571509334}
@@ -5084,7 +5084,6 @@ MonoBehaviour:
     type: 3}
   bulletRicochetSpark: {fileID: 7992513011299317479, guid: ce143359d3d79284480c3c04d590b797,
     type: 3}
-  hitSound: {fileID: 8300000, guid: b00372d398d32984aa22f2dfdc163246, type: 3}
 --- !u!114 &4921507250608968258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5262,11 +5261,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 246526236530761477}
     m_Modifications:
-    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Flashlight
-      objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730582, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5321,6 +5315,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Flashlight
       objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730580, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
