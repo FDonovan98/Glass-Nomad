@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   fireMode: 2
-  fireRate: 0.16
+  fireRate: 0.18
   magSize: 30
-  magCount: 3
+  magCount: 7
   range: 500
   damage: 15
-  recoilForce: 40
+  recoilForce: 60
   upForceStep: 0.1
   downForceDuration: 2
   maxBulletSpread: 10
@@ -46,7 +46,16 @@ MonoBehaviour:
       inWeight: 0.2910308
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.64155954
+      time: 0.5708313
+      value: 0.2146225
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.74156564
       value: 0.4757349
       inSlope: 1.3307381
       outSlope: 1.3307381
@@ -54,15 +63,6 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -108,5 +108,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  bulletsInCurrentMag: 8
-  magsLeft: 2
+  bulletsInCurrentMag: 30
+  magsLeft: 1
