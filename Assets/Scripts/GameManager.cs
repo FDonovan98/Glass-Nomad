@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
+            PhotonNetwork.Instantiate("Marine (Cylinder)", GetRandomSpawnPoint(), new Quaternion());
         }
     }
 

@@ -9,7 +9,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     #region variable-declarations
 
-    [SerializeField] private string gameScene = null; // Changes scene when we are join a room.
+    [SerializeField] private Object gameScene = null; // Changes scene when we are join a room.
     [SerializeField] private GameObject playerItemPrefab = null; // Displays the players in the lobby.
     [SerializeField] private GameObject inLobbyPanel = null; // Displays the lobby buttons when you join a room.
     [SerializeField] private Transform playerListPanel = null; // Contains all the playeritem prefabs.
@@ -277,9 +277,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void ScreenFadeFinished()
     {
-        Debug.Log("LOADING SCENE: " + gameScene);
+        Debug.Log("LOADING SCENE: " + gameScene.name);
         PhotonNetwork.CurrentRoom.IsOpen = false;
-        PhotonNetwork.LoadLevel(gameScene);
+        PhotonNetwork.LoadLevel(gameScene.name);
     }
 
     [PunRPC]

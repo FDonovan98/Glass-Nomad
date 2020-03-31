@@ -50,8 +50,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
     private float currentRecoilTimeStamp = 0.0f;
 
     private Animator anim;
-    public AudioClip hitSound;
-
 
     #endregion
 
@@ -223,8 +221,6 @@ public class PlayerAttack : MonoBehaviourPunCallbacks
             {
                 // Calls the 'PlayerWasHit' method on all clients, meaning that the hit player's health will be updated on all clients.
                 photonView.RPC("PlayerWasHit", RpcTarget.All, hit.collider.gameObject.GetPhotonView().ViewID, resourcesScript.currentWeapon.damage, effectSpawnPos);
-                weaponAudio.clip = hitSound;
-                weaponAudio.Play();
                 Debug.Log("Player was hit");
             }
             else // A wall was hit
