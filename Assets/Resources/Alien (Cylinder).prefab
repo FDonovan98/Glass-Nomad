@@ -459,10 +459,10 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 51b40067fe98d2b478d02af103cde26e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.81404644
-  m_Height: 2.640441
+  m_Radius: 1.0981771
+  m_Height: 3.120332
   m_Direction: 1
-  m_Center: {x: 0.0000000681196, y: 0.0074866163, z: -0.03643036}
+  m_Center: {x: 0.0000000681196, y: 0.014649937, z: -0.014314244}
 --- !u!114 &8229355201946509017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,7 +519,6 @@ MonoBehaviour:
     type: 3}
   bulletRicochetSpark: {fileID: 7992513011299317479, guid: ce143359d3d79284480c3c04d590b797,
     type: 3}
-  hitSound: {fileID: 8300000, guid: b00372d398d32984aa22f2dfdc163246, type: 3}
 --- !u!114 &5780684092325464000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,19 +535,19 @@ MonoBehaviour:
   upForce: 0
   debug: 0
   movementSpeed: 130
-  velocityDegradation: 1
+  velocityDegradation: 2
   scaleVelocityDegWithVel: 1
-  reduceVelocityInAir: 0
-  maxSpeed: 100
-  mouseSensitivity: 10
+  reduceVelocityInAir: 1
+  maxSpeed: 50
+  mouseSensitivity: 2
   jumpSpeed: 40
   yRotationClamp: 80
-  sprintSpeedMultiplier: 1.17
+  sprintSpeedMultiplier: 3.5
   menu: {fileID: 0}
   deathForce: 150
   gravity: -100
   inputEnabled: 1
-  lerpSpeed: 0.55
+  lerpSpeed: 0.5
   deltaGround: 1
   isGrounded: 1
   jumpRange: 4
