@@ -39,7 +39,7 @@ public class XZMovement : ActiveCommandObject
             {
                 agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier;
                 
-                if (agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed)
+                if (agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed && agentInputHandler.isGrounded)
                 {
                     agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSprintSpeed;
                 }
@@ -48,7 +48,7 @@ public class XZMovement : ActiveCommandObject
             {
                 agentRigidbody.velocity += inputMovementVector;
             
-                if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
+                if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed && agentInputHandler.isGrounded)
                 {
                     agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
                 }

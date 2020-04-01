@@ -76,19 +76,15 @@ public class FireWeapon : ActiveCommandObject
         if (Physics.Raycast(cameraPos, cameraForward, out hit, weaponRange))
         {
             Debug.Log(hit.transform.gameObject.name + " has been hit");
-            if (hit.transform.gameObject.tag == "Player")
-            {
-                AgentInputHandler targetAgentInputHandler = hit.transform.gameObject.GetComponent<AgentInputHandler>();
+            AgentInputHandler targetAgentInputHandler = hit.transform.gameObject.GetComponent<AgentInputHandler>();
 
-                Debug.Log(targetAgentInputHandler);
-                
-                if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
-                {
-                    Debug.Log("hit feedback");
-                    targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, weaponDamage);
-                }
-            }
+            Debug.Log(targetAgentInputHandler);
             
+            if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
+            {
+                Debug.Log("hit feedback");
+                targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, weaponDamage);
+            }
         }
     }
 }
