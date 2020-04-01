@@ -49,6 +49,6 @@ public class RecoilWeapon : PassiveCommandObject
 
         // Prevents index errors.
         agentInputHandler.currentRecoilValue += timeDelta;
-        agentInputHandler.currentRecoilValue = Mathf.Clamp(agentInputHandler.currentRecoilValue, 0.0f, 1.0f);
+        agentInputHandler.currentRecoilValue = Mathf.Clamp(agentInputHandler.currentRecoilValue, 0.0f, 1.0f - agentInputHandler.currentWeapon.upForceStep);
     }
 }
