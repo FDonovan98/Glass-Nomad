@@ -27,6 +27,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public float timeSinceLastShot = 0.0f;
     public int currentTotalAmmo = 0;
     public float currentRecoilValue = 0.0f;
+    public GameObject weaponObject;
 
     [Header("Camera")]
     public Camera agentCamera;
