@@ -7,6 +7,10 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     // Tells the red switch manager when this switch has been (de)activated.
     public SecuritySwitchManager switchManager = null;
 
+    [SerializeField]
+    public Material materialToChange;
+    public Color colorToChangeTo;
+
     /// <summary>
     /// Once the player enters the switch's collider and their holding 'E',
     /// the timer is started. If the player successfully holds the switch for
@@ -53,6 +57,8 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
         if (debug) Debug.Log("Switch activated");
         interactionComplete = true;
         switchManager.SwitchActivated();
+
+        materialToChange.SetColor("_EmissionColor", colorToChangeTo);
     }
 
     /// <summary>

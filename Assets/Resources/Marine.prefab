@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9005002764737851970}
   - component: {fileID: 7434414562168616827}
   - component: {fileID: 8668647671141297240}
-  - component: {fileID: 5632772206599542005}
   - component: {fileID: 7516700223204838228}
   - component: {fileID: 4853435038360570780}
   - component: {fileID: 7330997320176583429}
@@ -101,37 +100,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &5632772206599542005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2899747169782391718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34e01594f1f43eb4a9a8bada03b5137f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 3603213650526772772}
-  behaviourToToggle: {fileID: 3265372031546672090}
-  agentValues: {fileID: 11400000, guid: 2619dd74696273d458de85511e14002f, type: 2}
-  activeCommands:
-  - {fileID: 11400000, guid: 17c267cfc2e14ab4a91c7e748c5007d1, type: 2}
-  - {fileID: 11400000, guid: 4f38eae32a1d26649b8817384f93f6f3, type: 2}
-  - {fileID: 11400000, guid: dba96bc1f16a077458b708a7e6242340, type: 2}
-  - {fileID: 11400000, guid: bf6fceff59e91274c9906a9d7af26d34, type: 2}
-  - {fileID: 11400000, guid: bb98300e2c3b89d4cb71c657fae92e88, type: 2}
-  passiveCommands:
-  - {fileID: 11400000, guid: 72253c22aa75c6545a95bbab4cf2b3c9, type: 2}
-  - {fileID: 11400000, guid: 4d901070f9dbacc4ca0791e50b6c844f, type: 2}
-  isSprinting: 0
-  isGrounded: 1
-  gravityDirection: {x: 0, y: -1, z: 0}
-  allowInput: 1
-  currentLeapCharge: 0
-  currentOxygen: 0
-  oxygenDisplay: {fileID: 0}
 --- !u!114 &7516700223204838228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +136,7 @@ MonoBehaviour:
   gameObjectsToDisableForPhoton:
   - {fileID: 7514713838188334132}
   componentsToDisableForPhoton:
-  - {fileID: 5632772206599542005}
+  - {fileID: 0}
   - {fileID: 4853435038723679331}
   - {fileID: 7516700223204838228}
 --- !u!65 &4853435038360570780
