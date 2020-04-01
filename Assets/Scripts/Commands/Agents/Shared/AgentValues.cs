@@ -43,4 +43,7 @@ public class AgentValues : ScriptableObject
     [Header("Oxygen")]
     public float maxOxygen = 100.0f;
     public float oxygenRegenModifier = 1.0f;
+
+    [Header("Health")]
+    public float maxHealth = 100.0f;
 }

@@ -10,15 +10,29 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
 
+    [Header("Movement")]
     public bool isSprinting = false;
     public bool isGrounded = true;
     public Vector3 gravityDirection = Vector3.down;
     public bool allowInput = true;
     public float currentLeapCharge = 0.0f;
+
+    [Header("Oxygen")]
     public float currentOxygen = 0.0f;
     public GameObject oxygenDisplay;
+
+    [Header("Weapons")]
+    public Weapon currentWeapon;
+    public int currentBulletsInMag = 0;
+    public float timeSinceLastShot = 0.0f;
+
+    [Header("Camera")]
+    public Camera agentCamera;
+
+    [Header("Health")]
+    public float currentHealth = 0.0f;
     
-    private GameObject agent;
+    protected GameObject agent;
 
     // Delegates used by commands.
     // Should add a delegate for UpdateUI(GameObject UIToUpdate, float newValue = 0.0f, int newIntValue = 0), maybe.
@@ -33,11 +47,16 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
 
+    public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
+    public RunCommandOnWeaponFired runCommandOnWeaponFired;
+
 
     private void Start()
     {
         agent = this.gameObject;
         currentOxygen = agentValues.maxOxygen;
+        currentHealth = agentValues.maxHealth;
+        currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
 
         foreach (ActiveCommandObject element in activeCommands)
         {
