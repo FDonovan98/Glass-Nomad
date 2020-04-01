@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171629c624bafcf46ab823db4bea82dc, type: 3}
   m_Name: DefaultAgentValues
   m_EditorClassIdentifier: 
-  moveAcceleration: 100
-  maxSpeed: 50
+  moveAcceleration: 60
+  maxSpeed: 30
   sprintingIsAToggle: 0
-  isSprinting: 0
-  sprintMultiplier: 2
+  sprintMultiplier: 15
   surfaceSwitchSpeed: 0.3
   gravityResetDelay: 0.5
   leapCanChargeInAir: 1
@@ -24,7 +23,8 @@ MonoBehaviour:
   forwardLeapModifier: 1
   verticalLeapModifier: 1
   leapChargeDuration: 2
-  currentLeapCharge: 0
+  mouseSensitivity: 2
+  yRotationClamp: 90
   reduceVelocityInAir: 1
   scaleVelocityDegWithVel: 1
   velocityDegradationGrounded: 100
@@ -32,12 +32,9 @@ MonoBehaviour:
   maxStairHeight: 0.4
   minDistanceToStair: 0
   minLedgeWidth: 0.3
-  stepUpAcceleration: 100
+  stepUpAcceleration: 0
   applyGravity: 1
   gravityAcceleration: 10
-  gravityDirection: {x: 0, y: -1, z: 0}
-  mouseSensitivity: 4
-  yRotationClamp: 80
-  menu: {fileID: 0}
-  isGrounded: 1
-  allowInput: 1
+  maxOxygen: 100
+  oxygenRegenModifier: 1
+  maxHealth: 200
