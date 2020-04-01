@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 
+using TMPro;
+
 [RequireComponent(typeof(Rigidbody))]
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
@@ -35,6 +37,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("Health")]
     public float currentHealth = 0.0f;
+
+    [Header("UI")]
+    public TextMeshProUGUI healthUIText;
     
     protected GameObject agent;
 
@@ -57,12 +62,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        agent = this.gameObject;
-        currentOxygen = agentValues.maxOxygen;
-        currentHealth = agentValues.maxHealth;
-        currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
-        currentTotalAmmo = currentWeapon.magSize * 3;
-        timeSinceLastShot = currentWeapon.fireRate;
+        InitiliseVariable();
+
+        InitiliseUI();
 
         foreach (ActiveCommandObject element in activeCommands)
         {
@@ -112,5 +114,23 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         {
             runCommandOnCollisionExit(agent, this, agentValues, other);
         }
+    }
+
+    void InitiliseVariable()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        agent = this.gameObject;
+        currentOxygen = agentValues.maxOxygen;
+        currentHealth = agentValues.maxHealth;
+        currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
+        currentTotalAmmo = currentWeapon.magSize * 3;
+        timeSinceLastShot = currentWeapon.fireRate;
+    }
+
+    void InitiliseUI()
+    {
+        healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
     }
 }

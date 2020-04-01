@@ -15,8 +15,7 @@ public class AgentController : AgentInputHandler
 
     void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
         
         if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
         {
@@ -45,6 +44,8 @@ public class AgentController : AgentInputHandler
             {
                 AgentHasDied();
             }
+
+            healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
         }
 
         if (resourceType == ResourceType.Ammo)
