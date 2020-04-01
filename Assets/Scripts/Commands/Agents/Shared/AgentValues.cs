@@ -6,6 +6,7 @@ public class AgentValues : ScriptableObject
     [Header("XZ Movement")]
     public float moveAcceleration = 100.0f;
     public float maxSpeed = 50.0f;
+    public float maxSprintSpeed = 80.0f;
     public bool sprintingIsAToggle;
     public float sprintMultiplier = 2.0f;
 

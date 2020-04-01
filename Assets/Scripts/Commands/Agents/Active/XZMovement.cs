@@ -38,16 +38,22 @@ public class XZMovement : ActiveCommandObject
             if (agentInputHandler.isSprinting)
             {
                 agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier;
+                
+                if (agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed)
+                {
+                    agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSprintSpeed;
+                }
             }
             else
             {
                 agentRigidbody.velocity += inputMovementVector;
+            
+                if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
+                {
+                    agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
+                }
             }
 
-            if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
-            {
-                agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
-            }
         }
         else
         {
