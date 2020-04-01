@@ -31,6 +31,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
 
         if (agentInputHandler.agentHitParticles != null)
         {
+            agentInputHandler.agentHitParticles.transform.position = position;
             agentInputHandler.agentHitParticles.Play();
         }
         else
