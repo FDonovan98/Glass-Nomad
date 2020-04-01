@@ -14,12 +14,13 @@ public class AgentController : AgentInputHandler
     public Behaviour[] componentsToDisableForPhoton;
 
     void Awake()
-    {
-        healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
-        
-        if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
+    {   
+        if (photonView != null)
         {
-            DisableObjectsForPhoton();
+            if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
+            {
+                DisableObjectsForPhoton();
+            }
         }
     }
 
@@ -45,14 +46,20 @@ public class AgentController : AgentInputHandler
                 AgentHasDied();
             }
 
-            healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+            if (healthUIText != null)
+            {
+                healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+            }
         }
 
         if (resourceType == ResourceType.Ammo)
         {
             currentBulletsInMag = (int)Mathf.Clamp(currentBulletsInMag + value, 0.0f, currentWeapon.magSize);
 
-            ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+            if (ammoUIText != null)
+            {
+                ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+            }
         }
     }
 

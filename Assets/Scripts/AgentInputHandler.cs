@@ -132,15 +132,27 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         agent = this.gameObject;
         currentOxygen = agentValues.maxOxygen;
         currentHealth = agentValues.maxHealth;
-        currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
-        currentTotalAmmo = currentWeapon.magSize * 3;
-        timeSinceLastShot = currentWeapon.fireRate;
+
+        if (currentWeapon != null)
+        {
+            currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
+            currentTotalAmmo = currentWeapon.magSize * 3;
+            timeSinceLastShot = currentWeapon.fireRate;
+        }
     }
 
     void InitiliseUI()
     {
-        healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+        if (healthUIText != null)
+        {
+            healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+        }
+ 
+        if (ammoUIText != null)
+        {
+            ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+        }
 
-        ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+        
     }
 }

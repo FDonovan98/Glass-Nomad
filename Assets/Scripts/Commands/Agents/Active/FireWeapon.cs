@@ -71,6 +71,7 @@ public class FireWeapon : ActiveCommandObject
     [PunRPC]
     public static void Shoot(Vector3 cameraPos, Vector3 cameraForward, float weaponRange, int weaponDamage)
     {     
+        Debug.Log("shoot");
         RaycastHit hit;
         if (Physics.Raycast(cameraPos, cameraForward, out hit, weaponRange))
         {
@@ -78,9 +79,12 @@ public class FireWeapon : ActiveCommandObject
             if (hit.transform.gameObject.tag == "Player")
             {
                 AgentInputHandler targetAgentInputHandler = hit.transform.gameObject.GetComponent<AgentInputHandler>();
+
+                Debug.Log(targetAgentInputHandler);
                 
                 if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
                 {
+                    Debug.Log("hit feedback");
                     targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, weaponDamage);
                 }
             }
