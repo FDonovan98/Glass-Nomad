@@ -33,6 +33,8 @@ public class Reload : ActiveCommandObject
 
                 agentInputHandler.currentBulletsInMag += bulletsUsed;
                 agentInputHandler.currentTotalAmmo -= bulletsUsed;
+
+                agentInputHandler.ammoUIText.text = "Ammo: " + agentInputHandler.currentBulletsInMag + " / " + agentInputHandler.currentTotalAmmo;
             }
         }
     }

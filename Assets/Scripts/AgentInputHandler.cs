@@ -40,6 +40,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("UI")]
     public TextMeshProUGUI healthUIText;
+    public TextMeshProUGUI ammoUIText;
     
     protected GameObject agent;
 
@@ -132,5 +133,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     void InitiliseUI()
     {
         healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+
+        ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
     }
 }

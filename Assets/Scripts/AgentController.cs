@@ -51,6 +51,8 @@ public class AgentController : AgentInputHandler
         if (resourceType == ResourceType.Ammo)
         {
             currentBulletsInMag = (int)Mathf.Clamp(currentBulletsInMag + value, 0.0f, currentWeapon.magSize);
+
+            ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
         }
     }
 
