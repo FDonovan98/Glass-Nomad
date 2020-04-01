@@ -77,8 +77,12 @@ public class FireWeapon : ActiveCommandObject
             Debug.Log(hit.transform.gameObject.name + " has been hit");
             if (hit.transform.gameObject.tag == "Player")
             {
-                AgentController agentController = hit.transform.gameObject.GetComponent<AgentController>();
-                agentController.ChangeResourceCount(AgentController.ResourceType.Health, -weaponDamage);
+                AgentInputHandler targetAgentInputHandler = hit.transform.gameObject.GetComponent<AgentInputHandler>();
+                
+                if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
+                {
+                    targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, weaponDamage);
+                }
             }
             
         }

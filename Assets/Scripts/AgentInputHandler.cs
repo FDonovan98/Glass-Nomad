@@ -41,6 +41,10 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [Header("UI")]
     public TextMeshProUGUI healthUIText;
     public TextMeshProUGUI ammoUIText;
+
+    [Header("Agent Hit Feedback")]
+    public AudioClip agentHitSound;
+    public ParticleSystem agentHitParticles;
     
     protected GameObject agent;
 
@@ -59,6 +63,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
     public RunCommandOnWeaponFired runCommandOnWeaponFired;
+
+    public delegate void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, float value);
+    public RunCommandOnAgentHasBeenHit runCommandOnAgentHasBeenHit;
 
 
     private void Start()
