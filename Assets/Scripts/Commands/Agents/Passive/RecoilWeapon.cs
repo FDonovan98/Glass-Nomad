@@ -35,12 +35,10 @@ public class RecoilWeapon : PassiveCommandObject
 
         if (timeDelta > 0)
         {
-            timeDelta = agentInputHandler.currentWeapon.upForceStep;
             valueDelta = weaponRecoilCurveUp.Evaluate(agentInputHandler.currentRecoilValue + timeDelta) - weaponRecoilCurveUp.Evaluate(agentInputHandler.currentRecoilValue);
         }
         else
         {
-            timeDelta = -Time.deltaTime / agentInputHandler.currentWeapon.downForceDuration;
             valueDelta = weaponRecoilCurveDown.Evaluate(agentInputHandler.currentRecoilValue + timeDelta) - weaponRecoilCurveDown.Evaluate(agentInputHandler.currentRecoilValue);
         }
 
