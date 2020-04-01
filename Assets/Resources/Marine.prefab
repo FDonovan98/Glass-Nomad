@@ -8682,9 +8682,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.904603
-  m_Height: 5.991463
+  m_Height: 5.8804035
   m_Direction: 1
-  m_Center: {x: 0.02681342, y: 1.7241465, z: -0.30723137}
+  m_Center: {x: 0.02681342, y: 1.7796754, z: -0.30723137}
 --- !u!54 &3585821509768860821
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8696,11 +8696,11 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &6918125114942702231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8723,7 +8723,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4f38eae32a1d26649b8817384f93f6f3, type: 2}
   - {fileID: 11400000, guid: dba96bc1f16a077458b708a7e6242340, type: 2}
   - {fileID: 11400000, guid: 898c625a6e372224c9fbf1c3262dbbd3, type: 2}
-  - {fileID: 11400000, guid: 70a446d06c3892041ad28ae0ced97605, type: 2}
+  - {fileID: 11400000, guid: 1e1fbe6d2a2ed764b8abd2f496f3ccb2, type: 2}
   passiveCommands:
   - {fileID: 11400000, guid: 72253c22aa75c6545a95bbab4cf2b3c9, type: 2}
   - {fileID: 11400000, guid: 4d901070f9dbacc4ca0791e50b6c844f, type: 2}
@@ -8751,6 +8751,8 @@ MonoBehaviour:
   ammoUIText: {fileID: 8962534046398861132}
   agentHitSound: {fileID: 8300000, guid: b00372d398d32984aa22f2dfdc163246, type: 3}
   agentHitParticles: {fileID: 1619461608534571408}
+  alienVision: {r: 0, g: 0, b: 0, a: 0}
+  specialVision: 0
   gameObjectsToDisableForPhoton:
   - {fileID: 5923454201242450266}
   componentsToDisableForPhoton:
