@@ -17,6 +17,7 @@ public class AgentController : AgentInputHandler
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
         if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
         {
             DisableObjectsForPhoton();

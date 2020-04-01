@@ -36,9 +36,9 @@ public class WeaponEffects : PassiveCommandObject
 
     void MuzzleFlash(AgentInputHandler agentInputHandler)
     {
-        if (agentInputHandler.currentWeapon.weaponMuzzleFlash != null)
+        if (agentInputHandler.weaponMuzzleFlash != null)
         {
-            agentInputHandler.currentWeapon.weaponMuzzleFlash.Play();
+            agentInputHandler.weaponMuzzleFlash.Play();
         }
         else
         {

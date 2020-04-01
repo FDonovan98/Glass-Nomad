@@ -28,6 +28,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public int currentTotalAmmo = 0;
     public float currentRecoilValue = 0.0f;
     public GameObject weaponObject;
+    public ParticleSystem weaponMuzzleFlash;
 
     [Header("Camera")]
     public Camera agentCamera;

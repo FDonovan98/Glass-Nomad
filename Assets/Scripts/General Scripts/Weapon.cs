@@ -41,7 +41,6 @@ public class Weapon : BaseObject
 
     // The sound the weapon makes when you fire.
     public AudioClip weaponSound = null;
-    public ParticleSystem weaponMuzzleFlash;
 
     public AnimationCurve recoilCurveUp;
     public AnimationCurve recoilCurveDown;
