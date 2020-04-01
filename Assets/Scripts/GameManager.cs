@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         else
         {
             Debug.Log("Spawning an alien, hopefully.");
-            Instantiate(Resources.Load("Alien (Cylinder)", typeof(GameObject)), alienSpawnPoint.transform.position, new Quaternion());
+            Instantiate(Resources.Load("Alien", typeof(GameObject)), alienSpawnPoint.transform.position, new Quaternion());
         }
     }
 
@@ -44,11 +44,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         PlayersInLobby lobbyRoom = GameObject.Find("Lobby").GetComponent<PlayersInLobby>();
         if (lobbyRoom.IsPlayerAlien(PhotonNetwork.NickName))
         {
-            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
+            PhotonNetwork.Instantiate("Alien", alienSpawnPoint.transform.position, new Quaternion());
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", GetRandomSpawnPoint(), new Quaternion());
+            PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
         }
     }
 
@@ -87,39 +87,39 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     /// Changes the model of the new master client, when the old one leaves.
     /// </summary>
     /// <param name="newMasterClient"></param>
-    public override void OnMasterClientSwitched(Player newMasterClient)
-    {
-        if (switchToAlien)
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.LogFormat("CHANGING MODEL");
+    // public override void OnMasterClientSwitched(Player newMasterClient)
+    // {
+    //     if (switchToAlien)
+    //     {
+    //         if (PhotonNetwork.IsMasterClient)
+    //         {
+    //             Debug.LogFormat("CHANGING MODEL");
 
-                GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
-                foreach (GameObject element in playerObjects)
-                {
-                    if (element.GetComponent<PhotonView>().IsMine)
-                    {
-                        Vector3 playerPos = alienSpawnPoint.transform.position;
-                        Quaternion playerRot = element.transform.rotation;
-                        string prefabName;
+    //             GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+    //             foreach (GameObject element in playerObjects)
+    //             {
+    //                 if (element.GetComponent<PhotonView>().IsMine)
+    //                 {
+    //                     Vector3 playerPos = alienSpawnPoint.transform.position;
+    //                     Quaternion playerRot = element.transform.rotation;
+    //                     string prefabName;
 
-                        if (element.GetComponent<AlienController>() != null)
-                        {
-                            prefabName = "Marine (Cylinder)";
-                        }
-                        else
-                        {
-                            prefabName = "Alien (Cylinder)";
-                        }
+    //                     if (element.GetComponent<AlienController>() != null)
+    //                     {
+    //                         prefabName = "Marine (Cylinder)";
+    //                     }
+    //                     else
+    //                     {
+    //                         prefabName = "Alien (Cylinder)";
+    //                     }
 
-                        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
-                        PhotonNetwork.Instantiate(prefabName, playerPos, playerRot);
+    //                     PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+    //                     PhotonNetwork.Instantiate(prefabName, playerPos, playerRot);
 
-                        return;
-                    }
-                }
-            }
-        }
-    }
+    //                     return;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
