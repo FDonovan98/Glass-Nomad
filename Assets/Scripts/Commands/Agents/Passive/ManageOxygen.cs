@@ -20,7 +20,7 @@ public class ManageOxygen : PassiveCommandObject
         TextMeshProUGUI oxygenText = agentInputHandler.oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
 
         oxygenSlider.value = agentInputHandler.currentOxygen / agentValues.maxOxygen * 100;
-        oxygenText.text = (Mathf.Round(agentInputHandler.currentOxygen)).ToString();
+        oxygenText.text = (Mathf.Round(agentInputHandler.currentOxygen / agentValues.maxOxygen * 100)).ToString();
     }
 
     void RunCommandOnCollisionStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
