@@ -41,6 +41,8 @@ public class ChargeLeap : ActiveCommandObject
 
                     agentRigidbody.velocity += agentValues.forwardLeapModifier * jumpImpulse * agentCamera.transform.forward;
                     agentRigidbody.velocity += agentValues.verticalLeapModifier * jumpImpulse * agent.transform.up;
+
+                    agentInputHandler.isGrounded = false;
                 }
 
                 agentInputHandler.currentLeapCharge = 0.0f;
