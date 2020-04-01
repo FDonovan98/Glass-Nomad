@@ -4,6 +4,8 @@ using Photon.Pun;
 
 public class AgentController : AgentInputHandler
 {
+    public Color alienVision;
+    public bool specialVision = false;
     public enum ResourceType
     {
         Health,
@@ -15,6 +17,11 @@ public class AgentController : AgentInputHandler
 
     void Awake()
     {   
+        if (specialVision)
+        {
+            SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
+        }
+
         if (photonView != null)
         {
             if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
