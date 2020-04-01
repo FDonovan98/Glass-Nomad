@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 171629c624bafcf46ab823db4bea82dc, type: 3}
-  m_Name: DefaultAgentValues
+  m_Name: MarineAgentValues
   m_EditorClassIdentifier: 
-  moveAcceleration: 60
+  moveAcceleration: 100
   maxSpeed: 30
+  maxSprintSpeed: 60
   sprintingIsAToggle: 0
-  sprintMultiplier: 15
+  sprintMultiplier: 2
   surfaceSwitchSpeed: 0.3
   gravityResetDelay: 0.5
   leapCanChargeInAir: 1
@@ -34,7 +35,7 @@ MonoBehaviour:
   minLedgeWidth: 0.3
   stepUpAcceleration: 0
   applyGravity: 1
-  gravityAcceleration: 10
-  maxOxygen: 100
-  oxygenRegenModifier: 1
+  gravityAcceleration: 100
+  maxOxygen: 200
+  oxygenRegenModifier: 1.5
   maxHealth: 200
