@@ -294,6 +294,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 297885639}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!20 &361566239 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4853435038723679331, guid: c360a1ae9eab3b249b5ab5d04475239f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2106140247}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &643795718
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +592,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1307430730 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2106140247}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb90d77780a50d14692de7038174298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1314019071
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,9 +972,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
         type: 3}
+      propertyPath: activeCommands.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
+        type: 3}
+      propertyPath: componentsToDisableForPhoton.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
+        type: 3}
       propertyPath: currentWeapon
       value: 
       objectReference: {fileID: 11400000, guid: f07ed8fadc5211d47885c7f535b3d0f8,
+        type: 2}
+    - target: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
+        type: 3}
+      propertyPath: activeCommands.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 898c625a6e372224c9fbf1c3262dbbd3,
+        type: 2}
+    - target: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
+        type: 3}
+      propertyPath: currentTotalAmmo
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
+        type: 3}
+      propertyPath: componentsToDisableForPhoton.Array.data[0]
+      value: 
+      objectReference: {fileID: 1307430730}
+    - target: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
+        type: 3}
+      propertyPath: agentCamera
+      value: 
+      objectReference: {fileID: 361566239}
+    - target: {fileID: 7516700223204838228, guid: c360a1ae9eab3b249b5ab5d04475239f,
+        type: 3}
+      propertyPath: activeCommands.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 70a446d06c3892041ad28ae0ced97605,
         type: 2}
     - target: {fileID: 7330997320176583429, guid: c360a1ae9eab3b249b5ab5d04475239f,
         type: 3}

@@ -61,6 +61,8 @@ public class FireWeapon : ActiveCommandObject
         AgentController agentController = agent.GetComponent<AgentController>();
         agentController.ChangeResourceCount(AgentController.ResourceType.Ammo, -1);
 
+        Debug.Log(agentInputHandler.currentBulletsInMag);
+
         MonoBehaviourPunCallbacks agentMonoPun = agent.GetComponent<MonoBehaviourPunCallbacks>();
         
         agentMonoPun.photonView.RPC("Shoot", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);

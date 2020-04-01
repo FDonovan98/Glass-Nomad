@@ -25,6 +25,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Weapon currentWeapon;
     public int currentBulletsInMag = 0;
     public float timeSinceLastShot = 0.0f;
+    public int currentTotalAmmo = 0;
 
     [Header("Camera")]
     public Camera agentCamera;
@@ -57,6 +58,8 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         currentOxygen = agentValues.maxOxygen;
         currentHealth = agentValues.maxHealth;
         currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
+        currentTotalAmmo = currentWeapon.magSize * 3;
+        timeSinceLastShot = currentWeapon.fireRate;
 
         foreach (ActiveCommandObject element in activeCommands)
         {
