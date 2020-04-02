@@ -64,7 +64,7 @@ public class AgentController : AgentInputHandler
         if (resourceType == ResourceType.Health)
         {
             currentHealth = Mathf.Clamp(currentHealth + value, 0.0f, agentValues.maxHealth);
-            if (currentHealth < 0)
+            if (currentHealth <= 0)
             {
                 AgentHasDied();
             }

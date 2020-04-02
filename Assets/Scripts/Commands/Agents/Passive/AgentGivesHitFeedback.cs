@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using System.Collections;
+
 [CreateAssetMenu(fileName = "DefaultAgentGivesHitFeedback", menuName = "Commands/Passive/AgentGivesHitFeedback", order = 0)]
 public class AgentGivesHitFeedback : PassiveCommandObject
 {
@@ -33,10 +35,16 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         {
             agentInputHandler.agentHitParticles.transform.position = position;
             agentInputHandler.agentHitParticles.gameObject.SetActive(true);
+            agentInputHandler.ParticleSystemStarted(agentInputHandler.agentHitParticles);
         }
         else
         {
             Debug.LogAssertion(agent.name + " doesn't have a hit feedback particle effect");
         }
+    }
+
+    IEnumerator DisableHitParticlesObject()
+    {
+        yield return null;
     }
 }

@@ -5796,7 +5796,6 @@ GameObject:
   - component: {fileID: 2188038134139432926}
   - component: {fileID: 868944112688905040}
   - component: {fileID: 5961394063779759008}
-  - component: {fileID: 6835084751499573015}
   m_Layer: 9
   m_Name: Alien
   m_TagString: Player
@@ -5956,7 +5955,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 898c625a6e372224c9fbf1c3262dbbd3, type: 2}
   - {fileID: 11400000, guid: 4f38eae32a1d26649b8817384f93f6f3, type: 2}
   - {fileID: 11400000, guid: bb98300e2c3b89d4cb71c657fae92e88, type: 2}
-  - {fileID: 11400000, guid: dba96bc1f16a077458b708a7e6242340, type: 2}
   passiveCommands:
   - {fileID: 11400000, guid: 89d67c71b42eab74685203f1c632d43b, type: 2}
   - {fileID: 11400000, guid: 72253c22aa75c6545a95bbab4cf2b3c9, type: 2}
@@ -5991,7 +5989,6 @@ MonoBehaviour:
   componentsToDisableForPhoton:
   - {fileID: 6657931584920568425}
   - {fileID: 4328822313441412364}
-  - {fileID: 868944112688905040}
 --- !u!114 &5961394063779759008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6004,47 +6001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 524e04bfdd8d970439802de4449450d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6835084751499573015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4364988366066350752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34e01594f1f43eb4a9a8bada03b5137f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 0}
-  behaviourToToggle: {fileID: 0}
-  agentValues: {fileID: 11400000, guid: 19a560dfc234b7e43adc7486ebaab40e, type: 2}
-  activeCommands: []
-  passiveCommands:
-  - {fileID: 11400000, guid: 89d67c71b42eab74685203f1c632d43b, type: 2}
-  - {fileID: 11400000, guid: c90bbc2e9bf6d844f8df09008d7ca543, type: 2}
-  - {fileID: 11400000, guid: c32cad17e695bd248be52fd025d5619a, type: 2}
-  isSprinting: 0
-  isGrounded: 1
-  gravityDirection: {x: 0, y: -1, z: 0}
-  allowInput: 1
-  currentLeapCharge: 0
-  currentOxygen: 0
-  oxygenDisplay: {fileID: 0}
-  currentWeapon: {fileID: 11400000, guid: c97386eb027242b41992e743522b1ddf, type: 2}
-  currentBulletsInMag: 0
-  timeSinceLastShot: 0
-  currentTotalAmmo: 0
-  currentRecoilValue: 0
-  weaponObject: {fileID: 0}
-  weaponMuzzleFlash: {fileID: 0}
-  agentCamera: {fileID: 0}
-  currentHealth: 0
-  healthUIText: {fileID: 0}
-  ammoUIText: {fileID: 0}
-  agentHitSound: {fileID: 0}
-  agentHitParticles: {fileID: 0}
-  punRPCs: {fileID: 0}
 --- !u!1 &5905573862251080833
 GameObject:
   m_ObjectHideFlags: 0
@@ -6456,12 +6412,12 @@ PrefabInstance:
     - target: {fileID: 8789151841414625542, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151841414625542, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151841414625542, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
@@ -6476,7 +6432,7 @@ PrefabInstance:
     - target: {fileID: 8789151841414625542, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -131.82025
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151841414625542, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
@@ -6486,12 +6442,12 @@ PrefabInstance:
     - target: {fileID: 8789151841443146873, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151841443146873, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151841443146873, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
@@ -6506,7 +6462,7 @@ PrefabInstance:
     - target: {fileID: 8789151841443146873, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -370.46075
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151841443146873, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
@@ -6516,12 +6472,12 @@ PrefabInstance:
     - target: {fileID: 8789151839942530139, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151839942530139, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151839942530139, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
@@ -6536,7 +6492,7 @@ PrefabInstance:
     - target: {fileID: 8789151839942530139, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -847.74176
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151839942530139, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
@@ -6546,12 +6502,12 @@ PrefabInstance:
     - target: {fileID: 8789151840308044399, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151840308044399, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151840308044399, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
@@ -6566,7 +6522,7 @@ PrefabInstance:
     - target: {fileID: 8789151840308044399, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -609.10126
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8789151840308044399, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}

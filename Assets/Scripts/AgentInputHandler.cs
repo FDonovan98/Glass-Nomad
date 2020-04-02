@@ -158,4 +158,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
         
     }
+
+    public ParticleSystemStarted(ParticleSystem particleSystem)
+    {
+        StartCoroutine(DisableParticlesWhenFinished)
+    }
 }
