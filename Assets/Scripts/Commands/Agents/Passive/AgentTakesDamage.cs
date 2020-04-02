@@ -8,7 +8,7 @@ public class AgentTakesDamage : PassiveCommandObject
         agentInputHandler.runCommandOnAgentHasBeenHit += RunCommandOnAgentHasBeenHit;
     }
 
-    void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, float value)
+    void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value)
     {
         AgentController agentController = agentInputHandler.gameObject.GetComponent<AgentController>();
 

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Photon.Pun;
 
 [CreateAssetMenu(fileName = "DefaultFireWeapon", menuName = "Commands/Active/FireWeapon", order = 0)]
 public class FireWeapon : ActiveCommandObject

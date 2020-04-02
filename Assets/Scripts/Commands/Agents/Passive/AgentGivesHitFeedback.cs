@@ -9,7 +9,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         agentInputHandler.runCommandOnAgentHasBeenHit += RunCommandOnAgentHasBeenHit;
     }
 
-    void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, float value)
+    private void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value)
     {
         GameObject agent = agentInputHandler.gameObject;
 
@@ -29,18 +29,19 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         {
             Debug.LogAssertion(agent.name + " doesn't have a hit feedback sound");
         }
-
+        
         if (agentInputHandler.agentHitParticles != null)
         {
-			GameObject hitEffect = Instantiate(agentInputHandler.agentHitParticles, position, new Quaternion());
-            Destroy(hitEffect, 5f);        }
+			GameObject hitEffect = Instantiate(agentInputHandler.agentHitParticles, position, Quaternion.Euler(normal));
+            Destroy(hitEffect, 5f);
+        }
         else
         {
             Debug.LogAssertion(agent.name + " doesn't have a hit feedback particle effect");
         }
     }
 
-    IEnumerator DisableHitParticlesObject()
+    private IEnumerator DisableHitParticlesObject()
     {
         yield return null;
     }

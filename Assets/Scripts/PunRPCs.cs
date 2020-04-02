@@ -21,7 +21,7 @@ public class PunRPCs : MonoBehaviourPunCallbacks
                 if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
                 {
                     Debug.Log("hit feedback");
-                    targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, weaponDamage);
+                    targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, hit.normal, weaponDamage);
                 }
             }
             else
