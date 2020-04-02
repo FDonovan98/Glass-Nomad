@@ -37,6 +37,9 @@ public class Settings : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Setups the dropdown menu options, and also sets the settings to the defaults.
+    /// </summary>
     private void InitiateSettings()
     {
         resolutions = Screen.resolutions;
@@ -67,6 +70,10 @@ public class Settings : MonoBehaviour
         fullscreenToggle.isOn = Screen.fullScreen;
     }
     
+    /// <summary>
+    /// Shows/hides a menu. It also saves the current settings.
+    /// </summary>
+    /// <param name="menu">The menu to toggle</param>
     public void ToggleOptionMenu(GameObject menu)
     {
         menu.SetActive(!menu.activeSelf);
