@@ -22,6 +22,10 @@ public class ReloadWeapon : ActiveCommandObject
         {
             if (CanReload(agentInputHandler))
             {
+                AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponent<AudioSource>();
+                weaponAudioSource.clip = agentInputHandler.currentWeapon.reloadSound;
+                weaponAudioSource.Play();
+
                 int bulletsUsed;
 
                 bulletsUsed = agentInputHandler.currentWeapon.magSize - agentInputHandler.currentBulletsInMag;
@@ -35,6 +39,8 @@ public class ReloadWeapon : ActiveCommandObject
                 agentInputHandler.currentTotalAmmo -= bulletsUsed;
 
                 agentInputHandler.ammoUIText.text = "Ammo: " + agentInputHandler.currentBulletsInMag + " / " + agentInputHandler.currentTotalAmmo;
+
+
             }
         }
     }
