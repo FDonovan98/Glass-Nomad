@@ -132,8 +132,12 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         Cursor.visible = false;
 
         agent = this.gameObject;
-        currentOxygen = agentValues.maxOxygen;
-        currentHealth = agentValues.maxHealth;
+
+        if (agentValues != null)
+        {
+            currentOxygen = agentValues.maxOxygen;
+            currentHealth = agentValues.maxHealth;
+        }
 
         if (currentWeapon != null)
         {
