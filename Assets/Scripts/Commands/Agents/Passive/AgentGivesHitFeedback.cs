@@ -16,7 +16,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         {
             AudioSource agentAudioSource = agent.GetComponent<AudioSource>();
 
-            if (agentAudioSource != null)
+            if (agentAudioSource == null)
             {
                 agentAudioSource = agent.AddComponent(typeof(AudioSource)) as AudioSource;
             }
