@@ -17,6 +17,8 @@ public class AgentController : AgentInputHandler
 
     void Awake()
     {   
+        runCommandOnWeaponFired += FireWeaponOverNet;
+
         if (specialVision)
         {
             SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
@@ -74,5 +76,10 @@ public class AgentController : AgentInputHandler
     {
         // This line needs changing, ewwww.
         PhotonNetwork.Destroy(agent);
+    }
+
+    void FireWeaponOverNet(AgentInputHandler agentInputHandler)
+    {
+        photonView.RPC("Shoot", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
     }
 }

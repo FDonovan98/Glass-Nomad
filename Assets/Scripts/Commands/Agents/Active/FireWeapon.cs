@@ -62,29 +62,5 @@ public class FireWeapon : ActiveCommandObject
         agentController.ChangeResourceCount(AgentController.ResourceType.Ammo, -1);
 
         Debug.Log(agentInputHandler.currentBulletsInMag);
-
-        MonoBehaviourPunCallbacks agentMonoPun = agent.GetComponent<MonoBehaviourPunCallbacks>();
-        
-        agentMonoPun.photonView.RPC("Shoot", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
-    }
-
-    [PunRPC]
-    public void Shoot(Vector3 cameraPos, Vector3 cameraForward, float weaponRange, int weaponDamage)
-    {     
-        Debug.Log("shoot");
-        RaycastHit hit;
-        if (Physics.Raycast(cameraPos, cameraForward, out hit, weaponRange))
-        {
-            Debug.Log(hit.transform.gameObject.name + " has been hit");
-            AgentInputHandler targetAgentInputHandler = hit.transform.gameObject.GetComponent<AgentInputHandler>();
-
-            Debug.Log(targetAgentInputHandler);
-            
-            if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
-            {
-                Debug.Log("hit feedback");
-                targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, weaponDamage);
-            }
-        }
     }
 }

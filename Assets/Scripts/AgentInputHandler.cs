@@ -45,6 +45,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
     public ParticleSystem agentHitParticles;
+
+    [Header("PUN")]
+    public PunRPCs punRPCs;
     
     protected GameObject agent;
 
