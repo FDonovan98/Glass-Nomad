@@ -60,7 +60,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
                     currInteractTime = 0f;
                     interactionComplete = true;
                     currCooldownTime = cooldownTime;
-                    coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+                    coll.gameObject.GetComponent<AgentInputHandler>().allowInput = true;
                     return;
                 }
 
@@ -69,7 +69,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
                 if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
 
                 ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
-                coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = false;
+                coll.gameObject.GetComponent<AgentInputHandler>().allowInput = false;
                 return;
             }
 
@@ -127,7 +127,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     {
         currInteractTime = 0f;
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
-        coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+        coll.gameObject.GetComponent<AgentInputHandler>().allowInput = true;
         return;
     }
 }
