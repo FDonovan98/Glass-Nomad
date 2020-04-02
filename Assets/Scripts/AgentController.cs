@@ -47,19 +47,6 @@ public class AgentController : AgentInputHandler
 
     public void ChangeResourceCount(ResourceType resourceType, int value)
     {
-        if (resourceType == ResourceType.Health)
-        {
-            currentHealth = (int)Mathf.Clamp(currentHealth + value, 0.0f, agentValues.maxHealth);
-            if (currentHealth == 0)
-            {
-                AgentHasDied();
-            }
-
-            if (healthUIText != null)
-            {
-                healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
-            }
-        }
 
         if (resourceType == ResourceType.Ammo)
         {
@@ -68,6 +55,23 @@ public class AgentController : AgentInputHandler
             if (ammoUIText != null)
             {
                 ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+            }
+        }
+    }
+
+    public void ChangeResourceCount(ResourceType resourceType, float value)
+    {
+        if (resourceType == ResourceType.Health)
+        {
+            currentHealth = Mathf.Clamp(currentHealth + value, 0.0f, agentValues.maxHealth);
+            if (currentHealth < 0)
+            {
+                AgentHasDied();
+            }
+
+            if (healthUIText != null)
+            {
+                healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
             }
         }
     }

@@ -11,18 +11,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
     void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, float value)
     {
         GameObject agent = agentInputHandler.gameObject;
-
-        if (agentInputHandler.currentHealth - value > 0)
-        {
-            agentInputHandler.currentHealth -= value;
-            Debug.LogFormat("{0}'s new health: {1}", agent.name, agentInputHandler.currentHealth);
-        }
-        else
-        {
-            // Player has died.
-            Debug.LogFormat("{0}'s has died.", agent.name);
-        }
-
+        
         if (agentInputHandler.agentHitSound != null)
         {
             AudioSource agentAudioSource = agent.GetComponent<AudioSource>();
