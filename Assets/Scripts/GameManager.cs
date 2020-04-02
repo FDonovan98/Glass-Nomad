@@ -87,39 +87,39 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     /// Changes the model of the new master client, when the old one leaves.
     /// </summary>
     /// <param name="newMasterClient"></param>
-    // public override void OnMasterClientSwitched(Player newMasterClient)
-    // {
-    //     if (switchToAlien)
-    //     {
-    //         if (PhotonNetwork.IsMasterClient)
-    //         {
-    //             Debug.LogFormat("CHANGING MODEL");
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (switchToAlien)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.LogFormat("CHANGING MODEL");
 
-    //             GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
-    //             foreach (GameObject element in playerObjects)
-    //             {
-    //                 if (element.GetComponent<PhotonView>().IsMine)
-    //                 {
-    //                     Vector3 playerPos = alienSpawnPoint.transform.position;
-    //                     Quaternion playerRot = element.transform.rotation;
-    //                     string prefabName;
+                GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+                foreach (GameObject element in playerObjects)
+                {
+                    if (element.GetComponent<PhotonView>().IsMine)
+                    {
+                        Vector3 playerPos = alienSpawnPoint.transform.position;
+                        Quaternion playerRot = element.transform.rotation;
+                        string prefabName;
 
-    //                     if (element.GetComponent<AlienController>() != null)
-    //                     {
-    //                         prefabName = "Marine (Cylinder)";
-    //                     }
-    //                     else
-    //                     {
-    //                         prefabName = "Alien (Cylinder)";
-    //                     }
+                        if (element.GetComponent<AgentController>().agentValues.name == "AlienAgentValues")
+                        {
+                            prefabName = "Marine (Cylinder)";
+                        }
+                        else
+                        {
+                            prefabName = "Alien (Cylinder)";
+                        }
 
-    //                     PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
-    //                     PhotonNetwork.Instantiate(prefabName, playerPos, playerRot);
+                        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+                        PhotonNetwork.Instantiate(prefabName, playerPos, playerRot);
 
-    //                     return;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }
