@@ -78,7 +78,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 
         if (coll.tag == "Player" && interactionComplete)
         {
-            coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+            coll.gameObject.GetComponent<AgentInputHandler>().allowInput = true;
         }
 
         if (debug) Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
