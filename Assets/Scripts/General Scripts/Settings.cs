@@ -33,10 +33,11 @@ public class Settings : MonoBehaviour
     private void Start()
     {
         settingsPath = Application.persistentDataPath + "/game_data";
-        SetupResolutionDropdown();
+        InitiateSettings();
+        this.gameObject.SetActive(false);
     }
 
-    private void SetupResolutionDropdown()
+    private void InitiateSettings()
     {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
