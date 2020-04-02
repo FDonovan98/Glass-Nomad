@@ -26,7 +26,7 @@ public class PunRPCs : MonoBehaviourPunCallbacks
             }
             else
             {
-                Debug.LogAssertion(hit.transform.gameObject.name + " has no agentInputHandler");
+                Debug.LogWarning(hit.transform.gameObject.name + " has no agentInputHandler");
             }
         }
     }

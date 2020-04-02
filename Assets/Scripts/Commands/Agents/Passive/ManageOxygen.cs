@@ -16,11 +16,15 @@ public class ManageOxygen : PassiveCommandObject
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         agentInputHandler.currentOxygen -= Time.deltaTime;
-        Slider oxygenSlider = agentInputHandler.oxygenDisplay.GetComponentInChildren<Slider>();
-        TextMeshProUGUI oxygenText = agentInputHandler.oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
 
-        oxygenSlider.value = agentInputHandler.currentOxygen / agentValues.maxOxygen * 100;
-        oxygenText.text = (Mathf.Round(agentInputHandler.currentOxygen / agentValues.maxOxygen * 100)).ToString();
+        if (agentInputHandler.oxygenDisplay != null)
+        {
+            Slider oxygenSlider = agentInputHandler.oxygenDisplay.GetComponentInChildren<Slider>();
+            TextMeshProUGUI oxygenText = agentInputHandler.oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
+
+            oxygenSlider.value = agentInputHandler.currentOxygen / agentValues.maxOxygen * 100;
+            oxygenText.text = (Mathf.Round(agentInputHandler.currentOxygen / agentValues.maxOxygen * 100)).ToString();
+        }
     }
 
     void RunCommandOnCollisionStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
