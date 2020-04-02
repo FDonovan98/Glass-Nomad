@@ -35,7 +35,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         {
             agentInputHandler.agentHitParticles.transform.position = position;
             agentInputHandler.agentHitParticles.gameObject.SetActive(true);
-            agentInputHandler.ParticleSystemStarted(agentInputHandler.agentHitParticles);
+            // agentInputHandler.ParticleSystemStarted(agentInputHandler.agentHitParticles);
         }
         else
         {
