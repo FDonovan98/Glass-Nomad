@@ -11,7 +11,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
     void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, float value)
     {
         GameObject agent = agentInputHandler.gameObject;
-        
+
         if (agentInputHandler.agentHitSound != null)
         {
             AudioSource agentAudioSource = agent.GetComponent<AudioSource>();
@@ -32,7 +32,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         if (agentInputHandler.agentHitParticles != null)
         {
             agentInputHandler.agentHitParticles.transform.position = position;
-            agentInputHandler.agentHitParticles.Play();
+            agentInputHandler.agentHitParticles.gameObject.SetActive(true);
         }
         else
         {
