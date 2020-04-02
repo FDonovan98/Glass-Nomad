@@ -61,6 +61,7 @@ public class Objectives : MonoBehaviour
     /// to be completed before this objective can be completed.</param>
     public static void ObjectiveComplete(string objName, string requiredObjective = "")
     {
+        if (Camera.allCameras[0].GetComponentInParent<AgentController>().agentValues.name == "AlienAgentValues") return;
         Objective objectiveCompleted = GetObjective(objName);
         Objective objectiveRequired = GetObjective(requiredObjective);
 
@@ -70,7 +71,6 @@ public class Objectives : MonoBehaviour
             {
                 try
                 {
-                    if (Camera.allCameras[0].GetComponentInParent<AgentController>().agentValues.name == "AlienAgentValues") return;
                     Debug.Log(objectiveCompleted.dialogue);
                     objectiveCompleted.completed = true;
                     WriteTextToHud(objectiveCompleted.dialogue, timePerLetter, timeToDisappear);

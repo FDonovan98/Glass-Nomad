@@ -32,8 +32,8 @@ public class AgentController : AgentInputHandler
                 isLocalAgent = false;
             }
         }
-        
-        Objectives.captionText = transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+
+        Objectives.captionText = transform.GetChild(2).GetChild(1).GetChild(0).GetChild(1).GetComponent<TMP_Text>();
     }
 
     private void DisableObjectsForPhoton()

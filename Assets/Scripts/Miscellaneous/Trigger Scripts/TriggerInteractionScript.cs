@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 {
@@ -12,7 +13,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected bool interactionComplete = false; // Is the interaction complete?
     [SerializeField] protected bool debug = false; // Should the debug messages be displayed.
     protected Image outerReticle = null;
-    private GameObject hudCanvas = null;
+    private TMP_Text interactionText = null;
     [SerializeField] protected string objectiveName = "";
     [SerializeField] private string objectiveRequired = "";
     [SerializeField] private bool destroyObjectAfter = true;
@@ -31,11 +32,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 
     protected void OnTriggerEnter(Collider coll)
     {
-        if (!hudCanvas)
-        {
-            hudCanvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetChild(0).gameObject;
-            outerReticle = hudCanvas.transform.GetChild(0).GetComponent<Image>();
-        }
+        interactionText = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+        outerReticle = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
     }
 
     /// <summary>
@@ -50,6 +48,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected void OnTriggerStay(Collider coll)
     {
+        if (interactionText != null) interactionText.text = "Press E to interact with <color=#2222ff>" + gameObject.name + "</color>";
         if (coll.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
         {
             if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
@@ -68,7 +67,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
                 float percentage = (currInteractTime / interactTime) * 100;
                 if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
 
-                ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
+                if (outerReticle != null) ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
                 coll.gameObject.GetComponent<AgentInputHandler>().allowInput = false;
                 return;
             }
@@ -126,7 +125,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     virtual protected void LeftTriggerArea(Collider coll)
     {
         currInteractTime = 0f;
-        ReticleProgress.UpdateReticleProgress(0, outerReticle);
+        if (interactionText != null) interactionText.text = "";
+        if (outerReticle != null) ReticleProgress.UpdateReticleProgress(0, outerReticle);
         coll.gameObject.GetComponent<AgentInputHandler>().allowInput = true;
         return;
     }
