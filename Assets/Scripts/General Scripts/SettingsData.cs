@@ -2,6 +2,10 @@ using System;
 using System.IO;
 using UnityEngine;
 
+/// <summary>
+/// SettingsData handles the updating of settings to the file path that is
+/// passed through parameters.
+/// </summary>
 [Serializable]
 public class SettingsData
 {
@@ -19,6 +23,10 @@ public class SettingsData
     }
 }
 
+/// <summary>
+/// SaveLoadSettings holds an instance of the SettingsData class. It is static so it can be
+/// accessed anywhere without a reference.
+/// </summary>
 public static class SaveLoadSettings
 {
     private static SettingsData settings;
