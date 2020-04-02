@@ -24,6 +24,10 @@ public class PunRPCs : MonoBehaviourPunCallbacks
                     targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, weaponDamage);
                 }
             }
+            else
+            {
+                Debug.LogAssertion(hit.transform.gameObject.name + " has no agentInputHandler");
+            }
         }
     }
 }
