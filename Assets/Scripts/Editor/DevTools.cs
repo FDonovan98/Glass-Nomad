@@ -26,12 +26,12 @@ public class DevTools : EditorWindow
 
         if(GUILayout.Button("Spawn Alien"))
         {
-            SpawnCreature("Alien (Cylinder)");
+            SpawnCreature("Alien");
         }
 
         if(GUILayout.Button("Spawn Marine"))
         {
-            SpawnCreature("Marine (Cylinder)");
+            SpawnCreature("Marine");
         }
 
         GUILayout.EndHorizontal();
@@ -77,11 +77,11 @@ public class DevTools : EditorWindow
 
                 if (element.GetComponent<AgentController>().agentValues.name == "MarineAgentValues")
                 {
-                    prefabName = "Marine (Cylinder)";
+                    prefabName = "Marine";
                 }
                 else
                 {
-                    prefabName ="Alien (Cylinder)";
+                    prefabName = "Alien";
                 }
 
                 PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
