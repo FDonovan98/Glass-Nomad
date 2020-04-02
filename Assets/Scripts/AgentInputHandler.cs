@@ -47,6 +47,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("PUN")]
     public PunRPCs punRPCs;
+    public bool isLocalAgent = true;
     
     protected GameObject agent;
 

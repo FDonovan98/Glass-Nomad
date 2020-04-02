@@ -28,6 +28,7 @@ public class AgentController : AgentInputHandler
             if (!photonView.IsMine && !PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
             {
                 DisableObjectsForPhoton();
+                isLocalAgent = false;
             }
         }
     }
