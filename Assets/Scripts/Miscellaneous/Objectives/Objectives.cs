@@ -19,9 +19,6 @@ public class Objectives : MonoBehaviour
     // The time, after the whole text is diplayed, for it to vanish.
     private static float timeToDisappear = 1f;
 
-    // The Text object which will display the text.
-    [SerializeField] private TMP_Text objectiveText = null;
-
     // The static text object as it needs to be static.
     public static TMP_Text captionText = null;
 
@@ -31,7 +28,6 @@ public class Objectives : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        captionText = objectiveText;
         ReadData();
         ObjectiveComplete("START"); // Displays the starting text.
     }

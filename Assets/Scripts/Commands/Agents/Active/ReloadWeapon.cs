@@ -27,7 +27,7 @@ public class ReloadWeapon : ActiveCommandObject
                 weaponAudioSource.clip = agentInputHandler.currentWeapon.reloadSound;
                 weaponAudioSource.Play();
 
-                agentInputHandler.StartCoroutine(Reload(1.5f, agentInputHandler));
+                agentInputHandler.StartCoroutine(Reload(weaponAudioSource.clip.length + 0.2f, agentInputHandler));
             }
         }
     }
