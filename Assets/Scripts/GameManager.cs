@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     // Should we switch a marine to the alien, when the alien dies.
     public bool switchToAlien = false;
 
+    /// <summary>
+    /// Determines whether the game is in offline mode or not. If the game is offline, then we spawn an alien, 
+    /// otherwise we hand over control to the 'SpawnLocalPlayer' function.
+    /// </summary>
     private void Start()
     {
         if (!PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
@@ -34,11 +38,15 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
         else
         {
-            Debug.Log("Spawning an alien, hopefully.");
             Instantiate(Resources.Load("Alien", typeof(GameObject)), alienSpawnPoint.transform.position, new Quaternion());
         }
     }
 
+    /// <summary>
+    /// Retrieves the Lobby gameobject, and fetches the information of the local player (using their
+    /// nickname). From this, we determine if the player was marked as an alien in the lobby. If it
+    /// was marked as an alien, then we spawn an alien; else we spawn a marine.
+    /// </summary>
     private void SpawnLocalPlayer()
     {
         PlayersInLobby lobbyRoom = GameObject.Find("Lobby").GetComponent<PlayersInLobby>();
@@ -52,6 +60,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
     }
 
+    /// <summary>
+    /// Gets a random Vector2 point inside of a circle of radius of 8.
+    /// This Vector2 point is added to the original marine spawn point.
+    /// </summary>
+    /// <returns>A random Vector3 position</returns>
     private Vector3 GetRandomSpawnPoint()
     {
         int radius = 8;
@@ -70,7 +83,8 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     
     public override void OnPlayerEnteredRoom(Player other)
     {
-        Debug.LogFormat("{0} entered the game room", other.NickName); // not seen if you're the player connecting
+        // not seen if you're the player connecting
+        Debug.LogFormat("{0} entered the game room", other.NickName);
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -86,7 +100,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     /// <summary>
     /// Changes the model of the new master client, when the old one leaves.
     /// </summary>
-    /// <param name="newMasterClient"></param>
+    /// <param name="newMasterClient">The player that is to be switched to master.</param>
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         if (switchToAlien)
