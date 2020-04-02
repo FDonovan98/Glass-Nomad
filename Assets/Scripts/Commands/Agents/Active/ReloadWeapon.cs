@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "DefaultReload", menuName = "Commands/Active/Reload", order = 0)]
-public class Reload : ActiveCommandObject
+[CreateAssetMenu(fileName = "DefaultReload", menuName = "Commands/Active/ReloadWeapon", order = 0)]
+public class ReloadWeapon : ActiveCommandObject
 {
     [SerializeField]
     KeyCode reloadKey = KeyCode.R;
