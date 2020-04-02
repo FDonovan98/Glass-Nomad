@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class AgentController : AgentInputHandler
 {
@@ -30,9 +31,11 @@ public class AgentController : AgentInputHandler
                 DisableObjectsForPhoton();
             }
         }
+        
+        Objectives.captionText = transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
     }
 
-    void DisableObjectsForPhoton()
+    private void DisableObjectsForPhoton()
     {
         foreach (GameObject element in gameObjectsToDisableForPhoton)
         {
@@ -46,7 +49,6 @@ public class AgentController : AgentInputHandler
 
     public void ChangeResourceCount(ResourceType resourceType, int value)
     {
-
         if (resourceType == ResourceType.Ammo)
         {
             currentBulletsInMag = (int)Mathf.Clamp(currentBulletsInMag + value, 0.0f, currentWeapon.magSize);

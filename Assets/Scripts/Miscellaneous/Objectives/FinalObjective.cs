@@ -15,13 +15,13 @@ public class FinalObjective : TriggerInteractionScript
     // The evacuation zone.
     [SerializeField] private EvacZone evacZone = null;
 
-    // The gameover 
-    [SerializeField] private TMP_Text gameover = null;
+    // The gameover text
+    private TMP_Text gameover = null;
 
     protected override void InteractionComplete(GameObject player)
     {
+        gameover = player.GetComponent<AgentController>().transform.GetChild(2).GetChild(0).GetChild(1).GetComponentInChildren<TMP_Text>();
         base.InteractionComplete(player);
-
         if (!Objectives.IsObjectiveComplete(objectiveName)) return;
         StartCoroutine(StartTimer());
     }
