@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 431608}
   - component: {fileID: 6525612}
+  - component: {fileID: 232938208012307006}
   m_Layer: 0
   m_Name: decorative_wall_2
   m_TagString: Untagged
@@ -45,6 +46,45 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 4, z: 0.2986662}
   m_Center: {x: 0, y: 2, z: 0.14933296}
+--- !u!114 &232938208012307006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34e01594f1f43eb4a9a8bada03b5137f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 0}
+  behaviourToToggle: {fileID: 0}
+  agentValues: {fileID: 0}
+  activeCommands: []
+  passiveCommands:
+  - {fileID: 11400000, guid: 89d67c71b42eab74685203f1c632d43b, type: 2}
+  isSprinting: 0
+  isGrounded: 1
+  gravityDirection: {x: 0, y: -1, z: 0}
+  allowInput: 1
+  currentLeapCharge: 0
+  currentOxygen: 0
+  oxygenDisplay: {fileID: 0}
+  currentWeapon: {fileID: 0}
+  currentBulletsInMag: 0
+  timeSinceLastShot: 0
+  currentTotalAmmo: 0
+  currentRecoilValue: 0
+  weaponObject: {fileID: 0}
+  weaponMuzzleFlash: {fileID: 0}
+  agentCamera: {fileID: 0}
+  currentHealth: 0
+  healthUIText: {fileID: 0}
+  ammoUIText: {fileID: 0}
+  agentHitSound: {fileID: 8300000, guid: 32652f3ed55cee24f9a7ed50c61abc5c, type: 3}
+  agentHitParticles: {fileID: 0}
+  punRPCs: {fileID: 0}
 --- !u!1 &192782
 GameObject:
   m_ObjectHideFlags: 0
