@@ -17,6 +17,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Vector3 gravityDirection = Vector3.down;
     public bool allowInput = true;
     public float currentLeapCharge = 0.0f;
+    public bool isJumping = false;
 
     [Header("Oxygen")]
     public float currentOxygen = 0.0f;

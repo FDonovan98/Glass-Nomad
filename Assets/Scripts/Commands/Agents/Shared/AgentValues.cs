@@ -20,6 +20,7 @@ public class AgentValues : ScriptableObject
     public float forwardLeapModifier = 1.0f;
     public float verticalLeapModifier = 1.0f;
     public float leapChargeDuration = 2.0f;
+    public float jumpCooldown = 0.1f;
      
     [Header("Camera")]
     public float mouseSensitivity = 1.0f;

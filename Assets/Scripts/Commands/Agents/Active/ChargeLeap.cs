@@ -6,6 +6,8 @@ public class ChargeLeap : ActiveCommandObject
     [SerializeField] 
     KeyCode chargeLeap = KeyCode.Space;
 
+    float timeJumpingFor = 0.0f;
+
     protected override void OnEnable()
     {
         keyTable.Add("Charge Leap", chargeLeap);
@@ -16,9 +18,20 @@ public class ChargeLeap : ActiveCommandObject
     }
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
-    {        
+    {   
+        if (agentInputHandler.isJumping)
+        {
+            timeJumpingFor += Time.deltaTime;
+            if (timeJumpingFor > agentValues.jumpCooldown)
+            {
+                agentInputHandler.isJumping = false;
+                timeJumpingFor = 0.0f;
+            }
+        }
+
         if (agentValues.leapCanChargeInAir || agentInputHandler.isGrounded)
-            if (Input.GetKey(chargeLeap))
+        {
+            if (Input.GetKey(chargeLeap) && !agentInputHandler.isJumping)
             {
                 agentInputHandler.currentLeapCharge += Time.deltaTime;
             }
@@ -27,6 +40,8 @@ public class ChargeLeap : ActiveCommandObject
             {
                 if (agentInputHandler.isGrounded)
                 {
+                    agentInputHandler.isJumping = true;
+
                     float jumpImpulse = Mathf.Min(agentInputHandler.currentLeapCharge, agentValues.leapChargeDuration);
 
                     jumpImpulse /= agentValues.leapChargeDuration;
@@ -34,6 +49,7 @@ public class ChargeLeap : ActiveCommandObject
 
                     Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
                     Camera agentCamera = agent.GetComponent<Camera>();
+
                     if (agentCamera == null)
                     {
                         agentCamera = agent.GetComponentInChildren<Camera>();
@@ -41,11 +57,10 @@ public class ChargeLeap : ActiveCommandObject
 
                     agentRigidbody.velocity += agentValues.forwardLeapModifier * jumpImpulse * agentCamera.transform.forward;
                     agentRigidbody.velocity += agentValues.verticalLeapModifier * jumpImpulse * agent.transform.up;
-
-                    agentInputHandler.isGrounded = false;
                 }
 
                 agentInputHandler.currentLeapCharge = 0.0f;
             }
+        }
     }
 }
