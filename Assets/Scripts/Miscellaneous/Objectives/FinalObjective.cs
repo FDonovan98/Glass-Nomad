@@ -6,10 +6,17 @@ using TMPro;
 
 public class FinalObjective : TriggerInteractionScript
 {
+    // The time to wait before starting the countdown.
     [SerializeField] private float waitTimer = 10f;
+
+    // The time the marines have to escape.
     [SerializeField] private float timer = 30f;
-    [SerializeField] private Collider evacZone = null;
-    [SerializeField] private GameObject gameover = null;
+
+    // The evacuation zone.
+    [SerializeField] private EvacZone evacZone = null;
+
+    // The gameover 
+    [SerializeField] private TMP_Text gameover = null;
 
     protected override void InteractionComplete(GameObject player)
     {
@@ -49,14 +56,14 @@ public class FinalObjective : TriggerInteractionScript
 
     private void StartGameOverSequence()
     {
-        Debug.Log("MARINE COUNT IN EVAC: " + evacZone.gameObject.GetComponent<EvacZone>().numberOfMarinesInEvac);
-        if (evacZone.gameObject.GetComponent<EvacZone>().numberOfMarinesInEvac > 0)
+        Debug.Log("MARINE COUNT IN EVAC: " + evacZone.numberOfMarinesInEvac);
+        if (evacZone.numberOfMarinesInEvac > 0)
         {
-            gameover.GetComponent<TMP_Text>().text = "Marines won!";
+            gameover.text = "Marines won!";
         }
         else
         {
-            gameover.GetComponent<TMP_Text>().text = "Alien won!";
+            gameover.text = "Alien won!";
         }
         gameover.gameObject.SetActive(true);
         StartCoroutine(SwitchToMainMenu());
