@@ -3,7 +3,6 @@ using Photon.Pun;
 
 using TMPro;
 
-[RequireComponent(typeof(Rigidbody))]
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
     public GameObject pauseMenu;
