@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-
 using TMPro;
 
 public class AgentInputHandler : MonoBehaviourPunCallbacks
@@ -44,7 +43,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
-    public ParticleSystem agentHitParticles;
+    public GameObject agentHitParticles;
 
     [Header("PUN")]
     public PunRPCs punRPCs;
@@ -67,7 +66,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
     public RunCommandOnWeaponFired runCommandOnWeaponFired;
 
-    public delegate void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, float value);
+    public delegate void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value);
     public RunCommandOnAgentHasBeenHit runCommandOnAgentHasBeenHit;
 
 
@@ -155,12 +154,5 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         {
             ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
         }
-
-        
     }
-
-    // public ParticleSystemStarted(ParticleSystem particleSystem)
-    // {
-    //     StartCoroutine(DisableParticlesWhenFinished);
-    // }
 }

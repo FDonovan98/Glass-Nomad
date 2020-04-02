@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 using System.Collections;
 
 [CreateAssetMenu(fileName = "DefaultAgentGivesHitFeedback", menuName = "Commands/Passive/AgentGivesHitFeedback", order = 0)]
@@ -10,7 +9,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         agentInputHandler.runCommandOnAgentHasBeenHit += RunCommandOnAgentHasBeenHit;
     }
 
-    void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, float value)
+    private void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value)
     {
         GameObject agent = agentInputHandler.gameObject;
 
@@ -30,12 +29,11 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         {
             Debug.LogAssertion(agent.name + " doesn't have a hit feedback sound");
         }
-
+        
         if (agentInputHandler.agentHitParticles != null)
         {
-            agentInputHandler.agentHitParticles.transform.position = position;
-            agentInputHandler.agentHitParticles.gameObject.SetActive(true);
-            // agentInputHandler.ParticleSystemStarted(agentInputHandler.agentHitParticles);
+			GameObject hitEffect = Instantiate(agentInputHandler.agentHitParticles, position, Quaternion.Euler(normal));
+            Destroy(hitEffect, 5f);
         }
         else
         {
@@ -43,7 +41,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         }
     }
 
-    IEnumerator DisableHitParticlesObject()
+    private IEnumerator DisableHitParticlesObject()
     {
         yield return null;
     }
