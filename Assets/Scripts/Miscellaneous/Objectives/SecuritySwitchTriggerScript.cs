@@ -39,7 +39,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
                     if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
 
                     ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
-                    coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = false;
+                    coll.gameObject.GetComponent<AgentInputHandler>().allowInput = false;
                     return;
                 }
             }

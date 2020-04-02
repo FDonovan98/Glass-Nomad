@@ -75,7 +75,7 @@ public class DevTools : EditorWindow
                 Quaternion playerRot = element.transform.rotation;
                 string prefabName;
 
-                if (element.GetComponent<AlienController>() != null)
+                if (element.GetComponent<AgentController>().agentValues.name == "MarineAgentValues")
                 {
                     prefabName = "Marine (Cylinder)";
                 }
@@ -110,16 +110,8 @@ public class DevTools : EditorWindow
                 Physics.Raycast(ray, out hit);
 
                 GameObject creature = PhotonNetwork.Instantiate(prefabName, hit.point, new Quaternion());
-
-                if (creature.GetComponent<AlienController>() != null)
-                {
-                    creature.GetComponent<AlienController>().enabled = false;
-                }
-                else 
-                {
-                    creature.GetComponent<MarineMovement>().enabled = false;
-                }
                 
+                creature.GetComponent<AgentController>().enabled = false;
                 creature.GetComponentInChildren<Camera>().enabled = false;
 
                 return;

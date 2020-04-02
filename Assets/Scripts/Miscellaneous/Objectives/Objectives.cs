@@ -74,7 +74,7 @@ public class Objectives : MonoBehaviour
             {
                 try
                 {
-                    if (Camera.allCameras[0].GetComponentInParent<MarineController>() == null) return;
+                    if (Camera.allCameras[0].GetComponentInParent<AgentController>().agentValues.name == "AlienAgentValues") return;
                     Debug.Log(objectiveCompleted.dialogue);
                     objectiveCompleted.completed = true;
                     WriteTextToHud(objectiveCompleted.dialogue, timePerLetter, timeToDisappear);
