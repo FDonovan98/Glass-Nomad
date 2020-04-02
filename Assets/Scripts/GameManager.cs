@@ -1,13 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
-using TMPro;
-using System;
-using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
