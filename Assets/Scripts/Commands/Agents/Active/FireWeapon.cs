@@ -69,7 +69,7 @@ public class FireWeapon : ActiveCommandObject
     }
 
     [PunRPC]
-    public static void Shoot(Vector3 cameraPos, Vector3 cameraForward, float weaponRange, int weaponDamage)
+    public void Shoot(Vector3 cameraPos, Vector3 cameraForward, float weaponRange, int weaponDamage)
     {     
         Debug.Log("shoot");
         RaycastHit hit;

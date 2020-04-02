@@ -15,10 +15,12 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         if (agentInputHandler.currentHealth - value > 0)
         {
             agentInputHandler.currentHealth -= value;
+            Debug.LogFormat("{0}'s new health: {1}", agent.name, agentInputHandler.currentHealth);
         }
         else
         {
             // Player has died.
+            Debug.LogFormat("{0}'s has died.", agent.name);
         }
 
         if (agentInputHandler.agentHitSound != null)
