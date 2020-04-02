@@ -43,7 +43,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
-    public ParticleSystem agentHitParticles;
+    public GameObject agentHitParticles;
 
     [Header("PUN")]
     public PunRPCs punRPCs;
@@ -155,11 +155,5 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
             ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
         }
 
-        
     }
-
-    // public ParticleSystemStarted(ParticleSystem particleSystem)
-    // {
-    //     StartCoroutine(DisableParticlesWhenFinished);
-    // }
 }
