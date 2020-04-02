@@ -14,6 +14,10 @@ public class Teleporter : TriggerInteractionScript
         }
     }
 
+    /// <summary>
+    /// Once the interaction is complete, we teleport the player from this teleporter, to the linked teleporter.
+    /// </summary>
+    /// <param name="player">The player to teleport.</param>
     protected override void InteractionComplete(GameObject player)
     {
         Debug.Log("teleporting player to: " + linkedTeleporter.transform.position);
