@@ -14,11 +14,11 @@ public class AgentController : AgentInputHandler
     public GameObject[] gameObjectsToDisableForPhoton;
     public Behaviour[] componentsToDisableForPhoton;
 
-    void Awake()
+    private void Awake()
     {   
         runCommandOnWeaponFired += FireWeaponOverNet;
 
-        if (specialVision)
+        if (specialVision && photonView.IsMine)
         {
             SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
         }
