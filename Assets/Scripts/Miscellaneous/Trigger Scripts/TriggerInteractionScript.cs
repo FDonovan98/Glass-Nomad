@@ -31,6 +31,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Upon entering the object's collider, attempt to retreive the outer reticle and interaction text from the player.
+    /// If these are both successful, then the text is set to the 'textToDisplay'.
+    /// </summary>
+    /// <param name="coll"></param>
     protected void OnTriggerEnter(Collider coll)
     {
         try {
@@ -106,6 +111,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Upon completing the interaction, if the object's result is required to sync across network,
+    /// then this rpc is called.
+    /// </summary>
+    /// <param name="pv"></param>
     [PunRPC]
     public void Completed(int pv)
     {
@@ -113,6 +123,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         InteractionComplete(player);
     }
 
+    /// <summary>
+    /// Once the interaction is completed the functionality inside this method, which may be overriden,
+    /// is executed.
+    /// </summary>
+    /// <param name="player"></param>
     virtual protected void InteractionComplete(GameObject player)
     {
         Objectives.ObjectiveComplete(objectiveName, objectiveRequired);
@@ -128,13 +143,19 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             else Destroy(objectToDestroy);
         }
     }
-    
+
+    /// <summary>
+    /// If the player isn't pressing the interaction key, or leaves the object's collider, then the
+    /// functionality inside this method - which, again, may be overriden - is executed.
+    /// As the base method, it resets the current interaction time, the interaction text, the reticle's
+    /// progress and enables the player's input.
+    /// </summary>
+    /// <param name="coll"></param>
     virtual protected void LeftTriggerArea(Collider coll)
     {
         currInteractTime = 0f;
         interactionText.text = "";
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
         coll.gameObject.GetComponent<AgentInputHandler>().allowInput = true;
-        return;
     }
 }
