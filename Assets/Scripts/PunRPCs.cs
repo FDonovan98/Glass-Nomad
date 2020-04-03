@@ -31,6 +31,7 @@ public class PunRPCs : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
     public void PlayerWasHit(int hitPlayerViewID, Vector3 hitPos, Vector3 hitNormal, int weaponDamage)
     {
         AgentInputHandler targetAgentInputHandler = PhotonNetwork.GetPhotonView(hitPlayerViewID).GetComponent<AgentInputHandler>();
