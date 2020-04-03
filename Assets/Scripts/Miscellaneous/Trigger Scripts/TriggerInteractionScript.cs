@@ -12,13 +12,13 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected float currCooldownTime = 0f; // How long it has been since the player last interacted with the object.
     protected bool interactionComplete = false; // Is the interaction complete?
     [SerializeField] protected bool debug = false; // Should the debug messages be displayed.
-    protected Image outerReticle = null;
-    private TMP_Text interactionText = null;
-    [SerializeField] protected string objectiveName = "";
-    [SerializeField] private string objectiveRequired = "";
-    [SerializeField] private bool destroyObjectAfter = true;
-    [SerializeField] private GameObject objectToDestroy = null;
-    [SerializeField] private string textToDisplay = "Hold E to interact";
+    protected Image outerReticle = null; // The reticle to display the progress of the interaction.
+    protected TMP_Text interactionText = null; // The text component for when the player enter the object's collider.
+    [SerializeField] protected string textToDisplay = "Hold E to interact"; // The text to appear when the player has entered the object's collider.
+    [SerializeField] protected string objectiveName = ""; // The name of the objective as set in the objectives text file.
+    [SerializeField] protected string objectiveRequired = ""; // The name of any potential objectives that need to be completed before.
+    [SerializeField] protected bool destroyObjectAfter = true; // If we should destroy this object after the interaction is complete.
+    [SerializeField] protected GameObject objectToDestroy = null; // A different object to destroy after the interaction is complete.
 
     /// <summary>
     /// Constantly decreases the current cooldown time, unless its already 0.
