@@ -54,6 +54,9 @@ public class Weapon : BaseObject
     // The number of magazines left in your weapon.
     [HideInInspector] public int magsLeft;
 
+    // The visible mesh of the weapon. Used for weapon switching.
+    public Mesh weaponMesh;
+
     #endregion
 
     /// <summary>
