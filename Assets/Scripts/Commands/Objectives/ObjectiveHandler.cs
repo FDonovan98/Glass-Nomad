@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class ObjectiveHandler : MonoBehaviour
 {
+    [SerializeField] private BaseObjective baseObjective = null;
+
+    public delegate void RunCommandOnStart();
+    public RunCommandOnStart runCommandOnStart;
     public delegate void RunCommandOnTriggerEnter(Collider coll);
     public RunCommandOnTriggerEnter runCommandOnTriggerEnter;
     public delegate void RunCommandOnTriggerStay(Collider coll);
@@ -10,6 +14,16 @@ public class ObjectiveHandler : MonoBehaviour
     public RunCommandOnTriggerExit runCommandOnTriggerExit;
     public delegate void RunCommandOnCompleted();
     public RunCommandOnCompleted runCommandOnCompleted;
+
+    private void Start()
+    {
+        baseObjective.RunCommandOnStart(this);
+
+        if (runCommandOnStart != null)
+        {
+            runCommandOnStart();
+        }
+    }
 
     private void OnTriggerEnter(Collider coll)
     {
