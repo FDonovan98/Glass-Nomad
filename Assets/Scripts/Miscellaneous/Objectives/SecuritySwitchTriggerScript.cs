@@ -47,6 +47,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
             {
                 currInteractTime = 0f;
                 LeftTriggerArea(coll);
+                interactionText.text = textToDisplay;
             }
         }
     }
