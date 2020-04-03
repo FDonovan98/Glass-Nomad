@@ -13,7 +13,7 @@ public class SecuritySwitchManager : MonoBehaviour
     [SerializeField] private AudioClip generatorSound = null;
 
     /// <summary>
-    /// Called by the RedSwitchTrigger.cs to increase the number of switches
+    /// Called by the SecuritySwitchTrigger.cs to increase the number of switches
     /// currently activated. If all switches are activated then we call open
     /// the armoury doors.
     /// </summary>
@@ -22,7 +22,7 @@ public class SecuritySwitchManager : MonoBehaviour
         currentSwitchesActivated++;
         if (currentSwitchesActivated == numberOfSwitches)
         {
-            RedSwitchesCompleted();
+            SwitchesCompleted();
         }
     }
 
@@ -34,7 +34,7 @@ public class SecuritySwitchManager : MonoBehaviour
     /// <summary>
     /// Changes the door state of the armoury door, and locks it open.
     /// </summary>
-    public void RedSwitchesCompleted()
+    public void SwitchesCompleted()
     {
         Objectives.ObjectiveComplete("RED SWITCH", "GENERATOR");
         if (Objectives.IsObjectiveComplete("RED SWITCH"))
@@ -43,6 +43,10 @@ public class SecuritySwitchManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called once the switches have been completed.
+    /// Calls all the necessary methods for the power on sequence.
+    /// </summary>
     private void PowerOn()
     {
         OpenAllDoors();
@@ -51,6 +55,10 @@ public class SecuritySwitchManager : MonoBehaviour
         EnableEmissives();
     }
 
+    /// <summary>
+    /// Finds all gameobjects with the tag 'Door' and sets it state to open, 
+    /// if it's not already.
+    /// </summary>
     public static void OpenAllDoors()
     {
         GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
@@ -67,6 +75,10 @@ public class SecuritySwitchManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loops through all the particle systems assigned in the inspector and
+    /// plays them.
+    /// </summary>
     private void TurnOnGenerators()
     {
         foreach (ParticleSystem ps in generatorParticleSystems)
@@ -74,13 +86,19 @@ public class SecuritySwitchManager : MonoBehaviour
             if (ps != null) ps.Play();
         }
     }
-
+    
+    /// <summary>
+    /// Plays the generator sound effect.
+    /// </summary>
     private void StartSoundEffect()
     {
         generatorAudioSource.clip = generatorSound;
         generatorAudioSource.Play();
     }
 
+    /// <summary>
+    /// Enables the emissive materials of the emissive objects set in inspector.
+    /// </summary>
     private void EnableEmissives()
     {
         // Enable generator room emission material.
