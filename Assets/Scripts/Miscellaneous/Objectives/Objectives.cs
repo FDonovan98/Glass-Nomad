@@ -89,6 +89,12 @@ public class Objectives : MonoBehaviour
             "completing the '{1}' objective", objectiveRequired.title, objectiveCompleted.title);
     }
 
+    /// <summary>
+    /// Using its private list of objectives, it searches and retrieves the objective with the name given.
+    /// If no objective is found the an errored objective is returned.
+    /// </summary>
+    /// <param name="objName">The objective to search for.</param>
+    /// <returns>An Objective object</returns>
     private static Objective GetObjective(string objName)
     {
         if (objName == "")
@@ -107,6 +113,11 @@ public class Objectives : MonoBehaviour
         return new Objective("ERROR", "");
     }
 
+    /// <summary>
+    /// Gets the objective specified through params and determines whether it is completed or not.
+    /// </summary>
+    /// <param name="objectiveName">The objective to lookup</param>
+    /// <returns>The completeness of the objective</returns>
     public static bool IsObjectiveComplete(string objectiveName)
     {
         Objective obj = GetObjective(objectiveName);
@@ -114,6 +125,15 @@ public class Objectives : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Using Tasks (delays), it asynchronously writes text, letter by letter, to the HUD.
+    /// After the text has finished writing, it waits a given amount of time until it disappears.
+    /// </summary>
+    /// <param name="diag">The text to display</param>
+    /// <param name="perLetter">The time it takes to display each letter</param>
+    /// <param name="toDisappear">The time it takes for the text to disappear, after it has finished
+    /// displaying.</param>
+    /// <returns>Nothing</returns>
     public static async void WriteTextToHud(string diag, float perLetter, float toDisappear = 0f)
     {
         string currText = "";
@@ -127,6 +147,10 @@ public class Objectives : MonoBehaviour
         captionText.text = "";
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="speech"></param>
     private static void PlaySpeechAudio(AudioClip speech)
     {
         Camera.allCameras[0].GetComponentInChildren<AudioSource>().PlayOneShot(speech);
