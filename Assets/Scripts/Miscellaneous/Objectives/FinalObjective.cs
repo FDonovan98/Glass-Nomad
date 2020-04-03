@@ -15,9 +15,14 @@ public class FinalObjective : TriggerInteractionScript
     // The evacuation zone.
     [SerializeField] private EvacZone evacZone = null;
 
-    // The gameover text
+    // The gameover text component.
     private TMP_Text gameover = null;
 
+    /// <summary>
+    /// Assigns the game over text component and marks the interaction and objective as completed.
+    /// If the objective has been successfully marked as completed, then we start the countdown timer.
+    /// </summary>
+    /// <param name="player"></param>
     protected override void InteractionComplete(GameObject player)
     {
         gameover = player.GetComponent<AgentController>().transform.GetChild(2).GetChild(0).GetChild(1).GetComponentInChildren<TMP_Text>();
@@ -26,6 +31,13 @@ public class FinalObjective : TriggerInteractionScript
         StartCoroutine(StartTimer());
     }
 
+    /// <summary>
+    /// Enables the alien's objective caption text, as the marines should already be active, and waits
+    /// a short amount of time, for the text to finishing writing to the HUD. Then, the actual countdown
+    /// timer until the evacuation starts; constantly writing the time left to the HUD. Once the timer
+    /// has finished, it initiates the game over sequence.
+    /// </summary>
+    /// <returns>Nothing</returns>
     private IEnumerator StartTimer()
     {
         // Turns the alien's caption text on.
@@ -54,6 +66,10 @@ public class FinalObjective : TriggerInteractionScript
         StartGameOverSequence();
     }
 
+    /// <summary>
+    /// Determines which side won the game, and proceeds to display which team won to the HUD.
+    /// Then, it switches everyone to the main menu.
+    /// </summary>
     private void StartGameOverSequence()
     {
         Debug.Log("MARINE COUNT IN EVAC: " + evacZone.numberOfMarinesInEvac);
@@ -69,11 +85,16 @@ public class FinalObjective : TriggerInteractionScript
         StartCoroutine(SwitchToMainMenu());
     }
 
+    /// <summary>
+    /// Leaves the photon room, unlocks the cursor, and changes the scene back to the lobby.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator SwitchToMainMenu()
     {
         yield return new WaitForSeconds(5f);
         PhotonNetwork.LeaveRoom();
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         SceneManager.LoadScene("SCN_Lobby");
     }
 }
