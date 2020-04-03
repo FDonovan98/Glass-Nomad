@@ -15,8 +15,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected Image outerReticle = null; // The reticle to display the progress of the interaction.
     protected TMP_Text interactionText = null; // The text component for when the player enter the object's collider.
     [SerializeField] protected string textToDisplay = "Hold E to interact"; // The text to appear when the player has entered the object's collider.
-    [SerializeField] protected string objectiveName = ""; // The name of the objective as set in the objectives text file.
-    [SerializeField] protected string objectiveRequired = ""; // The name of any potential objectives that need to be completed before.
     [SerializeField] protected bool destroyObjectAfter = true; // If we should destroy this object after the interaction is complete.
     [SerializeField] protected GameObject objectToDestroy = null; // A different object to destroy after the interaction is complete.
 
@@ -128,14 +126,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// is executed.
     /// </summary>
     /// <param name="player"></param>
-    virtual protected void InteractionComplete(GameObject player)
+    protected virtual void InteractionComplete(GameObject player)
     {
-        Objectives.ObjectiveComplete(objectiveName, objectiveRequired);
-        
-        // If the objective failed to be set as completed (e.g. a required objective hasn't been completed),
-        // then don't do anything else.
-        if (!Objectives.IsObjectiveComplete(objectiveName)) return;
-
         GetComponent<Collider>().enabled = false;
         if (destroyObjectAfter)
         {
@@ -151,7 +143,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// progress and enables the player's input.
     /// </summary>
     /// <param name="coll"></param>
-    virtual protected void LeftTriggerArea(Collider coll)
+    protected virtual void LeftTriggerArea(Collider coll)
     {
         currInteractTime = 0f;
         interactionText.text = "";
