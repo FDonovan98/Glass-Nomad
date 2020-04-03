@@ -30,6 +30,8 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public float currentRecoilValue = 0.0f;
     public GameObject weaponObject;
     public ParticleSystem weaponMuzzleFlash;
+    public Weapon[] equipedWeapons = new Weapon[2];
+    public int currentWeaponID = 0;
 
     [Header("Camera")]
     public Camera agentCamera;
