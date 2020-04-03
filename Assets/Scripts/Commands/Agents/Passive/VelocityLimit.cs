@@ -14,14 +14,23 @@ public class VelocityLimit : PassiveCommandObject
         {
             Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
 
-            if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed && agentInputHandler.isGrounded)
+            if (agentInputHandler.isGrounded || agentValues.reduceVelocityInAir)
             {
-                agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
-            }
+                if (agentInputHandler.isSprinting)
+                {    
+                    if (agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed)
+                    {
+                        agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSprintSpeed;
+                    }
+                }
+                else
+                {
+                    if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
+                    {
+                        agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
+                    }
+                }
 
-            if (agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed && agentInputHandler.isGrounded)
-            {
-                agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSprintSpeed;
             }
         }
     }
