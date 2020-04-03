@@ -33,7 +33,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected void OnTriggerEnter(Collider coll)
     {
         // interactionText = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
-        // outerReticle = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+        try {
+            outerReticle = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+        }
+        catch {
+        }
     }
 
     /// <summary>
@@ -48,7 +52,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected void OnTriggerStay(Collider coll)
     {
-        if (interactionText != null) interactionText.text = "Press E to interact with <color=#2222ff>" + gameObject.name + "</color>";
+        if (interactionText != null) interactionText.text = "Press E to interact";
         if (coll.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
         {
             if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
