@@ -34,10 +34,10 @@ public class AgentController : AgentInputHandler
         }
 
         try {
-            Objectives.captionText = transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
+            if (photonView.IsMine) Objectives.captionText = transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
         }
         catch {
-            // Alien
+            Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
         }
     }
 
