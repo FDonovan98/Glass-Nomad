@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using System.Collections;
 
 public class AgentController : AgentInputHandler
 {
@@ -78,13 +79,44 @@ public class AgentController : AgentInputHandler
         }
     }
 
+    /// <summary>
+    /// Disables the player's input, enables rotations in the rigidbody, adds a random force to the
+    /// rigidbody, and starts the 'Death' coroutine.
+    /// </summary>
     public void AgentHasDied()
     {
-        // This line needs changing, ewwww.
-        PhotonNetwork.Destroy(agent);
+        allowInput = false;
+        agent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        agent.GetComponent<Rigidbody>().AddForceAtPosition(RandomForce(150f), transform.position);
+        StartCoroutine(Death(agent));
+    }
+    
+    /// <summary>
+    /// Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.
+    /// </summary>
+    /// <param name="velocity">The maximum random force.</param>
+    /// <returns>Returns a vector with all axes having a random value between 0 and the 'velocity' parameter.</returns>
+    private Vector3 RandomForce(float velocity)
+    {
+        return new Vector3(Random.Range(0, velocity), Random.Range(0, velocity), Random.Range(0, velocity));
+    }
+    
+    private IEnumerator Death(GameObject player)
+    {
+        yield return new WaitForSeconds(3f);
+        if (photonView.IsMine)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            PhotonNetwork.LeaveRoom();
+        }
+        else if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(player);
+        }
     }
 
-    void FireWeaponOverNet(AgentInputHandler agentInputHandler)
+    private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
     {
         photonView.RPC("Shoot", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
     }
