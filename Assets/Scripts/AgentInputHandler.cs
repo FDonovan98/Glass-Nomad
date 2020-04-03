@@ -34,6 +34,11 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [Header("Camera")]
     public Camera agentCamera;
 
+    [Header("ADS")]
+    public Camera mainCamera;
+    public Camera aDSCamera;
+    public bool isADS = false;
+
     [Header("Health")]
     public float currentHealth = 0.0f;
 

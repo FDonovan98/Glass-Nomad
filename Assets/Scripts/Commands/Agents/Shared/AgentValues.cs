@@ -26,6 +26,9 @@ public class AgentValues : ScriptableObject
     public float mouseSensitivity = 1.0f;
     public float yRotationClamp = 80.0f;
 
+    [Header("Aim Down Sight")]
+    public bool aDSIsAToggle;
+
     [Header("Velocity Degradation")]
     public bool reduceVelocityInAir = true;
     public bool scaleVelocityDegWithVel = true;
