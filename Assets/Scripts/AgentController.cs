@@ -18,9 +18,7 @@ public class AgentController : AgentInputHandler
 
     private void Awake()
     { 
-        photonView.RPC("TestRPC", RpcTarget.All, this.transform as Object);
         runCommandOnWeaponFired += FireWeaponOverNet;
-
         if (specialVision && photonView.IsMine)
         {
             SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
@@ -129,7 +127,7 @@ public class AgentController : AgentInputHandler
             }
             else
             {          
-                photonView.RPC("Shoot", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
+                photonView.RPC("WallWasHit", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
             }
         }
     }
