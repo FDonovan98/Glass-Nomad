@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using TMPro;
 
-public class FinalObjective : TriggerInteractionScript
+public class FinalObjective : ObjectiveInteraction
 {
     // The time to wait before starting the countdown.
     [SerializeField] private float waitTimer = 10f;
@@ -18,16 +18,19 @@ public class FinalObjective : TriggerInteractionScript
     // The gameover text component.
     private TMP_Text gameover = null;
 
+    protected override void InteractionComplete(GameObject player)
+    {
+        base.InteractionComplete(player);
+        gameover = player.GetComponent<AgentController>().transform.GetChild(2).GetChild(0).GetChild(1).GetComponentInChildren<TMP_Text>();
+    }
+
     /// <summary>
     /// Assigns the game over text component and marks the interaction and objective as completed.
     /// If the objective has been successfully marked as completed, then we start the countdown timer.
     /// </summary>
-    /// <param name="player"></param>
-    protected override void InteractionComplete(GameObject player)
+    /// /// <param name="player"></param>
+    protected override void ObjectiveComplete()
     {
-        gameover = player.GetComponent<AgentController>().transform.GetChild(2).GetChild(0).GetChild(1).GetComponentInChildren<TMP_Text>();
-        base.InteractionComplete(player);
-        if (!Objectives.IsObjectiveComplete(objectiveName)) return;
         StartCoroutine(StartTimer());
     }
 
