@@ -7,9 +7,17 @@ public class SecuritySwitchManager : MonoBehaviour
 
     // The number of switches that are currently activated.
     private int currentSwitchesActivated = 0;
+
+    // The particle effects to start playing once the power has turned on.
     [SerializeField] private ParticleSystem[] generatorParticleSystems = null;
+
+    // The objects that should be emissive once power is turned on.
     [SerializeField] private GameObject[] emissiveObjects = null;
+
+    // The source to play audio from once power is turned on.
     [SerializeField] private AudioSource generatorAudioSource = null;
+
+    // The audio clip to play once power is turned on.
     [SerializeField] private AudioClip generatorSound = null;
 
     /// <summary>
