@@ -40,7 +40,7 @@ public class FireWeapon : ActiveCommandObject
         {
             if (agentInputHandler.timeSinceLastShot > agentInputHandler.currentWeapon.fireRate)
             {
-                if (agentInputHandler.currentBulletsInMag > 0)
+                if (agentInputHandler.currentBulletsInMag > 0 || agentInputHandler.currentWeapon.fireMode == Weapon.FireType.Melee)
                 {
                     return true;
                 }
