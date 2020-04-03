@@ -33,7 +33,12 @@ public class AgentController : AgentInputHandler
             }
         }
 
-        Objectives.captionText = transform.GetChild(2).GetChild(1).GetChild(0).GetChild(1).GetComponent<TMP_Text>();
+        try {
+            Objectives.captionText = transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
+        }
+        catch {
+            // Alien
+        }
     }
 
     private void DisableObjectsForPhoton()

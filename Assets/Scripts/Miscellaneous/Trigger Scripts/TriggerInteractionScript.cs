@@ -32,8 +32,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 
     protected void OnTriggerEnter(Collider coll)
     {
-        interactionText = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
-        outerReticle = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+        // interactionText = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+        // outerReticle = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
     }
 
     /// <summary>
