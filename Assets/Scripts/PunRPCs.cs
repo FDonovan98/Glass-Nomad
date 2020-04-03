@@ -5,7 +5,7 @@ using Photon.Pun;
 public class PunRPCs : MonoBehaviourPunCallbacks
 {
     [PunRPC]
-    public void Shoot(Vector3 cameraPos, Vector3 cameraForward, float weaponRange, int weaponDamage)
+    public void WallWasHit(Vector3 cameraPos, Vector3 cameraForward, float weaponRange, int weaponDamage)
     {     
         Debug.Log("shoot");
         RaycastHit hit;
@@ -28,6 +28,23 @@ public class PunRPCs : MonoBehaviourPunCallbacks
             {
                 Debug.LogWarning(hit.transform.gameObject.name + " has no agentInputHandler");
             }
+        }
+    }
+
+    public void PlayerWasHit(int hitPlayerViewID, Vector3 hitPos, Vector3 hitNormal, int weaponDamage)
+    {
+        AgentInputHandler targetAgentInputHandler = PhotonNetwork.GetPhotonView(hitPlayerViewID).GetComponent<AgentInputHandler>();
+
+        if (targetAgentInputHandler != null)
+        {
+            if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
+                {
+                    targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hitPos, hitNormal, weaponDamage);
+                }
+        }
+        else
+        {
+            Debug.LogWarning(targetAgentInputHandler.gameObject.name + " has no agentInputHandler");
         }
     }
 }

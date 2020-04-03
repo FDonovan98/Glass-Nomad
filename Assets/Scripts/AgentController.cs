@@ -17,7 +17,8 @@ public class AgentController : AgentInputHandler
     public Behaviour[] componentsToDisableForPhoton;
 
     private void Awake()
-    {   
+    { 
+        photonView.RPC("TestRPC", RpcTarget.All, this.transform as Object);
         runCommandOnWeaponFired += FireWeaponOverNet;
 
         if (specialVision && photonView.IsMine)
@@ -118,6 +119,18 @@ public class AgentController : AgentInputHandler
 
     private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
     {
-        photonView.RPC("Shoot", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
+        RaycastHit hit;
+        if (Physics.Raycast(agentCamera.transform.position, agentCamera.transform.forward, out hit, currentWeapon.range))
+        {
+            if (hit.transform.tag == "Player")
+            {
+                int targetPhotonID = hit.transform.GetComponent<PhotonView>().ViewID;
+                photonView.RPC("PlayerWasHit", RpcTarget.All, targetPhotonID, hit.point, hit.normal, currentWeapon.damage);
+            }
+            else
+            {          
+                photonView.RPC("Shoot", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
+            }
+        }
     }
 }
