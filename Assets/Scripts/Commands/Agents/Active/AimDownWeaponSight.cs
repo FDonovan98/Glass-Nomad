@@ -13,6 +13,7 @@ public class AimDownWeaponSight : ActiveCommandObject
 
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
+        Debug.Log("Subed");
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
     }
 
@@ -22,6 +23,7 @@ public class AimDownWeaponSight : ActiveCommandObject
         {
             if (Input.GetKeyDown(aimDownSight))
             {
+                Debug.Log("togglekeydown");
                 if (agentInputHandler.aDSCamera.enabled == true)
                 {
                     DisableADS(agentInputHandler);
@@ -36,10 +38,12 @@ public class AimDownWeaponSight : ActiveCommandObject
         {
             if (Input.GetKeyDown(aimDownSight))
             {
+                Debug.Log("nottogglekeydown");
                 EnableADS(agentInputHandler);
             }
             else if (Input.GetKeyUp(aimDownSight))
             {
+                Debug.Log("nottogglekeyup");
                 DisableADS(agentInputHandler);
             }
         }
@@ -47,15 +51,17 @@ public class AimDownWeaponSight : ActiveCommandObject
 
     void EnableADS(AgentInputHandler agentInputHandler)
     {
+        Debug.Log("enable");
+        agentInputHandler.agentCamera = agentInputHandler.aDSCamera;
         agentInputHandler.mainCamera.enabled = false;
         agentInputHandler.aDSCamera.enabled = true;
-        agentInputHandler.agentCamera = agentInputHandler.aDSCamera;
     }
 
     void DisableADS(AgentInputHandler agentInputHandler)
     {
+        Debug.Log("disenable");
+        agentInputHandler.agentCamera = agentInputHandler.mainCamera;
         agentInputHandler.aDSCamera.enabled = false;
         agentInputHandler.mainCamera.enabled = true;
-        agentInputHandler.agentCamera = agentInputHandler.mainCamera;
     }
 }
