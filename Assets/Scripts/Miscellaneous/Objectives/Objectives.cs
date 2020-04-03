@@ -148,7 +148,8 @@ public class Objectives : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Gets the only active camera (which should be the local players) and players the audio clip
+    /// passed through the parameters.
     /// </summary>
     /// <param name="speech"></param>
     private static void PlaySpeechAudio(AudioClip speech)
@@ -163,10 +164,10 @@ public class Objectives : MonoBehaviour
 /// </summary>
 public class Objective
 {
-    public string title;
-    public string dialogue;
-    public bool completed;
-    public AudioClip speechAudio;
+    public string title; // The title of the objective.
+    public string dialogue; // The text to display when the objective starts.
+    public bool completed; // Whether the objective has been completed or not.
+    public AudioClip speechAudio; // The audio clip to say when the objective starts.
 
     /// <summary>
     /// Constructor method of this class. Assigns the title and dialogue strings, and the completed
