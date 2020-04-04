@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 public class Teleporter : TriggerInteractionScript
 {
@@ -19,6 +20,7 @@ public class Teleporter : TriggerInteractionScript
     /// Once the interaction is complete, we teleport the player from this teleporter, to the linked teleporter.
     /// </summary>
     /// <param name="player">The player to teleport.</param>
+    [PunRPC]
     protected override void InteractionComplete()
     {
         Debug.Log("teleporting player to: " + linkedTeleporter.transform.position);

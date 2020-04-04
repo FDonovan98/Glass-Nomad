@@ -25,6 +25,7 @@ public class FinalObjective : ObjectiveInteraction
     /// If the objective has been successfully marked as completed, then we start the countdown timer.
     /// </summary>
     /// /// <param name="player"></param>
+    [PunRPC]
     protected override void InteractionComplete()
     {
         base.InteractionComplete();
