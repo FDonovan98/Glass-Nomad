@@ -21,7 +21,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     /// <param name="coll"></param>
     private new void OnTriggerStay(Collider coll)
     {
-        if (coll.gameObject.tag == "Player" && currCooldownTime <= 0)
+        if (coll.tag == "Player" && currCooldownTime <= 0)
         {
             if (Input.GetKey(inputKey))
             {
@@ -39,21 +39,21 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
                     if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
 
                     ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
-                    coll.gameObject.GetComponent<AgentInputHandler>().allowInput = false;
+                    playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
                     return;
                 }
             }
             else // if the player is not pressing then reset the switch's state.
             {
-                currInteractTime = 0f;
-                LeftTriggerArea(coll);
-                interactionText.text = textToDisplay;
+                LeftTriggerArea();
             }
+
+            interactionText.text = textToDisplay;
         }
     }
 
     [PunRPC]
-    private void InteractionComplete()
+    protected override void InteractionComplete()
     {
         if (debug) Debug.Log("Switch activated");
         interactionComplete = true;
@@ -65,13 +65,13 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     /// <summary>
     /// If the player exits the switch's collider, then reset the switch's state and timer.
     /// </summary>
-    protected override void LeftTriggerArea(Collider coll)
+    protected override void LeftTriggerArea()
     {
         if (interactionComplete)
         {
             photonView.RPC("Deactivate", RpcTarget.All);
         }
-        base.LeftTriggerArea(coll);
+        base.LeftTriggerArea();
     }
 
     [PunRPC]
