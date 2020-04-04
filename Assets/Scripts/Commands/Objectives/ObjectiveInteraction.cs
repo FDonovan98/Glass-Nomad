@@ -1,14 +1,29 @@
+using System;
+using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
+using Photon.Pun;
 
 public abstract class ObjectiveInteraction : TriggerInteractionScript
 {
     [SerializeField] private ObjectiveValues objectiveValues;
-    
-    // The time it takes to display each letter.
-    private static float timePerLetter = 0.05f;
 
-    // The time, after the whole text is diplayed, for it to vanish.
-    private static float timeToDisappear = 1f;
+    private TMP_Text captionText;
+
+    // The time it takes to display each letter.
+    private const float timePerLetter = 0.05f;
+
+    protected override void OnTriggerEnter(Collider coll)
+    {
+        base.OnTriggerEnter(coll);
+
+        try {
+            if (photonView.IsMine) captionText = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+        }
+        catch {
+            Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
+        }
+    }
 
     protected override void InteractionComplete(GameObject player)
     {
@@ -16,6 +31,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
 
         objectiveValues.completed = true;
         ObjectiveComplete();
+        WriteTextToHud();
     }
 
     protected abstract void ObjectiveComplete();
@@ -25,9 +41,9 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     /// passed through the parameters.
     /// </summary>
     /// <param name="speech"></param>
-    private static void PlaySpeechAudio(AudioClip speech)
+    private void PlaySpeechAudio()
     {
-        Camera.allCameras[0].GetComponentInChildren<AudioSource>().PlayOneShot(speech);
+        Camera.allCameras[0].GetComponentInChildren<AudioSource>().PlayOneShot(objectiveValues.objectiveAudio);
     }
 
     /// <summary>
@@ -39,16 +55,16 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     /// <param name="toDisappear">The time it takes for the text to disappear, after it has finished
     /// displaying.</param>
     /// <returns>Nothing</returns>
-    public static async void WriteTextToHud(string diag, float perLetter, float toDisappear = 0f)
+    public async void WriteTextToHud()
     {
         string currText = "";
-        foreach (Char letter in diag.ToCharArray())
+        foreach (Char letter in objectiveValues.objectiveText.ToCharArray())
         {
             currText += letter;
             captionText.text = "<mark=#000000aa>" + currText + "</mark>";
             await Task.Delay(TimeSpan.FromSeconds(perLetter));
         }
-        await Task.Delay(TimeSpan.FromSeconds(toDisappear));
+        await Task.Delay(TimeSpan.FromSeconds(objectiveValues.timeToDisappear));
         captionText.text = "";
     }
 }
