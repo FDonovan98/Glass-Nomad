@@ -37,10 +37,14 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected virtual void OnTriggerEnter(Collider coll)
     {
         try {
-            playerInteracting = coll.gameObject;
-            outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
-            interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
-            interactionText.text = textToDisplay;
+            if (photonView.IsMine)
+            {
+                playerInteracting = coll.gameObject;
+                Debug.Log("PLAYER: " + playerInteracting.name);
+                outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+                interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
+                interactionText.text = textToDisplay;
+            }
         }
         catch {
             Debug.LogError("Outer Reticle or Interaction Text has not been set correctly.");
@@ -61,11 +65,13 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     {
         if (coll.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
         {
+            playerInteracting = coll.gameObject;
+            
             if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
             {
                 if (currInteractTime >= interactTime)
                 {
-                    photonView.RPC("Completed", RpcTarget.All);
+                    photonView.RPC("InteractionComplete", RpcTarget.All);
                     currInteractTime = 0f;
                     interactionComplete = true;
                     currCooldownTime = cooldownTime;
@@ -82,7 +88,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
                 return;
             }
 
-            LeftTriggerArea(coll);
+            LeftTriggerArea();
             interactionText.text = textToDisplay;
         }
 
@@ -103,10 +109,10 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected void OnTriggerExit(Collider coll)
     {
-        if (coll.tag == "Player")
+        if (coll.gameObject == playerInteracting && photonView.IsMine)
         {
             interactionComplete = false;
-            LeftTriggerArea(coll);
+            LeftTriggerArea();
         }
     }
 
@@ -114,18 +120,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// Upon completing the interaction, if the object's result is required to sync across network,
     /// then this rpc is called.
     /// </summary>
-    /// <param name="pv"></param>
     [PunRPC]
-    protected void Completed(int pv)
-    {
-        InteractionComplete();
-    }
-
-    /// <summary>
-    /// Once the interaction is completed the functionality inside this method, which may be overriden,
-    /// is executed.
-    /// </summary>
-    /// <param name="player"></param>
     protected virtual void InteractionComplete()
     {
         GetComponent<Collider>().enabled = false;
@@ -138,7 +133,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// progress and enables the player's input.
     /// </summary>
     /// <param name="coll"></param>
-    protected virtual void LeftTriggerArea(Collider coll)
+    protected virtual void LeftTriggerArea()
     {
         currInteractTime = 0f;
         interactionText.text = "";
