@@ -10,6 +10,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     [SerializeField] protected ObjectiveValues objectiveValues; // The objective values that to use.
     [SerializeField] protected bool destroyObjectAfter = true; // If we should destroy this object after the interaction is complete.
     [SerializeField] protected GameObject objectToDestroy = null; // A different object to destroy after the interaction is complete.
+    [SerializeField] protected Behaviour componentToDisable = null; // A different component to disable after the interaction is complete.
 
     protected TMP_Text captionText;
 
@@ -21,13 +22,14 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         base.OnTriggerEnter(coll);
 
         try {
-            if (photonView.IsMine) captionText = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+            if (photonView.IsMine) captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
         }
         catch {
             Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
         }
     }
 
+    [PunRPC]
     protected override void InteractionComplete()
     {
         if (!objectiveValues.AllRequiredObjectivesCompleted()) return;
@@ -36,15 +38,17 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         ObjectiveComplete();
         WriteTextToHud();
         PlaySpeechAudio();
+
+        if (componentToDisable != null) componentToDisable.enabled = false;
         
         if (destroyObjectAfter)
         {
-            if (objectToDestroy == null) Destroy(gameObject);
-            else Destroy(objectToDestroy);
+            if (objectToDestroy != null) Destroy(objectToDestroy);
+            Destroy(gameObject);
         }
     }
 
-    protected abstract void ObjectiveComplete();
+    protected virtual void ObjectiveComplete() {}
 
     /// <summary>
     /// Gets the only active camera (which should be the local players) and players the audio clip
