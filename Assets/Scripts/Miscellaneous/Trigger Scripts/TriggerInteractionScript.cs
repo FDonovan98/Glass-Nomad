@@ -37,14 +37,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected virtual void OnTriggerEnter(Collider coll)
     {
         try {
-            if (photonView.IsMine)
-            {
-                playerInteracting = coll.gameObject;
-                Debug.Log("PLAYER: " + playerInteracting.name);
-                outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
-                interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
-                interactionText.text = textToDisplay;
-            }
+            playerInteracting = coll.gameObject;
+            Debug.Log("PLAYER: " + playerInteracting.name);
+            outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+            interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
+            interactionText.text = textToDisplay;
         }
         catch {
             Debug.LogError("Outer Reticle or Interaction Text has not been set correctly.");
