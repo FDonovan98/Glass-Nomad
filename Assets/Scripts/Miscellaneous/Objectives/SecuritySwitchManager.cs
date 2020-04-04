@@ -31,7 +31,7 @@ public class SecuritySwitchManager : ObjectiveInteraction
         currentSwitchesActivated++;
         if (currentSwitchesActivated == numberOfSwitches)
         {
-            photonView.RPC("ObjectiveComplete", RpcTarget.All);
+            photonView.RPC("InteractionComplete", RpcTarget.All);
         }
     }
 
@@ -44,7 +44,7 @@ public class SecuritySwitchManager : ObjectiveInteraction
     /// Changes the door state of the armoury door, and locks it open.
     /// </summary>
     [PunRPC]
-    protected override void ObjectiveComplete()
+    protected override void InteractionComplete()
     {
         PowerOn();
     }
