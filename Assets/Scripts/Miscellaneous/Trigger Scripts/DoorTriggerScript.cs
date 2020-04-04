@@ -2,6 +2,7 @@
 
 public class DoorTriggerScript : TriggerInteractionScript
 {
+    [Header("Door Interaction")]
     // Plays the animation of the door opening.
     private Animator anim;
 
@@ -37,7 +38,7 @@ public class DoorTriggerScript : TriggerInteractionScript
     /// Changes the door's state once the interaction has been completed.
     /// </summary>
     /// <param name="player"></param>
-    protected override void InteractionComplete(GameObject player)
+    protected override void InteractionComplete()
     {
         ChangeDoorState();
     }

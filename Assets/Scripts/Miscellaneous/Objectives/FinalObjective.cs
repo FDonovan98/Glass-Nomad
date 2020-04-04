@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public class FinalObjective : ObjectiveInteraction
 {
+    [Header("Final Objective")]
     // The time to wait before starting the countdown.
     [SerializeField] private float waitTimer = 10f;
 
@@ -24,10 +25,10 @@ public class FinalObjective : ObjectiveInteraction
     /// If the objective has been successfully marked as completed, then we start the countdown timer.
     /// </summary>
     /// /// <param name="player"></param>
-    protected override void InteractionComplete(GameObject player)
+    protected override void InteractionComplete()
     {
-        base.InteractionComplete(player);
-        gameover = player.GetComponent<AgentController>().transform.GetChild(2).GetChild(0).GetChild(1).GetComponentInChildren<TMP_Text>();
+        base.InteractionComplete();
+        gameover = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(0).GetChild(1).GetComponentInChildren<TMP_Text>();
     }
 
     protected override void ObjectiveComplete()
