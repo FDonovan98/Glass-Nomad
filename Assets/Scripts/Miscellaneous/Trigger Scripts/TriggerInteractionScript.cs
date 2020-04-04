@@ -115,7 +115,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="pv"></param>
     [PunRPC]
-    public void Completed(int pv)
+    protected void Completed(int pv)
     {
         GameObject player = PhotonView.Find(pv).gameObject;
         InteractionComplete(player);

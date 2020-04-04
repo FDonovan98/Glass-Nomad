@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using TMPro;
+using System;
+using System.Threading.Tasks;
 
 public class FinalObjective : ObjectiveInteraction
 {
@@ -18,20 +19,20 @@ public class FinalObjective : ObjectiveInteraction
     // The gameover text component.
     private TMP_Text gameover = null;
 
+    /// <summary>
+    /// Assigns the game over text component and marks the interaction and objective as completed.
+    /// If the objective has been successfully marked as completed, then we start the countdown timer.
+    /// </summary>
+    /// /// <param name="player"></param>
     protected override void InteractionComplete(GameObject player)
     {
         base.InteractionComplete(player);
         gameover = player.GetComponent<AgentController>().transform.GetChild(2).GetChild(0).GetChild(1).GetComponentInChildren<TMP_Text>();
     }
 
-    /// <summary>
-    /// Assigns the game over text component and marks the interaction and objective as completed.
-    /// If the objective has been successfully marked as completed, then we start the countdown timer.
-    /// </summary>
-    /// /// <param name="player"></param>
     protected override void ObjectiveComplete()
     {
-        StartCoroutine(StartTimer());
+        StartTimer();
     }
 
     /// <summary>
@@ -41,31 +42,27 @@ public class FinalObjective : ObjectiveInteraction
     /// has finished, it initiates the game over sequence.
     /// </summary>
     /// <returns>Nothing</returns>
-    private IEnumerator StartTimer()
+    private async void StartTimer()
     {
-        // Turns the alien's caption text on.
-        Objectives.captionText.gameObject.SetActive(true);
+        // NEED A WAY TO TURN THE ALIEN'S OBJECTIVE TEXT ON,
+        // SO THAT THE ALIEN CAN SEE THE COUNTDOWN TOO.
 
         // Wait for text to finish displaying and audio to start playing
-        for (float i = 0; i < waitTimer; i += Time.deltaTime)
-        {
-            yield return null;
-        }
+        await Task.Delay(TimeSpan.FromSeconds(waitTimer));
 
         int currSecond = 0;
-
-        for (float i = 0; i < timer; i += Time.deltaTime)
+        for (float i = 0; i <= timer; i += Time.deltaTime)
         {
             if (currSecond != Mathf.FloorToInt(i))
             {
                 currSecond = Mathf.FloorToInt(i);
                 Debug.Log("TIMER : " + currSecond);
-                Objectives.WriteTextToHud(currSecond.ToString(), 0f, 0.9f);
+                captionText.text = "<mark=#000000aa>" + currSecond.ToString() + "</mark>";
+                await Task.Delay(TimeSpan.FromSeconds(0.9f));
+                captionText.text = "";
             }
-            yield return null;
         }
-        
-        Objectives.WriteTextToHud(timer.ToString(), Time.deltaTime, 0.9f);
+
         StartGameOverSequence();
     }
 
@@ -85,16 +82,16 @@ public class FinalObjective : ObjectiveInteraction
             gameover.text = "Alien won!";
         }
         gameover.gameObject.SetActive(true);
-        StartCoroutine(SwitchToMainMenu());
+        SwitchToMainMenu();
     }
 
     /// <summary>
     /// Leaves the photon room, unlocks the cursor, and changes the scene back to the lobby.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator SwitchToMainMenu()
+    private async void SwitchToMainMenu()
     {
-        yield return new WaitForSeconds(5f);
+        await Task.Delay(TimeSpan.FromSeconds(5f));
         PhotonNetwork.LeaveRoom();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
