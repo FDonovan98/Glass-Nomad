@@ -34,7 +34,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// If these are both successful, then the text is set to the 'textToDisplay'.
     /// </summary>
     /// <param name="coll"></param>
-    protected void OnTriggerEnter(Collider coll)
+    protected virtual void OnTriggerEnter(Collider coll)
     {
         try {
             outerReticle = coll.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();

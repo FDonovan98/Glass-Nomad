@@ -9,7 +9,9 @@ public class ObjectiveValues : ScriptableObject
     public List<ObjectiveValues> requiredObjectives = new List<ObjectiveValues>();
     public AudioClip objectiveAudio = null;
     public bool completed;
-    // time per letter and time to disappear can be handled by the master objective handler.
+
+    // The time, after the whole text is diplayed, for it to vanish.
+    public float timeToDisappear = 1f;
 
     public bool AllRequiredObjectivesCompleted()
     {
