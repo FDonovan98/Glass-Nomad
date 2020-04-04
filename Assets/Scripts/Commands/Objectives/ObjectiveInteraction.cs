@@ -6,7 +6,10 @@ using Photon.Pun;
 
 public abstract class ObjectiveInteraction : TriggerInteractionScript
 {
-    [SerializeField] protected ObjectiveValues objectiveValues;
+    [Header("Objective Interaction")]
+    [SerializeField] protected ObjectiveValues objectiveValues; // The objective values that to use.
+    [SerializeField] protected bool destroyObjectAfter = true; // If we should destroy this object after the interaction is complete.
+    [SerializeField] protected GameObject objectToDestroy = null; // A different object to destroy after the interaction is complete.
 
     protected TMP_Text captionText;
 
@@ -25,14 +28,20 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         }
     }
 
-    protected override void InteractionComplete(GameObject player)
+    protected override void InteractionComplete()
     {
-        if (!objectiveValues.AllRequiredObjectivesCompleted())
+        if (!objectiveValues.AllRequiredObjectivesCompleted()) return;
 
         objectiveValues.completed = true;
         ObjectiveComplete();
         WriteTextToHud();
         PlaySpeechAudio();
+        
+        if (destroyObjectAfter)
+        {
+            if (objectToDestroy == null) Destroy(gameObject);
+            else Destroy(objectToDestroy);
+        }
     }
 
     protected abstract void ObjectiveComplete();
