@@ -6,12 +6,12 @@ using Photon.Pun;
 
 public abstract class ObjectiveInteraction : TriggerInteractionScript
 {
-    [SerializeField] private ObjectiveValues objectiveValues;
+    [SerializeField] protected ObjectiveValues objectiveValues;
 
-    private TMP_Text captionText;
+    protected TMP_Text captionText;
 
     // The time it takes to display each letter.
-    private const float timePerLetter = 0.05f;
+    protected const float timePerLetter = 0.05f;
 
     protected override void OnTriggerEnter(Collider coll)
     {
@@ -32,6 +32,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         objectiveValues.completed = true;
         ObjectiveComplete();
         WriteTextToHud();
+        PlaySpeechAudio();
     }
 
     protected abstract void ObjectiveComplete();
@@ -55,14 +56,14 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     /// <param name="toDisappear">The time it takes for the text to disappear, after it has finished
     /// displaying.</param>
     /// <returns>Nothing</returns>
-    public async void WriteTextToHud()
+    protected async void WriteTextToHud()
     {
         string currText = "";
         foreach (Char letter in objectiveValues.objectiveText.ToCharArray())
         {
             currText += letter;
             captionText.text = "<mark=#000000aa>" + currText + "</mark>";
-            await Task.Delay(TimeSpan.FromSeconds(perLetter));
+            await Task.Delay(TimeSpan.FromSeconds(timePerLetter));
         }
         await Task.Delay(TimeSpan.FromSeconds(objectiveValues.timeToDisappear));
         captionText.text = "";
