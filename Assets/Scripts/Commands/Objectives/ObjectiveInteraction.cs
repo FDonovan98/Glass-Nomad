@@ -3,14 +3,15 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using Photon.Pun;
+using System.Collections.Generic;
 
 public abstract class ObjectiveInteraction : TriggerInteractionScript
 {
     [Header("Objective Interaction")]
     [SerializeField] protected ObjectiveValues objectiveValues; // The objective values that to use.
     [SerializeField] protected bool destroyObjectAfter = true; // If we should destroy this object after the interaction is complete.
-    [SerializeField] protected GameObject objectToDestroy = null; // A different object to destroy after the interaction is complete.
-    [SerializeField] protected Behaviour componentToDisable = null; // A different component to disable after the interaction is complete.
+    [SerializeField] protected List<GameObject> objectsToDestroy = new List<GameObject>(); // A different object to destroy after the interaction is complete.
+    [SerializeField] protected List<Behaviour> componentsToDisable = new List<Behaviour>(); // A different component to disable after the interaction is complete.
 
     protected TMP_Text captionText;
 
@@ -21,8 +22,10 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     {
         base.OnTriggerEnter(coll);
 
+        Debug.Log(playerInteracting.name);
         try {
-            if (photonView.IsMine) captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+            captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+            Debug.Log(captionText.name);
         }
         catch {
             Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
@@ -38,13 +41,15 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         ObjectiveComplete();
         WriteTextToHud();
         PlaySpeechAudio();
-
-        if (componentToDisable != null) componentToDisable.enabled = false;
         
-        if (destroyObjectAfter)
+        foreach (Behaviour go in componentsToDisable)
         {
-            if (objectToDestroy != null) Destroy(objectToDestroy);
-            Destroy(gameObject);
+            go.enabled = false;
+        }
+
+        foreach (GameObject go in objectsToDestroy)
+        {
+            Destroy(go);
         }
     }
 
@@ -57,7 +62,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     /// <param name="speech"></param>
     private void PlaySpeechAudio()
     {
-        Camera.allCameras[0].GetComponentInChildren<AudioSource>().PlayOneShot(objectiveValues.objectiveAudio);
+        playerInteracting.GetComponentInChildren<AudioSource>().PlayOneShot(objectiveValues.objectiveAudio);
     }
 
     /// <summary>
