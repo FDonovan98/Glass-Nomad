@@ -63,7 +63,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     /// <param name="speech"></param>
     private void PlaySpeechAudio()
     {
-        //playerInteracting.GetComponentInChildren<AudioSource>().PlayOneShot(objectiveValues.objectiveAudio);
+        playerInteracting.GetComponentInChildren<Camera>().GetComponentInChildren<AudioSource>().PlayOneShot(objectiveValues.objectiveAudio);
     }
 
     /// <summary>
