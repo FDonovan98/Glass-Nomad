@@ -22,10 +22,12 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     {
         base.OnTriggerEnter(coll);
 
-        Debug.Log(playerInteracting.name);
         try {
-            captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
-            Debug.Log(captionText.name);
+            if (playerInteracting.GetComponent<PhotonView>().IsMine)
+            {
+                captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+                if (debug) Debug.Log(captionText.name);
+            }
         }
         catch {
             Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
@@ -62,7 +64,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     /// <param name="speech"></param>
     private void PlaySpeechAudio()
     {
-        playerInteracting.GetComponentInChildren<AudioSource>().PlayOneShot(objectiveValues.objectiveAudio);
+        //playerInteracting.GetComponentInChildren<AudioSource>().PlayOneShot(objectiveValues.objectiveAudio);
     }
 
     /// <summary>

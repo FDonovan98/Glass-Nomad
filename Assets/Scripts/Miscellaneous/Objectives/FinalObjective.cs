@@ -58,7 +58,7 @@ public class FinalObjective : ObjectiveInteraction
             if (currSecond != Mathf.FloorToInt(i))
             {
                 currSecond = Mathf.FloorToInt(i);
-                Debug.Log("TIMER : " + currSecond);
+                if (debug) Debug.Log("TIMER : " + currSecond);
                 captionText.text = "<mark=#000000aa>" + currSecond.ToString() + "</mark>";
                 await Task.Delay(TimeSpan.FromSeconds(0.9f));
                 captionText.text = "";
