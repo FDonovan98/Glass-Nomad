@@ -9,7 +9,6 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
 {
     [Header("Objective Interaction")]
     [SerializeField] protected ObjectiveValues objectiveValues; // The objective values that to use.
-    [SerializeField] protected bool destroyObjectAfter = true; // If we should destroy this object after the interaction is complete.
     [SerializeField] protected List<GameObject> objectsToDestroy = new List<GameObject>(); // A different object to destroy after the interaction is complete.
     [SerializeField] protected List<Behaviour> componentsToDisable = new List<Behaviour>(); // A different component to disable after the interaction is complete.
 
