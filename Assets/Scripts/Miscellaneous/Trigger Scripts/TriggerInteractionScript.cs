@@ -37,11 +37,15 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected virtual void OnTriggerEnter(Collider coll)
     {
         try {
-            playerInteracting = coll.gameObject;
-            Debug.Log("PLAYER: " + playerInteracting.name);
-            outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
-            interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
-            interactionText.text = textToDisplay;
+            
+            if (coll.GetComponent<PhotonView>().IsMine)
+            {
+                playerInteracting = coll.gameObject;
+                if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
+                outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+                interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
+                interactionText.text = textToDisplay;
+            }
         }
         catch {
             Debug.LogError("Outer Reticle or Interaction Text has not been set correctly.");
@@ -60,10 +64,10 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected void OnTriggerStay(Collider coll)
     {
+        if (!playerInteracting.GetComponent<PhotonView>().IsMine) return;
+        
         if (coll.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
-        {
-            playerInteracting = coll.gameObject;
-            
+        {            
             if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
             {
                 if (currInteractTime >= interactTime)
@@ -106,7 +110,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected void OnTriggerExit(Collider coll)
     {
-        if (coll.gameObject == playerInteracting && photonView.IsMine)
+        if (coll.gameObject == playerInteracting)
         {
             interactionComplete = false;
             LeftTriggerArea();
