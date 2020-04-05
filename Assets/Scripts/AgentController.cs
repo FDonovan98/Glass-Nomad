@@ -32,13 +32,6 @@ public class AgentController : AgentInputHandler
                 isLocalAgent = false;
             }
         }
-
-        try {
-            if (photonView.IsMine) Objectives.captionText = transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
-        }
-        catch {
-            Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
-        }
     }
 
     private void DisableObjectsForPhoton()

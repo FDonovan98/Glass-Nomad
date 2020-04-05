@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
-public class SecuritySwitchManager : MonoBehaviour
+public class SecuritySwitchManager : ObjectiveInteraction
 {
     // The number of switches that need to be activated to activate the doors.
     private int numberOfSwitches = 2;
@@ -30,7 +31,7 @@ public class SecuritySwitchManager : MonoBehaviour
         currentSwitchesActivated++;
         if (currentSwitchesActivated == numberOfSwitches)
         {
-            SwitchesCompleted();
+            photonView.RPC("InteractionComplete", RpcTarget.All);
         }
     }
 
@@ -42,13 +43,10 @@ public class SecuritySwitchManager : MonoBehaviour
     /// <summary>
     /// Changes the door state of the armoury door, and locks it open.
     /// </summary>
-    public void SwitchesCompleted()
+    [PunRPC]
+    protected override void InteractionComplete()
     {
-        Objectives.ObjectiveComplete("RED SWITCH", "GENERATOR");
-        if (Objectives.IsObjectiveComplete("RED SWITCH"))
-        {
-            PowerOn();
-        }
+        PowerOn();
     }
 
     /// <summary>

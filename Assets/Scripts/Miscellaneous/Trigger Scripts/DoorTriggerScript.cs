@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 public class DoorTriggerScript : TriggerInteractionScript
 {
+    [Header("Door Interaction")]
     // Plays the animation of the door opening.
     private Animator anim;
 
@@ -27,9 +29,9 @@ public class DoorTriggerScript : TriggerInteractionScript
     /// of changing the doors current state.
     /// </summary>
     /// <param name="coll"></param>
-    protected override void LeftTriggerArea(Collider coll)
+    protected override void LeftTriggerArea()
     {
-        base.LeftTriggerArea(coll);
+        base.LeftTriggerArea();
         if (isDoorOpen) ChangeDoorState();
     }
 
@@ -37,7 +39,8 @@ public class DoorTriggerScript : TriggerInteractionScript
     /// Changes the door's state once the interaction has been completed.
     /// </summary>
     /// <param name="player"></param>
-    protected override void InteractionComplete(GameObject player)
+    [PunRPC]
+    protected override void InteractionComplete()
     {
         ChangeDoorState();
     }
