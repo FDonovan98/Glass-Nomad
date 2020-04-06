@@ -22,14 +22,14 @@ public class CameraControl : ActiveCommandObject
         {
             Vector3 mouseRotationInput = GetMouseInput(agent);
 
+            if (agentInputHandler.runCommandOnCameraMovement != null)
+            {
+                agentInputHandler.runCommandOnCameraMovement(mouseRotationInput, agentInputHandler, agentValues);
+            }
+
             if (mouseRotationInput != Vector3.zero)
             {
                 mouseRotationInput *= agentValues.mouseSensitivity;
-
-                if (agentInputHandler.runCommandOnCameraMovement != null)
-                {
-                    agentInputHandler.runCommandOnCameraMovement(mouseRotationInput, agentInputHandler, agentValues);
-                }
 
                 // Agent Rotation.
                 Vector3 agentRotation = new Vector3(0.0f, mouseRotationInput.x, 0.0f);

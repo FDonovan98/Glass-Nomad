@@ -54,6 +54,6 @@ public class AgentValues : ScriptableObject
     public float maxHealth = 100.0f;
 
     [Header("UI Lag")]
-    public bool lagUIInX = false;
-    public float UIXLagTime = 0.2f;
+    public bool[] lagUIInAxis = {false, false};
+    public float[] UICatchupSpeed = {0.5f, 0.5f};
 }

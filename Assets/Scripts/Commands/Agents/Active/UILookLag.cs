@@ -1,13 +1,8 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "UILookLag", menuName = "Commands/Active/UILookLag", order = 0)]
-public class UILookLag : ActiveCommandObject
+[CreateAssetMenu(fileName = "UILookLag", menuName = "Commands/Passive/UILookLag", order = 0)]
+public class UILookLag : PassiveCommandObject
 {
-    protected override void OnEnable()
-    {
-
-    }
-
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
         agentInputHandler.runCommandOnCameraMovement += RunCommandOnCameraMovement;
@@ -15,21 +10,35 @@ public class UILookLag : ActiveCommandObject
 
     void RunCommandOnCameraMovement(Vector3 cameraMovement, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (agentValues.lagUIInX && agentInputHandler.currentUIXLagTime < agentValues.UIXLagTime)
+        for (int i = 0; i < 2; i++)
         {
-            if (agentInputHandler.currentUIXLagTime < agentValues.UIXLagTime)
+            if (agentValues.lagUIInAxis[i])
             {
-                Vector3 HUDPos = agentInputHandler.HUD.transform.position;
-                Vector3 newHUDpos = new Vector3(HUDPos.x - cameraMovement.x, HUDPos.y, HUDPos.z);
+                if (i == 0)
+                {
+                    agentInputHandler.UIOffset.x -= cameraMovement[i];
+                }
+                else
+                {
+                    agentInputHandler.UIOffset.y -= cameraMovement[i];
+                }
 
+                if (i == 0)
+                {
+                    agentInputHandler.UIOffset.x = Mathf.Lerp(agentInputHandler.UIOffset.x, 0.0f, agentValues.UICatchupSpeed[i]);
+                }
+                else
+                {
+                    agentInputHandler.UIOffset.y = Mathf.Lerp(agentInputHandler.UIOffset.y, 0.0f, agentValues.UICatchupSpeed[i]);
+                }
                 
-
-                agentInputHandler.currentUIXLagTime += Time.deltaTime;
-            }
-            else
-            {
-                //agentInputHandler.HUD.transform.position = Vector3.Lerp(agentInputHandler.HUD.transform.position, Vect)
+                SetHudPosition(agentInputHandler);
             }
         }
+    }
+
+    void SetHudPosition(AgentInputHandler agentInputHandler)
+    {
+        agentInputHandler.HUD.transform.position = agentInputHandler.HUD.transform.parent.position + agentInputHandler.UIOffset;
     }
 }

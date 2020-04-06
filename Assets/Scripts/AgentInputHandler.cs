@@ -50,8 +50,8 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("UI Offset")]
     public GameObject HUD;
-    public Vector3 UIOffset;
-    public float currentUIXLagTime = 0.0f;
+    public Vector3 UIOffset = Vector3.zero;
+    public float[] currentUILagTime = {0.0f, 0.0f};
 
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
