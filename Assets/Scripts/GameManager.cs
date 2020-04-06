@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
+using System.Collections.Generic;
+
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     // Changes to this scene when we leave a room.
@@ -19,6 +21,9 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     // The radius of the marines spawn.
     [SerializeField] private float radius = 8f;
+
+    [SerializeField]
+    private List<int> playerIDs = new List<int>();
 
     /// <summary>
     /// Determines whether the game is in offline mode or not. If the game is offline, then we spawn an alien, 
