@@ -45,6 +45,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public float currentHealth = 0.0f;
 
     [Header("UI")]
+    public Canvas UICanvas;
     public TextMeshProUGUI healthUIText;
     public TextMeshProUGUI ammoUIText;
 
@@ -55,7 +56,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [Header("PUN")]
     public PunRPCs punRPCs;
     public bool isLocalAgent = true;
-    
+
     protected GameObject agent;
 
     // Delegates used by commands.
@@ -70,6 +71,8 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public RunCommandOnCollisionStay runCommandOnCollisionStay;
     public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
+    public delegate void RunCommandOnTriggerStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerStay runCommandOnTriggerStay;
 
 
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
@@ -136,6 +139,14 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (runCommandOnTriggerStay != null)
+        {
+            runCommandOnTriggerStay(agent, this, agentValues, other);
+        }
+    }
+
     void InitiliseVariable()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -163,7 +174,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         {
             healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
         }
- 
+
         if (ammoUIText != null)
         {
             ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
