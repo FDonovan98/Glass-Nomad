@@ -114,6 +114,9 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         if (coll.gameObject == playerInteracting)
         {
             interactionComplete = false;
+            interactionText.text = "";
+            playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+            playerInteracting = null;
             LeftTriggerArea();
         }
     }
@@ -138,9 +141,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected virtual void LeftTriggerArea()
     {
         currInteractTime = 0f;
-        if (interactionText != null) interactionText.text = "";
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
-        playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
-        playerInteracting = null;
     }
 }
