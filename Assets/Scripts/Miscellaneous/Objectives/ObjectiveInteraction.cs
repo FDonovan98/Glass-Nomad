@@ -36,12 +36,16 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     [PunRPC]
     protected override void InteractionComplete()
     {
-        if (!objectiveValues.AllRequiredObjectivesCompleted() || !playerInteracting.GetComponent<PhotonView>().IsMine) return;
-
+        if (!objectiveValues.AllRequiredObjectivesCompleted()) return;
+        
         objectiveValues.completed = true;
         ObjectiveComplete();
-        WriteTextToHud();
-        PlaySpeechAudio();
+        
+        if (!playerInteracting.GetComponent<PhotonView>().IsMine)
+        {
+            WriteTextToHud();
+            PlaySpeechAudio();
+        }
         
         foreach (Behaviour go in componentsToDisable)
         {
