@@ -53,6 +53,7 @@ public class AimDownWeaponSight : ActiveCommandObject
         agentInputHandler.agentCamera = agentInputHandler.aDSCamera;
         agentInputHandler.mainCamera.enabled = false;
         agentInputHandler.aDSCamera.enabled = true;
+        agentInputHandler.ADSReticule.SetActive(true);
     }
 
     void DisableADS(AgentInputHandler agentInputHandler)
@@ -60,5 +61,6 @@ public class AimDownWeaponSight : ActiveCommandObject
         agentInputHandler.agentCamera = agentInputHandler.mainCamera;
         agentInputHandler.aDSCamera.enabled = false;
         agentInputHandler.mainCamera.enabled = true;
+        agentInputHandler.ADSReticule.SetActive(false);
     }
 }
