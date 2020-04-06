@@ -1,23 +1,26 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "DefaultChargeLeap", menuName = "Commands/Active/Charge Leap")]
 public class ChargeLeap : ActiveCommandObject
 {
-    [SerializeField] 
-    KeyCode chargeLeap = KeyCode.Space;
-
-    float timeJumpingFor = 0.0f;
+    [SerializeField] private KeyCode chargeLeap = KeyCode.Space;
+    private Image outerReticle = null;
+    private float timeJumpingFor = 0.0f;
 
     protected override void OnEnable()
     {
         keyTable.Add("Charge Leap", chargeLeap);
     }
+
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        outerReticle = agentInputHandler.gameObject.transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+        Debug.Log(outerReticle.name);
     }
 
-    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
+    private void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {   
         if (agentInputHandler.isJumping)
         {
@@ -34,12 +37,17 @@ public class ChargeLeap : ActiveCommandObject
             if (Input.GetKey(chargeLeap) && !agentInputHandler.isJumping)
             {
                 agentInputHandler.currentLeapCharge += Time.deltaTime;
+                float percentage = (agentInputHandler.currentLeapCharge / agentValues.leapChargeDuration) * 100;
+                if (percentage >= 100) percentage = 99.9f;
+                Debug.Log(percentage);
+                ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
             }
 
             if (Input.GetKeyUp(chargeLeap))
             {
                 if (agentInputHandler.isGrounded)
                 {
+                    ReticleProgress.UpdateReticleProgress(0, outerReticle);
                     agentInputHandler.isJumping = true;
 
                     float jumpImpulse = Mathf.Min(agentInputHandler.currentLeapCharge, agentValues.leapChargeDuration);
