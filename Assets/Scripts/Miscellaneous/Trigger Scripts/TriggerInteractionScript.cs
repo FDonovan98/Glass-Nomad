@@ -64,9 +64,10 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected void OnTriggerStay(Collider coll)
     {
-        if (!playerInteracting.GetComponent<PhotonView>().IsMine) return;
+        if (!coll.GetComponent<PhotonView>().IsMine) return;
+        playerInteracting = coll.gameObject;
         
-        if (coll.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
+        if (playerInteracting.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
         {            
             if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
             {
@@ -95,7 +96,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 
         if (coll.tag == "Player" && interactionComplete)
         {
-            playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+            coll.GetComponent<AgentInputHandler>().allowInput = true;
         }
 
         if (debug) Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
