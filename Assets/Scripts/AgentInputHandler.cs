@@ -48,6 +48,11 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public TextMeshProUGUI healthUIText;
     public TextMeshProUGUI ammoUIText;
 
+    [Header("UI Offset")]
+    public GameObject HUD;
+    public Vector3 UIOffset;
+    public float currentUIXLagTime = 0.0f;
+
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
     public GameObject agentHitParticles;
@@ -55,7 +60,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [Header("PUN")]
     public PunRPCs punRPCs;
     public bool isLocalAgent = true;
-    
+
     protected GameObject agent;
 
     // Delegates used by commands.
@@ -70,12 +75,16 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public RunCommandOnCollisionStay runCommandOnCollisionStay;
     public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
+    public delegate void RunCommandOnTriggerStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerStay runCommandOnTriggerStay;
+
 
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
     public RunCommandOnWeaponFired runCommandOnWeaponFired;
-
     public delegate void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value);
     public RunCommandOnAgentHasBeenHit runCommandOnAgentHasBeenHit;
+    public delegate void RunCommandOnCameraMovement(Vector3 cameraMovement, AgentInputHandler agentInputHandler, AgentValues agentValues);
+    public RunCommandOnCameraMovement runCommandOnCameraMovement;
 
 
     private void Start()
@@ -134,6 +143,14 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (runCommandOnTriggerStay != null)
+        {
+            runCommandOnTriggerStay(agent, this, agentValues, other);
+        }
+    }
+
     void InitiliseVariable()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -161,7 +178,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         {
             healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
         }
- 
+
         if (ammoUIText != null)
         {
             ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;

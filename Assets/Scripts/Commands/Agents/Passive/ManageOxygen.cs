@@ -10,7 +10,7 @@ public class ManageOxygen : PassiveCommandObject
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
-        agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
+        agentInputHandler.runCommandOnTriggerStay += RunCommandOnTriggerStay;
     }
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
@@ -27,7 +27,7 @@ public class ManageOxygen : PassiveCommandObject
         }
     }
 
-    void RunCommandOnCollisionStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
+    void RunCommandOnTriggerStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other)
     {
         if (other.gameObject.tag == "OxygenRegenZone")
         {
