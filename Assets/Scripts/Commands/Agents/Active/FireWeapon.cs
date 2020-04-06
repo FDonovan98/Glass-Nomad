@@ -54,7 +54,6 @@ public class FireWeapon : ActiveCommandObject
     {
         if (agentInputHandler.runCommandOnWeaponFired != null)
         {
-            Debug.Log("runCommandOnWeaponFired");
             agentInputHandler.runCommandOnWeaponFired(agentInputHandler);
         }
 

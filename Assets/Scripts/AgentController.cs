@@ -5,6 +5,7 @@ using System.Collections;
 
 public class AgentController : AgentInputHandler
 {
+    public GameObject deathScreen;
     public Color alienVision;
     public bool specialVision = false;
     public enum ResourceType
@@ -101,16 +102,12 @@ public class AgentController : AgentInputHandler
     private IEnumerator Death(GameObject player)
     {
         yield return new WaitForSeconds(3f);
-        if (photonView.IsMine)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            PhotonNetwork.LeaveRoom();
-        }
-        else if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.Destroy(player);
-        }
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        AgentController agentController = agent.GetComponent<AgentController>();
+        agentController.enabled = false;
+        deathScreen.SetActive(true);
     }
 
     private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
