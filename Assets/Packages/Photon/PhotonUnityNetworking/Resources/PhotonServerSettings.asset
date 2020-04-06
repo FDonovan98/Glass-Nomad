@@ -24,7 +24,7 @@ MonoBehaviour:
     Protocol: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  PunLogging: 0
+  PunLogging: 2
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 1
@@ -38,5 +38,11 @@ MonoBehaviour:
   - MasterClientClickedLoadGame
   - OnAlienChanged
   - NewPlayerEnteredRoom
+  - Completed
+  - Deactivate
+  - InteractionComplete
+  - PlayerWasHit
+  - WallWasHit
+  - Shoot
   DisableAutoOpenWizard: 1
   ShowSettings: 1

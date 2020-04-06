@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EvacZone : MonoBehaviour
 {
+    // The number of marines currently in the evac zone.
     public int numberOfMarinesInEvac = 0;
 
     private void OnTriggerEnter(Collider coll)
@@ -14,11 +15,16 @@ public class EvacZone : MonoBehaviour
         UpdateMarineCount(coll, -1);
     }
 
+    /// <summary>
+    /// Increases or decreases the number of marines that are currently in the evacuation zone.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="increment"></param>
     private void UpdateMarineCount(Collider player, int increment)
     {
         if (player.tag == "Player")
         {
-            if (player.gameObject.layer == 8) // Marine layer (Luke typed this, and Harry didn't even tell him to :D )
+            if (player.GetComponent<AgentController>().agentValues.name == "MarineAgentValues")
             {
                 numberOfMarinesInEvac += increment;
             }

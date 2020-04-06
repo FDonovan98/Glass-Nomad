@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
 
@@ -7,7 +6,7 @@ public class PlayerNameInput : MonoBehaviour
 {
     private const string playerNamePrefKey = "Player Name";
 
-    void Start()
+    private void Start()
     {
         TMP_InputField inputField = GetComponent<TMP_InputField>();
         string defaultName = string.Empty;
@@ -18,6 +17,7 @@ public class PlayerNameInput : MonoBehaviour
             {
                 defaultName = PlayerPrefs.GetString(playerNamePrefKey);
                 inputField.text = defaultName;
+                inputField.textComponent.fontSize = 70;
             }
         }
 

@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 
-public class GeneratorObjective : TriggerInteractionScript
+public class GeneratorObjective : ObjectiveInteraction
 {
-    protected override void InteractionComplete(GameObject player)
+    /// <summary>
+    /// If the objective is successfully marked as completed, then it unlocks
+    /// everything requiring power.
+    /// </summary>
+    /// <param name="player"></param>
+    protected override void ObjectiveComplete()
     {
-        base.InteractionComplete(player);
-        
-        // Unlocks everything requiring power.
         GameObject[] powered = GameObject.FindGameObjectsWithTag("NeedsPower");
         foreach (GameObject element in powered)
         {

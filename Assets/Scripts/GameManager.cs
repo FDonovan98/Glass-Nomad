@@ -1,69 +1,34 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio;
 using Photon.Pun;
 using Photon.Realtime;
-using TMPro;
-<<<<<<< HEAD
 
-public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
-{
-    [SerializeField] private string lobbySceneName = "SCN_Lobby"; // Used to change scene when we leave a room.
-    [SerializeField] private Vector3 alienSpawnPoint = Vector3.zero; // Used to spawn the alien.
-    [SerializeField] private Vector3 marineSpawnPoint = Vector3.zero; // Used to spawn the marines.
-    [SerializeField] private TMP_Dropdown resolutionDropdown = null; // Used to change the video resolution.
-    [SerializeField] private TMP_Dropdown qualityDropdown = null; // Used to change the video quality.
-    [SerializeField] private AudioMixer audioMixer = null; // Used to change the audio volume.
-    public GameObject pauseMenu; // Used by PlayerMovement to access the pause menu gameobject.
-    private Resolution[] resolutions; // Used to retrieve all the available resolutions.
-    private Camera cam; // Used to change the FOV of the camera.
-
-    #region devtools
-    [Header("Developer Tools")]
-    [SerializeField] private bool singlePlayerMarine = false; // Used to test the marine player, in testing.
-    #endregion
-=======
-using System;
-using System.Linq;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     // Changes to this scene when we leave a room.
     [SerializeField] private string lobbySceneName = "SCN_Lobby";
 
-    // Spawn points for the alien and marines.
+    // Spawn points for the alien.
     [SerializeField] private GameObject alienSpawnPoint = null;
+
+    // Spawn points for the marines.
     [SerializeField] private GameObject marineSpawnPoint = null;
 
-    // Changes the video resolution.
-    [SerializeField] private TMP_Dropdown resolutionDropdown = null;
-
-    // Changes the video quality.
-    [SerializeField] private TMP_Dropdown qualityDropdown = null;
-
-    // Changes the fullscreen mode.
-    [SerializeField] private Toggle fullscreenToggle = null;
-
-    // Changes the FOV of the camera.
-    [SerializeField] private Slider fovSlider = null;
-
-    // Changes the volume of the AudioListener.
-    [SerializeField] private Slider volumeSlider = null;
-
-    // Used by PlayerMovement to access the pause menu gameobject.
-    public GameObject pauseMenu;
-
-    // Retrieves all the available resolutions.
-    private Resolution[] resolutions;
-
     // Should we switch a marine to the alien, when the alien dies.
-    public bool switchToAlien = false;
+    [SerializeField] private  bool switchToAlien = false;
 
-    private string settingsPath;
->>>>>>> master
+    // The radius of the marines spawn.
+    [SerializeField] private float radius = 8f;
 
+    [SerializeField]
+    private List<int> playerIDs = new List<int>();
+
+    /// <summary>
+    /// Determines whether the game is in offline mode or not. If the game is offline, then we spawn an alien, 
+    /// otherwise we hand over control to the 'SpawnLocalPlayer' function.
+    /// </summary>
     private void Start()
     {
         if (!PhotonNetwork.PhotonServerSettings.StartInOfflineMode)
@@ -72,77 +37,52 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
         else
         {
-            Debug.Log("Spawning an alien, hopefully.");
-            Instantiate(Resources.Load("Alien (Cylinder)", typeof(GameObject)), alienSpawnPoint.transform.position, new Quaternion());
+            Instantiate(Resources.Load("Alien", typeof(GameObject)), alienSpawnPoint.transform.position, new Quaternion());
         }
-
-        settingsPath = Application.persistentDataPath + "/game_data";
-        SetupResolutionDropdown();
     }
 
+    /// <summary>
+    /// Retrieves the Lobby gameobject, and fetches the information of the local player (using their
+    /// nickname). From this, we determine if the player was marked as an alien in the lobby. If it
+    /// was marked as an alien, then we spawn an alien; else we spawn a marine.
+    /// </summary>
     private void SpawnLocalPlayer()
     {
         PlayersInLobby lobbyRoom = GameObject.Find("Lobby").GetComponent<PlayersInLobby>();
         if (lobbyRoom.IsPlayerAlien(PhotonNetwork.NickName))
         {
-            PhotonNetwork.Instantiate("Alien (Cylinder)", alienSpawnPoint.transform.position, new Quaternion());
+            PhotonNetwork.Instantiate("Alien", alienSpawnPoint.transform.position, new Quaternion());
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine (Cylinder)", marineSpawnPoint.transform.position, new Quaternion());
+            PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
         }
     }
 
-    private void SetupResolutionDropdown()
+    /// <summary>
+    /// Gets a random Vector2 point inside of a circle of radius of 8.
+    /// This Vector2 point is added to the original marine spawn point.
+    /// </summary>
+    /// <returns>A random Vector3 position</returns>
+    private Vector3 GetRandomSpawnPoint()
     {
-        resolutions = Screen.resolutions;
-        resolutionDropdown.ClearOptions();
-        List<string> options = new List<string>();
-
-        SaveLoadSettings.LoadData(settingsPath);
-        fovSlider.value = Camera.main.fieldOfView;
-        volumeSlider.value = AudioListener.volume;
-
-        int currentResIndex = 0;
-        for (int i = 0; i < resolutions.Length; i++)
-        {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
-            options.Add(option);
-
-            if (resolutions[i].width == Screen.currentResolution.width
-            && resolutions[i].height == Screen.currentResolution.height)
-            {
-                currentResIndex = i;
-            }
-        }
-
-        // Sets the default value of the dropdowns or toggles to the current settings.
-        resolutionDropdown.AddOptions(options);
-<<<<<<< HEAD
-        resolutionDropdown.value = currentResIndex;
-        resolutionDropdown.RefreshShownValue();
-        qualityDropdown.value = QualitySettings.GetQualityLevel();
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-=======
-        resolutionDropdown.SetValueWithoutNotify(currentResIndex);
-        qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
-        fullscreenToggle.isOn = Screen.fullScreen;
->>>>>>> master
+        Vector3 pos = marineSpawnPoint.transform.position;
+        Vector2 circle = UnityEngine.Random.insideUnitCircle * radius;
+        pos.x += circle.x - (radius / 2);
+        pos.z += circle.y - (radius / 2);
+        Debug.Log(pos);
+        return pos;
     }
-
+    
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene(lobbySceneName);
     }
-
-    public void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
     
     public override void OnPlayerEnteredRoom(Player other)
     {
-        Debug.LogFormat("{0} entered the game room", other.NickName); // not seen if you're the player connecting
+        // not seen if you're the player connecting
+        Debug.LogFormat("{0} entered the game room", other.NickName);
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -158,7 +98,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     /// <summary>
     /// Changes the model of the new master client, when the old one leaves.
     /// </summary>
-    /// <param name="newMasterClient"></param>
+    /// <param name="newMasterClient">The player that is to be switched to master.</param>
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         if (switchToAlien)
@@ -176,7 +116,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
                         Quaternion playerRot = element.transform.rotation;
                         string prefabName;
 
-                        if (element.GetComponent<AlienController>() != null)
+                        if (element.GetComponent<AgentController>().agentValues.name == "AlienAgentValues")
                         {
                             prefabName = "Marine (Cylinder)";
                         }
@@ -194,49 +134,4 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
             }
         }
     }
-
-#region menu_options
-    public void ToggleOptionMenu(GameObject menu)
-    {
-        menu.SetActive(!menu.activeSelf);
-        SaveLoadSettings.SaveData(settingsPath);
-    }
-
-    public void SetVolume(float volume)
-    {
-        AudioListener.volume = volume;
-    }
-
-    public void SetResolution(int resolutionIndex)
-    {
-        Resolution res = resolutions[resolutionIndex];
-        Debug.Log("Changing screen resolution to: " + res);
-        Screen.SetResolution(res.width, res.height, Screen.fullScreen);
-    }
-
-    public void SetQuality(int qualityIndex)
-    {
-        Debug.Log("Changing quality to: " + qualityDropdown.captionText.text);
-        QualitySettings.SetQualityLevel(qualityIndex);
-    }
-
-    public void SetFullscreenMode(bool isFullscreen)
-    {
-        Debug.Log("Changing fullscreen to: " + isFullscreen);
-        Screen.fullScreen = isFullscreen;
-    }
-
-    public void SetFOV(float fov)
-    {
-<<<<<<< HEAD
-        cam.fieldOfView = fov;
-    }
-
-    #endregion
-=======
-        Camera.main.fieldOfView = fov;
-    }
-
-#endregion
->>>>>>> master
 }

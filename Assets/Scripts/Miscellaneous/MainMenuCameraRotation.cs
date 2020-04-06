@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-=======
 ﻿using UnityEngine;
->>>>>>> master
 
 public class MainMenuCameraRotation : MonoBehaviour
 {

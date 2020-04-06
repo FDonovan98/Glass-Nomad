@@ -1,10 +1,14 @@
-﻿ using UnityEngine;
+﻿using UnityEngine;
+using Photon.Pun;
 
 public class SecuritySwitchTriggerScript : TriggerInteractionScript
 {
 
     // Tells the red switch manager when this switch has been (de)activated.
-    public SecuritySwitchManager switchManager = null;
+    [SerializeField] private SecuritySwitchManager switchManager = null;
+    [SerializeField] private Material materialToChange;
+    [SerializeField] private Color colorToChangeTo;
+    private Color prevColor = Color.clear;
 
     /// <summary>
     /// Once the player enters the switch's collider and their holding 'E',
@@ -16,7 +20,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     /// <param name="coll"></param>
     private new void OnTriggerStay(Collider coll)
     {
-        if (coll.gameObject.tag == "Player" && currCooldownTime <= 0)
+        if (coll.tag == "Player" && currCooldownTime <= 0)
         {
             if (Input.GetKey(inputKey))
             {
@@ -24,9 +28,8 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
                 {
                     if (currInteractTime >= interactTime)
                     {
-                        InteractionComplete(coll.gameObject);
+                        photonView.RPC("InteractionComplete", RpcTarget.All);
                         currInteractTime = 0f;
-                        interactionComplete = true;
                         currCooldownTime = cooldownTime;
                     }
 
@@ -35,36 +38,47 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
                     if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
 
                     ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
-                    coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = false;
+                    playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
                     return;
                 }
             }
             else // if the player is not pressing then reset the switch's state.
             {
-                currInteractTime = 0f;
-                LeftTriggerArea(coll);
+                LeftTriggerArea();
             }
+
+            interactionText.text = textToDisplay;
         }
     }
 
-    protected override void InteractionComplete(GameObject player)
+    [PunRPC]
+    protected override void InteractionComplete()
     {
         if (debug) Debug.Log("Switch activated");
         interactionComplete = true;
         switchManager.SwitchActivated();
+        prevColor = materialToChange.GetColor("_EmissionColor");
+        materialToChange.SetColor("_EmissionColor", colorToChangeTo);
     }
 
     /// <summary>
     /// If the player exits the switch's collider, then reset the switch's state and timer.
     /// </summary>
-    protected override void LeftTriggerArea(Collider coll)
+    protected override void LeftTriggerArea()
     {
         if (interactionComplete)
         {
-            if (debug) Debug.Log("Switch deactivated");
-            switchManager.SwitchDeactivated();
-            interactionComplete = false;
+            photonView.RPC("Deactivate", RpcTarget.All);
         }
-        base.LeftTriggerArea(coll);
+        base.LeftTriggerArea();
+    }
+
+    [PunRPC]
+    private void Deactivate()
+    {
+        if (debug) Debug.Log("Switch deactivated");
+        switchManager.SwitchDeactivated();
+        interactionComplete = false;
+        materialToChange.SetColor("_EmissionColor", prevColor);
     }
 }

@@ -2,58 +2,62 @@
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-<<<<<<< HEAD
-=======
 using UnityEngine.UI;
 using System.Collections;
-using System;
->>>>>>> master
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     #region variable-declarations
 
-    [SerializeField] private string gameSceneName = "SCN_Blockout"; // Changes scene when we are join a room.
-    [SerializeField] private GameObject controlPanel = null; // Shows/hides the play button and input field.
-    [SerializeField] private GameObject progressLabel = null; // Displays "Connecting..." to once the Connect() funtion is called.
+    [SerializeField] private string gameScene = null; // Changes scene when we are join a room.
     [SerializeField] private GameObject playerItemPrefab = null; // Displays the players in the lobby.
     [SerializeField] private GameObject inLobbyPanel = null; // Displays the lobby buttons when you join a room.
     [SerializeField] private Transform playerListPanel = null; // Contains all the playeritem prefabs.
     [SerializeField] private Image screenFader = null; // Fades the screen to black, when entering the game.
-    [SerializeField] private GameObject title = null; // Disables the title when in a lobby.
-    [SerializeField] private GameObject loadoutDropdowns = null; // Displays the loadout dropdowns.
 
     private const string playerNamePrefKey = "Player Name";
     private byte maxPlayersPerRoom = 5; // Sets a limit to the number of players in a room.
     private string gameVersion = "1"; // Separates users from each other by gameVersion.
     private bool isConnection = false; // Stop us from immediately joining the room if we leave it.
 
-    #endregion
+    [SerializeField] private GameObject menuContainer = null;
+    [SerializeField] private GameObject loadoutContainer = null;
+    [SerializeField] private GameObject lobbyContainer = null;
+    [SerializeField] private GameObject settingsContainer = null;
+
+    [SerializeField] private Color playerAlienButtonColor = Color.clear;
+    [SerializeField] private Color playerMarineButtonColor = Color.clear;
     
     public PlayersInLobby lobbyRoom = null;
+
+    #endregion
 
     private void Awake()
     {
         // Means we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
         PhotonNetwork.AutomaticallySyncScene = true;
+        menuContainer.SetActive(true);
     }
-
-    // Makes sure the correct elements of the UI are visible.
-    private void Start()
+    
+    public void OnPlayClick()
     {
-        ToggleMenuItems(false);
+        // Hide initial main menu items (title & control panel)
+        // Show username input, loadout options and join lobby button
+        menuContainer.SetActive(false);
+        loadoutContainer.SetActive(true);
     }
 
     public void Connect()
     {
         // Checks the player's input is empty - returns if it is.
-        if (PlayerPrefs.GetString(playerNamePrefKey) == string.Empty)
+        if (PlayerPrefs.GetString(playerNamePrefKey) == "")
         {
             return;
         }
 
         // Switches which UI elements are visable.
-        ToggleMenuItems(true);
+        loadoutContainer.SetActive(false);
+        lobbyContainer.SetActive(true);
 
         // The button has been pressed so we want the user to connect to a room.
         isConnection = true;
@@ -71,8 +75,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
         }
-
-        OnLoadGameClick();
     }
 
     public override void OnConnectedToMaster()
@@ -89,9 +91,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.LogWarningFormat("Disconnected with reason:" + cause);
-        ToggleMenuItems(false);
-        inLobbyPanel.SetActive(false);
-        loadoutDropdowns.SetActive(false);
+        menuContainer.SetActive(true);
+        loadoutContainer.SetActive(false);
+        lobbyContainer.SetActive(false);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -104,9 +106,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Room joined successfully");
-        progressLabel.SetActive(false);
-        inLobbyPanel.SetActive(true);
-        loadoutDropdowns.SetActive(true);
+        menuContainer.SetActive(false);
+        loadoutContainer.SetActive(false);
+        lobbyContainer.SetActive(true);
 
         if (!PhotonNetwork.IsMasterClient)
         {
@@ -142,15 +144,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
-    public void LeaveRoom()
+    public void OnLeaveLobby()
     {
         // Leave the lobby and reset the UI.
         PhotonNetwork.LeaveRoom();
         isConnection = false;
-
-        inLobbyPanel.SetActive(false);
-        loadoutDropdowns.SetActive(false);
-        ToggleMenuItems(false);
+        
+        menuContainer.SetActive(false);
+        loadoutContainer.SetActive(true);
+        lobbyContainer.SetActive(false);
 
         // Delete all player items from the player list panel.
         for (int i = 0; i < playerListPanel.childCount; i++)
@@ -199,15 +201,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             if (player.IsMasterClient)
             {
-<<<<<<< HEAD
-                Debug.Log("MASTER IN ROOM:: " + player.NickName);
-                go.GetComponentInChildren<TMP_Text>().text = "Room owner: " + player.NickName;
-            }
-            else
-            {
-                Debug.Log("PLAYER IN ROOM:: " + player.NickName);
-                go.GetComponentInChildren<TMP_Text>().text = player.NickName;
-=======
                 go.GetComponentInChildren<TMP_Text>().text = "Room owner: " + player.NickName;
             }
             else
@@ -217,12 +210,17 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             if (lobbyRoom.IsPlayerAlien(player.NickName))
             {
-                go.GetComponent<Image>().color = Color.green;
+                ColorBlock colBlock = go.GetComponent<Button>().colors;
+                colBlock.normalColor = playerAlienButtonColor;
+                colBlock.disabledColor = playerAlienButtonColor;
+                go.GetComponent<Button>().colors = colBlock;
             }
             else
             {
-                go.GetComponent<Image>().color = Color.white;
->>>>>>> master
+                ColorBlock colBlock = go.GetComponent<Button>().colors;
+                colBlock.normalColor = playerMarineButtonColor;
+                colBlock.disabledColor = playerMarineButtonColor;
+                go.GetComponent<Button>().colors = colBlock;
             }
         }
     }
@@ -247,6 +245,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient) ScreenFadeFinished();
     }
 
+    public void OnSettingsClick()
+    {
+        settingsContainer.SetActive(true);
+        menuContainer.SetActive(false);
+    }
+
+    public void OnExitLoadoutClick()
+    {
+        menuContainer.SetActive(true);
+        settingsContainer.SetActive(false);
+        loadoutContainer.SetActive(false);
+        lobbyContainer.SetActive(false);
+    }
+
     public void OnQuitClick()
     {
 #if UNITY_EDITOR
@@ -254,13 +266,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 #else
         Application.Quit();
 #endif
-    }
-
-    private void ToggleMenuItems(bool toggle)
-    {
-        progressLabel.SetActive(toggle);
-        controlPanel.SetActive(!toggle);
-        title.SetActive(!toggle);
     }    
 
     [PunRPC]
@@ -272,8 +277,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void ScreenFadeFinished()
     {
+        Debug.Log("LOADING SCENE: " + gameScene);
         PhotonNetwork.CurrentRoom.IsOpen = false;
-        PhotonNetwork.LoadLevel(gameSceneName);
+        PhotonNetwork.LoadLevel(gameScene);
     }
 
     [PunRPC]

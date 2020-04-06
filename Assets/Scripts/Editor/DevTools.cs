@@ -1,17 +1,12 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using Photon.Pun;
-using System;
 
 public class DevTools : EditorWindow
 {
-<<<<<<< HEAD
-    bool showHealthBars = true;
-=======
     // Used to toggle the visibility of health bars.
     private bool showHealthBars = true;
 
->>>>>>> master
     [MenuItem("Window/Developer Tools/General")]
     public static void ShowWindow()
     {
@@ -31,12 +26,12 @@ public class DevTools : EditorWindow
 
         if(GUILayout.Button("Spawn Alien"))
         {
-            SpawnCreature("Alien (Cylinder)");
+            SpawnCreature("Alien");
         }
 
         if(GUILayout.Button("Spawn Marine"))
         {
-            SpawnCreature("Marine (Cylinder)");
+            SpawnCreature("Marine");
         }
 
         GUILayout.EndHorizontal();
@@ -46,27 +41,16 @@ public class DevTools : EditorWindow
             SwitchModel();
         }
 
-<<<<<<< HEAD
-=======
         if (GUILayout.Button("Open All Doors"))
         {
             OpenAllDoors();
         }
-
->>>>>>> master
-        if (GUILayout.Button("Activate Armoury Switches"))
-        {
-            ActivateSwitches();
-        }
     }
 
-<<<<<<< HEAD
-=======
     /// <summary>
     /// Finds all the players in the game and shows/hides their health bar.
     /// </summary>
     /// <param name="enable"></param>
->>>>>>> master
     private void ToggleHealthBars(bool enable)
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -76,13 +60,10 @@ public class DevTools : EditorWindow
         }
     }
 
-<<<<<<< HEAD
-=======
     /// <summary>
     /// Finds all the players and swaps the prefab of character that the local player
     /// is controlling.
     /// </summary>
->>>>>>> master
     private void SwitchModel()
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -94,13 +75,13 @@ public class DevTools : EditorWindow
                 Quaternion playerRot = element.transform.rotation;
                 string prefabName;
 
-                if (element.GetComponent<AlienController>() != null)
+                if (element.GetComponent<AgentController>().agentValues.name == "MarineAgentValues")
                 {
-                    prefabName = "Marine (Cylinder)";
+                    prefabName = "Marine";
                 }
                 else
                 {
-                    prefabName ="Alien (Cylinder)";
+                    prefabName = "Alien";
                 }
 
                 PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
@@ -111,13 +92,10 @@ public class DevTools : EditorWindow
         }
     }
 
-<<<<<<< HEAD
-=======
     /// <summary>
     /// Spawns a marine or alien, and disables their input, camera and audio listener.
     /// </summary>
     /// <param name="prefabName"></param>
->>>>>>> master
     private void SpawnCreature(string prefabName)
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
@@ -132,16 +110,8 @@ public class DevTools : EditorWindow
                 Physics.Raycast(ray, out hit);
 
                 GameObject creature = PhotonNetwork.Instantiate(prefabName, hit.point, new Quaternion());
-
-                if (creature.GetComponent<AlienController>() != null)
-                {
-                    creature.GetComponent<AlienController>().enabled = false;
-                }
-                else 
-                {
-                    creature.GetComponent<MarineMovement>().enabled = false;
-                }
                 
+                creature.GetComponent<AgentController>().enabled = false;
                 creature.GetComponentInChildren<Camera>().enabled = false;
 
                 return;
@@ -149,26 +119,11 @@ public class DevTools : EditorWindow
         }
     }
 
-<<<<<<< HEAD
-    private void ActivateSwitches()
-    {
-        GameObject armoury = GameObject.FindGameObjectWithTag("ArmouryDoor");
-        armoury.GetComponentInChildren<RedSwitchManager>().OpenArmouryDoor();
-=======
     /// <summary>
     /// Finds all doors with the tag 'Door' and opens them, if they are not already open.
     /// </summary>
     private void OpenAllDoors()
     {
-        GameObject.Find("ObjectivesManager").GetComponent<SecuritySwitchManager>().OpenAllDoors();
-    }
-
-    /// <summary>
-    /// Opens the armoury door.
-    /// </summary>
-    private void ActivateSwitches()
-    {
-        GameObject.Find("ObjectivesManager").GetComponent<SecuritySwitchManager>().RedSwitchesCompleted();
->>>>>>> master
+        SecuritySwitchManager.OpenAllDoors();
     }
 }

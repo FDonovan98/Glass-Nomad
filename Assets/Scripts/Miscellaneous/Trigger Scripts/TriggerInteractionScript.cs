@@ -1,9 +1,11 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class TriggerInteractionScript : MonoBehaviour
+public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 {
+    [Header("Trigger Interaction")]
     [SerializeField] protected KeyCode inputKey = KeyCode.E; // Which key the player needs to be pressing to interact.
     [SerializeField] protected float interactTime; // The time needed to interact with the object to activate/open it.
     protected float currInteractTime = 0f; // How long the player has been pressing the interact key.
@@ -11,12 +13,10 @@ public class TriggerInteractionScript : MonoBehaviour
     protected float currCooldownTime = 0f; // How long it has been since the player last interacted with the object.
     protected bool interactionComplete = false; // Is the interaction complete?
     [SerializeField] protected bool debug = false; // Should the debug messages be displayed.
-    protected Image outerReticle = null;
-    private GameObject hudCanvas = null;
-    [SerializeField] private string objectiveName = "";
-    [SerializeField] private string objectiveRequired = "";
-    [SerializeField] private bool destroyObjectAfter = true;
-    [SerializeField] private GameObject objectToDestroy = null;
+    protected Image outerReticle = null; // The reticle to display the progress of the interaction.
+    protected TMP_Text interactionText = null; // The text component for when the player enter the object's collider.
+    [SerializeField] protected string textToDisplay = "Hold E to interact"; // The text to appear when the player has entered the object's collider.
+    protected GameObject playerInteracting = null;
 
     /// <summary>
     /// Constantly decreases the current cooldown time, unless its already 0.
@@ -29,12 +29,26 @@ public class TriggerInteractionScript : MonoBehaviour
         }
     }
 
-    protected void OnTriggerEnter(Collider coll)
+    /// <summary>
+    /// Upon entering the object's collider, attempt to retreive the outer reticle and interaction text from the player.
+    /// If these are both successful, then the text is set to the 'textToDisplay'.
+    /// </summary>
+    /// <param name="coll"></param>
+    protected virtual void OnTriggerEnter(Collider coll)
     {
-        if (!hudCanvas)
-        {
-            hudCanvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetChild(0).gameObject;
-            outerReticle = hudCanvas.transform.GetChild(0).GetComponent<Image>();
+        try {
+            playerInteracting = coll.gameObject;
+            
+            if (coll.GetComponent<PhotonView>().IsMine)
+            {
+                if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
+                outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+                interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
+                interactionText.text = textToDisplay;
+            }
+        }
+        catch {
+            Debug.LogError("Outer Reticle or Interaction Text has not been set correctly.");
         }
     }
 
@@ -50,35 +64,39 @@ public class TriggerInteractionScript : MonoBehaviour
     /// <param name="coll"></param>
     protected void OnTriggerStay(Collider coll)
     {
-        if (coll.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
-        {
+        if (!coll.GetComponent<PhotonView>().IsMine) return;
+        playerInteracting = coll.gameObject;
+        
+        if (playerInteracting.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
+        {            
             if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
             {
                 if (currInteractTime >= interactTime)
                 {
-                    InteractionComplete(coll.gameObject);
+                    photonView.RPC("InteractionComplete", RpcTarget.All);
                     currInteractTime = 0f;
                     interactionComplete = true;
                     currCooldownTime = cooldownTime;
-                    coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+                    playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
                     return;
                 }
 
                 currInteractTime += Time.deltaTime;
                 float percentage = (currInteractTime / interactTime) * 100;
                 if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
-
+                
                 ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
-                coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = false;
+                playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
                 return;
             }
 
-            LeftTriggerArea(coll);
+            LeftTriggerArea();
+            interactionText.text = textToDisplay;
         }
 
         if (coll.tag == "Player" && interactionComplete)
         {
-            coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
+            coll.GetComponent<AgentInputHandler>().allowInput = true;
         }
 
         if (debug) Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
@@ -93,34 +111,36 @@ public class TriggerInteractionScript : MonoBehaviour
     /// <param name="coll"></param>
     protected void OnTriggerExit(Collider coll)
     {
-        if (coll.tag == "Player")
+        if (coll.gameObject == playerInteracting)
         {
             interactionComplete = false;
-            LeftTriggerArea(coll);
+            interactionText.text = "";
+            playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+            playerInteracting = null;
+            LeftTriggerArea();
         }
     }
 
-    virtual protected void InteractionComplete(GameObject player)
+    /// <summary>
+    /// Upon completing the interaction, if the object's result is required to sync across network,
+    /// then this rpc is called.
+    /// </summary>
+    [PunRPC]
+    protected virtual void InteractionComplete()
     {
-        Objectives.ObjectiveComplete(objectiveName, objectiveRequired);
-        
-        // If the objective failed to be set as completed (e.g. a required objective hasn't been completed),
-        // then don't do anything else.
-        if (!Objectives.IsObjectiveComplete(objectiveName)) return;
-
         GetComponent<Collider>().enabled = false;
-        if (destroyObjectAfter)
-        {
-            if (objectToDestroy == null) PhotonNetwork.Destroy(gameObject);
-            else PhotonNetwork.Destroy(objectToDestroy);
-        }
     }
-    
-    virtual protected void LeftTriggerArea(Collider coll)
+
+    /// <summary>
+    /// If the player isn't pressing the interaction key, or leaves the object's collider, then the
+    /// functionality inside this method - which, again, may be overriden - is executed.
+    /// As the base method, it resets the current interaction time, the interaction text, the reticle's
+    /// progress and enables the player's input.
+    /// </summary>
+    /// <param name="coll"></param>
+    protected virtual void LeftTriggerArea()
     {
         currInteractTime = 0f;
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
-        coll.gameObject.GetComponent<PlayerMovement>().inputEnabled = true;
-        return;
     }
 }
