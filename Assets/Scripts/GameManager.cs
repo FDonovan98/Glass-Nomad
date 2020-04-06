@@ -14,11 +14,11 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     // Spawn points for the marines.
     [SerializeField] private GameObject marineSpawnPoint = null;
 
-    // Used by PlayerMovement to access the pause menu gameobject.
-    public GameObject pauseMenu;
-
     // Should we switch a marine to the alien, when the alien dies.
-    public bool switchToAlien = false;
+    [SerializeField] private  bool switchToAlien = false;
+
+    // The radius of the marines spawn.
+    [SerializeField] private float radius = 8f;
 
     /// <summary>
     /// Determines whether the game is in offline mode or not. If the game is offline, then we spawn an alien, 
@@ -61,7 +61,6 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     /// <returns>A random Vector3 position</returns>
     private Vector3 GetRandomSpawnPoint()
     {
-        int radius = 8;
         Vector3 pos = marineSpawnPoint.transform.position;
         Vector2 circle = UnityEngine.Random.insideUnitCircle * radius;
         pos.x += circle.x - (radius / 2);
