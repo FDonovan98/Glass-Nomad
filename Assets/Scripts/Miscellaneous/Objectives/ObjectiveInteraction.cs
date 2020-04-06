@@ -36,7 +36,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     [PunRPC]
     protected override void InteractionComplete()
     {
-        if (!objectiveValues.AllRequiredObjectivesCompleted()) return;
+        if (!objectiveValues.AllRequiredObjectivesCompleted() || !playerInteracting.GetComponent<PhotonView>().IsMine) return;
 
         objectiveValues.completed = true;
         ObjectiveComplete();
