@@ -16,6 +16,12 @@ public class ManageOxygen : PassiveCommandObject
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         agentInputHandler.currentOxygen -= Time.deltaTime;
+        agentInputHandler.currentOxygen = Mathf.Clamp(agentInputHandler.currentOxygen, 0.0f, agentValues.maxOxygen);
+
+        if (agentInputHandler.currentOxygen == 0.0f)
+        {
+            OxygenHasRunOut(agentInputHandler, agentValues);
+        }
 
         if (agentInputHandler.oxygenDisplay != null)
         {
@@ -31,7 +37,13 @@ public class ManageOxygen : PassiveCommandObject
     {
         if (other.gameObject.tag == "OxygenRegenZone")
         {
-            agentInputHandler.currentOxygen = Mathf.Min(agentValues.maxOxygen, agentInputHandler.currentOxygen + (Time.fixedDeltaTime * agentValues.oxygenRegenModifier));
+            agentInputHandler.currentOxygen += Time.fixedDeltaTime * agentValues.oxygenRegenModifier;
+            agentInputHandler.currentOxygen = Mathf.Clamp(agentInputHandler.currentOxygen, 0.0f, agentValues.maxOxygen);
         }
+    }
+
+    void OxygenHasRunOut(AgentInputHandler agentInputHandler, AgentValues agentValues)
+    {
+        agentInputHandler.currentHealth -= agentValues.suffocationDamage * Time.deltaTime;
     }
 }

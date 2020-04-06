@@ -19,7 +19,11 @@ public class UILookLag : ActiveCommandObject
         {
             if (agentInputHandler.currentUIXLagTime < agentValues.UIXLagTime)
             {
-                //agentInputHandler.HUD.transform.position -= cameraMovement.x;
+                Vector3 HUDPos = agentInputHandler.HUD.transform.position;
+                Vector3 newHUDpos = new Vector3(HUDPos.x - cameraMovement.x, HUDPos.y, HUDPos.z);
+
+                
+
                 agentInputHandler.currentUIXLagTime += Time.deltaTime;
             }
             else
