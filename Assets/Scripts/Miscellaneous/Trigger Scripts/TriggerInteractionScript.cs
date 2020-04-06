@@ -37,10 +37,10 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected virtual void OnTriggerEnter(Collider coll)
     {
         try {
+            playerInteracting = coll.gameObject;
             
             if (coll.GetComponent<PhotonView>().IsMine)
             {
-                playerInteracting = coll.gameObject;
                 if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
                 outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
                 interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
@@ -138,7 +138,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected virtual void LeftTriggerArea()
     {
         currInteractTime = 0f;
-        interactionText.text = "";
+        if (interactionText != null) interactionText.text = "";
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
         playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
         playerInteracting = null;

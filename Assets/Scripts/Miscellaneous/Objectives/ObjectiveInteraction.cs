@@ -37,11 +37,15 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     protected override void InteractionComplete()
     {
         if (!objectiveValues.AllRequiredObjectivesCompleted()) return;
-
+        
         objectiveValues.completed = true;
         ObjectiveComplete();
-        WriteTextToHud();
-        PlaySpeechAudio();
+        
+        if (!playerInteracting.GetComponent<PhotonView>().IsMine)
+        {
+            WriteTextToHud();
+            PlaySpeechAudio();
+        }
         
         foreach (Behaviour go in componentsToDisable)
         {
