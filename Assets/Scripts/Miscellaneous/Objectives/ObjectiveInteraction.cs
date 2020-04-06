@@ -41,7 +41,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         objectiveValues.completed = true;
         ObjectiveComplete();
         
-        if (!playerInteracting.GetComponent<PhotonView>().IsMine)
+        if (playerInteracting.GetComponent<PhotonView>().IsMine)
         {
             WriteTextToHud();
             PlaySpeechAudio();
