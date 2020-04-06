@@ -71,11 +71,13 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
 
+
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
     public RunCommandOnWeaponFired runCommandOnWeaponFired;
-
     public delegate void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value);
     public RunCommandOnAgentHasBeenHit runCommandOnAgentHasBeenHit;
+    public delegate void RunCommandOnCameraMovement(Vector3 cameraMovement, AgentInputHandler agentInputHandler);
+    public RunCommandOnCameraMovement runCommandOnCameraMovement;
 
 
     private void Start()
