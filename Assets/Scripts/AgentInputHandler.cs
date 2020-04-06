@@ -45,9 +45,13 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public float currentHealth = 0.0f;
 
     [Header("UI")]
-    public Canvas UICanvas;
     public TextMeshProUGUI healthUIText;
     public TextMeshProUGUI ammoUIText;
+
+    [Header("UI Offset")]
+    public GameObject HUD;
+    public Vector3 UIOffset;
+    public float currentUIXLagTime = 0.0f;
 
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
@@ -79,7 +83,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public RunCommandOnWeaponFired runCommandOnWeaponFired;
     public delegate void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value);
     public RunCommandOnAgentHasBeenHit runCommandOnAgentHasBeenHit;
-    public delegate void RunCommandOnCameraMovement(Vector3 cameraMovement, AgentInputHandler agentInputHandler);
+    public delegate void RunCommandOnCameraMovement(Vector3 cameraMovement, AgentInputHandler agentInputHandler, AgentValues agentValues);
     public RunCommandOnCameraMovement runCommandOnCameraMovement;
 
 
