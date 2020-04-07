@@ -12,9 +12,12 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
 
+    [Header("Check If Grounded")]
+    public bool isGrounded = true;
+    public ContactPoint groundContactPoint = new ContactPoint();
+
     [Header("Movement")]
     public bool isSprinting = false;
-    public bool isGrounded = true;
     public Vector3 gravityDirection = Vector3.down;
     public bool allowInput = true;
     [ReadOnly]
@@ -23,8 +26,6 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public bool isJumping = false;
 
     [Header("Stairs")]
-    [ReadOnly]
-    public List<ContactPoint> allCPs = new List<ContactPoint>();
     [ReadOnly]
     public Vector3 lastVelocity = Vector3.zero;
 

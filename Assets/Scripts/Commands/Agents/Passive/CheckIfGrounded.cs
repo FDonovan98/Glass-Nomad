@@ -1,21 +1,43 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "DefualtCheckIfGrounded", menuName = "Commands/Passive/CheckIfGrounded")]
 public class CheckIfGrounded : PassiveCommandObject
 {
+    List<ContactPoint> allCPs = new List<ContactPoint>();
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.runCommandOnCollisionExit += RunCommandOnCollisionExit;
+        agentInputHandler.runCommandOnCollisionEnter += RunCommandOnCollisionEnter;
         agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
+        agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
+    }
+
+    void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
+    {
+        bool foundGround = false;
+        ContactPoint currentGround = new ContactPoint();
+        foreach (ContactPoint element in allCPs)
+        {
+            // Should be changed to use a slope angle.
+            if (element.normal.y > 0.0001f && (!foundGround || element.normal.y > currentGround.normal.y))
+            {
+                foundGround = true;
+                currentGround = element;
+            }
+        }
+
+        agentInputHandler.isGrounded = foundGround;
+        agentInputHandler.groundContactPoint = currentGround;
+        allCPs.Clear();
+    }
+
+    void RunCommandOnCollisionEnter(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
+    {
+        allCPs.AddRange(other.contacts);
     }
 
     void RunCommandOnCollisionStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
     {
-        agentInputHandler.isGrounded = true;
-    }
-    
-    void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
-    {
-        agentInputHandler.isGrounded = false;
+        allCPs.AddRange(other.contacts);
     }
 }

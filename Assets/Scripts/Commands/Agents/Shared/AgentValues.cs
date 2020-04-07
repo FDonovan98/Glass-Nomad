@@ -42,11 +42,9 @@ public class AgentValues : ScriptableObject
     [Header("Aim Down Sight")]
     public bool aDSIsAToggle;
 
-
     [Header("Stairs")]
     public float maxStepHeight = 0.4f;
     public float stepSearchOvershoot = 0.01f;
-    public float maxStairHeight = 1.0f;
 
     [Header("Gravity")]
     public bool applyGravity = true;
