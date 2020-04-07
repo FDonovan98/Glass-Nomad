@@ -62,7 +62,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// required to have an implementation of this method.
     /// </summary>
     /// <param name="coll"></param>
-    protected void OnTriggerStay(Collider coll)
+    protected virtual void OnTriggerStay(Collider coll)
     {
         if (!coll.GetComponent<PhotonView>().IsMine) return;
         playerInteracting = coll.gameObject;
@@ -111,7 +111,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected void OnTriggerExit(Collider coll)
     {
-        if (coll.gameObject == playerInteracting)
+        if (coll.GetComponent<PhotonView>().IsMine)
         {
             interactionComplete = false;
             interactionText.text = "";

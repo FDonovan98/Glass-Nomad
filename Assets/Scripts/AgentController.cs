@@ -103,11 +103,13 @@ public class AgentController : AgentInputHandler
     {
         yield return new WaitForSeconds(3f);
         
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        AgentController agentController = agent.GetComponent<AgentController>();
-        agentController.enabled = false;
         deathScreen.SetActive(true);
+
+        yield return new WaitForSeconds(3f);
+
+        deathScreen.SetActive(false);
+        agent.GetComponent<PhotonView>().ObservedComponents.Clear();
+        agent.GetComponent<Spectator>().enabled = true;
     }
 
     private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
