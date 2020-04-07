@@ -28,6 +28,9 @@ public class Settings : MonoBehaviour
     // Outputs all of the audio to the AudioMixer.
     [SerializeField] private AudioMixer audioMixer = null;
 
+    // The camera that's used for FOV changes.
+    [SerializeField] private Camera affectedCamera = null;
+
     // Retrieves all the available resolutions.
     private Resolution[] resolutions;
 
@@ -38,7 +41,6 @@ public class Settings : MonoBehaviour
     {
         settingsPath = Application.persistentDataPath + "/game_data";
         InitiateSettings();
-        this.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -51,7 +53,10 @@ public class Settings : MonoBehaviour
         List<string> options = new List<string>();
 
         SaveLoadSettings.LoadData(settingsPath);
-        fovSlider.value = Camera.main.fieldOfView;
+        if (affectedCamera != null)
+        {
+            fovSlider.value = affectedCamera.fieldOfView;
+        }
 
         float volValue = 0f;
         if (audioMixer.GetFloat("volume", out volValue))
@@ -129,6 +134,9 @@ public class Settings : MonoBehaviour
 
     public void SetFOV(float fov)
     {
-        Camera.main.fieldOfView = fov;
+        if (affectedCamera != null)
+        {
+            affectedCamera.fieldOfView = fov;
+        }
     }
 }

@@ -247,8 +247,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnSettingsClick()
     {
-        settingsContainer.SetActive(true);
         menuContainer.SetActive(false);
+        settingsContainer.SetActive(true);
     }
 
     public void OnExitLoadoutClick()
