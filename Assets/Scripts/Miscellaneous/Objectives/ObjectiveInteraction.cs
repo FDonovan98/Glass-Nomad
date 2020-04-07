@@ -42,7 +42,8 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     [PunRPC]
     protected override void InteractionComplete()
     {
-        if (!objectiveValues.AllRequiredObjectivesCompleted()) return;
+        // If we haven't completed the correct objectives, yet, or we are the alien, then don't continue.
+        if (!objectiveValues.AllRequiredObjectivesCompleted() || captionText == null) return;
         
         objectiveValues.completed = true;
         ObjectiveComplete();
