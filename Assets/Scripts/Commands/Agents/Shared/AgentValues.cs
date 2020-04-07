@@ -31,6 +31,7 @@ public class AgentValues : ScriptableObject
     public float jumpCooldown = 0.1f;
     
     [Header("Spider Climb")]
+    [Range(0.0f, 1.0f)]
     public float surfaceSwitchSpeed = 1.0f;
     public float gravityResetDelay = 0.5f;
      
@@ -62,5 +63,6 @@ public class AgentValues : ScriptableObject
 
     [Header("UI Lag")]
     public bool[] lagUIInAxis = {false, false};
+    [Range(0.0f, 1.0f)]
     public float[] UICatchupSpeed = {0.5f, 0.5f};
 }
