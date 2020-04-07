@@ -13,25 +13,28 @@ MonoBehaviour:
   m_Name: AlienAgentValues
   m_EditorClassIdentifier: 
   moveAcceleration: 130
-  maxSpeed: 65
-  maxSprintSpeed: 85
   sprintingIsAToggle: 0
   sprintMultiplier: 2
-  surfaceSwitchSpeed: 0.4
-  gravityResetDelay: 0.5
-  leapCanChargeInAir: 0
-  leapVelocity: 60
-  forwardLeapModifier: 2
-  verticalLeapModifier: 5
-  leapChargeDuration: 2
-  jumpCooldown: 0.1
-  mouseSensitivity: 2
-  yRotationClamp: 90
-  aDSIsAToggle: 0
-  reduceVelocityInAir: 1
+  reduceVelocityInAir: 0
   scaleVelocityDegWithVel: 1
   velocityDegradationGrounded: 100
   velocityDegradationInAir: 100
+  maxSpeed: 65
+  maxSprintSpeed: 85
+  maxSpeedInAir: 80
+  maxSprintSpeedInAir: 100
+  velocityLimitRate: 0.1
+  leapCanChargeInAir: 0
+  leapVelocity: 40
+  forwardLeapModifier: 2
+  verticalLeapModifier: 2
+  leapChargeDuration: 0.5
+  jumpCooldown: 0.1
+  surfaceSwitchSpeed: 0.4
+  gravityResetDelay: 0.4
+  mouseSensitivity: 2
+  yRotationClamp: 90
+  aDSIsAToggle: 0
   maxStairHeight: 0.4
   minDistanceToStair: 0
   minLedgeWidth: 0.3

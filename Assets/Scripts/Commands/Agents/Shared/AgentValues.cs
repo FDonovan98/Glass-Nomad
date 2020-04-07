@@ -5,14 +5,22 @@ public class AgentValues : ScriptableObject
 {
     [Header("XZ Movement")]
     public float moveAcceleration = 100.0f;
-    public float maxSpeed = 50.0f;
-    public float maxSprintSpeed = 80.0f;
     public bool sprintingIsAToggle;
     public float sprintMultiplier = 2.0f;
 
-    [Header("Spider Climb")]
-    public float surfaceSwitchSpeed = 1.0f;
-    public float gravityResetDelay = 0.5f;
+    [Header("Velocity Degradation")]
+    public bool reduceVelocityInAir = true;
+    public bool scaleVelocityDegWithVel = true;
+    public float velocityDegradationGrounded = 80.0f;
+    public float velocityDegradationInAir = 80.0f;
+
+    [Header("Velocity Limit")]
+    public float maxSpeed = 50.0f;
+    public float maxSprintSpeed = 80.0f;
+    public float maxSpeedInAir = 80.0f;
+    public float maxSprintSpeedInAir = 100.0f;
+    [Range(0.0f, 1.0f)]
+    public float velocityLimitRate = 0.1f;
 
     [Header("ChargeLeap")]
     public bool leapCanChargeInAir = true;
@@ -21,6 +29,10 @@ public class AgentValues : ScriptableObject
     public float verticalLeapModifier = 1.0f;
     public float leapChargeDuration = 2.0f;
     public float jumpCooldown = 0.1f;
+    
+    [Header("Spider Climb")]
+    public float surfaceSwitchSpeed = 1.0f;
+    public float gravityResetDelay = 0.5f;
      
     [Header("Camera")]
     public float mouseSensitivity = 1.0f;
@@ -29,11 +41,6 @@ public class AgentValues : ScriptableObject
     [Header("Aim Down Sight")]
     public bool aDSIsAToggle;
 
-    [Header("Velocity Degradation")]
-    public bool reduceVelocityInAir = true;
-    public bool scaleVelocityDegWithVel = true;
-    public float velocityDegradationGrounded = 80.0f;
-    public float velocityDegradationInAir = 80.0f;
 
     [Header("Stairs")]
     public float maxStairHeight = 1.0f;
