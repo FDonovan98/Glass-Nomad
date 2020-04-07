@@ -2,6 +2,8 @@
 using Photon.Pun;
 using TMPro;
 
+using System.Collections.Generic;
+
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
     public GameObject pauseMenu;
@@ -19,6 +21,12 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public float currentLeapCharge = 0.0f;
     [ReadOnly]
     public bool isJumping = false;
+
+    [Header("Stairs")]
+    [ReadOnly]
+    public List<ContactPoint> allCPs = new List<ContactPoint>();
+    [ReadOnly]
+    public Vector3 lastVelocity = Vector3.zero;
 
     [Header("Oxygen")]
     [ReadOnly]

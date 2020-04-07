@@ -44,10 +44,9 @@ public class AgentValues : ScriptableObject
 
 
     [Header("Stairs")]
+    public float maxStepHeight = 0.4f;
+    public float stepSearchOvershoot = 0.01f;
     public float maxStairHeight = 1.0f;
-    public float minDistanceToStair = 1.0f;
-    public float minLedgeWidth = 1.0f;
-    public float stepUpAcceleration = 1.0f;
 
     [Header("Gravity")]
     public bool applyGravity = true;
