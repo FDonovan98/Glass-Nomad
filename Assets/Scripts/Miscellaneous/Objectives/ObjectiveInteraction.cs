@@ -33,6 +33,12 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         }
     }
 
+    protected override void OnTriggerStay(Collider coll)
+    {
+        if (playerInteracting.GetComponent<AgentController>().agentValues.name != "MarineAgentValues") return;
+        base.OnTriggerStay(coll);
+    }
+
     [PunRPC]
     protected override void InteractionComplete()
     {
@@ -40,12 +46,8 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         
         objectiveValues.completed = true;
         ObjectiveComplete();
-        
-        if (playerInteracting.GetComponent<PhotonView>().IsMine)
-        {
-            WriteTextToHud();
-            PlaySpeechAudio();
-        }
+        WriteTextToHud();
+        PlaySpeechAudio();
         
         foreach (Behaviour go in componentsToDisable)
         {
