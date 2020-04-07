@@ -37,6 +37,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         // Means we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
         PhotonNetwork.AutomaticallySyncScene = true;
         menuContainer.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        SaveLoadSettings.LoadData(Application.persistentDataPath + "/game_data");
     }
     
     public void OnPlayClick()

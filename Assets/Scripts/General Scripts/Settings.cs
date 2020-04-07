@@ -34,13 +34,12 @@ public class Settings : MonoBehaviour
     {
         settingsPath = Application.persistentDataPath + "/game_data";
         InitiateSettings();
-        this.gameObject.SetActive(false);
     }
 
     /// <summary>
     /// Setups the dropdown menu options, and also sets the settings to the defaults.
     /// </summary>
-    private void InitiateSettings()
+    public void InitiateSettings()
     {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();

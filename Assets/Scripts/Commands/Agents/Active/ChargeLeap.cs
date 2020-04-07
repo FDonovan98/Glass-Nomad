@@ -17,7 +17,6 @@ public class ChargeLeap : ActiveCommandObject
     {
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
         outerReticle = agentInputHandler.gameObject.transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
-        Debug.Log(outerReticle.name);
     }
 
     private void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
@@ -39,7 +38,6 @@ public class ChargeLeap : ActiveCommandObject
                 agentInputHandler.currentLeapCharge += Time.deltaTime;
                 float percentage = (agentInputHandler.currentLeapCharge / agentValues.leapChargeDuration) * 100;
                 if (percentage >= 100) percentage = 99.9f;
-                Debug.Log(percentage);
                 ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
             }
 
