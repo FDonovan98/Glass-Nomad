@@ -39,6 +39,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         menuContainer.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+
+        SaveLoadSettings.LoadData(Application.persistentDataPath + "/game_data");
     }
     
     public void OnPlayClick()
