@@ -52,7 +52,17 @@ public class Settings : MonoBehaviour
 
         SaveLoadSettings.LoadData(settingsPath);
         fovSlider.value = Camera.main.fieldOfView;
-        volumeSlider.value = AudioListener.volume;
+
+        float volValue = 0f;
+        if (audioMixer.GetFloat("volume", out volValue))
+        {
+            volumeSlider.value = volValue;
+        }
+        else
+        {
+            volumeSlider.value = 1f;
+        }
+        
 
         int currentResIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
@@ -82,7 +92,7 @@ public class Settings : MonoBehaviour
     {
         menu.SetActive(!menu.activeSelf);
         settingsButtons.SetActive(!menu.activeSelf);
-        SaveLoadSettings.SaveData(settingsPath);
+        SaveLoadSettings.SaveData(settingsPath, audioMixer);
     }
 
     public void LeaveRoom()
