@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Photon.Pun;
+using UnityEngine.Audio;
 
 public class Settings : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class Settings : MonoBehaviour
 
     // Changes the volume of the AudioListener.
     [SerializeField] private Slider volumeSlider = null;
+
+    // Outputs all of the audio to the AudioMixer.
+    [SerializeField] private AudioMixer audioMixer = null;
 
     // Retrieves all the available resolutions.
     private Resolution[] resolutions;
@@ -88,7 +92,10 @@ public class Settings : MonoBehaviour
 
     public void SetVolume(float volume)
     {
-        AudioListener.volume = volume;
+        //Since audio is logarithmic and the slider is linear we have to convert it appropriately.
+        float volumeChangeValue = Mathf.Log10(volumeSlider.value) * 20;
+
+        audioMixer.SetFloat("volume", volumeChangeValue);
     }
 
     public void SetResolution(int resolutionIndex)
