@@ -25,8 +25,7 @@ public class WeaponEffects : PassiveCommandObject
                 weaponAudioSource = agentInputHandler.weaponObject.AddComponent(typeof(AudioSource)) as AudioSource;
             }
 
-            weaponAudioSource.clip = agentInputHandler.currentWeapon.weaponSound;
-            weaponAudioSource.Play();
+            weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.weaponSound);
         } 
         else
         {

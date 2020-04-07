@@ -98,8 +98,7 @@ public class SecuritySwitchManager : ObjectiveInteraction
     /// </summary>
     private void StartSoundEffect()
     {
-        generatorAudioSource.clip = generatorSound;
-        generatorAudioSource.Play();
+        generatorAudioSource.PlayOneShot(generatorSound);
     }
 
     /// <summary>
