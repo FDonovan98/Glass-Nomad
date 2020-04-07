@@ -21,14 +21,19 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public bool isJumping = false;
 
     [Header("Oxygen")]
+    [ReadOnly]
     public float currentOxygen = 0.0f;
     public GameObject oxygenDisplay;
 
     [Header("Weapons")]
     public Weapon currentWeapon;
+    [ReadOnly]
     public int currentBulletsInMag = 0;
+    [ReadOnly]
     public float timeSinceLastShot = 0.0f;
+    [ReadOnly]
     public int currentTotalAmmo = 0;
+    [ReadOnly]
     public float currentRecoilValue = 0.0f;
     public GameObject weaponObject;
     public ParticleSystem weaponMuzzleFlash;
@@ -45,6 +50,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public GameObject ADSReticule;
 
     [Header("Health")]
+    [ReadOnly]
     public float currentHealth = 0.0f;
 
     [Header("UI")]
@@ -53,8 +59,8 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("UI Offset")]
     public GameObject HUD;
+    [ReadOnly]
     public Vector3 UIOffset = Vector3.zero;
-    public float[] currentUILagTime = {0.0f, 0.0f};
 
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
@@ -62,6 +68,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("PUN")]
     public PunRPCs punRPCs;
+    [ReadOnly]
     public bool isLocalAgent = true;
 
     protected GameObject agent;
