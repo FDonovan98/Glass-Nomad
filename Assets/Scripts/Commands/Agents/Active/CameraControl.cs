@@ -37,13 +37,13 @@ public class CameraControl : ActiveCommandObject
                 agent.transform.Rotate(agentRotation);
 
                 // Camera Rotation.
-                Quaternion cameraTargetRotation = agentInputHandler.agentCamera.transform.localRotation;
+                Quaternion cameraTargetRotation = agentInputHandler.mainCamera.transform.localRotation;
 
                 float cameraRotation = -mouseRotationInput.y;
                 cameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
                 cameraTargetRotation = ClampRotationAroundXAxis(cameraTargetRotation, agentValues);
 
-                agentInputHandler.agentCamera.transform.localRotation = cameraTargetRotation;
+                agentInputHandler.mainCamera.transform.localRotation = cameraTargetRotation;
             }
         }
     }
