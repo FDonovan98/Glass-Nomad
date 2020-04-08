@@ -63,6 +63,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public float currentHealth = 0.0f;
 
     [Header("UI")]
+    public Canvas HUDCanvas;
     public TextMeshProUGUI healthUIText;
     public TextMeshProUGUI ammoUIText;
 

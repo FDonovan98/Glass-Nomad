@@ -27,11 +27,11 @@ public class AimDownWeaponSight : ActiveCommandObject
             {
                 if (agentInputHandler.aDSCamera.enabled == true)
                 {
-                    DisableADS(agentInputHandler);
+                    ToggleADS(agentInputHandler, false);
                 }
                 else
                 {
-                    EnableADS(agentInputHandler);
+                    ToggleADS(agentInputHandler, true);
                 }
             }
         }
@@ -39,28 +39,29 @@ public class AimDownWeaponSight : ActiveCommandObject
         {
             if (Input.GetKeyDown(aimDownSight))
             {
-                EnableADS(agentInputHandler);
+                ToggleADS(agentInputHandler, true);
             }
             else if (Input.GetKeyUp(aimDownSight))
             {
-                DisableADS(agentInputHandler);
+                ToggleADS(agentInputHandler, false);
             }
         }
     }
 
-    void EnableADS(AgentInputHandler agentInputHandler)
+    void ToggleADS(AgentInputHandler agentInputHandler, bool toggle)
     {
-        agentInputHandler.agentCamera = agentInputHandler.aDSCamera;
-        agentInputHandler.mainCamera.enabled = false;
-        agentInputHandler.aDSCamera.enabled = true;
-        agentInputHandler.ADSReticule.SetActive(true);
-    }
+        agentInputHandler.isADS = toggle;
+        if (toggle)
+        {
+            agentInputHandler.agentCamera = agentInputHandler.aDSCamera;
+        }
+        else
+        {
+            agentInputHandler.agentCamera = agentInputHandler.mainCamera;
+        }
 
-    void DisableADS(AgentInputHandler agentInputHandler)
-    {
-        agentInputHandler.agentCamera = agentInputHandler.mainCamera;
-        agentInputHandler.aDSCamera.enabled = false;
-        agentInputHandler.mainCamera.enabled = true;
-        agentInputHandler.ADSReticule.SetActive(false);
+        agentInputHandler.mainCamera.enabled = !toggle;
+        agentInputHandler.aDSCamera.enabled = toggle;
+        agentInputHandler.ADSReticule.SetActive(toggle);        
     }
 }
