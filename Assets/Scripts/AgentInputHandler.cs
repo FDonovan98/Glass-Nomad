@@ -56,6 +56,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Camera mainCamera;
     public Camera aDSCamera;
     public bool isADS = false;
+    public Canvas HUDCanvas;
 
     [Header("Health")]
     [ReadOnly]
