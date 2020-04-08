@@ -22,28 +22,28 @@ public class CameraControl : ActiveCommandObject
         {
             Vector3 mouseRotationInput = GetMouseInput(agent);
 
-            if (agentInputHandler.runCommandOnCameraMovement != null)
-            {
-                agentInputHandler.runCommandOnCameraMovement(mouseRotationInput, agentInputHandler, agentValues);
-            }
 
             if (mouseRotationInput != Vector3.zero)
             {
                 mouseRotationInput *= agentValues.mouseSensitivity;
+              
+                if (agentInputHandler.runCommandOnCameraMovement != null)
+                {
+                    agentInputHandler.runCommandOnCameraMovement(mouseRotationInput, agentInputHandler, agentValues);
+                }
 
                 // Agent Rotation.
                 Vector3 agentRotation = new Vector3(0.0f, mouseRotationInput.x, 0.0f);
                 agent.transform.Rotate(agentRotation);
 
                 // Camera Rotation.
-                Camera agentCamera = agent.GetComponentInChildren<Camera>();
-                Quaternion cameraTargetRotation = agentCamera.transform.localRotation;
+                Quaternion cameraTargetRotation = agentInputHandler.agentCamera.transform.localRotation;
 
                 float cameraRotation = -mouseRotationInput.y;
                 cameraTargetRotation *= Quaternion.Euler(cameraRotation, 0.0f, 0.0f);
                 cameraTargetRotation = ClampRotationAroundXAxis(cameraTargetRotation, agentValues);
 
-                agentCamera.transform.localRotation = cameraTargetRotation;
+                agentInputHandler.agentCamera.transform.localRotation = cameraTargetRotation;
             }
         }
     }
