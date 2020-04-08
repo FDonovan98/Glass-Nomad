@@ -16,13 +16,22 @@ public class CheckIfGrounded : PassiveCommandObject
     {
         bool foundGround = false;
         ContactPoint currentGround = new ContactPoint();
+        float currentGroundTheta = float.MaxValue;
+
         foreach (ContactPoint element in allCPs)
         {
             // Should be changed to use a slope angle.
-            if (element.normal.y > 0.0001f && (!foundGround || element.normal.y > currentGround.normal.y))
+
+            float cosTheta = Vector3.Dot(element.normal, agentInputHandler.gravityDirection);
+            float theta = Mathf.Abs(Mathf.Acos(cosTheta) * Mathf.Rad2Deg - 180);
+
+            Debug.Log(theta);
+
+            if (theta < agentValues.slopeLimitAngle && theta < currentGroundTheta)
             {
                 foundGround = true;
                 currentGround = element;
+                currentGroundTheta = theta;
             }
         }
 

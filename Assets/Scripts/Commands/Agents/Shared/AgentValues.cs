@@ -49,6 +49,7 @@ public class AgentValues : ScriptableObject
     [Header("Gravity")]
     public bool applyGravity = true;
     public float gravityAcceleration = 10.0f;
+    public float slopeLimitAngle = 30.0f;
 
     [Header("Oxygen")]
     public float maxOxygen = 100.0f;
