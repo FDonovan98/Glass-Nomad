@@ -97,7 +97,7 @@ public class Settings : MonoBehaviour
     {
         menu.SetActive(!menu.activeSelf);
         settingsButtons.SetActive(!menu.activeSelf);
-        SaveLoadSettings.SaveData(settingsPath, audioMixer);
+        SaveLoadSettings.SaveData(settingsPath, audioMixer, affectedCamera);
     }
 
     public void LeaveRoom()
