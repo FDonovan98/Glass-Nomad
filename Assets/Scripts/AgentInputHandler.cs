@@ -201,7 +201,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
         if (ammoUIText != null)
         {
-            ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+            ammoUIText.text =  currentBulletsInMag + " / " + currentTotalAmmo;
         }
     }
 }
