@@ -35,7 +35,8 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
 
     protected override void OnTriggerStay(Collider coll)
     {
-        if (playerInteracting.GetComponent<AgentController>().agentValues.name != "MarineAgentValues") return;
+        if (!coll.GetComponent<PhotonView>().IsMine) return;
+        if (coll.GetComponent<AgentController>().agentValues.name != "MarineAgentValues") return;
         base.OnTriggerStay(coll);
     }
 
