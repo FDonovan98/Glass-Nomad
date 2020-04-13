@@ -44,6 +44,8 @@ public class ManageOxygen : PassiveCommandObject
 
     void OxygenHasRunOut(AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        agentInputHandler.currentHealth -= agentValues.suffocationDamage * Time.deltaTime;
+        AgentController agentController = agentInputHandler.gameObject.GetComponent<AgentController>();
+
+        agentController.ChangeResourceCount(AgentController.ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
     }
 }
