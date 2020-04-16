@@ -40,7 +40,7 @@ public class FireWeapon : ActiveCommandObject
         {
             if (agentInputHandler.timeSinceLastShot > agentInputHandler.currentWeapon.fireRate)
             {
-                if (agentInputHandler.currentBulletsInMag > 0 || agentInputHandler.currentWeapon.fireMode == Weapon.FireType.Melee)
+                //if (agentInputHandler.currentBulletsInMag > 0 || agentInputHandler.currentWeapon.fireMode == Weapon.FireType.Melee)
                 {
                     return true;
                 }
@@ -62,6 +62,6 @@ public class FireWeapon : ActiveCommandObject
         AgentController agentController = agent.GetComponent<AgentController>();
         agentController.ChangeResourceCount(AgentController.ResourceType.Ammo, -1);
 
-        Debug.Log(agentInputHandler.currentBulletsInMag);
+//        Debug.Log(agentInputHandler.currentBulletsInMag);
     }
 }

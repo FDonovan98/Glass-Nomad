@@ -21,22 +21,24 @@ public class ReloadWeapon : ActiveCommandObject
     {
         if (Input.GetKeyDown(reloadKey))
         {
-            if (CanReload(agentInputHandler))
+            AgentController agentController = (AgentController)agentInputHandler;
+
+            if (CanReload(agentController))
             {
                 AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponent<AudioSource>();
                 weaponAudioSource.clip = agentInputHandler.currentWeapon.reloadSound;
                 weaponAudioSource.Play();
 
-                agentInputHandler.StartCoroutine(Reload(weaponAudioSource.clip.length, agentInputHandler));
+                agentInputHandler.StartCoroutine(Reload(weaponAudioSource.clip.length, agentController));
             }
         }
     }
 
-    private bool CanReload(AgentInputHandler agentInputHandler)
+    private bool CanReload(AgentController agentController)
     {
-        if (agentInputHandler.currentTotalAmmo > 0)
+        if (agentController.currentTotalAmmo > 0)
         {
-            if (agentInputHandler.currentBulletsInMag < agentInputHandler.currentWeapon.magSize)
+            if (agentController.currentBulletsInMag < agentController.currentWeapon.magSize)
             {
                 return true;
             }
@@ -45,21 +47,21 @@ public class ReloadWeapon : ActiveCommandObject
         return false;
     }
 
-    private IEnumerator Reload(float reloadTime, AgentInputHandler agentInputHandler)
+    private IEnumerator Reload(float reloadTime, AgentController agentController)
     {
         yield return new WaitForSeconds(reloadTime);
         int bulletsUsed;
 
-        bulletsUsed = agentInputHandler.currentWeapon.magSize - agentInputHandler.currentBulletsInMag;
+        bulletsUsed = agentController.currentWeapon.magSize - agentController.currentBulletsInMag;
 
-        if (bulletsUsed > agentInputHandler.currentTotalAmmo)
+        if (bulletsUsed > agentController.currentTotalAmmo)
         {
-            bulletsUsed = agentInputHandler.currentTotalAmmo;
+            bulletsUsed = agentController.currentTotalAmmo;
         }
 
-        agentInputHandler.currentBulletsInMag += bulletsUsed;
-        agentInputHandler.currentTotalAmmo -= bulletsUsed;
+        agentController.currentBulletsInMag += bulletsUsed;
+        agentController.currentTotalAmmo -= bulletsUsed;
 
-        agentInputHandler.ammoUIText.text = "Ammo: " + agentInputHandler.currentBulletsInMag + " / " + agentInputHandler.currentTotalAmmo;
+        agentController.ammoUIText.text = "Ammo: " + agentController.currentBulletsInMag + " / " + agentController.currentTotalAmmo;
     }
 }
