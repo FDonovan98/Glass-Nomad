@@ -3,6 +3,8 @@ using Photon.Pun;
 using TMPro;
 using System.Collections;
 
+using UnityEngine.UI;
+
 public class AgentController : AgentInputHandler
 {
     public GameObject deathScreen;
@@ -113,9 +115,14 @@ public class AgentController : AgentInputHandler
             {
                 ChangeResourceCount(AgentController.ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
             }
+
+            if (oxygenDisplay != null)
+            {
+                UpdateUI(ResourceType.Oxygen);
+            }
         }
     }
-    
+
     private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
     {
         RaycastHit hit;
@@ -137,6 +144,11 @@ public class AgentController : AgentInputHandler
     {
         ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
         healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+
+        Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
+        TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
+        oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
+        oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
     }
 
     void UpdateUI(ResourceType resourceType)
@@ -148,6 +160,12 @@ public class AgentController : AgentInputHandler
                 break;
             case ResourceType.Health:
                 healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+                break;
+            case ResourceType.Oxygen:
+                Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
+                TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
+                oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
+                oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
                 break;
             default:
                 Debug.LogWarning(gameObject.name + " tried to update UI of unrecognized type.");
