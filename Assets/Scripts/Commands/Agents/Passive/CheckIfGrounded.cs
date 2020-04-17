@@ -25,8 +25,6 @@ public class CheckIfGrounded : PassiveCommandObject
             float cosTheta = Vector3.Dot(element.normal, agentInputHandler.gravityDirection);
             float theta = Mathf.Abs(Mathf.Acos(cosTheta) * Mathf.Rad2Deg - 180);
 
-            Debug.Log(theta);
-
             if (theta < agentValues.slopeLimitAngle && theta < currentGroundTheta)
             {
                 foundGround = true;

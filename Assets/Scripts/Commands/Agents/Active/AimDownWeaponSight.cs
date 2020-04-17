@@ -51,6 +51,7 @@ public class AimDownWeaponSight : ActiveCommandObject
     void ToggleADS(AgentInputHandler agentInputHandler, bool toggle)
     {
         agentInputHandler.isADS = toggle;
+
         if (toggle)
         {
             agentInputHandler.agentCamera = agentInputHandler.aDSCamera;
@@ -63,7 +64,6 @@ public class AimDownWeaponSight : ActiveCommandObject
         agentInputHandler.HUDCanvas.worldCamera = agentInputHandler.agentCamera;
 
         agentInputHandler.mainCamera.enabled = !toggle;
-        agentInputHandler.aDSCamera.enabled = toggle;
-        agentInputHandler.ADSReticule.SetActive(toggle);        
+        agentInputHandler.aDSCamera.enabled = toggle;   
     }
 }

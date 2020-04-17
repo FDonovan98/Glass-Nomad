@@ -3,15 +3,35 @@ using Photon.Pun;
 using TMPro;
 using System.Collections;
 
+using UnityEngine.UI;
+
 public class AgentController : AgentInputHandler
 {
     public GameObject deathScreen;
     public Color alienVision;
     public bool specialVision = false;
+
+    [Header("UI")]
+    public TextMeshProUGUI healthUIText;
+    public TextMeshProUGUI ammoUIText;
+    public GameObject oxygenDisplay;
+
+    [Header("Current Stats")]
+    [ReadOnly]
+    public float currentHealth = 0.0f;
+    [ReadOnly]
+    public float currentOxygen = 0.0f;
+    [ReadOnly]
+    public int currentExtraAmmo = 0;
+    [ReadOnly]
+    public int currentBulletsInMag = 0;
+
     public enum ResourceType
     {
         Health,
-        Ammo
+        MagazineAmmo,
+        ExtraAmmo,
+        Oxygen
     }
     
     public GameObject[] gameObjectsToDisableForPhoton;
@@ -19,6 +39,19 @@ public class AgentController : AgentInputHandler
 
     private void Awake()
     { 
+        if (agentValues != null)
+        {
+            currentOxygen = agentValues.maxOxygen;
+            currentHealth = agentValues.maxHealth;
+        }
+
+        if (currentWeapon != null)
+        {
+            currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
+            currentExtraAmmo = currentWeapon.magSize * 2;
+            timeSinceLastShot = currentWeapon.fireRate;
+        }
+
         runCommandOnWeaponFired += FireWeaponOverNet;
         if (specialVision && photonView.IsMine)
         {
@@ -33,6 +66,8 @@ public class AgentController : AgentInputHandler
                 isLocalAgent = false;
             }
         }
+
+        UpdateUI();
     }
 
     private void DisableObjectsForPhoton()
@@ -49,13 +84,23 @@ public class AgentController : AgentInputHandler
 
     public void ChangeResourceCount(ResourceType resourceType, int value)
     {
-        if (resourceType == ResourceType.Ammo)
+        if (resourceType == ResourceType.MagazineAmmo)
         {
             currentBulletsInMag = (int)Mathf.Clamp(currentBulletsInMag + value, 0.0f, currentWeapon.magSize);
 
             if (ammoUIText != null)
             {
-                ammoUIText.text =   currentBulletsInMag + " / " + currentTotalAmmo;
+                UpdateUI(ResourceType.MagazineAmmo);
+            }
+        }
+
+        if (resourceType == ResourceType.ExtraAmmo)
+        {
+            currentExtraAmmo = (int)Mathf.Max(currentExtraAmmo + value, 0.0f);
+
+            if (ammoUIText != null)
+            {
+                UpdateUI(ResourceType.MagazineAmmo);
             }
         }
     }
@@ -72,9 +117,85 @@ public class AgentController : AgentInputHandler
 
             if (healthUIText != null)
             {
-                healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+                UpdateUI(ResourceType.Health);
             }
         }
+        else if (resourceType == ResourceType.Oxygen)
+        {
+            currentOxygen = Mathf.Clamp(currentOxygen + value, 0.0f, agentValues.maxOxygen);
+
+            if (currentOxygen == 0.0f)
+            {
+                ChangeResourceCount(AgentController.ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
+            }
+
+            if (oxygenDisplay != null)
+            {
+                UpdateUI(ResourceType.Oxygen);
+            }
+        }
+    }
+
+    private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(agentCamera.transform.position, agentCamera.transform.forward, out hit, currentWeapon.range))
+        {
+            if (hit.transform.tag == "Player")
+            {
+                int targetPhotonID = hit.transform.GetComponent<PhotonView>().ViewID;
+                photonView.RPC("PlayerWasHit", RpcTarget.All, targetPhotonID, hit.point, hit.normal, currentWeapon.damage);
+            }
+            else
+            {          
+                photonView.RPC("WallWasHit", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
+            }
+        }
+    }
+
+    void UpdateUI()
+    {
+        UpdateAmmoUI();
+        UpdateHealthUI();
+        UpdateOxygenUI();
+    }
+
+    void UpdateUI(ResourceType resourceType)
+    {
+        switch (resourceType)
+        {
+            case ResourceType.MagazineAmmo:
+            case ResourceType.ExtraAmmo:
+                UpdateAmmoUI();
+                break;
+            case ResourceType.Health:
+                UpdateHealthUI();
+                break;
+            case ResourceType.Oxygen:
+                UpdateOxygenUI();
+                break;
+            default:
+                Debug.LogWarning(gameObject.name + " tried to update UI of unrecognized type.");
+                break;
+        }
+    }
+
+    void UpdateAmmoUI()
+    {
+        ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentExtraAmmo;
+    }
+
+    void UpdateHealthUI()
+    {
+        healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+    }
+
+    void UpdateOxygenUI()
+    {
+        Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
+        TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
+        oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
+        oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
     }
 
     /// <summary>
@@ -112,20 +233,4 @@ public class AgentController : AgentInputHandler
         agent.GetComponent<Spectator>().enabled = true;
     }
 
-    private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(agentCamera.transform.position, agentCamera.transform.forward, out hit, currentWeapon.range))
-        {
-            if (hit.transform.tag == "Player")
-            {
-                int targetPhotonID = hit.transform.GetComponent<PhotonView>().ViewID;
-                photonView.RPC("PlayerWasHit", RpcTarget.All, targetPhotonID, hit.point, hit.normal, currentWeapon.damage);
-            }
-            else
-            {          
-                photonView.RPC("WallWasHit", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
-            }
-        }
-    }
 }
