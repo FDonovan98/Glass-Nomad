@@ -19,12 +19,16 @@ public class ChangeResourceOverTime : PassiveCommandObject
 
         foreach (TypeAndConstraints element in resourcesToChange)
         {
-            if (element.areaToChangeIn == null)
-            {
-                agentController = (AgentController)agentInputHandler;
-            }
             
-            agentController.ChangeResourceCount(element.resourceType, Time.deltaTime * element.changeValue);
+            if (String.IsNullOrEmpty(element.areaTag))
+            {
+                if (agentController == null)
+                {
+                    agentController = (AgentController)agentInputHandler;
+                }
+               
+                agentController.ChangeResourceCount(element.resourceType, Time.deltaTime * element.changeValue);
+            }          
         }
     }
 
@@ -34,7 +38,7 @@ public class ChangeResourceOverTime : PassiveCommandObject
 
         foreach (TypeAndConstraints element in resourcesToChange)
         {
-            if (other.gameObject == element.areaToChangeIn)
+            if (other.gameObject.tag == element.areaTag)
             {
                 if (agentController == null)
                 {
@@ -52,5 +56,5 @@ public class TypeAndConstraints
 {
     public AgentController.ResourceType resourceType;
     public float changeValue;
-    public GameObject areaToChangeIn;
+    public string areaTag;
 }
