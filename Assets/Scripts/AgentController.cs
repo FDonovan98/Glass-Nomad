@@ -55,7 +55,7 @@ public class AgentController : AgentInputHandler
 
             if (ammoUIText != null)
             {
-                ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+                ammoUIText.text =   currentBulletsInMag + " / " + currentTotalAmmo;
             }
         }
     }

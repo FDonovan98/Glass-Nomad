@@ -63,6 +63,7 @@ public class AimDownWeaponSight : ActiveCommandObject
         agentInputHandler.HUDCanvas.worldCamera = agentInputHandler.agentCamera;
 
         agentInputHandler.mainCamera.enabled = !toggle;
-        agentInputHandler.aDSCamera.enabled = toggle;      
+        agentInputHandler.aDSCamera.enabled = toggle;
+        agentInputHandler.ADSReticule.SetActive(toggle);        
     }
 }

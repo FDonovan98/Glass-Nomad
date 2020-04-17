@@ -56,13 +56,14 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Camera mainCamera;
     public Camera aDSCamera;
     public bool isADS = false;
-    public Canvas HUDCanvas;
 
     [Header("Health")]
     [ReadOnly]
     public float currentHealth = 0.0f;
 
     [Header("UI")]
+    public Canvas HUDCanvas;
+    public GameObject ADSReticule;
     public TextMeshProUGUI healthUIText;
     public TextMeshProUGUI ammoUIText;
 
@@ -200,7 +201,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
         if (ammoUIText != null)
         {
-            ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+            ammoUIText.text =  currentBulletsInMag + " / " + currentTotalAmmo;
         }
     }
 }
