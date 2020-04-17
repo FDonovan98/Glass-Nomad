@@ -63,6 +63,6 @@ public class FireWeapon : ActiveCommandObject
 
         agentInputHandler.timeSinceLastShot = 0.0f;
 
-        agentController.ChangeResourceCount(AgentController.ResourceType.Ammo, -1);
+        agentController.ChangeResourceCount(AgentController.ResourceType.MagazineAmmo, -1);
     }
 }

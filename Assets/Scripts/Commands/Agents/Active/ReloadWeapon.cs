@@ -36,7 +36,7 @@ public class ReloadWeapon : ActiveCommandObject
 
     private bool CanReload(AgentController agentController)
     {
-        if (agentController.currentTotalAmmo > 0)
+        if (agentController.currentExtraAmmo > 0)
         {
             if (agentController.currentBulletsInMag < agentController.currentWeapon.magSize)
             {
@@ -54,14 +54,12 @@ public class ReloadWeapon : ActiveCommandObject
 
         bulletsUsed = agentController.currentWeapon.magSize - agentController.currentBulletsInMag;
 
-        if (bulletsUsed > agentController.currentTotalAmmo)
+        if (bulletsUsed > agentController.currentExtraAmmo)
         {
-            bulletsUsed = agentController.currentTotalAmmo;
+            bulletsUsed = agentController.currentExtraAmmo;
         }
 
-        agentController.currentBulletsInMag += bulletsUsed;
-        agentController.currentTotalAmmo -= bulletsUsed;
-
-        agentController.ammoUIText.text = "Ammo: " + agentController.currentBulletsInMag + " / " + agentController.currentTotalAmmo;
+        agentController.ChangeResourceCount(AgentController.ResourceType.MagazineAmmo, bulletsUsed);
+        agentController.ChangeResourceCount(AgentController.ResourceType.ExtraAmmo, -bulletsUsed);
     }
 }

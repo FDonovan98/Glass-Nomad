@@ -22,14 +22,15 @@ public class AgentController : AgentInputHandler
     [ReadOnly]
     public float currentOxygen = 0.0f;
     [ReadOnly]
-    public int currentTotalAmmo = 0;
+    public int currentExtraAmmo = 0;
     [ReadOnly]
     public int currentBulletsInMag = 0;
 
     public enum ResourceType
     {
         Health,
-        Ammo,
+        MagazineAmmo,
+        ExtraAmmo,
         Oxygen
     }
     
@@ -47,7 +48,7 @@ public class AgentController : AgentInputHandler
         if (currentWeapon != null)
         {
             currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
-            currentTotalAmmo = currentWeapon.magSize * 3;
+            currentExtraAmmo = currentWeapon.magSize * 2;
             timeSinceLastShot = currentWeapon.fireRate;
         }
 
@@ -65,6 +66,8 @@ public class AgentController : AgentInputHandler
                 isLocalAgent = false;
             }
         }
+
+        UpdateUI();
     }
 
     private void DisableObjectsForPhoton()
@@ -81,13 +84,23 @@ public class AgentController : AgentInputHandler
 
     public void ChangeResourceCount(ResourceType resourceType, int value)
     {
-        if (resourceType == ResourceType.Ammo)
+        if (resourceType == ResourceType.MagazineAmmo)
         {
             currentBulletsInMag = (int)Mathf.Clamp(currentBulletsInMag + value, 0.0f, currentWeapon.magSize);
 
             if (ammoUIText != null)
             {
-                UpdateUI(ResourceType.Ammo);
+                UpdateUI(ResourceType.MagazineAmmo);
+            }
+        }
+
+        if (resourceType == ResourceType.ExtraAmmo)
+        {
+            currentExtraAmmo = (int)Mathf.Max(currentExtraAmmo + value, 0.0f);
+
+            if (ammoUIText != null)
+            {
+                UpdateUI(ResourceType.MagazineAmmo);
             }
         }
     }
@@ -151,7 +164,8 @@ public class AgentController : AgentInputHandler
     {
         switch (resourceType)
         {
-            case ResourceType.Ammo:
+            case ResourceType.MagazineAmmo:
+            case ResourceType.ExtraAmmo:
                 UpdateAmmoUI();
                 break;
             case ResourceType.Health:
@@ -168,7 +182,7 @@ public class AgentController : AgentInputHandler
 
     void UpdateAmmoUI()
     {
-        ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+        ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentExtraAmmo;
     }
 
     void UpdateHealthUI()
