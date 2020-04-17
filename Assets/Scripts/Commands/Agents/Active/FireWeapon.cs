@@ -36,11 +36,13 @@ public class FireWeapon : ActiveCommandObject
 
     bool CanFire(AgentInputHandler agentInputHandler)
     {
+        AgentController agentController = (AgentController)agentInputHandler;
+
         if (agentInputHandler.allowInput)
         {
             if (agentInputHandler.timeSinceLastShot > agentInputHandler.currentWeapon.fireRate)
             {
-                //if (agentInputHandler.currentBulletsInMag > 0 || agentInputHandler.currentWeapon.fireMode == Weapon.FireType.Melee)
+                if (agentInputHandler.currentWeapon.fireMode == Weapon.FireType.Melee || agentController.currentBulletsInMag > 0)
                 {
                     return true;
                 }
@@ -57,11 +59,10 @@ public class FireWeapon : ActiveCommandObject
             agentInputHandler.runCommandOnWeaponFired(agentInputHandler);
         }
 
+        AgentController agentController = (AgentController)agentInputHandler;
+
         agentInputHandler.timeSinceLastShot = 0.0f;
 
-        AgentController agentController = agent.GetComponent<AgentController>();
         agentController.ChangeResourceCount(AgentController.ResourceType.Ammo, -1);
-
-//        Debug.Log(agentInputHandler.currentBulletsInMag);
     }
 }

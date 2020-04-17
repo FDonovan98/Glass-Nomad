@@ -142,13 +142,9 @@ public class AgentController : AgentInputHandler
 
     void UpdateUI()
     {
-        ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
-        healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
-
-        Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
-        TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
-        oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
-        oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
+        UpdateAmmoUI();
+        UpdateHealthUI();
+        UpdateOxygenUI();
     }
 
     void UpdateUI(ResourceType resourceType)
@@ -156,21 +152,36 @@ public class AgentController : AgentInputHandler
         switch (resourceType)
         {
             case ResourceType.Ammo:
-                ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+                UpdateAmmoUI();
                 break;
             case ResourceType.Health:
-                healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+                UpdateHealthUI();
                 break;
             case ResourceType.Oxygen:
-                Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
-                TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
-                oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
-                oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
+                UpdateOxygenUI();
                 break;
             default:
                 Debug.LogWarning(gameObject.name + " tried to update UI of unrecognized type.");
                 break;
         }
+    }
+
+    void UpdateAmmoUI()
+    {
+        ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+    }
+
+    void UpdateHealthUI()
+    {
+        healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+    }
+
+    void UpdateOxygenUI()
+    {
+        Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
+        TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
+        oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
+        oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
     }
 
     /// <summary>
