@@ -182,20 +182,29 @@ public class AgentController : AgentInputHandler
 
     void UpdateAmmoUI()
     {
-        ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentExtraAmmo;
+        if (ammoUIText != null)
+        {
+            ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentExtraAmmo;
+        }
     }
 
     void UpdateHealthUI()
     {
-        healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+        if (healthUIText != null)
+        {
+            healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+        }
     }
 
     void UpdateOxygenUI()
     {
-        Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
-        TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
-        oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
-        oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
+        if (oxygenDisplay != null)
+        {
+            Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
+            TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
+            oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
+            oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
+        }
     }
 
     /// <summary>
