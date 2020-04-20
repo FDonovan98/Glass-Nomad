@@ -97,7 +97,7 @@ public class OutlineFX : MonoBehaviour
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                 foreach (GameObject element in players)
                 {
-                    if (element != this.gameObject)
+                    if (element != this.gameObject && element != this.transform.parent.gameObject)
                     {
                         renderers.AddRange(element.GetComponentsInChildren<Renderer>());
                     }
