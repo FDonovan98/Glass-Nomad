@@ -155,7 +155,10 @@ public class OutlineFX : MonoBehaviour
         {
             if (token.IsCancellationRequested)
             {
+                float tempHolder = BlurSize;
+                BlurSize = 0.0f;
                 ChangeColourChange(Color.clear);
+                BlurSize = tempHolder;
                 return;
             }
 
