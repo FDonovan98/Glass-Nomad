@@ -106,11 +106,7 @@ public class OutlineFX : MonoBehaviour
 
             foreach (Renderer element in renderers)
             {
-                if (element == null)
-                {
-                    renderers.Remove(element);
-                }
-                else
+                if (element != null)
                 {
                     ComputeForTime(element, duration, color);
                 }
