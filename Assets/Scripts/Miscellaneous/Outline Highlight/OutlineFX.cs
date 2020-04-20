@@ -99,7 +99,7 @@ public class OutlineFX : MonoBehaviour
                 {
                     if (element != this.gameObject)
                     {
-                        renderers.Add(element.GetComponent<Renderer>());
+                        renderers.AddRange(element.GetComponentsInChildren<Renderer>());
                     }
                 }
             }
@@ -129,18 +129,12 @@ public class OutlineFX : MonoBehaviour
         }
 
         ChangeColourChange(Color.clear);
-
-        if (runOnEnable)
-        {
-            this.enabled = false;
-        }
     }
 
     private void ChangeColourChange(Color newCol)
     {
         OutlineColor = newCol;
         RecreateCommandBuffer();
-        Debug.Log("h");
     }
 
     private void RecreateCommandBuffer()
