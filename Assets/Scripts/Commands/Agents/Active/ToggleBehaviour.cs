@@ -20,6 +20,7 @@ public class ToggleBehaviour : ActiveCommandObject
     {
         if (Input.GetKeyDown(toggleBehaviour))
         {
+            Debug.Log("jkgdshkg");
             agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
         }
     }

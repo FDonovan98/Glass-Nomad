@@ -10,8 +10,11 @@ using System;
 [RequireComponent(typeof(Camera))]
 public class OutlineFX : MonoBehaviour 
 {
-
     #region public vars
+    [Header("Run On Enable Settings")]
+    public bool runOnEnable = false;
+    public float duration = 3.0f;
+    public Color color = Color.red;
 
     [Header("Outline Settings")]
 	[SerializeField]
@@ -45,6 +48,8 @@ public class OutlineFX : MonoBehaviour
 
     #endregion
 
+    private List<Renderer> renderers = null;
+
     private void AddRenderer(Renderer rend)
     {
         _objectRenderers.Add(new List<Renderer>() { rend });      
@@ -63,7 +68,7 @@ public class OutlineFX : MonoBehaviour
         RecreateCommandBuffer();
     }
 
-    private void Awake()
+    private void OnEnable()
 	{
         _objectRenderers = new List<List<Renderer>>();
         _commandBuffer = new CommandBuffer();
@@ -83,9 +88,37 @@ public class OutlineFX : MonoBehaviour
         _camera = GetComponent<Camera>();
         _camera.depthTextureMode = DepthTextureMode.Depth;
         _camera.AddCommandBuffer(BufferDrawEvent, _commandBuffer);
+
+        if (runOnEnable)
+        {
+            if (renderers == null)
+            {
+                renderers = new List<Renderer>();
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                foreach (GameObject element in players)
+                {
+                    if (element != this.gameObject)
+                    {
+                        renderers.Add(element.GetComponent<Renderer>());
+                    }
+                }
+            }
+
+            foreach (Renderer element in renderers)
+            {
+                if (element == null)
+                {
+                    renderers.Remove(element);
+                }
+                else
+                {
+                    ComputeForTime(element, duration, color);
+                }
+            }
+        }
     }
 
-    public async void ComputeForTime(float seconds, Color col, Renderer rend)
+    public async void ComputeForTime(Renderer rend, float seconds, Color col)
     {
         AddRenderer(rend);
         // alpha = fill alpha - NOT effect outline alpha;
@@ -100,12 +133,18 @@ public class OutlineFX : MonoBehaviour
         }
 
         ChangeColourChange(Color.clear);
+
+        if (runOnEnable)
+        {
+            this.enabled = false;
+        }
     }
 
     private void ChangeColourChange(Color newCol)
     {
         OutlineColor = newCol;
         RecreateCommandBuffer();
+        Debug.Log("h");
     }
 
     private void RecreateCommandBuffer()
@@ -119,7 +158,6 @@ public class OutlineFX : MonoBehaviour
         _commandBuffer.GetTemporaryRT(_depthRTID, _RTWidth, _RTHeight, 0, FilterMode.Bilinear, RenderTextureFormat.ARGB32);
         _commandBuffer.SetRenderTarget(_depthRTID, BuiltinRenderTextureType.CurrentActive);
         _commandBuffer.ClearRenderTarget(false, true, Color.clear);
-
         // render selected objects into a mask buffer, with different colors for visible vs occluded ones 
         float id = 0f;
 		foreach (var collection in _objectRenderers)
@@ -133,6 +171,7 @@ public class OutlineFX : MonoBehaviour
                 _commandBuffer.DrawRenderer(render, _outlineMaterial, 0, 0);
             }
         }
+
         
         // object ID edge dectection pass
         _commandBuffer.GetTemporaryRT(_idRTID, _RTWidth, _RTHeight, 0, FilterMode.Bilinear, RenderTextureFormat.ARGB32);
@@ -162,6 +201,5 @@ public class OutlineFX : MonoBehaviour
 		_commandBuffer.ReleaseTemporaryRT(_outlineRTID);
 		_commandBuffer.ReleaseTemporaryRT(_temporaryRTID);
 		_commandBuffer.ReleaseTemporaryRT(_depthRTID);
-
     }
 }
