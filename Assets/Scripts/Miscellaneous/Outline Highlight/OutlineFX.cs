@@ -7,7 +7,8 @@ using System;
 using System.Threading;
 
 /// <summary>
-/// Code modified from: https://github.com/michaelcurtiss/UnityOutlineFX
+/// Code modified from: https://github.com/michaelcurtiss/UnityOutlineFX.
+/// Token cancellation code based on this: https://stackoverflow.com/questions/15614991/simply-stop-an-async-method.
 /// </summary>
 [RequireComponent(typeof(Camera))]
 public class OutlineFX : MonoBehaviour
@@ -152,7 +153,12 @@ public class OutlineFX : MonoBehaviour
         // Expression for flashing colour: (Mathf.Sin(Time.time * speed) + 1) / 2.0f
         for (float t = 0; t < seconds; t += Time.deltaTime)
         {
-            token.ThrowIfCancellationRequested();
+            if (token.IsCancellationRequested)
+            {
+                ChangeColourChange(Color.clear);
+                token.ThrowIfCancellationRequested();
+            }
+
             await Task.Delay(TimeSpan.FromSeconds(Time.deltaTime));
             ChangeColourChange(new Color
             (
