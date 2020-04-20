@@ -52,7 +52,6 @@ public class AgentController : AgentInputHandler
             timeSinceLastShot = currentWeapon.fireRate;
         }
 
-        runCommandOnWeaponFired += FireWeaponOverNet;
         if (specialVision && photonView.IsMine)
         {
             SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
@@ -132,23 +131,6 @@ public class AgentController : AgentInputHandler
             if (oxygenDisplay != null)
             {
                 UpdateUI(ResourceType.Oxygen);
-            }
-        }
-    }
-
-    private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(agentCamera.transform.position, agentCamera.transform.forward, out hit, currentWeapon.range))
-        {
-            if (hit.transform.tag == "Player")
-            {
-                int targetPhotonID = hit.transform.GetComponent<PhotonView>().ViewID;
-                photonView.RPC("PlayerWasHit", RpcTarget.All, targetPhotonID, hit.point, hit.normal, currentWeapon.damage);
-            }
-            else
-            {          
-                photonView.RPC("WallWasHit", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
             }
         }
     }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using Photon.Pun;
+
 [CreateAssetMenu(fileName = "DefaultFireWeapon", menuName = "Commands/Active/FireWeapon", order = 0)]
 public class FireWeapon : ActiveCommandObject
 {
@@ -64,5 +66,72 @@ public class FireWeapon : ActiveCommandObject
         agentInputHandler.timeSinceLastShot = 0.0f;
 
         agentController.ChangeResourceCount(AgentController.ResourceType.MagazineAmmo, -1);
+
+        FireWeaponOverNet(agentInputHandler);
+    }
+    
+    private void FireWeaponOverNet(AgentInputHandler agentInputHandler)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(agentInputHandler.agentCamera.transform.position, WeaponDirection(agentInputHandler.agentCamera.transform.forward, agentInputHandler), out hit, agentInputHandler.currentWeapon.range))
+        {
+            if (hit.transform.tag == "Player")
+            {
+                int targetPhotonID = hit.transform.GetComponent<PhotonView>().ViewID;
+
+                agentInputHandler.photonView.RPC("PlayerWasHit", RpcTarget.All, targetPhotonID, hit.point, hit.normal, agentInputHandler.currentWeapon.damage);
+            }
+            else
+            {          
+                agentInputHandler.photonView.RPC("WallWasHit", RpcTarget.All, agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, agentInputHandler.currentWeapon.range, agentInputHandler.currentWeapon.damage);
+            }
+        }
+    }
+
+    Vector3 WeaponDirection(Vector3 originalDirection, AgentInputHandler agentInputHandler)
+    {
+        return CalculateWeaponSpread(originalDirection, agentInputHandler);
+    }
+
+    Vector3 CalculateWeaponSpread(Vector3 direction, AgentInputHandler agentInputHandler)
+    {
+        float theta = agentInputHandler.currentRecoilValue * agentInputHandler.currentWeapon.maxSpreadAngle;
+
+        float[] rand = 
+        {
+            Random.Range(0.0f, 1.0f),
+            Random.Range(0.0f, 1.0f)
+        };
+
+        rand[0] *= theta;
+        rand[1] *= theta;
+
+        RotateX(ref direction, rand[0]);
+        RotateY(ref direction, rand[1]);
+
+        return direction;
+    }
+
+    // Source code from: https://forum.unity.com/threads/vector-rotation.33215/
+    public static void RotateX(ref Vector3 v, float angle )
+    {
+        float sin = Mathf.Sin( angle );
+        float cos = Mathf.Cos( angle );
+       
+        float ty = v.y;
+        float tz = v.z;
+        v.y = (cos * ty) - (sin * tz);
+        v.z = (cos * tz) + (sin * ty);
+    }
+   
+    public static void RotateY(ref Vector3 v, float angle )
+    {
+        float sin = Mathf.Sin( angle );
+        float cos = Mathf.Cos( angle );
+       
+        float tx = v.x;
+        float tz = v.z;
+        v.x = (cos * tx) + (sin * tz);
+        v.z = (cos * tz) - (sin * tx);
     }
 }

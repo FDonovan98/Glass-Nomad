@@ -48,6 +48,7 @@ public class Weapon : BaseObject
 
     public AnimationCurve recoilCurveUp;
     public AnimationCurve recoilCurveDown;
+    public float maxSpreadAngle;
 
     // How many bullets you currently have in your magazine.
     [HideInInspector] public int bulletsInCurrentMag;
