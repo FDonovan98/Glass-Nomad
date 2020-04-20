@@ -26,8 +26,7 @@ public class ReloadWeapon : ActiveCommandObject
             if (CanReload(agentController))
             {
                 AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponent<AudioSource>();
-                weaponAudioSource.clip = agentInputHandler.currentWeapon.reloadSound;
-                weaponAudioSource.Play();
+                weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.reloadSound);
 
                 agentInputHandler.StartCoroutine(Reload(weaponAudioSource.clip.length, agentController));
             }

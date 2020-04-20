@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Photon.Pun;
+using UnityEngine.Audio;
 
 public class Settings : MonoBehaviour
 {
@@ -23,6 +24,12 @@ public class Settings : MonoBehaviour
 
     // Changes the volume of the AudioListener.
     [SerializeField] private Slider volumeSlider = null;
+
+    // Outputs all of the audio to the AudioMixer.
+    [SerializeField] private AudioMixer audioMixer = null;
+
+    // The camera that's used for FOV changes.
+    [SerializeField] private Camera affectedCamera = null;
 
     // Retrieves all the available resolutions.
     private Resolution[] resolutions;
@@ -46,8 +53,21 @@ public class Settings : MonoBehaviour
         List<string> options = new List<string>();
 
         SaveLoadSettings.LoadData(settingsPath);
-        fovSlider.value = Camera.main.fieldOfView;
-        volumeSlider.value = AudioListener.volume;
+        if (affectedCamera != null)
+        {
+            fovSlider.value = affectedCamera.fieldOfView;
+        }
+
+        float volValue = 0f;
+        if (audioMixer.GetFloat("volume", out volValue))
+        {
+            volumeSlider.value = volValue;
+        }
+        else
+        {
+            volumeSlider.value = 1f;
+        }
+        
 
         int currentResIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
@@ -77,7 +97,7 @@ public class Settings : MonoBehaviour
     {
         menu.SetActive(!menu.activeSelf);
         settingsButtons.SetActive(!menu.activeSelf);
-        SaveLoadSettings.SaveData(settingsPath);
+        SaveLoadSettings.SaveData(settingsPath, audioMixer, affectedCamera);
     }
 
     public void LeaveRoom()
@@ -87,7 +107,10 @@ public class Settings : MonoBehaviour
 
     public void SetVolume(float volume)
     {
-        AudioListener.volume = volume;
+        //Since audio is logarithmic and the slider is linear we have to convert it appropriately.
+        float volumeChangeValue = Mathf.Log10(volumeSlider.value) * 20;
+
+        audioMixer.SetFloat("volume", volumeChangeValue);
     }
 
     public void SetResolution(int resolutionIndex)
@@ -111,6 +134,9 @@ public class Settings : MonoBehaviour
 
     public void SetFOV(float fov)
     {
-        Camera.main.fieldOfView = fov;
+        if (affectedCamera != null)
+        {
+            affectedCamera.fieldOfView = fov;
+        }
     }
 }
