@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1963860154748826123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.0843261, y: 0.0843261, z: 0.0843261}
   m_Children:
   - {fileID: 5072139059814054841}
   - {fileID: 6153067409869140041}
@@ -44,9 +44,7 @@ GameObject:
   - component: {fileID: 6266525020942875047}
   - component: {fileID: 4720359554933860859}
   - component: {fileID: 2033042698892147504}
-  - component: {fileID: 723019195524899062}
-  - component: {fileID: 473242888379848272}
-  - component: {fileID: 2223799495798161474}
+  - component: {fileID: 3424688929519108617}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: NeedsPower
@@ -94,7 +92,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 19727037707afa04c878d7578bf17afc, type: 2}
-  - {fileID: 2100000, guid: cd0759965ed98684b917d006c6d47fea, type: 2}
+  - {fileID: 2100000, guid: 6b6dfd77776c54a4781ec8cab4d87860, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1609,64 +1607,44 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!135 &723019195524899062
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2594540455969605090}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 9.251145
-  m_Center: {x: -10.000001, y: 0.36288542, z: -0.05212804}
---- !u!114 &473242888379848272
-MonoBehaviour:
+--- !u!108 &3424688929519108617
+Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2594540455969605090}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b06ae0c6e384dd409885c9ea70767dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputKey: 101
-  interactTime: 5
-  cooldownTime: 5
-  debug: 0
-  objectiveName: 
-  objectiveRequired: 
-  destroyObjectAfter: 1
-  objectToDestroy: {fileID: 0}
-  powered: 0
-  linkedTeleporter: {fileID: 0}
-  biDirectional: 1
---- !u!114 &2223799495798161474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2594540455969605090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 0
-  OwnershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
-  viewIdField: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  serializedVersion: 8
+  m_Type: 2
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &8799750721116241808
 GameObject:
   m_ObjectHideFlags: 0
