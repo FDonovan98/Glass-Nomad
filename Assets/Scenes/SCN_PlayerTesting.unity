@@ -881,6 +881,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c360a1ae9eab3b249b5ab5d04475239f, type: 3}
+--- !u!114 &755581365 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2504915562740670155, guid: 544287a32501788428e5e62dc4f1dac5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1098328251}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a29ed7e664340474392aaa4eaeab78ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &839931652
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,6 +1329,16 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 868944112688905040, guid: 544287a32501788428e5e62dc4f1dac5,
+        type: 3}
+      propertyPath: activeCommands.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 868944112688905040, guid: 544287a32501788428e5e62dc4f1dac5,
+        type: 3}
+      propertyPath: behaviourToToggle
+      value: 
+      objectReference: {fileID: 755581365}
     - target: {fileID: 1395552365593952215, guid: 544287a32501788428e5e62dc4f1dac5,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1351,6 +1373,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504915562740670155, guid: 544287a32501788428e5e62dc4f1dac5,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2504915562740670155, guid: 544287a32501788428e5e62dc4f1dac5,
+        type: 3}
+      propertyPath: runOnEnable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 544287a32501788428e5e62dc4f1dac5, type: 3}
