@@ -45,6 +45,7 @@ public class Weapon : BaseObject
 
     // The sound the weapon makes when you reload.
     public AudioClip reloadSound = null;
+    public float reloadDuration = 2.0f;
 
     public AnimationCurve recoilCurveUp;
     public AnimationCurve recoilCurveDown;
