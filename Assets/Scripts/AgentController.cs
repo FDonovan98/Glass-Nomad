@@ -62,6 +62,7 @@ public class AgentController : AgentInputHandler
         if (specialVision && photonView.IsMine)
         {
             SpawnFadeFromBlack.Fade(Color.black, alienVision, 3, this);
+            RenderSettings.fog = false;
         }
 
         if (photonView != null)
