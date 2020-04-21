@@ -5,6 +5,8 @@ public class EmergencyHealing : PassiveCommandObject
 {
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
+        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+
         agentInputHandler.runCommandOnAgentHasBeenHit += RunCommandOnAgentHasBeenHit;
     }
 
