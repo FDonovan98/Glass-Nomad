@@ -5,6 +5,8 @@ using System.Collections;
 
 using UnityEngine.UI;
 
+using System.Collections.Generic;
+
 public class AgentController : AgentInputHandler
 {
     public GameObject deathScreen;
@@ -26,6 +28,9 @@ public class AgentController : AgentInputHandler
     [ReadOnly]
     public int currentBulletsInMag = 0;
 
+    [Header("Outlining")]
+    public List<Renderer> objectsToOutline = new List<Renderer>();
+
     public enum ResourceType
     {
         Health,
@@ -39,6 +44,8 @@ public class AgentController : AgentInputHandler
 
     private void Awake()
     { 
+        FetchOtherAgentsToOutline();
+
         if (agentValues != null)
         {
             currentOxygen = agentValues.maxOxygen;
@@ -67,6 +74,18 @@ public class AgentController : AgentInputHandler
         }
 
         UpdateUI();
+    }
+
+    void FetchOtherAgentsToOutline()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject element in players)
+        {
+            if (element != this.gameObject)
+            {
+                objectsToOutline.AddRange(element.GetComponentsInChildren<Renderer>());
+            }
+        }
     }
 
     private void DisableObjectsForPhoton()

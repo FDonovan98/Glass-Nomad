@@ -36,11 +36,11 @@ public class XZMovement : ActiveCommandObject
 
         if (agentInputHandler.allowInput)
         {
-            inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime;
+            inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime * agentInputHandler.moveSpeedMultiplier;
 
             if (agentInputHandler.isSprinting)
             {
-                agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier;
+                agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier * agentInputHandler.moveSpeedMultiplier;
             }
             else
             {

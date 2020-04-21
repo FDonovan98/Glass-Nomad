@@ -26,6 +26,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public float currentLeapCharge = 0.0f;
     [ReadOnly]
     public bool isJumping = false;
+    [ReadOnly]
+    public float moveSpeedMultiplier = 1.0f;
+    public Rigidbody agentRigidbody;
 
     [Header("Stairs")]
     [ReadOnly]
@@ -65,7 +68,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [ReadOnly]
     public bool isLocalAgent = true;
 
-    protected GameObject agent;
+    public GameObject agent;
 
     // Delegates used by commands.
     // Should add a delegate for UpdateUI(GameObject UIToUpdate, float newValue = 0.0f, int newIntValue = 0), maybe.
@@ -166,7 +169,17 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
 
-        agent = attachedScript.gameObject;
+    public void ChangeMovementSpeedModifier(float value, bool increase)
+    {
+        if (increase)
+        {
+            moveSpeedMultiplier *= value;
+        }
+        else
+        {
+            moveSpeedMultiplier /= value;
+        }
     }
 }

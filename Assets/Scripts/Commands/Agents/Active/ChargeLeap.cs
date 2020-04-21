@@ -51,7 +51,7 @@ public class ChargeLeap : ActiveCommandObject
                     float jumpImpulse = Mathf.Min(agentInputHandler.currentLeapCharge, agentValues.leapChargeDuration);
 
                     jumpImpulse /= agentValues.leapChargeDuration;
-                    jumpImpulse *= agentValues.leapVelocity;
+                    jumpImpulse *= agentValues.leapVelocity * agentInputHandler.moveSpeedMultiplier;
 
                     Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
                     Camera agentCamera = agent.GetComponent<Camera>();
