@@ -15,12 +15,15 @@ public class EmergencyHealing : PassiveCommandObject
         {
             float healthPercent = agentController.currentHealth - value;
             healthPercent /= agentInputHandler.agentValues.maxHealth;
+            healthPercent *= 100;
+
+            Debug.Log(healthPercent);
 
             if (healthPercent <= agentInputHandler.agentValues.emergencyRegenThreshold)
             {
+                agentController.emergencyRegenActive = true;
                 // Set agent health.
                 agentController.currentHealth = value + agentInputHandler.agentValues.maxHealth * agentInputHandler.agentValues.emergencyRegenMaxHealthModifier;
-
             }
         }
     }
@@ -31,7 +34,7 @@ public class EmergencyHealing : PassiveCommandObject
 
         if (agentController.emergencyRegenActive)
         {
-            agentController.ChangeResourceCount(AgentController.ResourceType.Health, agentInputHandler.agentValues.emergencyRegenDownTickValue * Time.deltaTime);
+            agentController.ChangeResourceCount(AgentController.ResourceType.Health, -agentInputHandler.agentValues.emergencyRegenDownTickValue * Time.deltaTime);
 
             if (agentController.currentHealth < agentController.agentValues.maxHealth)
             {

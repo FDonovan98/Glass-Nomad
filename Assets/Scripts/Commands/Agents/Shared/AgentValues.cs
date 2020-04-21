@@ -63,7 +63,6 @@ public class AgentValues : ScriptableObject
     [Range(0.0f, 100.0f)]
     public float emergencyRegenThreshold = 20.0f;
     public float emergencyRegenMaxHealthModifier = 1.5f;
-    public float emergencyRegenHealthTickRate = 0.1f;
     public float emergencyRegenDownTickValue = 10.0f;
     [Range(0.0f, 1.0f)]
     public float postEmergencyRegenHealthModifier = 0.8f;
