@@ -27,6 +27,8 @@ public class AgentController : AgentInputHandler
     public int currentExtraAmmo = 0;
     [ReadOnly]
     public int currentBulletsInMag = 0;
+    [ReadOnly]
+    public bool emergencyRegenActive = false;
 
     [Header("Outlining")]
     public List<Renderer> objectsToOutline = new List<Renderer>();

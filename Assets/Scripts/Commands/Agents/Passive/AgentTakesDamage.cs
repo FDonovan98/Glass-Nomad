@@ -10,7 +10,7 @@ public class AgentTakesDamage : PassiveCommandObject
 
     private void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value)
     {
-        AgentController agentController = agentInputHandler.gameObject.GetComponent<AgentController>();
+        AgentController agentController = (AgentController)agentInputHandler;
 
         agentController.ChangeResourceCount(AgentController.ResourceType.Health, -value);
     }
