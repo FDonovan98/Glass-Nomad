@@ -13,6 +13,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     [SerializeField] protected List<Behaviour> componentsToDisable = new List<Behaviour>(); // A different component to disable after the interaction is complete.
 
     protected TMP_Text captionText;
+    protected TMP_Text hintText;
 
     // The time it takes to display each letter.
     protected const float timePerLetter = 0.05f;
@@ -25,6 +26,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
             if (playerInteracting.GetComponent<PhotonView>().IsMine)
             {
                 captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+                hintText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(4).GetComponent<TMP_Text>();
                 if (debug) Debug.Log(captionText.name);
             }
         }
@@ -94,5 +96,11 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         }
         await Task.Delay(TimeSpan.FromSeconds(objectiveValues.timeToDisappear));
         captionText.text = "";
+        WriteHintTextToHUD();
+    }
+
+    private void WriteHintTextToHUD()
+    {
+        hintText.text = objectiveValues.objectiveHint;
     }
 }
