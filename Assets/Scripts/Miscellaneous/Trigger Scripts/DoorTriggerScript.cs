@@ -46,15 +46,15 @@ public class DoorTriggerScript : TriggerInteractionScript
     }
 
     /// <summary>
-    /// Sets the interaction as completed and toggles the door's state.null
+    /// Sets the interaction as completed and toggles the door's state.
     /// Also plays the animation for opening/closing the door.
     /// </summary>
     public void ChangeDoorState()
     {
-        interactionComplete = true;
         isDoorOpen = !isDoorOpen;
         Debug.Log(isDoorOpen ? "Door opening" : "Door closing");
         anim.SetBool("doorOpen", isDoorOpen);
+        interactionComplete = false; // So that we can open the door immediately again
     }
 
     /// <summary>
