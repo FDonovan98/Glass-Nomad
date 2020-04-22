@@ -59,6 +59,14 @@ public class AgentValues : ScriptableObject
     [Header("Health")]
     public float maxHealth = 100.0f;
 
+    [Header("Emergency Health Regen")]
+    [Range(0.0f, 100.0f)]
+    public float emergencyRegenThreshold = 20.0f;
+    public float emergencyRegenMaxHealthModifier = 1.5f;
+    public float emergencyRegenDownTickValue = 10.0f;
+    [Range(0.0f, 1.0f)]
+    public float postEmergencyRegenHealthModifier = 0.8f;
+
     [Header("UI Lag")]
     public bool[] lagUIInAxis = {false, false};
     [Range(0.0f, 1.0f)]

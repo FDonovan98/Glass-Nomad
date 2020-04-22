@@ -7,11 +7,9 @@ public class PunRPCs : MonoBehaviourPunCallbacks
     [PunRPC]
     public void WallWasHit(Vector3 cameraPos, Vector3 cameraForward, float weaponRange, int weaponDamage)
     {     
-        Debug.Log("shoot");
         RaycastHit hit;
         if (Physics.Raycast(cameraPos, cameraForward, out hit, weaponRange))
         {
-            Debug.Log(hit.transform.gameObject.name + " has been hit");
             AgentInputHandler targetAgentInputHandler = hit.transform.gameObject.GetComponent<AgentInputHandler>();
 
             Debug.Log(targetAgentInputHandler);
@@ -20,7 +18,6 @@ public class PunRPCs : MonoBehaviourPunCallbacks
             {
                 if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
                 {
-                    Debug.Log("hit feedback");
                     targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, hit.normal, weaponDamage);
                 }
             }

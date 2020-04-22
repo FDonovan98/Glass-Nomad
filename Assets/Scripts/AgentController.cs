@@ -27,6 +27,8 @@ public class AgentController : AgentInputHandler
     public int currentExtraAmmo = 0;
     [ReadOnly]
     public int currentBulletsInMag = 0;
+    [ReadOnly]
+    public bool emergencyRegenActive = false;
 
     [Header("Outlining")]
     public List<Renderer> objectsToOutline = new List<Renderer>();
@@ -50,6 +52,7 @@ public class AgentController : AgentInputHandler
         {
             currentOxygen = agentValues.maxOxygen;
             currentHealth = agentValues.maxHealth;
+            Debug.Log("awake");
         }
 
         if (currentWeapon != null)
@@ -128,16 +131,13 @@ public class AgentController : AgentInputHandler
     {
         if (resourceType == ResourceType.Health)
         {
-            currentHealth = Mathf.Clamp(currentHealth + value, 0.0f, agentValues.maxHealth);
+            currentHealth += value;
             if (currentHealth <= 0)
             {
                 AgentHasDied();
             }
 
-            if (healthUIText != null)
-            {
-                UpdateUI(ResourceType.Health);
-            }
+            UpdateUI(ResourceType.Health);
         }
         else if (resourceType == ResourceType.Oxygen)
         {
