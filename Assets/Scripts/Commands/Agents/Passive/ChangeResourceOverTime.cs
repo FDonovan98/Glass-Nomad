@@ -26,8 +26,16 @@ public class ChangeResourceOverTime : PassiveCommandObject
                 {
                     agentController = (AgentController)agentInputHandler;
                 }
-               
-                agentController.ChangeResourceCount(element.resourceType, Time.deltaTime * element.changeValue);
+
+                if (element.resourceType == AgentController.ResourceType.Health)
+                {
+                    agentController.ChangeResourceCount(element.resourceType, Time.deltaTime * element.changeValue * agentValues.maxHealth / 100);
+                }
+                else
+                {
+                    agentController.ChangeResourceCount(element.resourceType, Time.deltaTime * element.changeValue);
+                }
+                
             }          
         }
     }
