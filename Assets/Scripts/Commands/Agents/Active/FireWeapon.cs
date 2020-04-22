@@ -95,16 +95,16 @@ public class FireWeapon : ActiveCommandObject
 
     Vector3 CalculateWeaponSpread(Vector3 direction, AgentInputHandler agentInputHandler)
     {
-        float theta;
+        float theta = Mathf.Deg2Rad;
         
         if (!agentInputHandler.isADS)
         {
-            theta = agentInputHandler.currentRecoilValue * agentInputHandler.currentWeapon.maxSpreadAngle;
+            theta *= agentInputHandler.currentRecoilValue * agentInputHandler.currentWeapon.maxSpreadAngle;
 
         }
         else
         {
-            theta = agentInputHandler.currentRecoilValue * agentInputHandler.currentWeapon.maxADSSpreadAngle;
+            theta *= agentInputHandler.currentRecoilValue * agentInputHandler.currentWeapon.maxADSSpreadAngle;
         }
             
         float[] rand = 
