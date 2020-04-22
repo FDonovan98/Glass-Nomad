@@ -87,6 +87,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     /// <returns>Nothing</returns>
     protected async void WriteTextToHud()
     {
+        WriteHintTextToHUD(""); // Clears the hint text.
         string currText = "";
         foreach (Char letter in objectiveValues.objectiveText.ToCharArray())
         {
@@ -96,11 +97,11 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         }
         await Task.Delay(TimeSpan.FromSeconds(objectiveValues.timeToDisappear));
         captionText.text = "";
-        WriteHintTextToHUD();
+        WriteHintTextToHUD(objectiveValues.objectiveHint);
     }
 
-    private void WriteHintTextToHUD()
+    private void WriteHintTextToHUD(string textToDisplay)
     {
-        hintText.text = objectiveValues.objectiveHint;
+        hintText.text = textToDisplay;
     }
 }
