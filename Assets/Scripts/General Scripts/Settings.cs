@@ -39,7 +39,7 @@ public class Settings : MonoBehaviour
 
     private void Start()
     {
-        settingsPath = Application.persistentDataPath + "/game_data";
+        settingsPath = Application.persistentDataPath + "/game_data.json";
         InitiateSettings();
     }
 
@@ -129,7 +129,7 @@ public class Settings : MonoBehaviour
     public void SetFullscreenMode(bool isFullscreen)
     {
         Debug.Log("Changing fullscreen to: " + isFullscreen);
-        Screen.fullScreen = isFullscreen;
+        Screen.fullScreenMode = isFullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
     }
 
     public void SetFOV(float fov)
