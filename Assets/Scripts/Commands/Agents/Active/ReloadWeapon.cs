@@ -30,6 +30,8 @@ public class ReloadWeapon : ActiveCommandObject
                 weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.reloadSound);
 
                 agentInputHandler.StartCoroutine(Reload(agentInputHandler.currentWeapon.reloadDuration, agentController));
+
+                agentInputHandler.isReloading = true;
             }
         }
     }
@@ -61,5 +63,7 @@ public class ReloadWeapon : ActiveCommandObject
 
         agentController.ChangeResourceCount(AgentController.ResourceType.MagazineAmmo, bulletsUsed);
         agentController.ChangeResourceCount(AgentController.ResourceType.ExtraAmmo, -bulletsUsed);
+
+        AgentInputHandler.isReloading = false;
     }
 }

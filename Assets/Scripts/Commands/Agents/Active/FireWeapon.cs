@@ -40,7 +40,7 @@ public class FireWeapon : ActiveCommandObject
     {
         AgentController agentController = (AgentController)agentInputHandler;
 
-        if (agentInputHandler.allowInput)
+        if (agentInputHandler.allowInput && !agentController.isReloading)
         {
             if (agentInputHandler.timeSinceLastShot > agentInputHandler.currentWeapon.fireRate)
             {

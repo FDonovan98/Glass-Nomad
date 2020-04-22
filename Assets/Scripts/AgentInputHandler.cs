@@ -45,6 +45,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Weapon[] equipedWeapons = new Weapon[2];
     public int currentWeaponID = 0;
 
+    [Header("Reloading")]
+    public bool isReloading = false;
+
     [Header("Camera")]
     public Camera agentCamera;
 
