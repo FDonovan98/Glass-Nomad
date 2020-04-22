@@ -29,6 +29,7 @@ public class AgentController : AgentInputHandler
     public int currentBulletsInMag = 0;
     [ReadOnly]
     public bool emergencyRegenActive = false;
+    public int emergencyRegenUsesRemaining = 0;
 
     [Header("Outlining")]
     public List<Renderer> objectsToOutline = new List<Renderer>();
@@ -52,6 +53,7 @@ public class AgentController : AgentInputHandler
         {
             currentOxygen = agentValues.maxOxygen;
             currentHealth = agentValues.maxHealth;
+            emergencyRegenUsesRemaining = agentValues.emergencyRegenUses;
             Debug.Log("awake");
         }
 

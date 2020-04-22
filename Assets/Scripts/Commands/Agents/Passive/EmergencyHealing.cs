@@ -5,15 +5,13 @@ public class EmergencyHealing : PassiveCommandObject
 {
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
-
         agentInputHandler.runCommandOnAgentHasBeenHit += RunCommandOnAgentHasBeenHit;
     }
 
     void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value)
     {
         AgentController agentController = (AgentController)agentInputHandler;
-        if (!agentController.emergencyRegenActive)
+        if (!agentController.emergencyRegenActive && agentController.emergencyRegenUsesRemaining > 0)
         {
             float healthPercent = agentController.currentHealth - value;
             healthPercent /= agentInputHandler.agentValues.maxHealth;
@@ -25,8 +23,12 @@ public class EmergencyHealing : PassiveCommandObject
             {
                 agentController.emergencyRegenActive = true;
                 agentController.ChangeMovementSpeedModifier(agentInputHandler.agentValues.emergencyRegenSpeedMultiplier, true);
+                agentController.emergencyRegenUsesRemaining--;
+
                 // Set agent health.
                 agentController.currentHealth = value + agentInputHandler.agentValues.maxHealth * agentInputHandler.agentValues.emergencyRegenMaxHealthModifier;
+
+                agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
             }
         }
     }
@@ -35,15 +37,14 @@ public class EmergencyHealing : PassiveCommandObject
     {
         AgentController agentController = (AgentController)agentInputHandler;
 
-        if (agentController.emergencyRegenActive)
-        {
-            agentController.ChangeResourceCount(AgentController.ResourceType.Health, -agentInputHandler.agentValues.emergencyRegenDownTickValue * Time.deltaTime);
+        agentController.ChangeResourceCount(AgentController.ResourceType.Health, -agentInputHandler.agentValues.emergencyRegenDownTickValue * Time.deltaTime);
 
-            if (agentController.currentHealth < agentController.agentValues.maxHealth)
-            {
-                agentController.emergencyRegenActive = false;
-                agentController.ChangeMovementSpeedModifier(agentInputHandler.agentValues.emergencyRegenSpeedMultiplier, false);
-            }
+        if (agentController.currentHealth < agentController.agentValues.maxHealth)
+        {
+            agentController.emergencyRegenActive = false;
+            agentController.ChangeMovementSpeedModifier(agentInputHandler.agentValues.emergencyRegenSpeedMultiplier, false);
+
+            agentInputHandler.runCommandOnUpdate -= RunCommandOnUpdate;
         }
     } 
 }
