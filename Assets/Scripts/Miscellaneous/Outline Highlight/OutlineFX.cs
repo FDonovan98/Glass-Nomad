@@ -134,6 +134,8 @@ public class OutlineFX : MonoBehaviour
 
     private void OnDisable()
     {
+        if (cts == null) return;
+        
         for (int i = 0; i < cts.Count; i++)
         {
             cts[i].Cancel();
