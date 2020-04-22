@@ -100,6 +100,11 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         WriteHintTextToHUD(objectiveValues.objectiveHint);
     }
 
+    /// <summary>
+    /// Displays the text passed in the parameters to the hintText.
+    /// Called by WriteTextToHUD.
+    /// </summary>
+    /// <param name="textToDisplay"></param>
     private void WriteHintTextToHUD(string textToDisplay)
     {
         hintText.text = textToDisplay;
