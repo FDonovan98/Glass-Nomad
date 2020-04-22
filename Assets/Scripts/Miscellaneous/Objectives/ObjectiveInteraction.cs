@@ -55,7 +55,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         
         foreach (Behaviour go in componentsToDisable)
         {
-            go.enabled = false;
+            Destroy(go);
         }
 
         foreach (GameObject go in objectsToDestroy)
