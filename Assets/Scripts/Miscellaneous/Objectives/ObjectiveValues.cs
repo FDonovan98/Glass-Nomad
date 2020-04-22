@@ -6,6 +6,7 @@ public class ObjectiveValues : ScriptableObject
 {
     // The Objective's name will just be the name of the scriptable object.
     public string objectiveText = "INSERT OBJECTIVE TEXT HERE";
+    public string objectiveHint = "SMALLER TEXT AT THE TOP";
     public List<ObjectiveValues> requiredObjectives = new List<ObjectiveValues>();
     public AudioClip objectiveAudio = null;
     public bool completed;
