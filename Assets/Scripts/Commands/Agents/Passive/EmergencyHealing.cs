@@ -24,6 +24,7 @@ public class EmergencyHealing : PassiveCommandObject
             if (healthPercent <= agentInputHandler.agentValues.emergencyRegenThreshold)
             {
                 agentController.emergencyRegenActive = true;
+                agentController.ChangeMovementSpeedModifier(agentInputHandler.agentValues.emergencyRegenSpeedMultiplier, true);
                 // Set agent health.
                 agentController.currentHealth = value + agentInputHandler.agentValues.maxHealth * agentInputHandler.agentValues.emergencyRegenMaxHealthModifier;
             }
@@ -41,6 +42,7 @@ public class EmergencyHealing : PassiveCommandObject
             if (agentController.currentHealth < agentController.agentValues.maxHealth)
             {
                 agentController.emergencyRegenActive = false;
+                agentController.ChangeMovementSpeedModifier(agentInputHandler.agentValues.emergencyRegenSpeedMultiplier, false);
             }
         }
     } 

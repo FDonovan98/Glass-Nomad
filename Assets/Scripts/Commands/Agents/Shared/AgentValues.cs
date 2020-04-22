@@ -66,6 +66,7 @@ public class AgentValues : ScriptableObject
     public float emergencyRegenDownTickValue = 10.0f;
     [Range(0.0f, 1.0f)]
     public float postEmergencyRegenHealthModifier = 0.8f;
+    public float emergencyRegenSpeedMultiplier = 1.5f;
 
     [Header("UI Lag")]
     public bool[] lagUIInAxis = {false, false};
