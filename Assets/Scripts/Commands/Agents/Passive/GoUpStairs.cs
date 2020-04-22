@@ -65,7 +65,7 @@ public class GoUpStairs : PassiveCommandObject
             return false;
         }
 
-        Debug.Log(contactPoint.point);
+        // Debug.Log(contactPoint.point);
         if (contactPoint.point.y - agentInputHandler.groundContactPoint.point.y > agentValues.maxStepHeight)
         {
             return false;
