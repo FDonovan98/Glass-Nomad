@@ -2,7 +2,7 @@
 using Photon.Pun;
 using TMPro;
 
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
@@ -71,6 +71,10 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [ReadOnly]
     public bool isLocalAgent = true;
 
+    [Header("ObjectInteraction")]
+    public TMP_Text interactionPromptText = null;
+    public Image progressBar = null;
+
     public GameObject agent;
 
     // Delegates used by commands.
@@ -85,8 +89,12 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public RunCommandOnCollisionStay runCommandOnCollisionStay;
     public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
+    public delegate void RunCommandOnTriggerEnter(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerEnter runCommandOnTriggerEnter;
     public delegate void RunCommandOnTriggerStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
     public RunCommandOnTriggerStay runCommandOnTriggerStay;
+    public delegate void RunCommandOnTriggerExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerExit runCommandOnTriggerExit;
 
 
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
@@ -160,11 +168,27 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (runCommandOnTriggerEnter != null)
+        {
+            runCommandOnTriggerEnter(agent, attachedScript, agentValues, other);
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (runCommandOnTriggerStay != null)
         {
             runCommandOnTriggerStay(agent, attachedScript, agentValues, other);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (runCommandOnTriggerExit != null)
+        {
+            runCommandOnTriggerExit(agent, attachedScript, agentValues, other);
         }
     }
 
