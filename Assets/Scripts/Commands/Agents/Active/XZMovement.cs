@@ -54,19 +54,19 @@ public class XZMovement : ActiveCommandObject
     {
         Vector3 inputMovementVector = Vector3.zero;
 
-        if (Input.GetAxis(HorizontalMovement) > 0)
+        if (Input.GetAxis(VerticalMovement) > 0)
         {
             inputMovementVector += agent.transform.forward;
         }
-        if (Input.GetAxis(HorizontalMovement) < 0)
+        if (Input.GetAxis(VerticalMovement) < 0)
         {
             inputMovementVector -= agent.transform.forward;
         }
-        if (Input.GetAxis(VerticalMovement) < 0)
+        if (Input.GetAxis(HorizontalMovement) < 0)
         {
             inputMovementVector -= agent.transform.right;
         }
-        if (Input.GetAxis(VerticalMovement) > 0)
+        if (Input.GetAxis(HorizontalMovement) > 0)
         {
             inputMovementVector += agent.transform.right;
         }
