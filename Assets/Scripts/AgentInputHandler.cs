@@ -2,7 +2,7 @@
 using Photon.Pun;
 using TMPro;
 
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
@@ -70,6 +70,10 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public PunRPCs punRPCs;
     [ReadOnly]
     public bool isLocalAgent = true;
+
+    [Header("ObjectInteraction")]
+    public TMP_Text interactionPromptText = null;
+    public Image progressBar = null;
 
     public GameObject agent;
 
