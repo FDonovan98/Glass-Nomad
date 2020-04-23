@@ -122,8 +122,9 @@ public class Settings : MonoBehaviour
 
     public void SetQuality(int qualityIndex)
     {
-        Debug.Log("Changing quality to: " + qualityDropdown.captionText.text);
+        Debug.Log("Changing quality to: " + QualitySettings.names[qualityIndex]);
         QualitySettings.SetQualityLevel(qualityIndex);
+        
     }
 
     public void SetFullscreenMode(bool isFullscreen)
