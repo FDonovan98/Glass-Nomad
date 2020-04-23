@@ -4,7 +4,7 @@ using UnityEngine;
 public class ToggleBehaviour : ActiveCommandObject
 {
     [SerializeField]
-    KeyCode toggleBehaviour = KeyCode.F;
+    private string toggleBehaviour = "Toggle";
     
     protected override void OnEnable()
     {
@@ -18,7 +18,7 @@ public class ToggleBehaviour : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetKeyDown(toggleBehaviour))
+        if (Input.GetButtonDown(toggleBehaviour))
         {
             agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
         }

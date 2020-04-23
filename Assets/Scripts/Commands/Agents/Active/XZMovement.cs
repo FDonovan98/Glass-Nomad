@@ -4,20 +4,15 @@
 public class XZMovement : ActiveCommandObject
 {
     [SerializeField]
-    private KeyCode MoveForward = KeyCode.W;
+    private string HorizontalMovement = "Horizontal";
     [SerializeField]
-    private KeyCode MoveBack = KeyCode.S;
+    private string VerticalMovement = "Vertical";
     [SerializeField]
-    private KeyCode MoveLeft = KeyCode.A;
-    [SerializeField]
-    private KeyCode MoveRight = KeyCode.D;
 
     protected override void OnEnable()
     {
-        keyTable.Add("Move Forward", MoveForward);
-        keyTable.Add("Move Back", MoveBack);
-        keyTable.Add("Move Left", MoveLeft);
-        keyTable.Add("Move Right", MoveRight);
+        keyTable.Add("Horizontal", HorizontalMovement);
+        keyTable.Add("Vertical", VerticalMovement);
     }
 
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
@@ -59,19 +54,19 @@ public class XZMovement : ActiveCommandObject
     {
         Vector3 inputMovementVector = Vector3.zero;
 
-        if (Input.GetKey(MoveForward))
+        if (Input.GetAxis(VerticalMovement) > 0)
         {
             inputMovementVector += agent.transform.forward;
         }
-        if (Input.GetKey(MoveBack))
+        if (Input.GetAxis(VerticalMovement) < 0)
         {
             inputMovementVector -= agent.transform.forward;
         }
-        if (Input.GetKey(MoveLeft))
+        if (Input.GetAxis(HorizontalMovement) < 0)
         {
             inputMovementVector -= agent.transform.right;
         }
-        if (Input.GetKey(MoveRight))
+        if (Input.GetAxis(HorizontalMovement) > 0)
         {
             inputMovementVector += agent.transform.right;
         }
