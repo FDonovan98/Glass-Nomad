@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef411e071e5a68f47af6ef68ffc6a828, type: 3}
-  m_Name: SMG
+  m_Name: Submachine Gun
   m_EditorClassIdentifier: 
   itemType: 0
   fireMode: 3
@@ -25,6 +25,7 @@ MonoBehaviour:
   maxBulletSpread: 10
   weaponSound: {fileID: 8300000, guid: 6dc46a7e7afe9cf41aa5ee1eb04812c0, type: 3}
   reloadSound: {fileID: 0}
+  reloadDuration: 2
   recoilCurveUp:
     serializedVersion: 2
     m_Curve:
@@ -73,5 +74,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  maxSpreadAngle: 0
+  maxADSSpreadAngle: 0
   bulletsInCurrentMag: 14
   magsLeft: 0
+  weaponMesh: {fileID: 0}
