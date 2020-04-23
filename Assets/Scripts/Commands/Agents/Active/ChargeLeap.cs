@@ -34,7 +34,7 @@ public class ChargeLeap : ActiveCommandObject
 
         if (agentValues.leapCanChargeInAir || agentInputHandler.isGrounded)
         {
-            if (Input.GetButtonDown(chargeLeap) && !agentInputHandler.isJumping)
+            if (Input.GetButton(chargeLeap) && !agentInputHandler.isJumping)
             {
                 agentInputHandler.currentLeapCharge += Time.deltaTime;
                 float percentage = (agentInputHandler.currentLeapCharge / agentValues.leapChargeDuration) * 100;
