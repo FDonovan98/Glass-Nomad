@@ -89,8 +89,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
                 playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
                 return;
             }
-
-            LeftTriggerArea();
+            else if (Input.GetKeyUp(inputKey))
+            {
+                LeftTriggerArea();
+            }
+            
             interactionText.text = textToDisplay;
         }
 
@@ -142,5 +145,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     {
         currInteractTime = 0f;
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
+        playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
     }
 }
