@@ -69,7 +69,7 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetAxis(activateOutlining) > 0)
+        if (Input.GetButtonDown(activateOutlining))
         {
             if (!currentlyOutlining)
             {

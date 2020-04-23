@@ -19,7 +19,7 @@ public class ReloadWeapon : ActiveCommandObject
 
     private void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetKeyDown(reloadKey))
+        if (Input.GetButtonDown(reloadKey))
         {
             AgentController agentController = (AgentController)agentInputHandler;
 

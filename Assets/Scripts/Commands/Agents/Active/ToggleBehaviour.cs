@@ -18,7 +18,7 @@ public class ToggleBehaviour : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetKeyDown(toggleBehaviour))
+        if (Input.GetButtonDown(toggleBehaviour))
         {
             agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
         }

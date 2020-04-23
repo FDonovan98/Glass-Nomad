@@ -43,7 +43,7 @@ public class CanInteractWithObjects : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetAxis(interact) > 0)
+        if (Input.GetButtonDown(interact))
         {
             if (agentInputHandler.allowInput)
             {
@@ -52,7 +52,7 @@ public class CanInteractWithObjects : ActiveCommandObject
 
             interactableObject.ChangeCurrentInteractionTime(agentInputHandler, Time.fixedDeltaTime);
         }        
-        else if (Input.GetAxis(interact) <= 0)
+        else if (Input.GetButtonUp(interact))
         {
             agentInputHandler.allowInput = true;
             interactableObject.LeftArea(agentInputHandler);

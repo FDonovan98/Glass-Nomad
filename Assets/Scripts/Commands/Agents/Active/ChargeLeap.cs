@@ -34,7 +34,7 @@ public class ChargeLeap : ActiveCommandObject
 
         if (agentValues.leapCanChargeInAir || agentInputHandler.isGrounded)
         {
-            if (Input.GetAxis(chargeLeap) > 0 && !agentInputHandler.isJumping)
+            if (Input.GetButtonDown(chargeLeap) && !agentInputHandler.isJumping)
             {
                 agentInputHandler.currentLeapCharge += Time.deltaTime;
                 float percentage = (agentInputHandler.currentLeapCharge / agentValues.leapChargeDuration) * 100;
@@ -42,7 +42,7 @@ public class ChargeLeap : ActiveCommandObject
                 ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
             }
 
-            if (Input.GetAxis(chargeLeap) <= 0)
+            if (Input.GetButtonUp(chargeLeap))
             {
                 if (agentInputHandler.isGrounded)
                 {

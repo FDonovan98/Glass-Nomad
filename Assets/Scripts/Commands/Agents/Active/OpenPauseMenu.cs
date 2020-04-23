@@ -25,13 +25,13 @@ public class OpenPauseMenu : ActiveCommandObject
     {
         #if UNITY_EDITOR
             //Press the openMenuKeyInEditor to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetKeyDown(openMenuKeyInEditor))
+            if (Input.GetButtonDown(openMenuKeyInEditor))
             {
                 ToggleCursorAndMenu(agentInputHandler.allowInput, agentInputHandler);
             } 
         #elif UNITY_STANDALONE_WIN
             //Press the openMenuKey to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetKeyDown(openMenuKey))
+            if (Input.GetButtonDown(openMenuKey))
             {
                 ToggleCursorAndMenu(agentInputHandler.allowInput, agentInputHandler);
             } 

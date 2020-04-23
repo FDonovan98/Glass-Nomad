@@ -21,7 +21,7 @@ public class WeaponSwitch : ActiveCommandObject
 
     private void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetKeyDown(primaryWeaponKey))
+        if (Input.GetButtonDown(primaryWeaponKey))
         {
             if (agentInputHandler.currentWeaponID != 0)
             {
@@ -29,7 +29,7 @@ public class WeaponSwitch : ActiveCommandObject
                 SwitchWeapon(agentInputHandler);
             }
         }
-        else if (Input.GetKeyDown(secondaryWeaponKey))
+        else if (Input.GetButtonDown(secondaryWeaponKey))
         {
             if (agentInputHandler.currentWeaponID != 1)
             {

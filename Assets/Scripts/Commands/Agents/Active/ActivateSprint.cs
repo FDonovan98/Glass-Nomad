@@ -20,7 +20,7 @@ public class ActivateSprint : ActiveCommandObject
     {
         if (agentValues.sprintingIsAToggle)
         {
-            if (Input.GetAxis(sprintKeyCode) > 0)
+            if (Input.GetButtonDown(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = !agentInputHandler.isSprinting;
 
@@ -36,12 +36,12 @@ public class ActivateSprint : ActiveCommandObject
         }
         else
         {
-            if (Input.GetAxis(sprintKeyCode) > 0)
+            if (Input.GetButtonDown(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = true;
                 agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, true);
             }
-            else if (Input.GetAxis(sprintKeyCode) <= 0)
+            else if (Input.GetButtonUp(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = false;
                 agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, false);

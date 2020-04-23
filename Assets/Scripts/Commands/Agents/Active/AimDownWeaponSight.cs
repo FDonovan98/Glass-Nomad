@@ -23,7 +23,7 @@ public class AimDownWeaponSight : ActiveCommandObject
     {
         if (agentValues.aDSIsAToggle)
         {
-            if (Input.GetAxis(aimDownSight) > 0)
+            if (Input.GetButtonDown(aimDownSight))
             {
                 if (agentInputHandler.aDSCamera.enabled == true)
                 {
@@ -37,11 +37,11 @@ public class AimDownWeaponSight : ActiveCommandObject
         }
         else
         {
-            if (Input.GetAxis(aimDownSight) > 0)
+            if (Input.GetButtonDown(aimDownSight))
             {
                 ToggleADS(agentInputHandler, true);
             }
-            else if (Input.GetAxis(aimDownSight) <= 0))
+            else if (Input.GetButtonUp(aimDownSight))
             {
                 ToggleADS(agentInputHandler, false);
             }

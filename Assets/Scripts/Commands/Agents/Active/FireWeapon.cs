@@ -27,11 +27,11 @@ public class FireWeapon : ActiveCommandObject
 
         if (CanFire(agentInputHandler))
         {
-            if (Input.GetKeyDown(primaryFire))
+            if (Input.GetButtonDown(primaryFire))
             {
                 ActuallyFire(agent, agentInputHandler);
             }
-            else if (agentInputHandler.currentWeapon.fireMode == Weapon.FireType.FullAuto && Input.GetKey(primaryFire))
+            else if (agentInputHandler.currentWeapon.fireMode == Weapon.FireType.FullAuto && Input.GetButton(primaryFire))
             {
                 ActuallyFire(agent, agentInputHandler);
             }
