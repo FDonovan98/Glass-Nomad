@@ -68,7 +68,7 @@ public class CanInteractWithObjects : ActiveCommandObject
 
         if (interactableObject != null)
         {
-            interactableObject.LeftArea();
+            interactableObject.LeftArea(agentInputHandler);
 
             agentInputHandler.interactionPromptText.text = null;
         }

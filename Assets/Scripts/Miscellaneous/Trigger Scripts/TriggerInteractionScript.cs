@@ -8,6 +8,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     [Header("Trigger Interaction")]
     [SerializeField] protected KeyCode inputKey = KeyCode.E; // Which key the player needs to be pressing to interact.
     [SerializeField] protected float interactTime; // The time needed to interact with the object to activate/open it.
+    protected float currInteractTime;
 
     [SerializeField] protected float cooldownTime; // How long it takes for the player to interact with the object again.
     protected float currCooldownTime = 0f; // How long it has been since the player last interacted with the object.
