@@ -4,7 +4,7 @@ using UnityEngine;
 public class AimDownWeaponSight : ActiveCommandObject
 {
     [SerializeField]
-    KeyCode aimDownSight = KeyCode.Mouse1;
+    private string aimDownSight = "Fire2";
 
     protected override void OnEnable()
     {

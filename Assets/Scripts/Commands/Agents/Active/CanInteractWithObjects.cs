@@ -6,7 +6,7 @@ using Photon.Pun;
 public class CanInteractWithObjects : ActiveCommandObject
 {
     [SerializeField]
-    private KeyCode interact = KeyCode.E;
+    private string interact = "Interact";
 
     InteractableObject interactableObject;
 

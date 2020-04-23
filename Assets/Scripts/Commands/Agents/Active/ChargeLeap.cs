@@ -4,7 +4,8 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "DefaultChargeLeap", menuName = "Commands/Active/Charge Leap")]
 public class ChargeLeap : ActiveCommandObject
 {
-    [SerializeField] private KeyCode chargeLeap = KeyCode.Space;
+    [SerializeField]
+    private string chargeLeap = "Jump";
     private Image outerReticle = null;
     private float timeJumpingFor = 0.0f;
 

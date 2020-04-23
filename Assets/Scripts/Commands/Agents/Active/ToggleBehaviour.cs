@@ -4,7 +4,7 @@ using UnityEngine;
 public class ToggleBehaviour : ActiveCommandObject
 {
     [SerializeField]
-    KeyCode toggleBehaviour = KeyCode.F;
+    private string toggleBehaviour = "Toggle";
     
     protected override void OnEnable()
     {

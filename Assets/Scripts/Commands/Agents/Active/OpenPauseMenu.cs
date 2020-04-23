@@ -4,9 +4,9 @@ using UnityEngine;
 public class OpenPauseMenu : ActiveCommandObject
 {
     [SerializeField]
-    private KeyCode openMenuKey = KeyCode.Escape;
+    private string openMenuKey = "Build Pause Menu";
     [SerializeField]
-    private KeyCode openMenuKeyInEditor = KeyCode.Comma;
+    private string openMenuKeyInEditor = "Editor Pause Menu";
 
     protected override void OnEnable()
     {

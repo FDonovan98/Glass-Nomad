@@ -15,7 +15,7 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
 {
     #region public vars
     [Header("General Settings")]
-    public KeyCode activateOutlining = KeyCode.F;
+    public string activateOutlining = "Toggle";
     public float duration = 3.0f;
     public Color color = Color.red;
     public float moveSpeedDivider = 1.0f;
@@ -61,6 +61,7 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
     {
         keyTable.Add("Tracker Vision", activateOutlining);
     }
+
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;

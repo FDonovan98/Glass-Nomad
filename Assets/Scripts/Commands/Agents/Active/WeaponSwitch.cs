@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultSwitchWeapon", menuName = "Commands/Active/SwitchWeapon", order = 0)]
 public class WeaponSwitch : ActiveCommandObject
 {
     [SerializeField]
-    KeyCode primaryWeaponKey = KeyCode.Alpha1;
+    private string primaryWeaponKey = "Primary Weapon";
     [SerializeField]
-    KeyCode secondaryWeaponKey = KeyCode.Alpha2;
+    private string secondaryWeaponKey = "Secondary Weapon";
 
     protected override void OnEnable()
     {
