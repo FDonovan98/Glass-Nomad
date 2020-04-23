@@ -41,7 +41,7 @@ public abstract class InteractableObject : MonoBehaviourPunCallbacks
         }
     }
 
-    public void LeftArea(AgentInputHandler agentInputHandler)
+    public virtual void LeftArea(AgentInputHandler agentInputHandler)
     {
         currentInteractionTime = 0.0f;
         interactionComplete = false;
