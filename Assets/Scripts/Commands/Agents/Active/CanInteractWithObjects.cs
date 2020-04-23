@@ -22,7 +22,6 @@ public class CanInteractWithObjects : ActiveCommandObject
         if (agentInputHandler.isLocalAgent)
         {
             agentInputHandler.runCommandOnTriggerEnter += RunCommandOnTriggerEnter;
-            agentInputHandler.runCommandOnTriggerStay += RunCommandOnTriggerStay;
             agentInputHandler.runCommandOnTriggerExit += RunCommandOnTriggerExit;
         }
     }
@@ -31,46 +30,45 @@ public class CanInteractWithObjects : ActiveCommandObject
     {
         if (interactableObject == null)
         {
-            InteractableObject interactableObject = other.GetComponent<InteractableObject>();
+            interactableObject = other.GetComponent<InteractableObject>();
         }
 
-        if (interactableObject != null)
+        if (interactableObject != null && !interactableObject.interactionComplete)
         {
             agentInputHandler.interactionPromptText.text = interactableObject.interactionPrompt;
+
+            agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
         }
     }
 
-    void RunCommandOnTriggerStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other)
+    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        
-        if (interactableObject != null && !interactableObject.interactionComplete)
+        if (Input.GetKey(interact))
         {
-            if (Input.GetKey(interact))
+            if (agentInputHandler.allowInput)
             {
-                if (agentInputHandler.allowInput)
-                {
-                    agentInputHandler.allowInput = false;
-                }
-
-                interactableObject.ChangeCurrentInteractionTime(agentInputHandler, Time.fixedDeltaTime);
-            }        
-            else if (Input.GetKeyUp(interact))
-            {
-                agentInputHandler.allowInput = true;
+                agentInputHandler.allowInput = false;
             }
-        }
 
+            interactableObject.ChangeCurrentInteractionTime(agentInputHandler, Time.fixedDeltaTime);
+        }        
+        else if (Input.GetKeyUp(interact))
+        {
+            agentInputHandler.allowInput = true;
+            interactableObject.LeftArea(agentInputHandler);
+        }
     }
 
     void RunCommandOnTriggerExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other)
     {
-        interactableObject = null;
-
         if (interactableObject != null)
         {
             interactableObject.LeftArea(agentInputHandler);
 
             agentInputHandler.interactionPromptText.text = null;
+            agentInputHandler.runCommandOnUpdate -= RunCommandOnUpdate;
+            
+            interactableObject = null;
         }
     }
 }

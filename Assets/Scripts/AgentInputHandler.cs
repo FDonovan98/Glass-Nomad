@@ -184,6 +184,14 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (runCommandOnTriggerExit != null)
+        {
+            runCommandOnTriggerExit(agent, attachedScript, agentValues, other);
+        }
+    }
+
     void InitiliseVariable()
     {
         Cursor.lockState = CursorLockMode.Locked;

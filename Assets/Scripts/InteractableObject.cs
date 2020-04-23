@@ -6,13 +6,14 @@ using UnityEngine.UI;
 
 public abstract class InteractableObject : MonoBehaviourPunCallbacks
 {
-    public string interactionPrompt;
+    public string interactionPrompt = "Press E to interact";
     [SerializeField] 
     private float interactTime; // The time needed to interact with the object to activate/open it.
     [SerializeField] 
     protected bool debug = false; // Should the debug messages be displayed.
     [SerializeField]
     private bool displayProgressToReticule = false;
+    [SerializeField]
     private float currentInteractionTime = 0f; // How long the player has been pressing the interact key.
     public bool interactionComplete = false; // Is the interaction complete?
 
@@ -28,11 +29,13 @@ public abstract class InteractableObject : MonoBehaviourPunCallbacks
         if (!interactionComplete && currentInteractionTime >= interactTime)
         {
             interactionComplete = true;
+            agentInputHandler.allowInput = true;
+
             photonView.RPC("InteractionComplete", RpcTarget.All);
         }
     }
 
-    public static void UpdateProgressBar(Image progressBar, float value)
+    public void UpdateProgressBar(Image progressBar, float value)
     {
         progressBar.fillAmount = (value / 100);
         if (value >= 100)
@@ -49,5 +52,5 @@ public abstract class InteractableObject : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    abstract protected void InteractionComplete();
+    protected abstract void InteractionComplete();
 }

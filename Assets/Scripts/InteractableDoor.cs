@@ -2,7 +2,6 @@ using UnityEngine;
 
 using Photon.Pun;
 
-[CreateAssetMenu(fileName = "InteractableDoor", menuName = "Glass-Nomad/InteractableDoor", order = 0)]
 public class InteractableDoor : InteractableObject
 {
     [SerializeField]
