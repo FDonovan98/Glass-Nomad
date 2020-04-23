@@ -142,5 +142,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     {
         currInteractTime = 0f;
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
+        playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
     }
 }
