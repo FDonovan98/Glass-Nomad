@@ -85,8 +85,12 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public RunCommandOnCollisionStay runCommandOnCollisionStay;
     public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
+    public delegate void RunCommandOnTriggerEnter(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerEnter runCommandOnTriggerEnter;
     public delegate void RunCommandOnTriggerStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
     public RunCommandOnTriggerStay runCommandOnTriggerStay;
+    public delegate void RunCommandOnTriggerExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerExit runCommandOnTriggerExit;
 
 
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
@@ -157,6 +161,14 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         if (runCommandOnCollisionExit != null)
         {
             runCommandOnCollisionExit(agent, attachedScript, agentValues, other);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (runCommandOnTriggerEnter != null)
+        {
+            runCommandOnTriggerEnter(agent, attachedScript, agentValues, other);
         }
     }
 
