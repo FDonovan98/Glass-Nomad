@@ -89,8 +89,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
                 playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
                 return;
             }
-
-            LeftTriggerArea();
+            else if (Input.GetKeyUp(inputKey))
+            {
+                LeftTriggerArea();
+            }
+            
             interactionText.text = textToDisplay;
         }
 
