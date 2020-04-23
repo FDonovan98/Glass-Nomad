@@ -5,7 +5,7 @@ using UnityEngine;
 public class ReloadWeapon : ActiveCommandObject
 {
     [SerializeField]
-    KeyCode reloadKey = KeyCode.R;
+    private string reloadKey = "Reload";
 
     protected override void OnEnable()
     {
