@@ -13,7 +13,6 @@ public abstract class InteractableObject : MonoBehaviourPunCallbacks
     protected bool debug = false; // Should the debug messages be displayed.
     [SerializeField]
     private bool displayProgressToReticule = false;
-    [SerializeField]
     private float currentInteractionTime = 0f; // How long the player has been pressing the interact key.
     public bool interactionComplete = false; // Is the interaction complete?
 
@@ -37,7 +36,7 @@ public abstract class InteractableObject : MonoBehaviourPunCallbacks
 
     public void UpdateProgressBar(Image progressBar, float value)
     {
-        progressBar.fillAmount = (value / 100);
+        progressBar.fillAmount = (value / interactTime);
         if (value >= 100)
         {
             progressBar.fillAmount = 0;
