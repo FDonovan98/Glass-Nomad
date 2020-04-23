@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.031722568, g: 0.009849714, b: 0.013400743, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -436,7 +436,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 90
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1105,12 +1105,12 @@ PrefabInstance:
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
@@ -1120,7 +1120,7 @@ PrefabInstance:
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -92.46569
       objectReference: {fileID: 0}
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
@@ -1135,12 +1135,12 @@ PrefabInstance:
     - target: {fileID: 6681734473407798067, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6681734473407798067, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6681734473407798067, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
@@ -1150,7 +1150,7 @@ PrefabInstance:
     - target: {fileID: 6681734473407798067, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -287.39706
       objectReference: {fileID: 0}
     - target: {fileID: 6681734473407798067, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
@@ -1165,12 +1165,12 @@ PrefabInstance:
     - target: {fileID: 4252474305869608370, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4252474305869608370, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4252474305869608370, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
@@ -1180,7 +1180,7 @@ PrefabInstance:
     - target: {fileID: 4252474305869608370, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -482.32846
       objectReference: {fileID: 0}
     - target: {fileID: 4252474305869608370, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
@@ -3084,6 +3084,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f273eb6dfc6f6be4d8e6425a8227e0d1,
         type: 2}
+    - target: {fileID: 1681922204910936804, guid: 5b4a9295d6813be40ad97dbed5e8c615,
+        type: 3}
+      propertyPath: affectedCamera
+      value: 
+      objectReference: {fileID: 438988548}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b4a9295d6813be40ad97dbed5e8c615, type: 3}
 --- !u!114 &2143543752 stripped
