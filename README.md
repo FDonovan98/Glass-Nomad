@@ -1,26 +1,26 @@
 # Yvaga Station
-A Glass Nomad production.
+A Glass Nomad production. Click [here](https://dayluke.itch.io/yvaga-station) to play it!
 
-Harry Donovan - Team Lead & Programmer 
+[Harry Donovan](https://twitter.com/AbyssalProduct2) - Team Lead & Programmer 
 
-Luke Day - Lead Programmer & Web Developer
+[Luke Day](https://www.linkedin.com/in/dayluke01) - Lead Programmer & Web Developer
 
-Eugene Syrickis - Programmer
+[Eugene Syrickis](https://twitter.com/allegedlyeugene) - Programmer
 
-Kyle James - Lead Designer
+[Kyle James](https://twitter.com/slammeddev) - Lead Designer
 
 Ben Jones - Designer
 
-John Saunders - Designer
+[John Saunders](https://twitter.com/bigboibismarck) - Designer
 
 Lewis Blackford - Designer
 
-Dani Tilbey - Marine & Alien Modeller
+[Dani Tilbey](https://twitter.com/SableFantasia) - Marine & Alien Modeller
 
 Craig Hardaker - Artist
 
-Ed Pocock - Artist
+[Ed Pocock](https://www.artstation.com/emscat) - Artist
 
 Finn Morley - Animator
 
-Jodie Taylor - Writer
+[Jodie Taylor](https://twitter.com/becca_mochi) - Writer
