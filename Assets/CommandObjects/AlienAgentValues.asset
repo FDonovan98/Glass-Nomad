@@ -19,32 +19,37 @@ MonoBehaviour:
   scaleVelocityDegWithVel: 1
   velocityDegradationGrounded: 100
   velocityDegradationInAir: 100
-  maxSpeed: 65
-  maxSprintSpeed: 85
-  maxSpeedInAir: 80
-  maxSprintSpeedInAir: 100
-  velocityLimitRate: 0.1
+  maxSpeed: 35
+  maxSprintSpeed: 45
+  maxSpeedInAir: 37
+  maxSprintSpeedInAir: 37
+  velocityLimitRate: 0.3
   leapCanChargeInAir: 0
   leapVelocity: 40
   forwardLeapModifier: 2
   verticalLeapModifier: 2
   leapChargeDuration: 0.5
   jumpCooldown: 0.1
-  surfaceSwitchSpeed: 0.4
+  surfaceSwitchSpeed: 0.3
   gravityResetDelay: 0.4
   mouseSensitivity: 2
   yRotationClamp: 90
   aDSIsAToggle: 0
-  maxStairHeight: 0.4
-  minDistanceToStair: 0
-  minLedgeWidth: 0.3
-  stepUpAcceleration: 0
+  maxStepHeight: 0.4
+  stepSearchOvershoot: 0.01
   applyGravity: 1
   gravityAcceleration: 80
+  slopeLimitAngle: 30
   maxOxygen: 200
   oxygenRegenModifier: 1.5
   suffocationDamage: 5
   maxHealth: 200
+  emergencyRegenThreshold: 20
+  emergencyRegenMaxHealthModifier: 1.5
+  emergencyRegenDownTickValue: 10
+  postEmergencyRegenHealthModifier: 0.8
+  emergencyRegenSpeedMultiplier: 1.5
+  emergencyRegenUses: 1
   lagUIInAxis: 0000
   UICatchupSpeed:
   - 0.5
