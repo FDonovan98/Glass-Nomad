@@ -58,14 +58,13 @@ public class Settings : MonoBehaviour
             fovSlider.value = affectedCamera.fieldOfView;
         }
 
-        float volValue = 0f;
-        if (audioMixer.GetFloat("volume", out volValue))
+        if (audioMixer.GetFloat("volume", out float volValue))
         {
-            volumeSlider.value = volValue;
+            volumeSlider.value = remapValues(volValue, -80.0f, 20.0f, 0.0f, 1.0f);
         }
         else
         {
-            volumeSlider.value = 1f;
+            volumeSlider.value = 1.0f;
         }
         
 
@@ -108,7 +107,8 @@ public class Settings : MonoBehaviour
     public void SetVolume(float volume)
     {
         //Since audio is logarithmic and the slider is linear we have to convert it appropriately.
-        float volumeChangeValue = Mathf.Log10(volumeSlider.value) * 20;
+        float volumeChangeValue = Mathf.Log(volumeSlider.value);
+        volumeChangeValue = remapValues(volumeChangeValue, Mathf.Log(0.001f), Mathf.Log(1.0f), -80.0f, 20.0f);
 
         audioMixer.SetFloat("volume", volumeChangeValue);
     }
@@ -139,5 +139,12 @@ public class Settings : MonoBehaviour
         {
             affectedCamera.fieldOfView = fov;
         }
+    }
+
+    // Remaps one set of values to another.
+    // Edited from source: https://forum.unity.com/threads/re-map-a-number-from-one-range-to-another.119437/
+    float remapValues(float value, float fromMin, float fromMax, float toMin, float toMax)
+    {
+        return (((value - fromMin) / (fromMax - fromMin)) * (toMax - toMin)) + toMin;
     }
 }
