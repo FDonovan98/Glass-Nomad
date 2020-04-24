@@ -60,7 +60,9 @@ public class Settings : MonoBehaviour
 
         if (audioMixer.GetFloat("volume", out float volValue))
         {
-            volumeSlider.value = remapValues(volValue, -80.0f, 20.0f, 0.0f, 1.0f);
+            volValue = mapLogarithmicToLinear(volValue, -80.0f, 20.0f, 0.001f, 1.0f);
+
+            volumeSlider.value = volValue;
         }
         else
         {
@@ -107,8 +109,8 @@ public class Settings : MonoBehaviour
     public void SetVolume(float volume)
     {
         //Since audio is logarithmic and the slider is linear we have to convert it appropriately.
-        float volumeChangeValue = Mathf.Log(volumeSlider.value);
-        volumeChangeValue = remapValues(volumeChangeValue, Mathf.Log(0.001f), Mathf.Log(1.0f), -80.0f, 20.0f);
+        float volumeChangeValue = Mathf.Log10(volumeSlider.value);
+        volumeChangeValue = remapValues(volumeChangeValue, Mathf.Log10(0.001f), Mathf.Log10(1.0f), -80.0f, 20.0f);
 
         audioMixer.SetFloat("volume", volumeChangeValue);
     }
@@ -146,5 +148,13 @@ public class Settings : MonoBehaviour
     float remapValues(float value, float fromMin, float fromMax, float toMin, float toMax)
     {
         return (((value - fromMin) / (fromMax - fromMin)) * (toMax - toMin)) + toMin;
+    }
+
+    float mapLogarithmicToLinear(float value, float fromMin, float fromMax, float toMin, float toMax)
+    {
+        float numerator = (Mathf.Log10(toMax) - Mathf.Log10(toMin)) * (value - fromMin);
+        float denominator = fromMax - fromMin;
+
+        return Mathf.Pow(10, numerator / denominator) * toMin;
     }
 }
