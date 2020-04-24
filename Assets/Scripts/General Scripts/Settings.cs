@@ -109,10 +109,9 @@ public class Settings : MonoBehaviour
     public void SetVolume(float volume)
     {
         //Since audio is logarithmic and the slider is linear we have to convert it appropriately.
-        float volumeChangeValue = Mathf.Log10(volumeSlider.value);
-        volumeChangeValue = remapValues(volumeChangeValue, Mathf.Log10(0.001f), Mathf.Log10(1.0f), -80.0f, 20.0f);
+        float newSliderValue = mapLinearToLogarithmic(volumeSlider.value, 0.001f, 1.0f, -80.0f, 20.0f);
 
-        audioMixer.SetFloat("volume", volumeChangeValue);
+        audioMixer.SetFloat("volume", newSliderValue);
     }
 
     public void SetResolution(int resolutionIndex)
@@ -148,6 +147,13 @@ public class Settings : MonoBehaviour
     float remapValues(float value, float fromMin, float fromMax, float toMin, float toMax)
     {
         return (((value - fromMin) / (fromMax - fromMin)) * (toMax - toMin)) + toMin;
+    }
+
+    float mapLinearToLogarithmic(float value, float fromMin, float fromMax, float toMin, float toMax)
+    {
+        float fraction = ((Mathf.Log10(value) - Mathf.Log10(fromMin)) / (Mathf.Log10(fromMax) - Mathf.Log10(fromMin)));
+        
+        return fraction * (toMax - toMin) + toMin;
     }
 
     float mapLogarithmicToLinear(float value, float fromMin, float fromMax, float toMin, float toMax)
