@@ -1,28 +1,26 @@
-# Project-Glass-Nomad
-Repository for Team 6 GAM130
+# Yvaga Station
+A Glass Nomad production.
 
-Harry Donovan - Project Lead, Programmer 
+Harry Donovan - Team Lead & Programmer 
 
-Luke Day - Programming
+Luke Day - Lead Programmer & Web Developer
 
 Eugene Syrickis - Programmer
-
 
 Kyle James - Lead Designer
 
 Ben Jones - Designer
 
-John Saunders - Design
+John Saunders - Designer
 
-Lewis Blackford - Design
+Lewis Blackford - Designer
 
+Dani Tilbey - Marine & Alien Modeller
 
-Craig Hardaker - Art
+Craig Hardaker - Artist
 
-Ed Pocock - Art
+Ed Pocock - Artist
 
+Finn Morley - Animator
 
-Jodie Taylor - Writing
-
-
-Finn Morley - Animation
+Jodie Taylor - Writer
