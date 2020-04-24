@@ -4,7 +4,7 @@
 public class ActivateSprint : ActiveCommandObject
 {
     [SerializeField]
-    private string sprintKeyCode = "Sprint";
+    private KeyCode sprintKeyCode = KeyCode.LeftShift;
 
     protected override void OnEnable()
     {
@@ -20,7 +20,7 @@ public class ActivateSprint : ActiveCommandObject
     {
         if (agentValues.sprintingIsAToggle)
         {
-            if (Input.GetButtonDown(sprintKeyCode))
+            if (Input.GetKeyDown(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = !agentInputHandler.isSprinting;
 
@@ -36,12 +36,12 @@ public class ActivateSprint : ActiveCommandObject
         }
         else
         {
-            if (Input.GetButtonDown(sprintKeyCode))
+            if (Input.GetKeyDown(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = true;
                 agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, true);
             }
-            else if (Input.GetButtonUp(sprintKeyCode))
+            else if (Input.GetKeyUp(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = false;
                 agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, false);

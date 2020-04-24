@@ -6,13 +6,11 @@ using Photon.Pun;
 public class FireWeapon : ActiveCommandObject
 {
     [SerializeField]
-    private string primaryFire = "Fire1";
-
+    private KeyCode primaryFire = KeyCode.Mouse0;
     protected override void OnEnable()
     {
         keyTable.Add("Primary Fire", primaryFire);
     }
-    
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
         if (agentInputHandler.isLocalAgent)
@@ -27,11 +25,11 @@ public class FireWeapon : ActiveCommandObject
 
         if (CanFire(agentInputHandler))
         {
-            if (Input.GetButtonDown(primaryFire))
+            if (Input.GetKeyDown(primaryFire))
             {
                 ActuallyFire(agent, agentInputHandler);
             }
-            else if (agentInputHandler.currentWeapon.fireMode == Weapon.FireType.FullAuto && Input.GetButton(primaryFire))
+            else if (agentInputHandler.currentWeapon.fireMode == Weapon.FireType.FullAuto && Input.GetKey(primaryFire))
             {
                 ActuallyFire(agent, agentInputHandler);
             }

@@ -4,8 +4,7 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "DefaultChargeLeap", menuName = "Commands/Active/Charge Leap")]
 public class ChargeLeap : ActiveCommandObject
 {
-    [SerializeField]
-    private string chargeLeap = "Jump";
+    [SerializeField] private KeyCode chargeLeap = KeyCode.Space;
     private Image outerReticle = null;
     private float timeJumpingFor = 0.0f;
 
@@ -34,7 +33,7 @@ public class ChargeLeap : ActiveCommandObject
 
         if (agentValues.leapCanChargeInAir || agentInputHandler.isGrounded)
         {
-            if (Input.GetButton(chargeLeap) && !agentInputHandler.isJumping)
+            if (Input.GetKey(chargeLeap) && !agentInputHandler.isJumping)
             {
                 agentInputHandler.currentLeapCharge += Time.deltaTime;
                 float percentage = (agentInputHandler.currentLeapCharge / agentValues.leapChargeDuration) * 100;
@@ -42,7 +41,7 @@ public class ChargeLeap : ActiveCommandObject
                 ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
             }
 
-            if (Input.GetButtonUp(chargeLeap))
+            if (Input.GetKeyUp(chargeLeap))
             {
                 if (agentInputHandler.isGrounded)
                 {

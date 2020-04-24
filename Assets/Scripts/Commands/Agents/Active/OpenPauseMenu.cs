@@ -4,9 +4,9 @@ using UnityEngine;
 public class OpenPauseMenu : ActiveCommandObject
 {
     [SerializeField]
-    private string openMenuKey = "Build Pause Menu";
+    private KeyCode openMenuKey = KeyCode.Escape;
     [SerializeField]
-    private string openMenuKeyInEditor = "Editor Pause Menu";
+    private KeyCode openMenuKeyInEditor = KeyCode.Comma;
 
     protected override void OnEnable()
     {
@@ -25,13 +25,13 @@ public class OpenPauseMenu : ActiveCommandObject
     {
         #if UNITY_EDITOR
             //Press the openMenuKeyInEditor to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetButtonDown(openMenuKeyInEditor))
+            if (Input.GetKeyDown(openMenuKeyInEditor))
             {
                 ToggleCursorAndMenu(agentInputHandler.allowInput, agentInputHandler);
             } 
         #elif UNITY_STANDALONE_WIN
             //Press the openMenuKey to unlock the cursor. If it's unlocked, lock it again
-            if (Input.GetButtonDown(openMenuKey))
+            if (Input.GetKeyDown(openMenuKey))
             {
                 ToggleCursorAndMenu(agentInputHandler.allowInput, agentInputHandler);
             } 

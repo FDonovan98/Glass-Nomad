@@ -5,7 +5,7 @@ using UnityEngine;
 public class ReloadWeapon : ActiveCommandObject
 {
     [SerializeField]
-    private string reloadKey = "Reload";
+    KeyCode reloadKey = KeyCode.R;
 
     protected override void OnEnable()
     {
@@ -19,7 +19,7 @@ public class ReloadWeapon : ActiveCommandObject
 
     private void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetButtonDown(reloadKey))
+        if (Input.GetKeyDown(reloadKey))
         {
             AgentController agentController = (AgentController)agentInputHandler;
 

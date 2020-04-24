@@ -4,7 +4,7 @@ using UnityEngine;
 public class AimDownWeaponSight : ActiveCommandObject
 {
     [SerializeField]
-    private string aimDownSight = "Fire2";
+    KeyCode aimDownSight = KeyCode.Mouse1;
 
     protected override void OnEnable()
     {
@@ -23,7 +23,7 @@ public class AimDownWeaponSight : ActiveCommandObject
     {
         if (agentValues.aDSIsAToggle)
         {
-            if (Input.GetButtonDown(aimDownSight))
+            if (Input.GetKeyDown(aimDownSight))
             {
                 if (agentInputHandler.aDSCamera.enabled == true)
                 {
@@ -37,11 +37,11 @@ public class AimDownWeaponSight : ActiveCommandObject
         }
         else
         {
-            if (Input.GetButtonDown(aimDownSight))
+            if (Input.GetKeyDown(aimDownSight))
             {
                 ToggleADS(agentInputHandler, true);
             }
-            else if (Input.GetButtonUp(aimDownSight))
+            else if (Input.GetKeyUp(aimDownSight))
             {
                 ToggleADS(agentInputHandler, false);
             }

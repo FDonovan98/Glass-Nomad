@@ -6,7 +6,7 @@ using Photon.Pun;
 public class CanInteractWithObjects : ActiveCommandObject
 {
     [SerializeField]
-    private string interact = "Interact";
+    private KeyCode interact = KeyCode.E;
 
     InteractableObject interactableObject;
 
@@ -43,7 +43,7 @@ public class CanInteractWithObjects : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetButtonDown(interact))
+        if (Input.GetKey(interact))
         {
             if (agentInputHandler.allowInput)
             {
@@ -52,7 +52,7 @@ public class CanInteractWithObjects : ActiveCommandObject
 
             interactableObject.ChangeCurrentInteractionTime(agentInputHandler, Time.fixedDeltaTime);
         }        
-        else if (Input.GetButtonUp(interact))
+        else if (Input.GetKeyUp(interact))
         {
             agentInputHandler.allowInput = true;
             interactableObject.LeftArea(agentInputHandler);

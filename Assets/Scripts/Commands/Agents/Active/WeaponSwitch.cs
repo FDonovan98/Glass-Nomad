@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultSwitchWeapon", menuName = "Commands/Active/SwitchWeapon", order = 0)]
 public class WeaponSwitch : ActiveCommandObject
 {
     [SerializeField]
-    private string primaryWeaponKey = "Primary Weapon";
+    KeyCode primaryWeaponKey = KeyCode.Alpha1;
     [SerializeField]
-    private string secondaryWeaponKey = "Secondary Weapon";
+    KeyCode secondaryWeaponKey = KeyCode.Alpha2;
 
     protected override void OnEnable()
     {
@@ -21,7 +24,7 @@ public class WeaponSwitch : ActiveCommandObject
 
     private void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (Input.GetButtonDown(primaryWeaponKey))
+        if (Input.GetKeyDown(primaryWeaponKey))
         {
             if (agentInputHandler.currentWeaponID != 0)
             {
@@ -29,7 +32,7 @@ public class WeaponSwitch : ActiveCommandObject
                 SwitchWeapon(agentInputHandler);
             }
         }
-        else if (Input.GetButtonDown(secondaryWeaponKey))
+        else if (Input.GetKeyDown(secondaryWeaponKey))
         {
             if (agentInputHandler.currentWeaponID != 1)
             {

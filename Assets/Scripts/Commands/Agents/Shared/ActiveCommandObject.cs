@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+
+using System.Collections.Generic;
 
 public abstract class ActiveCommandObject : CommandObject
 {
     // Can then store master dictionary in keybind menu with each dictionary and a refrence to its scriptable object.
-    public Dictionary<string, string> keyTable = new Dictionary<string, string>();
+    public Dictionary<string, KeyCode> keyTable = new Dictionary<string, KeyCode>();
 
     protected abstract void OnEnable();
 
