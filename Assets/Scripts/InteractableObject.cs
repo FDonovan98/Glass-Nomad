@@ -16,6 +16,12 @@ public abstract class InteractableObject : MonoBehaviourPunCallbacks
     private float currentInteractionTime = 0f; // How long the player has been pressing the interact key.
     public bool interactionComplete = false; // Is the interaction complete?
 
+    public void resetInteraction(AgentInputHandler agentInputHandler)
+    {
+        currentInteractionTime = 0.0f;
+        UpdateProgressBar(agentInputHandler.progressBar, currentInteractionTime);
+    }
+
     public void ChangeCurrentInteractionTime(AgentInputHandler agentInputHandler, float value)
     {
         currentInteractionTime += value;
@@ -50,6 +56,5 @@ public abstract class InteractableObject : MonoBehaviourPunCallbacks
         UpdateProgressBar(agentInputHandler.progressBar, currentInteractionTime);
     }
 
-    [PunRPC]
     protected abstract void InteractionComplete();
 }

@@ -54,8 +54,8 @@ public class CanInteractWithObjects : ActiveCommandObject
         }        
         else if (Input.GetKeyUp(interact))
         {
+            interactableObject.resetInteraction(agentInputHandler);
             agentInputHandler.allowInput = true;
-            interactableObject.LeftArea(agentInputHandler);
         }
     }
 
