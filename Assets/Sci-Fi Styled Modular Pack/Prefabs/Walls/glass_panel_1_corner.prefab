@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 481412}
   - component: {fileID: 3335788}
   - component: {fileID: 2381388}
-  - component: {fileID: 6435942}
   - component: {fileID: 2932293989990029974}
   m_Layer: 0
   m_Name: glass_panel_1_corner
@@ -84,20 +83,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &6435942
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 196900}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 87697a119091a8042b8edd7358266a70, type: 3}
 --- !u!114 &2932293989990029974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,33 +95,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e01594f1f43eb4a9a8bada03b5137f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentController: {fileID: 0}
   pauseMenu: {fileID: 0}
   behaviourToToggle: {fileID: 0}
   agentValues: {fileID: 0}
   activeCommands: []
   passiveCommands:
   - {fileID: 11400000, guid: 89d67c71b42eab74685203f1c632d43b, type: 2}
-  isSprinting: 0
   isGrounded: 1
+  isSprinting: 0
   gravityDirection: {x: 0, y: -1, z: 0}
   allowInput: 1
   currentLeapCharge: 0
-  currentOxygen: 0
-  oxygenDisplay: {fileID: 0}
+  isJumping: 0
+  moveSpeedMultiplier: 1
+  agentRigidbody: {fileID: 0}
+  lastVelocity: {x: 0, y: 0, z: 0}
   currentWeapon: {fileID: 0}
-  currentBulletsInMag: 0
   timeSinceLastShot: 0
-  currentTotalAmmo: 0
   currentRecoilValue: 0
   weaponObject: {fileID: 0}
   weaponMuzzleFlash: {fileID: 0}
+  equipedWeapons:
+  - {fileID: 0}
+  - {fileID: 0}
+  currentWeaponID: 0
+  isReloading: 0
   agentCamera: {fileID: 0}
-  currentHealth: 0
-  healthUIText: {fileID: 0}
-  ammoUIText: {fileID: 0}
+  mainCamera: {fileID: 0}
+  aDSCamera: {fileID: 0}
+  isADS: 0
+  HUDCanvas: {fileID: 0}
+  HUD: {fileID: 0}
+  UIOffset: {x: 0, y: 0, z: 0}
   agentHitSound: {fileID: 8300000, guid: 32652f3ed55cee24f9a7ed50c61abc5c, type: 3}
   agentHitParticles: {fileID: 5245721109328543653}
   punRPCs: {fileID: 0}
+  isLocalAgent: 1
+  interactionPromptText: {fileID: 0}
+  progressBar: {fileID: 0}
+  agent: {fileID: 0}
 --- !u!1 &3145624663861656015
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +147,7 @@ GameObject:
   - component: {fileID: 4229228504673995378}
   - component: {fileID: 1639362057622138591}
   - component: {fileID: 4447046812597557021}
-  - component: {fileID: 3118267189023291421}
+  - component: {fileID: 8843628072025940505}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -431,8 +429,8 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!64 &3118267189023291421
-MeshCollider:
+--- !u!65 &8843628072025940505
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -441,10 +439,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.47294343, y: 3.8886461, z: 1.8732443}
+  m_Center: {x: 0.61552095, y: 1.5131559, z: -0.08522892}
 --- !u!1 &7604361584407292519
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,7 +454,7 @@ GameObject:
   - component: {fileID: 8507903385867338682}
   - component: {fileID: 7083005222729702285}
   - component: {fileID: 7230296846822693135}
-  - component: {fileID: 1879461689096849038}
+  - component: {fileID: 1952831268464718986}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -739,8 +736,8 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!64 &1879461689096849038
-MeshCollider:
+--- !u!65 &1952831268464718986
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -749,10 +746,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.49180675, y: 3.8886461, z: 1.851393}
+  m_Center: {x: 0.60713375, y: 1.5131559, z: -0.07430351}
 --- !u!1 &8647638243640336589
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,7 +761,7 @@ GameObject:
   - component: {fileID: 7714236229789591774}
   - component: {fileID: 8550133839695522738}
   - component: {fileID: 2398252303549942124}
-  - component: {fileID: 5561875307383436979}
+  - component: {fileID: 2662314452929179879}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -1047,8 +1043,8 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!64 &5561875307383436979
-MeshCollider:
+--- !u!65 &2662314452929179879
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1057,10 +1053,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.4176173, y: 3.8886461, z: 2.8699458}
+  m_Center: {x: 0.6199483, y: 1.5131559, z: 0.87452084}
 --- !u!1001 &2749332890530957634
 PrefabInstance:
   m_ObjectHideFlags: 0
