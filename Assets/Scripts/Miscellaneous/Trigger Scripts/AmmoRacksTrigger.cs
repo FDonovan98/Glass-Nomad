@@ -23,6 +23,13 @@ public class AmmoRacksTrigger : TriggerInteractionScript
                 }
 
                 currInteractTime += Time.deltaTime;
+
+                if (currInteractTime > (interactTime / maxAmmoGiven) + (currAmmoGiven * (interactTime / maxAmmoGiven)))
+                {
+                    currAmmoGiven++;
+                    playerInteracting.GetComponent<AgentController>().ChangeStat(ResourceType.ExtraAmmo, 1);
+                }
+
                 float percentage = (currInteractTime / interactTime) * 100;
                 if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
                 
@@ -42,8 +49,6 @@ public class AmmoRacksTrigger : TriggerInteractionScript
         {
             coll.GetComponent<AgentInputHandler>().allowInput = true;
         }
-
-        if (debug) Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
     }
 
     protected override void LeftTriggerArea()
