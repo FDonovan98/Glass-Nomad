@@ -9,7 +9,6 @@ public class SpiderClimb : ActiveCommandObject
     KeyCode switchSurface = KeyCode.V;
     float timeToGravityReset;
     List<ContactPoint> allCPs = new List<ContactPoint>();
-    private bool isClimbing = false;
 
     protected override void OnEnable()
     {
@@ -21,7 +20,7 @@ public class SpiderClimb : ActiveCommandObject
         if (agentInputHandler.isLocalAgent)
         {
             timeToGravityReset = -1.0f;
-            isClimbing = false;
+            agentInputHandler.isWallClimbing = false;
 
             agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
             agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
@@ -34,7 +33,7 @@ public class SpiderClimb : ActiveCommandObject
     {
         if (Input.GetKeyDown(switchSurface))
         {
-            isClimbing = !isClimbing;
+            agentInputHandler.isWallClimbing = !agentInputHandler.isWallClimbing;
         }
     }
 
@@ -48,7 +47,6 @@ public class SpiderClimb : ActiveCommandObject
 
             Quaternion agentTargetRotation = Quaternion.LookRotation(agentTargetForward, -agentInputHandler.gravityDirection);
             
-            //agent.GetComponent<Rigidbody>().velocity -= agentValues.gravityDirection;
             agent.transform.rotation = Quaternion.Lerp(agent.transform.rotation, agentTargetRotation, agentValues.surfaceSwitchSpeed);
         }
         
@@ -62,7 +60,7 @@ public class SpiderClimb : ActiveCommandObject
             averageNormal -= element.normal;
         }
 
-        if (isClimbing && averageNormal != Vector3.zero)
+        if (agentInputHandler.isWallClimbing && averageNormal != Vector3.zero)
         {
             agentInputHandler.gravityDirection = averageNormal.normalized;
             timeToGravityReset = agentValues.gravityResetDelay;
