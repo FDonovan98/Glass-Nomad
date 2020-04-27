@@ -52,7 +52,7 @@ public class Settings : MonoBehaviour
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
 
-        SaveLoadSettings.LoadData(settingsPath);
+        // SaveLoadSettings.LoadData(settingsPath);
         if (affectedCamera != null)
         {
             fovSlider.value = affectedCamera.fieldOfView;
@@ -132,6 +132,8 @@ public class Settings : MonoBehaviour
     {
         Debug.Log("Changing fullscreen to: " + isFullscreen);
         Screen.fullScreenMode = isFullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        Resolution res = resolutions[resolutions.Length - 1];
+        Screen.SetResolution(res.width, res.height, isFullscreen);
     }
 
     public void SetFOV(float fov)
