@@ -37,6 +37,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected virtual void OnTriggerEnter(Collider coll)
     {
+        if (interactionComplete) return;
+        
         try {
             playerInteracting = coll.gameObject;
             
@@ -120,7 +122,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             interactionComplete = false;
             interactionText.text = "";
             LeftTriggerArea();
-            playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
             playerInteracting = null;
         }
     }
