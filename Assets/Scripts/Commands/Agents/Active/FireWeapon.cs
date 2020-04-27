@@ -65,7 +65,7 @@ public class FireWeapon : ActiveCommandObject
 
         agentInputHandler.timeSinceLastShot = 0.0f;
 
-        agentController.ChangeStat(AgentController.ResourceType.MagazineAmmo, -1);
+        agentController.ChangeStat(ResourceType.MagazineAmmo, -1);
 
         FireWeaponOverNet(agentInputHandler);
     }

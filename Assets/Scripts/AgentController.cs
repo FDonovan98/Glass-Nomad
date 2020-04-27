@@ -4,6 +4,16 @@ using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
 
+public enum ResourceType
+{
+    Health,
+    MagazineAmmo,
+    ExtraAmmo,
+    Oxygen,
+    WallClimbing,
+    EmergencyRegen
+}
+
 public class AgentController : AgentInputHandler
 {
     public GameObject deathScreen;
@@ -33,15 +43,6 @@ public class AgentController : AgentInputHandler
     public int emergencyRegenUsesRemaining = 0;
     [ReadOnly]
     public bool isWallClimbing = false;
-
-    public enum ResourceType
-    {
-        Health,
-        MagazineAmmo,
-        ExtraAmmo,
-        Oxygen,
-        wallClimbing
-    }
     
     public GameObject[] gameObjectsToDisableForPhoton;
     public Behaviour[] componentsToDisableForPhoton;
@@ -94,11 +95,11 @@ public class AgentController : AgentInputHandler
         }
     }
 
-    public void ChangeStat(ResourceType resourceType, bool toggle)
+    public void ChangeStat(ResourceType resourceType, bool value)
     {
-        if (resourceType == ResourceType.wallClimbing)
+        if (resourceType == ResourceType.WallClimbing)
         {
-            isWallClimbing = toggle;
+            isWallClimbing = value;
             UpdateWallClimbingUI();
         }
     }
@@ -145,7 +146,7 @@ public class AgentController : AgentInputHandler
 
             if (currentOxygen == 0.0f)
             {
-                ChangeStat(AgentController.ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
+                ChangeStat(ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
             }
             else if (currentOxygen <= oxygenWarningAmount)
             {
@@ -188,6 +189,9 @@ public class AgentController : AgentInputHandler
                 break;
             case ResourceType.Oxygen:
                 UpdateOxygenUI();
+                break;
+            case ResourceType.WallClimbing:
+                UpdateWallClimbingUI();
                 break;
             default:
                 Debug.LogWarning(gameObject.name + " tried to update UI of unrecognized type.");

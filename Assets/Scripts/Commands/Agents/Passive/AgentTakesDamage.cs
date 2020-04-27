@@ -12,6 +12,6 @@ public class AgentTakesDamage : PassiveCommandObject
     {
         AgentController agentController = (AgentController)agentInputHandler;
 
-        agentController.ChangeStat(AgentController.ResourceType.Health, -value);
+        agentController.ChangeStat(ResourceType.Health, -value);
     }
 }

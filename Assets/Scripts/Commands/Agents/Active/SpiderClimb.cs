@@ -37,7 +37,7 @@ public class SpiderClimb : ActiveCommandObject
 
         if (Input.GetKeyDown(switchSurface))
         {
-            agentController.isWallClimbing = !agentController.isWallClimbing;
+            agentController.ChangeStat(ResourceType.WallClimbing, !agentController.isWallClimbing);
         }
     }
 
