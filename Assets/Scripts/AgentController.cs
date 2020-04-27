@@ -136,6 +136,7 @@ public class AgentController : AgentInputHandler
             currentHealth += value;
             if (currentHealth <= 0)
             {
+                currentHealth = 0;
                 AgentHasDied();
             }
 
