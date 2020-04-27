@@ -2,20 +2,44 @@ using UnityEngine;
 
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "DefaultSpiderClimb", menuName = "Commands/Passive/SpiderClimb")]
-public class SpiderClimb : PassiveCommandObject
+[CreateAssetMenu(fileName = "DefaultSpiderClimb", menuName = "Commands/Active/SpiderClimb")]
+public class SpiderClimb : ActiveCommandObject
 {
+    [SerializeField]
+    KeyCode switchSurface = KeyCode.V;
     float timeToGravityReset;
     List<ContactPoint> allCPs = new List<ContactPoint>();
+
+    protected override void OnEnable()
+    {
+        keyTable.Add("Spider Climb", switchSurface);
+    }
+    
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
         if (agentInputHandler.isLocalAgent)
+        {
+            agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        }
+    }
+
+    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
+    {
+        if (Input.GetKeyDown(switchSurface))
         {
             timeToGravityReset = -1.0f;
             agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
             agentInputHandler.runCommandOnCollisionEnter += RunCommandOnCollisionEnter;
             agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
         }
+        else if (Input.GetKeyUp(switchSurface))
+        {
+            timeToGravityReset = -1.0f;
+            agentInputHandler.runCommandOnFixedUpdate -= RunCommandOnFixedUpdate;
+            agentInputHandler.runCommandOnCollisionEnter -= RunCommandOnCollisionEnter;
+            agentInputHandler.runCommandOnCollisionStay -= RunCommandOnCollisionStay;
+        }
+        
     }
 
     void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
