@@ -9,10 +9,13 @@ public class SpiderClimb : PassiveCommandObject
     List<ContactPoint> allCPs = new List<ContactPoint>();
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
-        timeToGravityReset = -1.0f;
-        agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
-        agentInputHandler.runCommandOnCollisionEnter += RunCommandOnCollisionEnter;
-        agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
+        if (agentInputHandler.isLocalAgent)
+        {
+            timeToGravityReset = -1.0f;
+            agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
+            agentInputHandler.runCommandOnCollisionEnter += RunCommandOnCollisionEnter;
+            agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
+        }
     }
 
     void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
