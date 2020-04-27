@@ -78,7 +78,7 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
                 currentlyOutlining = true;
                 agentInputHandler.ChangeMovementSpeedModifier(moveSpeedDivider, false);
 
-                AgentController agentController = (AgentController)agentInputHandler;
+                Renderer[] objectsToOutline = FetchOtherAgentsToOutline(agentInputHandler);
 
                 _objectRenderers = new List<List<Renderer>>();
                 _commandBuffer = new CommandBuffer();
@@ -102,7 +102,7 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
                 int i = 0;
                 cts = new List<CancellationTokenSource>();
 
-                foreach (Renderer element in agentController.objectsToOutline)
+                foreach (Renderer element in objectsToOutline)
                 {
                     if (element != null)
                     {
@@ -248,5 +248,21 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
         _commandBuffer.ReleaseTemporaryRT(_outlineRTID);
         _commandBuffer.ReleaseTemporaryRT(_temporaryRTID);
         _commandBuffer.ReleaseTemporaryRT(_depthRTID);
+    }
+
+    Renderer[] FetchOtherAgentsToOutline(AgentInputHandler agentInputHandler)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        List<Renderer> objectsToOutline = new List<Renderer>();;
+
+        foreach (GameObject element in players)
+        {
+            if (element != agentInputHandler.agent)
+            {
+                objectsToOutline.AddRange(element.GetComponentsInChildren<Renderer>());
+            }
+        }
+
+        return objectsToOutline.ToArray();
     }
 }
