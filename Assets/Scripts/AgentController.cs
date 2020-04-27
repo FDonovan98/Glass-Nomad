@@ -3,10 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
-<<<<<<< HEAD
-using System.Collections;
-
-using UnityEngine.UI;
 
 public enum ResourceType
 {
@@ -17,8 +13,6 @@ public enum ResourceType
     WallClimbing,
     EmergencyRegen
 }
-=======
->>>>>>> c55a8081b03de99dd0b8146e4eeda3bb35f2e01e
 
 public class AgentController : AgentInputHandler
 {
