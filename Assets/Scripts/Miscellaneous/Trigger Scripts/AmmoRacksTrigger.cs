@@ -15,12 +15,9 @@ public class AmmoRacksTrigger : TriggerInteractionScript
         {            
             if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
             {
-                if (currInteractTime >= interactTime)
+                if (currAmmoGiven == maxAmmoGiven)
                 {
-                    // Give player 30 ammo
-                    currInteractTime = 0f;
                     interactionComplete = true;
-                    currCooldownTime = cooldownTime;
                     playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
                     return;
                 }
@@ -47,5 +44,11 @@ public class AmmoRacksTrigger : TriggerInteractionScript
         }
 
         if (debug) Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
+    }
+
+    protected override void LeftTriggerArea()
+    {
+        ReticleProgress.UpdateReticleProgress(0, outerReticle);
+        playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
     }
 }
