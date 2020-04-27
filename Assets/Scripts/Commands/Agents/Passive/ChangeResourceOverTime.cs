@@ -27,7 +27,7 @@ public class ChangeResourceOverTime : PassiveCommandObject
                     agentController = (AgentController)agentInputHandler;
                 }
 
-                if (element.resourceType == AgentController.ResourceType.Health)
+                if (element.resourceType == ResourceType.Health)
                 {
                     agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue * agentValues.maxHealth / 100);
                 }
@@ -62,7 +62,7 @@ public class ChangeResourceOverTime : PassiveCommandObject
 [Serializable]
 public class TypeAndConstraints
 {
-    public AgentController.ResourceType resourceType;
+    public ResourceType resourceType;
     public float changeValue;
     public string areaTag;
 }
