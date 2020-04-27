@@ -40,7 +40,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         try {
             playerInteracting = coll.gameObject;
             
-            if (coll.GetComponent<PhotonView>().IsMine)
+            if (coll.GetComponent<PhotonView>().IsMine && coll.gameObject.layer == 8)
             {
                 if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
                 outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
