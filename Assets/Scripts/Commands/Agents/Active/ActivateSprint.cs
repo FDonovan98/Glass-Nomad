@@ -13,7 +13,10 @@ public class ActivateSprint : ActiveCommandObject
 
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        if (agentInputHandler.isLocalAgent)
+        {      
+            agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        }
     }
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
