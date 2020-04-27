@@ -10704,6 +10704,7 @@ MonoBehaviour:
   isJumping: 0
   moveSpeedMultiplier: 1
   agentRigidbody: {fileID: 3585821509768860821}
+  isWallClimbing: 0
   lastVelocity: {x: 0, y: 0, z: 0}
   currentWeapon: {fileID: 11400000, guid: f07ed8fadc5211d47885c7f535b3d0f8, type: 2}
   timeSinceLastShot: 0
@@ -11548,7 +11549,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -4.9287, y: 2.16}
+  m_AnchoredPosition: {x: -4.9287, y: 2.15}
   m_SizeDelta: {x: 0.3, y: 0.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8179807708873206806
@@ -14160,10 +14161,20 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8865416381457730580, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
       propertyPath: m_Name
       value: PRF_Flashlight
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 332df5eb1fa7b2b408462605350b969d, type: 3}
