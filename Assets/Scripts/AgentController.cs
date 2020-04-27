@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
+<<<<<<< HEAD
 using System.Collections;
 
 using UnityEngine.UI;
@@ -14,6 +17,8 @@ public enum ResourceType
     WallClimbing,
     EmergencyRegen
 }
+=======
+>>>>>>> c55a8081b03de99dd0b8146e4eeda3bb35f2e01e
 
 public class AgentController : AgentInputHandler
 {
@@ -32,6 +37,9 @@ public class AgentController : AgentInputHandler
     public float currentHealth = 0.0f;
     [ReadOnly]
     public float currentOxygen = 0.0f;
+    [Range(0, 100)]
+    public int oxygenWarningAmount = 30;
+    public GameObject oxygenWarning = null;
     [ReadOnly]
     public int currentExtraAmmo = 0;
     [ReadOnly]
@@ -146,6 +154,18 @@ public class AgentController : AgentInputHandler
             {
                 ChangeStat(ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
             }
+            else if (currentOxygen <= oxygenWarningAmount)
+            {
+                // Display warning
+                DisplayOxygenWarning(true);
+            }
+            else
+            {
+                if (oxygenWarning != null && oxygenWarning.activeInHierarchy)
+                {
+                    DisplayOxygenWarning(false);
+                }
+            }
 
             if (oxygenDisplay != null)
             {
@@ -154,7 +174,7 @@ public class AgentController : AgentInputHandler
         }
     }
 
-    void UpdateUI()
+    private void UpdateUI()
     {
         UpdateAmmoUI();
         UpdateHealthUI();
@@ -162,7 +182,7 @@ public class AgentController : AgentInputHandler
         UpdateWallClimbingUI();
     }
 
-    void UpdateUI(ResourceType resourceType)
+    private void UpdateUI(ResourceType resourceType)
     {
         switch (resourceType)
         {
@@ -185,15 +205,7 @@ public class AgentController : AgentInputHandler
         }
     }
 
-    void UpdateWallClimbingUI()
-    {
-        if (wallClimbingSymbol != null)
-        {
-            wallClimbingSymbol.SetActive(isWallClimbing);
-        }
-    }
-
-    void UpdateAmmoUI()
+    private void UpdateAmmoUI()
     {
         if (ammoUIText != null)
         {
@@ -201,7 +213,15 @@ public class AgentController : AgentInputHandler
         }
     }
 
-    void UpdateHealthUI()
+	void UpdateWallClimbingUI()
+    {
+        if (wallClimbingSymbol != null)
+        {
+            wallClimbingSymbol.SetActive(isWallClimbing);
+        }
+    }
+
+    private void UpdateHealthUI()
     {
         if (healthUIText != null)
         {
@@ -209,7 +229,7 @@ public class AgentController : AgentInputHandler
         }
     }
 
-    void UpdateOxygenUI()
+    private void UpdateOxygenUI()
     {
         if (oxygenDisplay != null)
         {
@@ -217,6 +237,14 @@ public class AgentController : AgentInputHandler
             TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
             oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
             oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
+        }
+    }
+
+    private void DisplayOxygenWarning(bool shouldEnable)
+    {
+        if (oxygenWarning != null)
+        {
+            oxygenWarning.SetActive(shouldEnable);
         }
     }
 
