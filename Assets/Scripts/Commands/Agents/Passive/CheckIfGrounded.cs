@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Photon.Pun;
 
 [CreateAssetMenu(fileName = "DefualtCheckIfGrounded", menuName = "Commands/Passive/CheckIfGrounded")]
 public class CheckIfGrounded : PassiveCommandObject
@@ -14,6 +15,8 @@ public class CheckIfGrounded : PassiveCommandObject
 
     void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
+        if (!agent.GetComponent<PhotonView>().IsMine) return;
+        
         bool foundGround = false;
         ContactPoint currentGround = new ContactPoint();
         float currentGroundTheta = float.MaxValue;
