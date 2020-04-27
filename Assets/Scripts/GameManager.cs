@@ -47,13 +47,16 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void SpawnLocalPlayer()
     {
         PlayersInLobby lobbyRoom = GameObject.Find("Lobby").GetComponent<PlayersInLobby>();
+
         if (lobbyRoom.IsPlayerAlien(PhotonNetwork.NickName))
         {
             PhotonNetwork.Instantiate("Alien", alienSpawnPoint.transform.position, new Quaternion());
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
+            GameObject marine = PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
+            AgentController agentController = marine.GetComponentInChildren<AgentController>();
+            agentController.ChangeWeapon(PlayerPrefs.GetString("Primary")) ;
         }
     }
 
