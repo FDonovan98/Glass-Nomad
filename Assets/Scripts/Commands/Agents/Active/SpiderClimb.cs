@@ -9,6 +9,7 @@ public class SpiderClimb : ActiveCommandObject
     KeyCode switchSurface = KeyCode.V;
     float timeToGravityReset;
     List<ContactPoint> allCPs = new List<ContactPoint>();
+    private bool isClimbing = false;
 
     protected override void OnEnable()
     {
@@ -19,7 +20,13 @@ public class SpiderClimb : ActiveCommandObject
     {
         if (agentInputHandler.isLocalAgent)
         {
+            timeToGravityReset = -1.0f;
+            isClimbing = false;
+
             agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+            agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
+            agentInputHandler.runCommandOnCollisionEnter += RunCommandOnCollisionEnter;
+            agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
         }
     }
 
@@ -27,19 +34,8 @@ public class SpiderClimb : ActiveCommandObject
     {
         if (Input.GetKeyDown(switchSurface))
         {
-            timeToGravityReset = -1.0f;
-            agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
-            agentInputHandler.runCommandOnCollisionEnter += RunCommandOnCollisionEnter;
-            agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
+            isClimbing = !isClimbing;
         }
-        else if (Input.GetKeyUp(switchSurface))
-        {
-            timeToGravityReset = -1.0f;
-            agentInputHandler.runCommandOnFixedUpdate -= RunCommandOnFixedUpdate;
-            agentInputHandler.runCommandOnCollisionEnter -= RunCommandOnCollisionEnter;
-            agentInputHandler.runCommandOnCollisionStay -= RunCommandOnCollisionStay;
-        }
-        
     }
 
     void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
@@ -66,21 +62,25 @@ public class SpiderClimb : ActiveCommandObject
             averageNormal -= element.normal;
         }
 
-        if (averageNormal != Vector3.zero)
+        if (isClimbing && averageNormal != Vector3.zero)
         {
             agentInputHandler.gravityDirection = averageNormal.normalized;
             timeToGravityReset = agentValues.gravityResetDelay;
         }
-        else 
+        else
         {
-            timeToGravityReset -= Time.fixedDeltaTime;
+            if (averageNormal == Vector3.zero)
+            {
+                timeToGravityReset -= Time.fixedDeltaTime;
+            
+                if (timeToGravityReset < 0.0f)
+                {
+                    agentInputHandler.gravityDirection = Vector3.down;
+                    timeToGravityReset = agentValues.gravityResetDelay;
+                }
+            }
         }
 
-        if (timeToGravityReset < 0.0f)
-        {
-            agentInputHandler.gravityDirection = Vector3.down;
-            timeToGravityReset = agentValues.gravityResetDelay;
-        }
         
         allCPs.Clear();
     }
