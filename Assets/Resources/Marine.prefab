@@ -10704,6 +10704,7 @@ MonoBehaviour:
   isJumping: 0
   moveSpeedMultiplier: 1
   agentRigidbody: {fileID: 3585821509768860821}
+  isWallClimbing: 0
   lastVelocity: {x: 0, y: 0, z: 0}
   currentWeapon: {fileID: 11400000, guid: f07ed8fadc5211d47885c7f535b3d0f8, type: 2}
   timeSinceLastShot: 0
@@ -10736,16 +10737,12 @@ MonoBehaviour:
   healthUIText: {fileID: 8749036419680879366}
   ammoUIText: {fileID: 7948451327162272895}
   oxygenDisplay: {fileID: 8026668226014452217}
-  wallClimbingSymbol: {fileID: 0}
   currentHealth: 0
   currentOxygen: 0
-  oxygenWarningAmount: 30
-  oxygenWarning: {fileID: 0}
   currentExtraAmmo: 0
   currentBulletsInMag: 0
   emergencyRegenActive: 0
   emergencyRegenUsesRemaining: 0
-  isWallClimbing: 0
   gameObjectsToDisableForPhoton:
   - {fileID: 5923454201242450266}
   componentsToDisableForPhoton:
@@ -11552,7 +11549,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -4.9287, y: 2.16}
+  m_AnchoredPosition: {x: -4.9287, y: 2.15}
   m_SizeDelta: {x: 0.3, y: 0.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8179807708873206806
@@ -14079,11 +14076,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9201371442307833127}
     m_Modifications:
-    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
-        type: 3}
-      propertyPath: m_Name
-      value: PRF_Flashlight
-      objectReference: {fileID: 0}
     - target: {fileID: 8865416381457730582, guid: 332df5eb1fa7b2b408462605350b969d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14169,6 +14161,21 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8865416381457730580, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_Name
+      value: PRF_Flashlight
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865416381457730583, guid: 332df5eb1fa7b2b408462605350b969d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 332df5eb1fa7b2b408462605350b969d, type: 3}
 --- !u!108 &786566164578654222 stripped
@@ -14184,21 +14191,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 780769668985064105}
     m_Modifications:
-    - target: {fileID: 4649363343626254185, guid: d9beaa986e07b3b47b7c88e010396c3d,
-        type: 3}
-      propertyPath: m_Name
-      value: UI_Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 4649363343626254185, guid: d9beaa986e07b3b47b7c88e010396c3d,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 7384609091849898746, guid: d9beaa986e07b3b47b7c88e010396c3d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4649363343626254184, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14304,10 +14296,25 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7384609091849898746, guid: d9beaa986e07b3b47b7c88e010396c3d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1931292728651915456, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649363343626254185, guid: d9beaa986e07b3b47b7c88e010396c3d,
+        type: 3}
+      propertyPath: m_Name
+      value: UI_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649363343626254185, guid: d9beaa986e07b3b47b7c88e010396c3d,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1657721256230838641, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}

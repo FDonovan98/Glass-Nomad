@@ -24,7 +24,8 @@ public class AgentController : AgentInputHandler
     public TextMeshProUGUI healthUIText;
     public TextMeshProUGUI ammoUIText;
     public GameObject oxygenDisplay;
-    public GameObject wallClimbingSymbol;
+    public GameObject wallClimbingUISymbol;
+    public GameObject emergencyRegenUISymbol;
 
     [Header("Current Stats")]
     [ReadOnly]
@@ -102,6 +103,12 @@ public class AgentController : AgentInputHandler
             isWallClimbing = value;
             UpdateWallClimbingUI();
         }
+
+        if (resourceType == ResourceType.EmergencyRegen)
+        {
+            emergencyRegenActive = value;
+            UpdateEmergencyRegenUI();
+        }
     }
 
     public void ChangeStat(ResourceType resourceType, int value)
@@ -174,6 +181,7 @@ public class AgentController : AgentInputHandler
         UpdateHealthUI();
         UpdateOxygenUI();
         UpdateWallClimbingUI();
+        UpdateEmergencyRegenUI();
     }
 
     private void UpdateUI(ResourceType resourceType)
@@ -199,6 +207,14 @@ public class AgentController : AgentInputHandler
         }
     }
 
+    void UpdateEmergencyRegenUI()
+    {
+        if (emergencyRegenUISymbol != null)
+        {
+            emergencyRegenUISymbol.SetActive(emergencyRegenActive);
+        }
+    }
+
     private void UpdateAmmoUI()
     {
         if (ammoUIText != null)
@@ -209,9 +225,9 @@ public class AgentController : AgentInputHandler
 
 	void UpdateWallClimbingUI()
     {
-        if (wallClimbingSymbol != null)
+        if (wallClimbingUISymbol != null)
         {
-            wallClimbingSymbol.SetActive(isWallClimbing);
+            wallClimbingUISymbol.SetActive(isWallClimbing);
         }
     }
 
