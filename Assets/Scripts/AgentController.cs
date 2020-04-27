@@ -21,7 +21,8 @@ public class AgentController : AgentInputHandler
     public float currentHealth = 0.0f;
     [ReadOnly]
     public float currentOxygen = 0.0f;
-    public float oxygenWarningAmount = 0.3f;
+    [Range(0, 100)]
+    public int oxygenWarningAmount = 30;
     public GameObject oxygenWarning = null;
     [ReadOnly]
     public int currentExtraAmmo = 0;
