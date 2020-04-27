@@ -6,8 +6,8 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
 
     // Tells the red switch manager when this switch has been (de)activated.
     [SerializeField] private SecuritySwitchManager switchManager = null;
-    [SerializeField] private Material materialToChange;
-    [SerializeField] private Color colorToChangeTo;
+    [SerializeField] private Material materialToChange = null;
+    [SerializeField] private Color colorToChangeTo = Color.clear;
     private Color prevColor = Color.clear;
 
     /// <summary>
