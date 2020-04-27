@@ -37,7 +37,7 @@ public class EmergencyHealing : PassiveCommandObject
     {
         AgentController agentController = (AgentController)agentInputHandler;
 
-        agentController.ChangeResourceCount(AgentController.ResourceType.Health, -agentInputHandler.agentValues.emergencyRegenDownTickValue * Time.deltaTime);
+        agentController.ChangeStat(AgentController.ResourceType.Health, -agentInputHandler.agentValues.emergencyRegenDownTickValue * Time.deltaTime);
 
         if (agentController.currentHealth < agentController.agentValues.maxHealth)
         {

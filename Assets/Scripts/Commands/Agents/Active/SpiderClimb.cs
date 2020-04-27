@@ -17,10 +17,12 @@ public class SpiderClimb : ActiveCommandObject
     
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
+        AgentController agentController = (AgentController)agentInputHandler;
+
         if (agentInputHandler.isLocalAgent)
         {
             timeToGravityReset = -1.0f;
-            agentInputHandler.isWallClimbing = false;
+            agentController.isWallClimbing = false;
 
             agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
             agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
@@ -31,9 +33,11 @@ public class SpiderClimb : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
+        AgentController agentController = (AgentController)agentInputHandler;
+
         if (Input.GetKeyDown(switchSurface))
         {
-            agentInputHandler.isWallClimbing = !agentInputHandler.isWallClimbing;
+            agentController.isWallClimbing = !agentController.isWallClimbing;
         }
     }
 
@@ -54,13 +58,15 @@ public class SpiderClimb : ActiveCommandObject
 
     void SetGravityDirection(AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
+        AgentController agentController = (AgentController)agentInputHandler;
+
         Vector3 averageNormal = Vector3.zero;
         foreach (ContactPoint element in allCPs)
         {
             averageNormal -= element.normal;
         }
 
-        if (agentInputHandler.isWallClimbing && averageNormal != Vector3.zero)
+        if (agentController.isWallClimbing && averageNormal != Vector3.zero)
         {
             agentInputHandler.gravityDirection = averageNormal.normalized;
             timeToGravityReset = agentValues.gravityResetDelay;

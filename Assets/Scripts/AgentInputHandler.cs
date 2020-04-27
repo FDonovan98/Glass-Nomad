@@ -29,8 +29,6 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [ReadOnly]
     public float moveSpeedMultiplier = 1.0f;
     public Rigidbody agentRigidbody;
-    [ReadOnly]
-    public bool isWallClimbing = false;
 
     [Header("Stairs")]
     [ReadOnly]

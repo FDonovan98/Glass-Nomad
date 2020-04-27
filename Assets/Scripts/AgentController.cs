@@ -17,6 +17,7 @@ public class AgentController : AgentInputHandler
     public TextMeshProUGUI healthUIText;
     public TextMeshProUGUI ammoUIText;
     public GameObject oxygenDisplay;
+    public GameObject wallClimbingSymbol;
 
     [Header("Current Stats")]
     [ReadOnly]
@@ -30,13 +31,16 @@ public class AgentController : AgentInputHandler
     [ReadOnly]
     public bool emergencyRegenActive = false;
     public int emergencyRegenUsesRemaining = 0;
+    [ReadOnly]
+    public bool isWallClimbing = false;
 
     public enum ResourceType
     {
         Health,
         MagazineAmmo,
         ExtraAmmo,
-        Oxygen
+        Oxygen,
+        wallClimbing
     }
     
     public GameObject[] gameObjectsToDisableForPhoton;
@@ -90,7 +94,16 @@ public class AgentController : AgentInputHandler
         }
     }
 
-    public void ChangeResourceCount(ResourceType resourceType, int value)
+    public void ChangeStat(ResourceType resourceType, bool toggle)
+    {
+        if (resourceType == ResourceType.wallClimbing)
+        {
+            isWallClimbing = toggle;
+            UpdateWallClimbingUI();
+        }
+    }
+
+    public void ChangeStat(ResourceType resourceType, int value)
     {
         if (resourceType == ResourceType.MagazineAmmo)
         {
@@ -113,7 +126,7 @@ public class AgentController : AgentInputHandler
         }
     }
 
-    public void ChangeResourceCount(ResourceType resourceType, float value)
+    public void ChangeStat(ResourceType resourceType, float value)
     {
         if (resourceType == ResourceType.Health)
         {
@@ -132,7 +145,7 @@ public class AgentController : AgentInputHandler
 
             if (currentOxygen == 0.0f)
             {
-                ChangeResourceCount(AgentController.ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
+                ChangeStat(AgentController.ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
             }
 
             if (oxygenDisplay != null)
@@ -147,6 +160,7 @@ public class AgentController : AgentInputHandler
         UpdateAmmoUI();
         UpdateHealthUI();
         UpdateOxygenUI();
+        UpdateWallClimbingUI();
     }
 
     void UpdateUI(ResourceType resourceType)
@@ -166,6 +180,14 @@ public class AgentController : AgentInputHandler
             default:
                 Debug.LogWarning(gameObject.name + " tried to update UI of unrecognized type.");
                 break;
+        }
+    }
+
+    void UpdateWallClimbingUI()
+    {
+        if (wallClimbingSymbol != null)
+        {
+            wallClimbingSymbol.SetActive(isWallClimbing);
         }
     }
 

@@ -64,8 +64,8 @@ public class ReloadWeapon : ActiveCommandObject
             bulletsUsed = agentController.currentExtraAmmo;
         }
 
-        agentController.ChangeResourceCount(AgentController.ResourceType.MagazineAmmo, bulletsUsed);
-        agentController.ChangeResourceCount(AgentController.ResourceType.ExtraAmmo, -bulletsUsed);
+        agentController.ChangeStat(AgentController.ResourceType.MagazineAmmo, bulletsUsed);
+        agentController.ChangeStat(AgentController.ResourceType.ExtraAmmo, -bulletsUsed);
 
         agentController.isReloading = false;
     }
