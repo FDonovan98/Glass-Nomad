@@ -22923,6 +22923,8 @@ GameObject:
   - component: {fileID: 8912114736357850330}
   - component: {fileID: 8912114736357850332}
   - component: {fileID: 8912114736357850331}
+  - component: {fileID: 4959736621648156352}
+  - component: {fileID: 7401877096175418573}
   m_Layer: 0
   m_Name: Evac Zone
   m_TagString: Untagged
@@ -22970,6 +22972,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfMarinesInEvac: 0
+--- !u!114 &4959736621648156352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8912114736357850329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26aa483e2cef08d468ef081e7e52b059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputKey: 0
+  interactTime: 0
+  cooldownTime: 0
+  debug: 0
+  textToDisplay: 
+  objectiveValues: {fileID: 11400000, guid: f6334b67dc0c66f4791427dc7f419961, type: 2}
+  objectsToDestroy: []
+  componentsToDisable:
+  - {fileID: 4959736621648156352}
+--- !u!114 &7401877096175418573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8912114736357850329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8912114736851201756
 GameObject:
   m_ObjectHideFlags: 0
