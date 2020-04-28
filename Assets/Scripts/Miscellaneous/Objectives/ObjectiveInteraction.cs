@@ -25,8 +25,8 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         try {
             if (playerInteracting.GetComponent<PhotonView>().IsMine)
             {
-                captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
-                hintText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(4).GetComponent<TMP_Text>();
+                captionText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Objective Prompt");
+                hintText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Objective Hint");
                 if (debug) Debug.Log(captionText.name);
             }
         }
