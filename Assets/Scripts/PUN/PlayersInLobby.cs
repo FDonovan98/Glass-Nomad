@@ -6,7 +6,7 @@ using System.Linq;
 public class PlayersInLobby : MonoBehaviour
 {
     public List<PlayerInfo> playerInfos = new List<PlayerInfo>();
-
+    public PlayerInfo localPlayer;
     private static PlayersInLobby _instance;
 
     private void Awake()
@@ -88,6 +88,8 @@ public class PlayerInfo
 {
     public string name;
     public bool isAlien;
+    public Weapon primaryWeapon;
+    public Armour selectedArmour;
 
     public PlayerInfo(string playerName, bool alien)
     {

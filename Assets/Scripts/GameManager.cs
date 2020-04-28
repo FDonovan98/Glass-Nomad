@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
-using System.Collections.Generic;
-
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     // Changes to this scene when we leave a room.
@@ -56,7 +54,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             GameObject marine = PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
             AgentController agentController = marine.GetComponentInChildren<AgentController>();
-            agentController.ChangeWeapon(PlayerPrefs.GetString("Primary")) ;
+            agentController.ChangeWeapon(lobbyRoom.localPlayer.primaryWeapon);
         }
     }
 

@@ -84,25 +84,12 @@ public class AgentController : AgentInputHandler
         UpdateUI();
     }
 
-    public void ChangeWeapon(string playerPrefsValue)
+    public override void ChangeWeapon(Weapon weapon)
     {
-        Weapon[] weapons = Resources.LoadAll("Items", typeof(Weapon)) as Weapon[];
-        foreach (Weapon element in weapons)
-        {
-            if (playerPrefsValue == element.name)
-            {
-                ChangeWeapon(element);
-                return;
-            }
-        }
-    }
-
-    public void ChangeWeapon(Weapon weapon)
-    {
-        currentWeapon = weapon;
+        base.ChangeWeapon(weapon);
+        
         currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
         currentExtraAmmo = currentWeapon.magSize * 2;
-        timeSinceLastShot = currentWeapon.fireRate;
 
         UpdateUI(ResourceType.ExtraAmmo);
     }
