@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using TriggerExtensionMethods;
 
 public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 {
@@ -146,5 +147,25 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         currInteractTime = 0f;
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
         playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+    }
+}
+
+namespace TriggerExtensionMethods
+{
+    public static class Finder
+    {
+        public static T FindComponentWithTag<T>(this GameObject parent, string tag)where T:Component
+        {
+            foreach (Transform t in parent.transform.GetComponentsInChildren<Transform>())
+            {
+                if (t.CompareTag(tag))
+                {
+                    Debug.Log("Found " + t.name);
+                    return t.GetComponent<T>();
+                }
+            }
+
+            return null;
+        }
     }
 }
