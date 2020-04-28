@@ -52,7 +52,6 @@ public class Settings : MonoBehaviour
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
 
-        // SaveLoadSettings.LoadData(settingsPath);
         if (affectedCamera != null)
         {
             fovSlider.value = affectedCamera.fieldOfView;
@@ -109,7 +108,6 @@ public class Settings : MonoBehaviour
     {
         menu.SetActive(!menu.activeSelf);
         settingsButtons.SetActive(!menu.activeSelf);
-        // SaveLoadSettings.SaveData(settingsPath, audioMixer, affectedCamera);
     }
 
     public void LeaveRoom()
