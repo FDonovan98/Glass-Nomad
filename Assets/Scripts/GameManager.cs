@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
             GameObject marine = PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
             AgentController agentController = marine.GetComponentInChildren<AgentController>();
             agentController.ChangeWeapon(lobbyRoom.localPlayer.primaryWeapon);
+            agentController.ChangeArmour(lobbyRoom.localPlayer.selectedArmour);
         }
     }
 
