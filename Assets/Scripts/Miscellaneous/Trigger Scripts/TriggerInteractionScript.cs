@@ -46,8 +46,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             if (coll.GetComponent<PhotonView>().IsMine && coll.gameObject.layer == 8)
             {
                 if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
-                outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
-                interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
+                outerReticle = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<Image>("Reticle");
+                interactionText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Interaction Prompt");
                 interactionText.text = textToDisplay;
             }
         }
