@@ -69,6 +69,11 @@ public class Settings : MonoBehaviour
             volumeSlider.value = 1.0f;
         }
         
+        LoadResolutions(ref options);
+    }
+
+    private void LoadResolutions(ref List<string> options)
+    {
 
         int currentResIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
@@ -83,11 +88,17 @@ public class Settings : MonoBehaviour
             }
         }
 
+        SetDefaults(ref options, currentResIndex);
+    }
+
+    private void SetDefaults(ref List<string> options, int currentResIndex)
+    {
         // Sets the default value of the dropdowns or toggles to the current settings.
         resolutionDropdown.AddOptions(options);
+        Debug.Log("Current Res: " + resolutions[currentResIndex]);
         resolutionDropdown.SetValueWithoutNotify(currentResIndex);
+        if (Screen.fullScreen)  fullscreenToggle.isOn = Screen.fullScreen;
         qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
-        fullscreenToggle.isOn = Screen.fullScreen;
     }
     
     /// <summary>
@@ -98,7 +109,7 @@ public class Settings : MonoBehaviour
     {
         menu.SetActive(!menu.activeSelf);
         settingsButtons.SetActive(!menu.activeSelf);
-        SaveLoadSettings.SaveData(settingsPath, audioMixer, affectedCamera);
+        // SaveLoadSettings.SaveData(settingsPath, audioMixer, affectedCamera);
     }
 
     public void LeaveRoom()
