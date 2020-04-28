@@ -40,7 +40,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        SaveLoadSettings.LoadData(Application.persistentDataPath + "/game_data");
+        // SaveLoadSettings.LoadData(Application.persistentDataPath + "/game_data");
     }
     
     public void OnPlayClick()
