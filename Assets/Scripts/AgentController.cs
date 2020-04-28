@@ -22,8 +22,10 @@ public class AgentController : AgentInputHandler
 
     [Header("UI")]
     public TextMeshProUGUI healthUIText;
+    public Image healthUIImage;
     public TextMeshProUGUI ammoUIText;
-    public GameObject oxygenDisplay;
+    public TextMeshProUGUI oxygenUIText;
+    public Image oxygenUIImage;
     public GameObject wallClimbingUISymbol;
     public GameObject emergencyRegenUISymbol;
 
@@ -178,7 +180,7 @@ public class AgentController : AgentInputHandler
                 }
             }
 
-            if (oxygenDisplay != null)
+            if (oxygenUIText != null)
             {
                 UpdateUI(ResourceType.Oxygen);
             }
@@ -245,18 +247,25 @@ public class AgentController : AgentInputHandler
     {
         if (healthUIText != null)
         {
-            healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+            healthUIText.text = Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100).ToString();
+        }
+
+        if (healthUIImage != null)
+        {
+            healthUIImage.fillAmount = currentHealth / agentValues.maxHealth;
         }
     }
 
     private void UpdateOxygenUI()
     {
-        if (oxygenDisplay != null)
+        if (oxygenUIText != null)
         {
-            Slider oxygenSlider = oxygenDisplay.GetComponentInChildren<Slider>();
-            TextMeshProUGUI oxygenText = oxygenDisplay.GetComponentInChildren<TextMeshProUGUI>();
-            oxygenSlider.value = currentOxygen / agentValues.maxOxygen * 100;
-            oxygenText.text = (Mathf.Round(currentOxygen / agentValues.maxOxygen * 100)).ToString();
+            oxygenUIText.text = Mathf.RoundToInt(currentOxygen / agentValues.maxOxygen * 100).ToString();
+        }
+
+        if (oxygenUIImage != null)
+        {
+            oxygenUIImage.fillAmount = currentOxygen / agentValues.maxOxygen;
         }
     }
 

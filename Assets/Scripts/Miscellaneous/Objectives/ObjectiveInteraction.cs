@@ -18,22 +18,22 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     // The time it takes to display each letter.
     protected const float timePerLetter = 0.05f;
 
-    protected override void OnTriggerEnter(Collider coll)
-    {
-        base.OnTriggerEnter(coll);
+    // protected override void OnTriggerEnter(Collider coll)
+    // {
+    //     base.OnTriggerEnter(coll);
 
-        try {
-            if (playerInteracting.GetComponent<PhotonView>().IsMine)
-            {
-                captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
-                hintText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(4).GetComponent<TMP_Text>();
-                if (debug) Debug.Log(captionText.name);
-            }
-        }
-        catch {
-            Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
-        }
-    }
+    //     try {
+    //         if (playerInteracting.GetComponent<PhotonView>().IsMine)
+    //         {
+    //             captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+    //             hintText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(4).GetComponent<TMP_Text>();
+    //             if (debug) Debug.Log(captionText.name);
+    //         }
+    //     }
+    //     catch {
+    //         Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
+    //     }
+    // }
 
     protected override void OnTriggerStay(Collider coll)
     {

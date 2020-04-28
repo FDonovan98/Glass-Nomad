@@ -35,25 +35,25 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// If these are both successful, then the text is set to the 'textToDisplay'.
     /// </summary>
     /// <param name="coll"></param>
-    protected virtual void OnTriggerEnter(Collider coll)
-    {
-        if (interactionComplete) return;
+    // protected virtual void OnTriggerEnter(Collider coll)
+    // {
+    //     if (interactionComplete) return;
         
-        try {
-            playerInteracting = coll.gameObject;
+    //     try {
+    //         playerInteracting = coll.gameObject;
             
-            if (coll.GetComponent<PhotonView>().IsMine && coll.gameObject.layer == 8)
-            {
-                if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
-                outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
-                interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
-                interactionText.text = textToDisplay;
-            }
-        }
-        catch {
-            Debug.LogError("Outer Reticle or Interaction Text has not been set correctly.");
-        }
-    }
+    //         if (coll.GetComponent<PhotonView>().IsMine && coll.gameObject.layer == 8)
+    //         {
+    //             if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
+    //             outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+    //             interactionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<TMP_Text>();
+    //             interactionText.text = textToDisplay;
+    //         }
+    //     }
+    //     catch {
+    //         Debug.LogError("Outer Reticle or Interaction Text has not been set correctly.");
+    //     }
+    // }
 
     /// <summary>
     /// Checks it is a player interacting with the object, the cooldown has worn off, the interaction
@@ -104,8 +104,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         {
             coll.GetComponent<AgentInputHandler>().allowInput = true;
         }
-
-        if (debug) Debug.LogFormat("Cooldown: {0} seconds", currCooldownTime);
     }
 
     /// <summary>
