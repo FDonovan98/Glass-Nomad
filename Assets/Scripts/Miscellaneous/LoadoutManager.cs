@@ -64,14 +64,17 @@ public class LoadoutManager : MonoBehaviour
             {
                 case BaseObject.ItemType.Primary:
                     primaryItemsNames.Add(obj.name);
+                    primaryItems.Add((Weapon)obj);
                     break;
 
                 case BaseObject.ItemType.Secondary:
                     secondaryItemsNames.Add(obj.name);
+                    secondaryItems.Add((Weapon)obj);
                     break;
 
                 case BaseObject.ItemType.Armour:
                     armourItemsNames.Add(obj.name);
+                    armourItems.Add((Armour)obj);
                     break;
 
                 default:
@@ -115,6 +118,7 @@ public class LoadoutManager : MonoBehaviour
             if (primaryItemsNames[i] == "Claws")
             {
                 primaryItemsNames.RemoveAt(i);
+                primaryItems.RemoveAt(i);
                 break;
             }
         }
