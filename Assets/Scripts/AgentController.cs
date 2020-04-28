@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
-using TMPro;
 
 public enum ResourceType
 {
+    None,
     Health,
     MagazineAmmo,
     ExtraAmmo,
     Oxygen,
     WallClimbing,
-    EmergencyRegen
+    EmergencyRegen,
+    LowOxygen
 }
 
 public class AgentController : AgentInputHandler
@@ -20,15 +20,6 @@ public class AgentController : AgentInputHandler
     public Color alienVision;
     public bool specialVision = false;
 
-    [Header("UI")]
-    public TextMeshProUGUI healthUIText;
-    public Image healthUIImage;
-    public TextMeshProUGUI ammoUIText;
-    public TextMeshProUGUI oxygenUIText;
-    public Image oxygenUIImage;
-    public GameObject wallClimbingUISymbol;
-    public GameObject emergencyRegenUISymbol;
-
     [Header("Current Stats")]
     [ReadOnly]
     public float currentHealth = 0.0f;
@@ -36,7 +27,7 @@ public class AgentController : AgentInputHandler
     public float currentOxygen = 0.0f;
     [Range(0, 100)]
     public int oxygenWarningAmount = 30;
-    public GameObject oxygenWarning = null;
+    public bool lowOxygen = false;
     [ReadOnly]
     public int currentExtraAmmo = 0;
     [ReadOnly]
@@ -49,6 +40,9 @@ public class AgentController : AgentInputHandler
     
     public GameObject[] gameObjectsToDisableForPhoton;
     public Behaviour[] componentsToDisableForPhoton;
+
+    public delegate void UpdateUI(ResourceType resourceType = ResourceType.None);
+    public UpdateUI updateUI;
 
     private void Awake()
     { 
@@ -83,7 +77,10 @@ public class AgentController : AgentInputHandler
             }
         }
 
-        UpdateUI();
+        if (updateUI != null)
+        {
+            updateUI();
+        }
     }
 
     public override void ChangeWeapon(Weapon weapon)
@@ -93,7 +90,11 @@ public class AgentController : AgentInputHandler
         currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
         currentExtraAmmo = currentWeapon.magSize * 2;
 
-        UpdateUI(ResourceType.ExtraAmmo);
+        if (updateUI != null)
+        {
+            updateUI(ResourceType.ExtraAmmo);
+        }
+
     }
 
     private void DisableObjectsForPhoton()
@@ -113,13 +114,21 @@ public class AgentController : AgentInputHandler
         if (resourceType == ResourceType.WallClimbing)
         {
             isWallClimbing = value;
-            UpdateWallClimbingUI();
+
+            if (updateUI != null)
+            {
+                updateUI(ResourceType.WallClimbing);
+            }
         }
 
         if (resourceType == ResourceType.EmergencyRegen)
         {
             emergencyRegenActive = value;
-            UpdateEmergencyRegenUI();
+
+            if (updateUI != null)
+            {
+                updateUI(ResourceType.EmergencyRegen);
+            }
         }
     }
 
@@ -129,9 +138,9 @@ public class AgentController : AgentInputHandler
         {
             currentBulletsInMag = (int)Mathf.Clamp(currentBulletsInMag + value, 0.0f, currentWeapon.magSize);
 
-            if (ammoUIText != null)
+            if (updateUI != null)
             {
-                UpdateUI(ResourceType.MagazineAmmo);
+                updateUI(ResourceType.ExtraAmmo);
             }
         }
 
@@ -139,9 +148,9 @@ public class AgentController : AgentInputHandler
         {
             currentExtraAmmo = (int)Mathf.Max(currentExtraAmmo + value, 0.0f);
 
-            if (ammoUIText != null)
+            if (updateUI != null)
             {
-                UpdateUI(ResourceType.MagazineAmmo);
+                updateUI(ResourceType.ExtraAmmo);
             }
         }
     }
@@ -157,7 +166,10 @@ public class AgentController : AgentInputHandler
                 AgentHasDied();
             }
 
-            UpdateUI(ResourceType.Health);
+            if (updateUI != null)
+            {
+                updateUI(ResourceType.Health);
+            }
         }
         else if (resourceType == ResourceType.Oxygen)
         {
@@ -167,113 +179,29 @@ public class AgentController : AgentInputHandler
             {
                 ChangeStat(ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
             }
-            else if (currentOxygen <= oxygenWarningAmount)
+            else if (!lowOxygen && currentOxygen <= oxygenWarningAmount)
             {
-                // Display warning
-                DisplayOxygenWarning(true);
-            }
-            else
-            {
-                if (oxygenWarning != null && oxygenWarning.activeInHierarchy)
+                lowOxygen = true;
+
+                if (updateUI != null)
                 {
-                    DisplayOxygenWarning(false);
+                    updateUI(ResourceType.LowOxygen);
+                }
+            }
+            else if (lowOxygen && currentOxygen > oxygenWarningAmount)
+            {
+                lowOxygen = false;
+
+                if (updateUI != null)
+                {
+                    updateUI(ResourceType.LowOxygen);
                 }
             }
 
-            if (oxygenUIText != null)
+            if (updateUI != null)
             {
-                UpdateUI(ResourceType.Oxygen);
+                updateUI(ResourceType.Oxygen);
             }
-        }
-    }
-
-    private void UpdateUI()
-    {
-        UpdateAmmoUI();
-        UpdateHealthUI();
-        UpdateOxygenUI();
-        UpdateWallClimbingUI();
-        UpdateEmergencyRegenUI();
-    }
-
-    private void UpdateUI(ResourceType resourceType)
-    {
-        switch (resourceType)
-        {
-            case ResourceType.MagazineAmmo:
-            case ResourceType.ExtraAmmo:
-                UpdateAmmoUI();
-                break;
-            case ResourceType.Health:
-                UpdateHealthUI();
-                break;
-            case ResourceType.Oxygen:
-                UpdateOxygenUI();
-                break;
-            case ResourceType.WallClimbing:
-                UpdateWallClimbingUI();
-                break;
-            default:
-                Debug.LogWarning(gameObject.name + " tried to update UI of unrecognized type.");
-                break;
-        }
-    }
-
-    void UpdateEmergencyRegenUI()
-    {
-        if (emergencyRegenUISymbol != null)
-        {
-            emergencyRegenUISymbol.SetActive(emergencyRegenActive);
-        }
-    }
-
-    private void UpdateAmmoUI()
-    {
-        if (ammoUIText != null)
-        {
-            ammoUIText.text = currentBulletsInMag + " / " + currentExtraAmmo;
-        }
-    }
-
-	void UpdateWallClimbingUI()
-    {
-        if (wallClimbingUISymbol != null)
-        {
-            wallClimbingUISymbol.SetActive(isWallClimbing);
-        }
-    }
-
-    private void UpdateHealthUI()
-    {
-        if (healthUIText != null)
-        {
-            healthUIText.text = Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100).ToString();
-        }
-
-        if (healthUIImage != null)
-        {
-            healthUIImage.fillAmount = currentHealth / agentValues.maxHealth;
-        }
-    }
-
-    private void UpdateOxygenUI()
-    {
-        if (oxygenUIText != null)
-        {
-            oxygenUIText.text = Mathf.RoundToInt(currentOxygen / agentValues.maxOxygen * 100).ToString();
-        }
-
-        if (oxygenUIImage != null)
-        {
-            oxygenUIImage.fillAmount = currentOxygen / agentValues.maxOxygen;
-        }
-    }
-
-    private void DisplayOxygenWarning(bool shouldEnable)
-    {
-        if (oxygenWarning != null)
-        {
-            oxygenWarning.SetActive(shouldEnable);
         }
     }
 
