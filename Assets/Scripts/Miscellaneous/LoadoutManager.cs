@@ -29,10 +29,10 @@ public class LoadoutManager : MonoBehaviour
         InitialiseDropdown(secondaryDropdown, secondaryItemsNames, "Secondary");
         InitialiseDropdown(armourDropdown, armourItemsNames, "Armour");
 
-        if (!PlayerPrefsExist())
-        {
+        // if (!PlayerPrefsExist())
+        // {
             UpdatePlayerPrefs();
-        }
+        // }
     }
 
     private void InitialiseDropdown(TMP_Dropdown dropdown, List<string> items, string prefString)
