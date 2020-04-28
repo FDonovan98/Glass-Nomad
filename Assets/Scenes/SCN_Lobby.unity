@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0438e9fbeaa7ca24f85cc7751f4eb887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersInLobby: {fileID: 0}
   primaryDropdown: {fileID: 1658650049}
   secondaryDropdown: {fileID: 1788689143}
   armourDropdown: {fileID: 1875105138}
@@ -565,6 +566,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInfos: []
+  localPlayer:
+    name: 
+    isAlien: 0
+    primaryWeapon: {fileID: 0}
+    selectedArmour: {fileID: 0}
 --- !u!4 &1880791199
 Transform:
   m_ObjectHideFlags: 0
@@ -1105,12 +1111,12 @@ PrefabInstance:
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
@@ -1120,7 +1126,7 @@ PrefabInstance:
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -92.27914
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1182663772531092727, guid: 5b4a9295d6813be40ad97dbed5e8c615,
         type: 3}

@@ -45,6 +45,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Weapon[] equipedWeapons = new Weapon[2];
     public int currentWeaponID = 0;
 
+    [Header("Armour")]
+    public Armour equippedArmour = null;
+
     [Header("Reloading")]
     public bool isReloading = false;
 
@@ -128,6 +131,23 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         }
     }
 
+    public virtual void ChangeWeapon(Weapon weapon)
+    {
+        currentWeapon = weapon;
+        timeSinceLastShot = currentWeapon.fireRate;
+    }
+
+    public void ChangeArmour(Armour armour)
+    {
+        if (equippedArmour != null)
+        {
+            ChangeMovementSpeedModifier(equippedArmour.speedMultiplier, false);
+        }
+
+        equippedArmour = armour;
+        ChangeMovementSpeedModifier(equippedArmour.speedMultiplier, true);
+    }
+
     private void Update()
     {
         if (runCommandOnUpdate != null)
@@ -198,9 +218,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         Cursor.visible = false;
     }
 
-    public void ChangeMovementSpeedModifier(float value, bool increase)
+    public void ChangeMovementSpeedModifier(float value, bool multiply)
     {
-        if (increase)
+        if (multiply)
         {
             moveSpeedMultiplier *= value;
         }

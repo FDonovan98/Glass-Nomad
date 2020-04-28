@@ -84,6 +84,16 @@ public class AgentController : AgentInputHandler
         UpdateUI();
     }
 
+    public override void ChangeWeapon(Weapon weapon)
+    {
+        base.ChangeWeapon(weapon);
+        
+        currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
+        currentExtraAmmo = currentWeapon.magSize * 2;
+
+        UpdateUI(ResourceType.ExtraAmmo);
+    }
+
     private void DisableObjectsForPhoton()
     {
         foreach (GameObject element in gameObjectsToDisableForPhoton)
@@ -138,7 +148,7 @@ public class AgentController : AgentInputHandler
     {
         if (resourceType == ResourceType.Health)
         {
-            currentHealth += value;
+            currentHealth += value * equippedArmour.damageMultiplier;
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
