@@ -12,26 +12,48 @@ public class VelocityLimit : PassiveCommandObject
     {
         if (!agentInputHandler.isJumping)
         {
-            Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
-
-            if (agentInputHandler.isGrounded || agentValues.reduceVelocityInAir)
+            if (agentInputHandler.isGrounded)
             {
                 if (agentInputHandler.isSprinting)
                 {    
-                    if (agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed)
+                    if (agentInputHandler.agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed * (agentInputHandler.moveSpeedMultiplier / agentValues.sprintMultiplier))
                     {
-                        agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSprintSpeed;
+                        LimitVelocity(agentInputHandler, agentValues.maxSprintSpeed, agentValues);
                     }
                 }
                 else
                 {
-                    if (agentRigidbody.velocity.magnitude > agentValues.maxSpeed)
+                    if (agentInputHandler.agentRigidbody.velocity.magnitude > agentValues.maxSpeed * agentInputHandler.moveSpeedMultiplier)
                     {
-                        agentRigidbody.velocity = agentRigidbody.velocity.normalized * agentValues.maxSpeed;
+                        LimitVelocity(agentInputHandler, agentValues.maxSpeed, agentValues);
                     }
                 }
-
+            }
+            else
+            {
+                if (agentInputHandler.isSprinting)
+                {    
+                    if (agentInputHandler.agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeedInAir * (agentInputHandler.moveSpeedMultiplier / agentValues.sprintMultiplier))
+                    {
+                        LimitVelocity(agentInputHandler, agentValues.maxSprintSpeedInAir, agentValues);
+                    }
+                }
+                else
+                {
+                    if (agentInputHandler.agentRigidbody.velocity.magnitude > agentValues.maxSpeedInAir * agentInputHandler.moveSpeedMultiplier)
+                    {
+                        LimitVelocity(agentInputHandler, agentValues.maxSpeedInAir, agentValues);
+                    }
+                }
             }
         }
+    }
+
+    void LimitVelocity(AgentInputHandler agentInputHandler, float limitValue, AgentValues agentValues)
+    {
+        Vector3 newVel = agentInputHandler.agentRigidbody.velocity.normalized * limitValue * agentInputHandler.moveSpeedMultiplier;
+        newVel.y = agentInputHandler.agentRigidbody.velocity.y;
+
+        agentInputHandler.agentRigidbody.velocity = Vector3.Lerp(agentInputHandler.agentRigidbody.velocity, newVel, agentValues.velocityLimitRate);
     }
 }

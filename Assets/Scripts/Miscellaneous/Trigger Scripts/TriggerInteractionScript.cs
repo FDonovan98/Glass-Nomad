@@ -8,7 +8,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     [Header("Trigger Interaction")]
     [SerializeField] protected KeyCode inputKey = KeyCode.E; // Which key the player needs to be pressing to interact.
     [SerializeField] protected float interactTime; // The time needed to interact with the object to activate/open it.
-    protected float currInteractTime = 0f; // How long the player has been pressing the interact key.
+    protected float currInteractTime;
+
     [SerializeField] protected float cooldownTime; // How long it takes for the player to interact with the object again.
     protected float currCooldownTime = 0f; // How long it has been since the player last interacted with the object.
     protected bool interactionComplete = false; // Is the interaction complete?
@@ -36,10 +37,12 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected virtual void OnTriggerEnter(Collider coll)
     {
+        if (interactionComplete) return;
+        
         try {
             playerInteracting = coll.gameObject;
             
-            if (coll.GetComponent<PhotonView>().IsMine)
+            if (coll.GetComponent<PhotonView>().IsMine && coll.gameObject.layer == 8)
             {
                 if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
                 outerReticle = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
@@ -62,7 +65,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// required to have an implementation of this method.
     /// </summary>
     /// <param name="coll"></param>
-    protected void OnTriggerStay(Collider coll)
+    protected virtual void OnTriggerStay(Collider coll)
     {
         if (!coll.GetComponent<PhotonView>().IsMine) return;
         playerInteracting = coll.gameObject;
@@ -89,8 +92,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
                 playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
                 return;
             }
-
-            LeftTriggerArea();
+            else if (Input.GetKeyUp(inputKey))
+            {
+                LeftTriggerArea();
+            }
+            
             interactionText.text = textToDisplay;
         }
 
@@ -111,13 +117,12 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     /// <param name="coll"></param>
     protected void OnTriggerExit(Collider coll)
     {
-        if (coll.gameObject == playerInteracting)
+        if (coll.GetComponent<PhotonView>().IsMine)
         {
             interactionComplete = false;
             interactionText.text = "";
-            playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
-            playerInteracting = null;
             LeftTriggerArea();
+            playerInteracting = null;
         }
     }
 
@@ -142,5 +147,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     {
         currInteractTime = 0f;
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
+        playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
     }
 }

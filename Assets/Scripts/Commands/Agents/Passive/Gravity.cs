@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 [CreateAssetMenu(fileName = "DefaultGravity", menuName = "Commands/Passive/Gravity")]
 public class Gravity : PassiveCommandObject
@@ -9,8 +10,7 @@ public class Gravity : PassiveCommandObject
     }
     void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
-
-        agentRigidbody.velocity += agentInputHandler.gravityDirection.normalized * agentValues.gravityAcceleration * Time.fixedDeltaTime;
+        if (!agent.GetComponent<PhotonView>().IsMine) return;
+        agentInputHandler.agentRigidbody.velocity += agentInputHandler.gravityDirection.normalized * agentValues.gravityAcceleration * Time.fixedDeltaTime;
     }
 }

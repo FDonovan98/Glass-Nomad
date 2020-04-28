@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Photon.Pun;
+using UnityEngine.Audio;
 
 public class Settings : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class Settings : MonoBehaviour
     // Changes the volume of the AudioListener.
     [SerializeField] private Slider volumeSlider = null;
 
+    // Outputs all of the audio to the AudioMixer.
+    [SerializeField] private AudioMixer audioMixer = null;
+
+    // The camera that's used for FOV changes.
+    [SerializeField] private Camera affectedCamera = null;
+
     // Retrieves all the available resolutions.
     private Resolution[] resolutions;
 
@@ -32,23 +39,36 @@ public class Settings : MonoBehaviour
 
     private void Start()
     {
-        settingsPath = Application.persistentDataPath + "/game_data";
+        settingsPath = Application.persistentDataPath + "/game_data.json";
         InitiateSettings();
-        this.gameObject.SetActive(false);
     }
 
     /// <summary>
     /// Setups the dropdown menu options, and also sets the settings to the defaults.
     /// </summary>
-    private void InitiateSettings()
+    public void InitiateSettings()
     {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
 
-        SaveLoadSettings.LoadData(settingsPath);
-        fovSlider.value = Camera.main.fieldOfView;
-        volumeSlider.value = AudioListener.volume;
+        // SaveLoadSettings.LoadData(settingsPath);
+        if (affectedCamera != null)
+        {
+            fovSlider.value = affectedCamera.fieldOfView;
+        }
+
+        if (audioMixer.GetFloat("volume", out float volValue))
+        {
+            volValue = mapLogarithmicToLinear(volValue, -80.0f, 20.0f, 0.001f, 1.0f);
+
+            volumeSlider.value = volValue;
+        }
+        else
+        {
+            volumeSlider.value = 1.0f;
+        }
+        
 
         int currentResIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
@@ -56,8 +76,8 @@ public class Settings : MonoBehaviour
             string option = resolutions[i].width + " x " + resolutions[i].height;
             options.Add(option);
 
-            if (resolutions[i].width == Screen.currentResolution.width
-            && resolutions[i].height == Screen.currentResolution.height)
+            if (resolutions[i].width == Screen.width
+            && resolutions[i].height == Screen.height)
             {
                 currentResIndex = i;
             }
@@ -78,7 +98,7 @@ public class Settings : MonoBehaviour
     {
         menu.SetActive(!menu.activeSelf);
         settingsButtons.SetActive(!menu.activeSelf);
-        SaveLoadSettings.SaveData(settingsPath);
+        SaveLoadSettings.SaveData(settingsPath, audioMixer, affectedCamera);
     }
 
     public void LeaveRoom()
@@ -88,7 +108,10 @@ public class Settings : MonoBehaviour
 
     public void SetVolume(float volume)
     {
-        AudioListener.volume = volume;
+        //Since audio is logarithmic and the slider is linear we have to convert it appropriately.
+        float newSliderValue = mapLinearToLogarithmic(volumeSlider.value, 0.001f, 1.0f, -80.0f, 20.0f);
+
+        audioMixer.SetFloat("volume", newSliderValue);
     }
 
     public void SetResolution(int resolutionIndex)
@@ -100,18 +123,46 @@ public class Settings : MonoBehaviour
 
     public void SetQuality(int qualityIndex)
     {
-        Debug.Log("Changing quality to: " + qualityDropdown.captionText.text);
+        Debug.Log("Changing quality to: " + QualitySettings.names[qualityIndex]);
         QualitySettings.SetQualityLevel(qualityIndex);
+        
     }
 
     public void SetFullscreenMode(bool isFullscreen)
     {
         Debug.Log("Changing fullscreen to: " + isFullscreen);
-        Screen.fullScreen = isFullscreen;
+        Screen.fullScreenMode = isFullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        Resolution res = resolutions[resolutions.Length - 1];
+        Screen.SetResolution(res.width, res.height, isFullscreen);
     }
 
     public void SetFOV(float fov)
     {
-        Camera.main.fieldOfView = fov;
+        if (affectedCamera != null)
+        {
+            affectedCamera.fieldOfView = fov;
+        }
+    }
+
+    // Remaps one set of values to another.
+    // Edited from source: https://forum.unity.com/threads/re-map-a-number-from-one-range-to-another.119437/
+    float remapValues(float value, float fromMin, float fromMax, float toMin, float toMax)
+    {
+        return (((value - fromMin) / (fromMax - fromMin)) * (toMax - toMin)) + toMin;
+    }
+
+    float mapLinearToLogarithmic(float value, float fromMin, float fromMax, float toMin, float toMax)
+    {
+        float fraction = ((Mathf.Log10(value) - Mathf.Log10(fromMin)) / (Mathf.Log10(fromMax) - Mathf.Log10(fromMin)));
+        
+        return fraction * (toMax - toMin) + toMin;
+    }
+
+    float mapLogarithmicToLinear(float value, float fromMin, float fromMax, float toMin, float toMax)
+    {
+        float numerator = (Mathf.Log10(toMax) - Mathf.Log10(toMin)) * (value - fromMin);
+        float denominator = fromMax - fromMin;
+
+        return Mathf.Pow(10, numerator / denominator) * toMin;
     }
 }

@@ -1,79 +1,105 @@
+//Code Source: https://cobertos.com/blog/post/how-to-climb-stairs-unity3d/
+
 using UnityEngine;
+
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "DefaultGoUpStairs", menuName = "Commands/Passive/GoUpStairs")]
 public class GoUpStairs : PassiveCommandObject
 {
+    List<ContactPoint> allCPs = new List<ContactPoint>();
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        agentInputHandler.runCommandOnCollisionEnter += RunCommandOnCollisionEnter;
+        agentInputHandler.runCommandOnCollisionStay += RunCommandOnCollisionStay;
+        agentInputHandler.runCommandOnFixedUpdate += RunCommandOnFixedUpdate;
     }
 
-    void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
+    void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (agentInputHandler.isGrounded)
-        {
-            Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
-            Vector3 rayDirection = agentRigidbody.velocity.normalized;
-            rayDirection.y = 0.0f;
-
-            Collider agentCollider = agent.GetComponent<Collider>();
-
-            Vector3 rayOrigin = agent.transform.position;
-            rayOrigin.y -= agentCollider.bounds.extents.y;
-
-            float rayMaxDistance = agentValues.minDistanceToStair;
-            rayMaxDistance += GetBoundsExtentInDirection(agentCollider.bounds.extents, rayDirection);
-
-            RaycastHit stairCheck;
-            Debug.DrawRay(rayOrigin, rayDirection * rayMaxDistance, Color.red);
-            Vector3 debugRayOrigin = rayOrigin;
-            debugRayOrigin.y += agentValues.maxStairHeight;
-
-            if (Physics.Raycast(rayOrigin, rayDirection, out stairCheck, agentValues.minDistanceToStair))
-            {
-                rayDirection = -agent.transform.up;
-                rayMaxDistance = agentValues.maxStairHeight;
-
-                Vector3 xzVel = agentRigidbody.velocity.normalized;
-                xzVel.y = 0.0f;
-                rayOrigin = stairCheck.point + xzVel * agentValues.minLedgeWidth;
-                rayOrigin.y += agentValues.maxStairHeight;
-
-                RaycastHit topOfStair;
-                Debug.DrawRay(rayOrigin, rayDirection * rayMaxDistance, Color.green);
-                if (Physics.Raycast(rayOrigin, rayDirection, out topOfStair, rayMaxDistance))
-                {
-                    Vector3 localStairBottom = agent.transform.worldToLocalMatrix * stairCheck.point;
-                    Vector3 localStairTop = agent.transform.worldToLocalMatrix * topOfStair.point;
-
-                    float stairHeight = Mathf.Abs(localStairBottom.y - localStairTop.y);
-
-                    ApplyUpwardsForce(agent, agentInputHandler, agentValues, stairHeight);
-                }
-            }
-        }
-    }
-
-    void ApplyUpwardsForce(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, float stepHeight)
-    {
+        Vector3 stepUpOffset;
         Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
 
-        agentRigidbody.velocity += -agentInputHandler.gravityDirection.normalized * (agentValues.gravityAcceleration + agentValues.stepUpAcceleration) * Time.deltaTime * (stepHeight / agentValues.maxStairHeight);
+        if (agentInputHandler.isGrounded)
+        {
+            if (FindStair(out stepUpOffset, agent, agentRigidbody, agentInputHandler, agentValues))
+            {
+                agentRigidbody.position += stepUpOffset;
+                agentRigidbody.velocity = agentInputHandler.lastVelocity;
+            }
+        }
+
+        agentInputHandler.lastVelocity = agentRigidbody.velocity;
+        allCPs.Clear();
     }
 
-    // Currently assumes direction.y == 0.
-    // I'm not doing this maths in 3D, my brain will melt.
-    float GetBoundsExtentInDirection(Vector3 agentColliderExtents, Vector3 direction)
+    bool FindStair(out Vector3 stepUpOffset, GameObject agent, Rigidbody agentRigidbody, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        float angleTheta = Mathf.Atan(direction.x / direction.z);
+        stepUpOffset = Vector3.zero;
 
-        if (Mathf.Abs(direction.z - agentColliderExtents.z) > Mathf.Abs(direction.x - agentColliderExtents.x))
+        Vector2 agentXZVel = new Vector2(agentRigidbody.velocity.x, agentRigidbody.velocity.z).normalized;
+
+        if (agentXZVel.sqrMagnitude > 0.0f)
         {
-            return agentColliderExtents.z * 1 / (Mathf.Sin(Mathf.PI - angleTheta));
+            foreach (ContactPoint element in allCPs)
+            {
+                if (CheckForStair(out stepUpOffset, agent, element, agentValues, agentXZVel, agentInputHandler))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         else
         {
-            return agentColliderExtents.x * 1 / (Mathf.Sin(angleTheta));
+            return false;
         }
+    }
+
+    bool CheckForStair(out Vector3 stepUpOffset, GameObject agent, ContactPoint contactPoint, AgentValues agentValues, Vector2 agentXZVel, AgentInputHandler agentInputHandler)
+    {
+        stepUpOffset = Vector3.zero;
+        // Should be changed to check for angle between horizontal and normal.
+        if (Mathf.Abs(contactPoint.normal.y) > 0.01f)
+        {
+            return false;
+        }
+
+        // Debug.Log(contactPoint.point);
+        if (contactPoint.point.y - agentInputHandler.groundContactPoint.point.y > agentValues.maxStepHeight)
+        {
+            return false;
+        }
+
+        // Overcast is sent in direction of player movement.
+        RaycastHit hit;
+        float rayOriginHeight = agentInputHandler.groundContactPoint.point.y + agentValues.maxStepHeight;
+        Vector3 overshootDirection = new Vector3(agentXZVel.x, 0.0f, agentXZVel.y);
+        Vector3 rayOrigin = new Vector3(contactPoint.point.x, rayOriginHeight, contactPoint.point.z);
+        rayOrigin += overshootDirection * agentValues.stepSearchOvershoot;
+
+        Ray ray = new Ray(rayOrigin, agentInputHandler.gravityDirection);
+
+        Debug.Log("raytime");
+        Debug.DrawRay(rayOrigin, agentInputHandler.gravityDirection * agentValues.maxStepHeight, Color.red);
+        if (!(contactPoint.otherCollider.Raycast(ray, out hit, agentValues.maxStepHeight)))
+        {
+            return false;
+        }
+
+        stepUpOffset = new Vector3(0.0f, hit.point.y + 0.0001f - agentInputHandler.groundContactPoint.point.y, 0.0f);
+        stepUpOffset += overshootDirection * agentValues.stepSearchOvershoot;
+
+        return true;
+    }
+
+    void RunCommandOnCollisionEnter(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
+    {
+        allCPs.AddRange(other.contacts);
+    }
+
+    void RunCommandOnCollisionStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other)
+    {
+        allCPs.AddRange(other.contacts);
     }
 }

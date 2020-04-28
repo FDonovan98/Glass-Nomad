@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 114745463247050702}
-  - {fileID: 114205382015990334}
-  - {fileID: 114327525809364186}
   - {fileID: 114097532399600986}
+  - {fileID: 114212826022707396}
 --- !u!114 &114097532399600986
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -61,7 +60,7 @@ MonoBehaviour:
   opacity:
     overrideState: 1
     value: 1
---- !u!114 &114205382015990334
+--- !u!114 &114212826022707396
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,78 +69,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
-  m_Name: Bloom
+  m_Script: {fileID: 11500000, guid: b3f6f3f7c722b4544b97e3c75840aa33, type: 3}
+  m_Name: AutoExposure
   m_EditorClassIdentifier: 
   active: 1
   enabled:
     overrideState: 1
     value: 1
-  intensity:
+  filtering:
     overrideState: 1
-    value: 17
-  threshold:
+    value: {x: 72.458336, y: 99}
+  minLuminance:
     overrideState: 1
-    value: 0.8
-  softKnee:
-    overrideState: 1
-    value: 0.45
-  clamp:
-    overrideState: 1
-    value: 65472
-  diffusion:
-    overrideState: 1
-    value: 6
-  anamorphicRatio:
-    overrideState: 1
-    value: 0.6
-  color:
-    overrideState: 1
-    value: {r: 1, g: 1, b: 1, a: 1}
-  fastMode:
+    value: -4
+  maxLuminance:
     overrideState: 1
     value: 0
-  dirtTexture:
+  keyValue:
     overrideState: 1
-    value: {fileID: 0}
-    defaultState: 1
-  dirtIntensity:
-    overrideState: 1
-    value: 0
---- !u!114 &114327525809364186
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b77c5407dc277943b591ade9e6b18c5, type: 3}
-  m_Name: LensDistortion
-  m_EditorClassIdentifier: 
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  intensity:
-    overrideState: 1
-    value: 25
-  intensityX:
-    overrideState: 1
-    value: 1
-  intensityY:
-    overrideState: 1
-    value: 1
-  centerX:
+    value: 0.3
+  eyeAdaptation:
     overrideState: 1
     value: 0
-  centerY:
+  speedUp:
     overrideState: 1
-    value: 0
-  scale:
+    value: 2
+  speedDown:
     overrideState: 1
-    value: 1
+    value: 2
 --- !u!114 &114745463247050702
 MonoBehaviour:
   m_ObjectHideFlags: 3

@@ -13,7 +13,10 @@ public class ActivateSprint : ActiveCommandObject
 
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        if (agentInputHandler.isLocalAgent)
+        {      
+            agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        }
     }
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
@@ -23,6 +26,15 @@ public class ActivateSprint : ActiveCommandObject
             if (Input.GetKeyDown(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = !agentInputHandler.isSprinting;
+
+                if (agentInputHandler.isSprinting)
+                {
+                    agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, true);
+                }
+                else
+                {
+                    agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, false);
+                }
             }
         }
         else
@@ -30,10 +42,12 @@ public class ActivateSprint : ActiveCommandObject
             if (Input.GetKeyDown(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = true;
+                agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, true);
             }
             else if (Input.GetKeyUp(sprintKeyCode))
             {
                 agentInputHandler.isSprinting = false;
+                agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, false);
             }
         }
 

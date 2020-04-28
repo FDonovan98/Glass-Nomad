@@ -13,6 +13,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     [SerializeField] protected List<Behaviour> componentsToDisable = new List<Behaviour>(); // A different component to disable after the interaction is complete.
 
     protected TMP_Text captionText;
+    protected TMP_Text hintText;
 
     // The time it takes to display each letter.
     protected const float timePerLetter = 0.05f;
@@ -25,6 +26,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
             if (playerInteracting.GetComponent<PhotonView>().IsMine)
             {
                 captionText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+                hintText = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(1).GetChild(0).GetChild(4).GetComponent<TMP_Text>();
                 if (debug) Debug.Log(captionText.name);
             }
         }
@@ -33,23 +35,27 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         }
     }
 
+    protected override void OnTriggerStay(Collider coll)
+    {
+        if (!coll.GetComponent<PhotonView>().IsMine) return;
+        if (coll.GetComponent<AgentController>().agentValues.name != "MarineAgentValues") return;
+        base.OnTriggerStay(coll);
+    }
+
     [PunRPC]
     protected override void InteractionComplete()
     {
-        if (!objectiveValues.AllRequiredObjectivesCompleted()) return;
+        // If we haven't completed the correct objectives, yet, or we are the alien, then don't continue.
+        if (!objectiveValues.AllRequiredObjectivesCompleted() || captionText == null) return;
         
         objectiveValues.completed = true;
         ObjectiveComplete();
-        
-        if (playerInteracting.GetComponent<PhotonView>().IsMine)
-        {
-            WriteTextToHud();
-            PlaySpeechAudio();
-        }
+        WriteTextToHud();
+        PlaySpeechAudio();
         
         foreach (Behaviour go in componentsToDisable)
         {
-            go.enabled = false;
+            Destroy(go);
         }
 
         foreach (GameObject go in objectsToDestroy)
@@ -81,6 +87,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     /// <returns>Nothing</returns>
     protected async void WriteTextToHud()
     {
+        WriteHintTextToHUD(""); // Clears the hint text.
         string currText = "";
         foreach (Char letter in objectiveValues.objectiveText.ToCharArray())
         {
@@ -90,5 +97,16 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         }
         await Task.Delay(TimeSpan.FromSeconds(objectiveValues.timeToDisappear));
         captionText.text = "";
+        WriteHintTextToHUD(objectiveValues.objectiveHint);
+    }
+
+    /// <summary>
+    /// Displays the text passed in the parameters to the hintText.
+    /// Called by WriteTextToHUD.
+    /// </summary>
+    /// <param name="textToDisplay"></param>
+    private void WriteHintTextToHUD(string textToDisplay)
+    {
+        hintText.text = textToDisplay;
     }
 }

@@ -106,9 +106,9 @@ GameObject:
   - component: {fileID: 9575016}
   - component: {fileID: 6452128}
   - component: {fileID: 1502365614036253112}
-  - component: {fileID: 3552180173592010881}
   - component: {fileID: 449632358610382430}
   - component: {fileID: 2683068039817215698}
+  - component: {fileID: 2837221465053308090}
   m_Layer: 0
   m_Name: glass_panel_1_with_door
   m_TagString: Non-Metal
@@ -223,23 +223,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.028655, y: 4.51, z: 4.4519615}
   m_Center: {x: 0.0017795563, y: 1.98, z: -0.16479683}
---- !u!114 &3552180173592010881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 141970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f8057261804cad40a21fe9d7e635809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputKey: 101
-  interactTime: 3
-  cooldownTime: 0
-  debug: 0
-  textToDisplay: Hold E to interact
 --- !u!114 &449632358610382430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,3 +260,21 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!114 &2837221465053308090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ba97520dda04a479d50b6e1faa8f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPrompt: Press E to interact
+  interactTime: 3
+  debug: 0
+  displayProgressToReticule: 1
+  interactionComplete: 0
+  animator: {fileID: 9575016}

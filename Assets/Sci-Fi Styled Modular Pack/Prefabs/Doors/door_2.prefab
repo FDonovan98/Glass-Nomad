@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 9546954}
   - component: {fileID: 6461558}
   - component: {fileID: 2029878584881214590}
-  - component: {fileID: 4001787637965409024}
   - component: {fileID: 8056468018354283128}
   - component: {fileID: 1507934049951017062}
+  - component: {fileID: 1964351443679889916}
   m_Layer: 0
   m_Name: door_2
   m_TagString: Untagged
@@ -131,23 +131,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.9945903, y: 4.51, z: 5.2044544}
   m_Center: {x: 0.06681228, y: 1.98, z: -0.018964648}
---- !u!114 &4001787637965409024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 115324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f8057261804cad40a21fe9d7e635809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputKey: 101
-  interactTime: 3
-  cooldownTime: 0
-  debug: 0
-  textToDisplay: Hold E to interact
 --- !u!114 &8056468018354283128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +168,23 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!114 &1964351443679889916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f8057261804cad40a21fe9d7e635809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputKey: 101
+  interactTime: 3
+  cooldownTime: 0
+  debug: 0
+  textToDisplay: Hold E to breach the door
 --- !u!1 &141230
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,8 +294,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.8586206, y: 1.6951628, z: 0.20500568}
-  m_Center: {x: 2, y: -0.89826655, z: -0.0000002682209}
+  m_Size: {x: 3.8586206, y: 1.6951628, z: 3.8067086}
+  m_Center: {x: 2, y: -0.89826655, z: -0.022159696}
 --- !u!1 &187554
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,5 +405,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.8586206, y: 1.8830631, z: 0.2242175}
-  m_Center: {x: 2, y: 0.9924849, z: -0.0000002724874}
+  m_Size: {x: 3.8586206, y: 1.8830631, z: 3.4773877}
+  m_Center: {x: 2, y: 0.9924849, z: 0.002294017}

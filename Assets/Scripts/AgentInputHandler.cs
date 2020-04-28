@@ -2,36 +2,54 @@
 using Photon.Pun;
 using TMPro;
 
+using UnityEngine.UI;
+
 public class AgentInputHandler : MonoBehaviourPunCallbacks
 {
+    public AgentController agentController;
+    private AgentInputHandler attachedScript;
     public GameObject pauseMenu;
     public Behaviour behaviourToToggle;
     public AgentValues agentValues;
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
 
+    [Header("Check If Grounded")]
+    public bool isGrounded = true;
+    public ContactPoint groundContactPoint = new ContactPoint();
+
     [Header("Movement")]
     public bool isSprinting = false;
-    public bool isGrounded = true;
     public Vector3 gravityDirection = Vector3.down;
     public bool allowInput = true;
+    [ReadOnly]
     public float currentLeapCharge = 0.0f;
+    [ReadOnly]
     public bool isJumping = false;
+    [ReadOnly]
+    public float moveSpeedMultiplier = 1.0f;
+    public Rigidbody agentRigidbody;
 
-    [Header("Oxygen")]
-    public float currentOxygen = 0.0f;
-    public GameObject oxygenDisplay;
+    [Header("Stairs")]
+    [ReadOnly]
+    public Vector3 lastVelocity = Vector3.zero;
 
     [Header("Weapons")]
     public Weapon currentWeapon;
-    public int currentBulletsInMag = 0;
+    [ReadOnly]
     public float timeSinceLastShot = 0.0f;
-    public int currentTotalAmmo = 0;
+    [ReadOnly]
     public float currentRecoilValue = 0.0f;
     public GameObject weaponObject;
     public ParticleSystem weaponMuzzleFlash;
     public Weapon[] equipedWeapons = new Weapon[2];
     public int currentWeaponID = 0;
+
+    [Header("Armour")]
+    public Armour equippedArmour = null;
+
+    [Header("Reloading")]
+    public bool isReloading = false;
 
     [Header("Camera")]
     public Camera agentCamera;
@@ -40,19 +58,12 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Camera mainCamera;
     public Camera aDSCamera;
     public bool isADS = false;
-    public GameObject ADSReticule;
-
-    [Header("Health")]
-    public float currentHealth = 0.0f;
-
-    [Header("UI")]
-    public TextMeshProUGUI healthUIText;
-    public TextMeshProUGUI ammoUIText;
+    public Canvas HUDCanvas;
 
     [Header("UI Offset")]
     public GameObject HUD;
+    [ReadOnly]
     public Vector3 UIOffset = Vector3.zero;
-    public float[] currentUILagTime = {0.0f, 0.0f};
 
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
@@ -60,9 +71,14 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     [Header("PUN")]
     public PunRPCs punRPCs;
+    [ReadOnly]
     public bool isLocalAgent = true;
 
-    protected GameObject agent;
+    [Header("ObjectInteraction")]
+    public TMP_Text interactionPromptText = null;
+    public Image progressBar = null;
+
+    public GameObject agent;
 
     // Delegates used by commands.
     // Should add a delegate for UpdateUI(GameObject UIToUpdate, float newValue = 0.0f, int newIntValue = 0), maybe.
@@ -76,8 +92,12 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public RunCommandOnCollisionStay runCommandOnCollisionStay;
     public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
+    public delegate void RunCommandOnTriggerEnter(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerEnter runCommandOnTriggerEnter;
     public delegate void RunCommandOnTriggerStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
     public RunCommandOnTriggerStay runCommandOnTriggerStay;
+    public delegate void RunCommandOnTriggerExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerExit runCommandOnTriggerExit;
 
 
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
@@ -90,25 +110,49 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        InitiliseVariable();
+        if (agentController != null)
+        {
+            attachedScript = agentController;
+        }
+        else
+        {
+            attachedScript = this;
+        }
 
-        InitiliseUI();
+        InitiliseVariable();
 
         foreach (ActiveCommandObject element in activeCommands)
         {
-            element.RunCommandOnStart(this);
+            element.RunCommandOnStart(attachedScript);
         }
         foreach (PassiveCommandObject element in passiveCommands)
         {
-            element.RunCommandOnStart(this);
+            element.RunCommandOnStart(attachedScript);
         }
+    }
+
+    public virtual void ChangeWeapon(Weapon weapon)
+    {
+        currentWeapon = weapon;
+        timeSinceLastShot = currentWeapon.fireRate;
+    }
+
+    public void ChangeArmour(Armour armour)
+    {
+        if (equippedArmour != null)
+        {
+            ChangeMovementSpeedModifier(equippedArmour.speedMultiplier, false);
+        }
+
+        equippedArmour = armour;
+        ChangeMovementSpeedModifier(equippedArmour.speedMultiplier, true);
     }
 
     private void Update()
     {
         if (runCommandOnUpdate != null)
         {
-            runCommandOnUpdate(agent, this, agentValues);
+            runCommandOnUpdate(agent, attachedScript, agentValues);
         }
     }
 
@@ -116,7 +160,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     {
         if (runCommandOnFixedUpdate != null)
         {
-            runCommandOnFixedUpdate(agent, this, agentValues);
+            runCommandOnFixedUpdate(agent, attachedScript, agentValues);
         }
     }
 
@@ -124,7 +168,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     {
         if (runCommandOnCollisionEnter != null)
         {
-            runCommandOnCollisionEnter(agent, this, agentValues, other);
+            runCommandOnCollisionEnter(agent, attachedScript, agentValues, other);
         }
     }
 
@@ -132,7 +176,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     {
         if (runCommandOnCollisionStay != null)
         {
-            runCommandOnCollisionStay(agent, this, agentValues, other);
+            runCommandOnCollisionStay(agent, attachedScript, agentValues, other);
         }
     }
 
@@ -140,7 +184,15 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     {
         if (runCommandOnCollisionExit != null)
         {
-            runCommandOnCollisionExit(agent, this, agentValues, other);
+            runCommandOnCollisionExit(agent, attachedScript, agentValues, other);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (runCommandOnTriggerEnter != null)
+        {
+            runCommandOnTriggerEnter(agent, attachedScript, agentValues, other);
         }
     }
 
@@ -148,7 +200,15 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     {
         if (runCommandOnTriggerStay != null)
         {
-            runCommandOnTriggerStay(agent, this, agentValues, other);
+            runCommandOnTriggerStay(agent, attachedScript, agentValues, other);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (runCommandOnTriggerExit != null)
+        {
+            runCommandOnTriggerExit(agent, attachedScript, agentValues, other);
         }
     }
 
@@ -156,33 +216,17 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        agent = this.gameObject;
-
-        if (agentValues != null)
-        {
-            currentOxygen = agentValues.maxOxygen;
-            currentHealth = agentValues.maxHealth;
-        }
-
-        if (currentWeapon != null)
-        {
-            currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
-            currentTotalAmmo = currentWeapon.magSize * 3;
-            timeSinceLastShot = currentWeapon.fireRate;
-        }
     }
 
-    void InitiliseUI()
+    public void ChangeMovementSpeedModifier(float value, bool multiply)
     {
-        if (healthUIText != null)
+        if (multiply)
         {
-            healthUIText.text = "Health: " + Mathf.RoundToInt(currentHealth / agentValues.maxHealth * 100);
+            moveSpeedMultiplier *= value;
         }
-
-        if (ammoUIText != null)
+        else
         {
-            ammoUIText.text = "Ammo: " + currentBulletsInMag + " / " + currentTotalAmmo;
+            moveSpeedMultiplier /= value;
         }
     }
 }

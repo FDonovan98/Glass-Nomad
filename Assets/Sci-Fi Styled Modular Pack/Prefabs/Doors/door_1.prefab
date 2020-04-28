@@ -111,9 +111,9 @@ GameObject:
   - component: {fileID: 9574882}
   - component: {fileID: 6455900}
   - component: {fileID: 6047700864895717146}
-  - component: {fileID: 7597477676689851461}
   - component: {fileID: 5770259534228694089}
   - component: {fileID: 5069704717417115752}
+  - component: {fileID: 491960079812655424}
   m_Layer: 0
   m_Name: door_1
   m_TagString: Untagged
@@ -228,23 +228,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.43923, y: 4.51, z: 5.90971}
   m_Center: {x: 0.02871275, y: 1.98, z: -0.038405776}
---- !u!114 &7597477676689851461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 125588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f8057261804cad40a21fe9d7e635809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputKey: 101
-  interactTime: 3
-  cooldownTime: 0
-  debug: 0
-  textToDisplay: Hold E to interact
 --- !u!114 &5770259534228694089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +265,24 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!114 &491960079812655424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ba97520dda04a479d50b6e1faa8f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPrompt: Press E to interact
+  interactTime: 3
+  debug: 0
+  displayProgressToReticule: 1
+  interactionComplete: 0
+  animator: {fileID: 9574882}
 --- !u!1 &174170
 GameObject:
   m_ObjectHideFlags: 0

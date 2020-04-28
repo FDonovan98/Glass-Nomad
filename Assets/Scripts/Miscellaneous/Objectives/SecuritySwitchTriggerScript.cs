@@ -6,8 +6,8 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
 
     // Tells the red switch manager when this switch has been (de)activated.
     [SerializeField] private SecuritySwitchManager switchManager = null;
-    [SerializeField] private Material materialToChange;
-    [SerializeField] private Color colorToChangeTo;
+    [SerializeField] private Material materialToChange = null;
+    [SerializeField] private Color colorToChangeTo = Color.clear;
     private Color prevColor = Color.clear;
 
     /// <summary>
@@ -20,7 +20,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     /// <param name="coll"></param>
     private new void OnTriggerStay(Collider coll)
     {
-        if (coll.tag == "Player" && currCooldownTime <= 0)
+        if (coll.tag == "Player" && coll.gameObject.layer == 8 && currCooldownTime <= 0)
         {
             if (Input.GetKey(inputKey))
             {
@@ -70,6 +70,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
         {
             photonView.RPC("Deactivate", RpcTarget.All);
         }
+        playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
         base.LeftTriggerArea();
     }
 

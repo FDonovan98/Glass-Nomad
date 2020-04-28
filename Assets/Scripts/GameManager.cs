@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
-using System.Collections.Generic;
-
 public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     // Changes to this scene when we leave a room.
@@ -21,9 +19,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     // The radius of the marines spawn.
     [SerializeField] private float radius = 8f;
-
-    [SerializeField]
-    private List<int> playerIDs = new List<int>();
+    
 
     /// <summary>
     /// Determines whether the game is in offline mode or not. If the game is offline, then we spawn an alien, 
@@ -49,13 +45,17 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void SpawnLocalPlayer()
     {
         PlayersInLobby lobbyRoom = GameObject.Find("Lobby").GetComponent<PlayersInLobby>();
+
         if (lobbyRoom.IsPlayerAlien(PhotonNetwork.NickName))
         {
             PhotonNetwork.Instantiate("Alien", alienSpawnPoint.transform.position, new Quaternion());
         }
         else
         {
-            PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
+            GameObject marine = PhotonNetwork.Instantiate("Marine", GetRandomSpawnPoint(), new Quaternion());
+            AgentController agentController = marine.GetComponentInChildren<AgentController>();
+            agentController.ChangeWeapon(lobbyRoom.localPlayer.primaryWeapon);
+            agentController.ChangeArmour(lobbyRoom.localPlayer.selectedArmour);
         }
     }
 

@@ -13,36 +13,38 @@ MonoBehaviour:
   m_Name: MarineAgentValues
   m_EditorClassIdentifier: 
   moveAcceleration: 90
-  maxSpeed: 40
-  maxSprintSpeed: 55
   sprintingIsAToggle: 0
   sprintMultiplier: 1
-  surfaceSwitchSpeed: 0.3
-  gravityResetDelay: 0.5
+  reduceVelocityInAir: 1
+  scaleVelocityDegWithVel: 1
+  velocityDegradationGrounded: 100
+  velocityDegradationInAir: 40
+  maxSpeed: 40
+  maxSprintSpeed: 55
+  maxSpeedInAir: 80
+  maxSprintSpeedInAir: 100
+  velocityLimitRate: 0.1
   leapCanChargeInAir: 1
   leapVelocity: 10
   forwardLeapModifier: 1
   verticalLeapModifier: 1
   leapChargeDuration: 2
   jumpCooldown: 0.1
+  surfaceSwitchSpeed: 0.3
+  gravityResetDelay: 0.5
   mouseSensitivity: 2
   yRotationClamp: 90
   aDSIsAToggle: 1
-  reduceVelocityInAir: 1
-  scaleVelocityDegWithVel: 1
-  velocityDegradationGrounded: 100
-  velocityDegradationInAir: 40
-  maxStairHeight: 0.4
-  minDistanceToStair: 0
-  minLedgeWidth: 0.3
-  stepUpAcceleration: 0
+  maxStepHeight: 3.5
+  stepSearchOvershoot: 0.01
   applyGravity: 1
   gravityAcceleration: 100
+  slopeLimitAngle: 30
   maxOxygen: 200
-  oxygenRegenModifier: 1.5
+  oxygenRegenModifier: 5
   suffocationDamage: 5
   maxHealth: 200
-  lagUIInAxis: 0101
+  lagUIInAxis: 0000
   UICatchupSpeed:
-  - 0.1
-  - 0.1
+  - 0.5
+  - 0.5

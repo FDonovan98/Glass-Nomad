@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Audio;
 
 /// <summary>
 /// SettingsData handles the updating of settings to the file path that is
@@ -9,17 +10,33 @@ using UnityEngine;
 [Serializable]
 public class SettingsData
 {
+    private AudioMixer audioMixer;
+    private Camera affectedCamera;
+
     public FullScreenMode fullscreen = FullScreenMode.Windowed;
     public int[] resolution = new int[2] { Screen.width, Screen.height };
     public int quality = QualitySettings.GetQualityLevel();
-    public float fieldOfView = Camera.main.fieldOfView;
-    public float volume = AudioListener.volume;
+    public float fieldOfView = 90;
+    public float volume = 1f;
 
     public void UpdateSettings(FullScreenMode fs, int[] res, int qual, float fov)
     {
         Screen.SetResolution(res[0], res[1], fs);
         QualitySettings.SetQualityLevel(qual);
-        Camera.main.fieldOfView = fov;
+        if (affectedCamera != null)
+        {
+            affectedCamera.fieldOfView = fov;
+        }
+    }
+    public SettingsData(AudioMixer mixer, Camera cam)
+    {
+        audioMixer = mixer;
+        if (audioMixer.GetFloat("volume", out float vol))
+        {
+            volume = vol;
+        }
+        affectedCamera = cam;
+        fieldOfView = affectedCamera.fieldOfView;
     }
 }
 
@@ -31,10 +48,10 @@ public static class SaveLoadSettings
 {
     private static SettingsData settings;
 
-    public static void SaveData(string filePath)
+    public static void SaveData(string filePath, AudioMixer mixer, Camera cam)
     {
         Debug.Log("Saving settings...");
-        settings = new SettingsData();
+        settings = new SettingsData(mixer, cam);
         string jsonData = JsonUtility.ToJson(settings, true);
         File.WriteAllText(filePath, jsonData);
     }

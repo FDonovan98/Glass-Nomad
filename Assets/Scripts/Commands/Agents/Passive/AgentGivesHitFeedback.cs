@@ -31,8 +31,7 @@ public class AgentGivesHitFeedback : PassiveCommandObject
                 agentAudioSource = agent.AddComponent(typeof(AudioSource)) as AudioSource;
             }
 
-            agentAudioSource.clip = agentInputHandler.agentHitSound;
-            agentAudioSource.Play();
+            agentAudioSource.PlayOneShot(agentInputHandler.agentHitSound);
         }
         else
         {
