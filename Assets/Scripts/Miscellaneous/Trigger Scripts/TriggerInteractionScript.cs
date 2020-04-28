@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using TriggerExtensionMethods;
+using System.Collections.Generic;
 
 public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 {
