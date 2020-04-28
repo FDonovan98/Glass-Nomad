@@ -141,7 +141,9 @@ public class Settings : MonoBehaviour
     {
         Debug.Log("Changing fullscreen to: " + isFullscreen);
         Screen.fullScreenMode = isFullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        resolutionDropdown.value = resolutions.Length - 1;
         Resolution res = resolutions[resolutions.Length - 1];
+        // Forces fullscreen mode as it may get overriden by the SetResolution method
         Screen.SetResolution(res.width, res.height, isFullscreen);
     }
 
