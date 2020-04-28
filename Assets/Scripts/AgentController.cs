@@ -148,7 +148,7 @@ public class AgentController : AgentInputHandler
     {
         if (resourceType == ResourceType.Health)
         {
-            currentHealth += value;
+            currentHealth += value * equippedArmour.damageMultiplier;
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
