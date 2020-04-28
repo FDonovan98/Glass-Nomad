@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using Photon.Pun;
 using System.Collections.Generic;
+using TriggerExtensionMethods;
 
 public abstract class ObjectiveInteraction : TriggerInteractionScript
 {
