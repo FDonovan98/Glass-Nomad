@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2029878584881214590}
   - component: {fileID: 8056468018354283128}
   - component: {fileID: 1507934049951017062}
-  - component: {fileID: 3659731644767419254}
+  - component: {fileID: 6803273687665247336}
   m_Layer: 0
   m_Name: door_2
   m_TagString: Untagged
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
---- !u!114 &3659731644767419254
+--- !u!114 &6803273687665247336
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,15 +177,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 115324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57ba97520dda04a479d50b6e1faa8f7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f8057261804cad40a21fe9d7e635809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Press E to interact
+  inputKey: 101
   interactTime: 3
+  cooldownTime: 0
   debug: 0
-  displayProgressToReticule: 1
-  interactionComplete: 0
-  animator: {fileID: 9546954}
+  textToDisplay: Hold E to breach door
 --- !u!1 &141230
 GameObject:
   m_ObjectHideFlags: 0
