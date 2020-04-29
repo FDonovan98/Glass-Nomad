@@ -42,6 +42,34 @@ public class CheckIfGrounded : PassiveCommandObject
             }
         }
 
+        if (!foundGround)
+        {
+            Vector3 averageNormal = Vector3.zero;
+
+            foreach (ContactPoint element in allCPs)
+            {
+                averageNormal += element.normal;
+            }
+
+            averageNormal = averageNormal.normalized;
+
+            float cosTheta = Vector3.Dot(averageNormal, agentInputHandler.gravityDirection);
+            float theta = Mathf.Abs(Mathf.Acos(cosTheta) * Mathf.Rad2Deg - 180);
+            
+            // Catches bug cause when cosTheta == -1.
+            if (float.IsNaN(theta))
+            {
+                theta = 0.0f;
+            }
+
+            if (theta < agentValues.slopeLimitAngle && theta < currentGroundTheta)
+            {
+                foundGround = true;
+                currentGround = default(ContactPoint);
+                currentGroundTheta = theta;
+            }
+        }
+
         agentInputHandler.isGrounded = foundGround;
         agentInputHandler.groundContactPoint = currentGround;
         allCPs.Clear();
