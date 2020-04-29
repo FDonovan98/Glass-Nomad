@@ -1177,6 +1177,8 @@ MonoBehaviour:
   emergencyRegenUsedUISymbol: {fileID: 2274687424753669635}
   alienVisionActiveUI: {fileID: 8493762476991467827}
   alienVisionInactiveUI: {fileID: 25261753806836491}
+  outerReticule: {fileID: 0}
+  interactionText: {fileID: 0}
 --- !u!54 &911693857797475616
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2045,10 +2047,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 332868465348257334}
     m_Modifications:
-    - target: {fileID: 100006, guid: 481ca4bc8f247144db0a9caa336a47dd, type: 3}
-      propertyPath: m_Name
-      value: Slime
-      objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 481ca4bc8f247144db0a9caa336a47dd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2105,6 +2103,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.75
       objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 481ca4bc8f247144db0a9caa336a47dd, type: 3}
+      propertyPath: m_Name
+      value: Slime
+      objectReference: {fileID: 0}
     - target: {fileID: 2300002, guid: 481ca4bc8f247144db0a9caa336a47dd, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -2132,26 +2134,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4169682139870081275}
     m_Modifications:
-    - target: {fileID: 4649363343626254185, guid: d9beaa986e07b3b47b7c88e010396c3d,
-        type: 3}
-      propertyPath: m_Name
-      value: UI_Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 4649363343626254185, guid: d9beaa986e07b3b47b7c88e010396c3d,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 7384609091849898746, guid: d9beaa986e07b3b47b7c88e010396c3d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1931292728651915456, guid: d9beaa986e07b3b47b7c88e010396c3d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4649363343626254184, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2256,6 +2238,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384609091849898746, guid: d9beaa986e07b3b47b7c88e010396c3d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1931292728651915456, guid: d9beaa986e07b3b47b7c88e010396c3d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649363343626254185, guid: d9beaa986e07b3b47b7c88e010396c3d,
+        type: 3}
+      propertyPath: m_Name
+      value: UI_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649363343626254185, guid: d9beaa986e07b3b47b7c88e010396c3d,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1657721256230838641, guid: d9beaa986e07b3b47b7c88e010396c3d,
         type: 3}
