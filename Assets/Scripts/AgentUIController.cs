@@ -15,6 +15,7 @@ public class AgentUIController : MonoBehaviour
     public GameObject wallClimbingUISymbol;
     public GameObject emergencyRegenUISymbol;
     public GameObject LowOxygenUIObject;
+    public GameObject oxyIsRegeningObject;
 
     private void OnEnable()
     {
@@ -54,6 +55,10 @@ public class AgentUIController : MonoBehaviour
                 UpdateEmergencyRegenUI();
                 break;
 
+            case ResourceType.OxygenRegen:
+                UpdateOxygenRegenUI();
+                break;
+
             default:
                 Debug.LogWarning(gameObject.name + " tried to update UI of unrecognized type.");
                 break;
@@ -68,6 +73,12 @@ public class AgentUIController : MonoBehaviour
         UpdateWallClimbingUI();
         UpdateEmergencyRegenUI();
         UpdateLowOxygenUI();
+        UpdateOxygenRegenUI();
+    }
+
+    void UpdateOxygenRegenUI()
+    {
+        oxyIsRegeningObject.SetActive(agentController.oxygenIsRegening);
     }
 
     void UpdateLowOxygenUI()

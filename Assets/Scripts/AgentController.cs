@@ -11,7 +11,8 @@ public enum ResourceType
     Oxygen,
     WallClimbing,
     EmergencyRegen,
-    LowOxygen
+    LowOxygen,
+    OxygenRegen
 }
 
 public class AgentController : AgentInputHandler
@@ -37,6 +38,8 @@ public class AgentController : AgentInputHandler
     public int emergencyRegenUsesRemaining = 0;
     [ReadOnly]
     public bool isWallClimbing = false;
+    [ReadOnly]
+    public bool oxygenIsRegening = false;
     
     public GameObject[] gameObjectsToDisableForPhoton;
     public Behaviour[] componentsToDisableForPhoton;
@@ -175,26 +178,38 @@ public class AgentController : AgentInputHandler
         {
             currentOxygen = Mathf.Clamp(currentOxygen + value, 0.0f, agentValues.maxOxygen);
 
-            if (currentOxygen == 0.0f)
+            if (value > 0)
             {
-                ChangeStat(ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
-            }
-            else if (!lowOxygen && currentOxygen <= oxygenWarningAmount)
-            {
-                lowOxygen = true;
+                oxygenIsRegening = true;
+                updateUI(ResourceType.OxygenRegen);
 
-                if (updateUI != null)
+                if (lowOxygen && currentOxygen > oxygenWarningAmount)
                 {
-                    updateUI(ResourceType.LowOxygen);
+                    lowOxygen = false;
+
+                    if (updateUI != null)
+                    {
+                        updateUI(ResourceType.LowOxygen);
+                    }
                 }
             }
-            else if (lowOxygen && currentOxygen > oxygenWarningAmount)
+            else
             {
-                lowOxygen = false;
+                oxygenIsRegening = false;
+                updateUI(ResourceType.OxygenRegen);
 
-                if (updateUI != null)
+                if (currentOxygen == 0.0f)
                 {
-                    updateUI(ResourceType.LowOxygen);
+                    ChangeStat(ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
+                }
+                else if (!lowOxygen && currentOxygen <= oxygenWarningAmount)
+                {
+                    lowOxygen = true;
+
+                    if (updateUI != null)
+                    {
+                        updateUI(ResourceType.LowOxygen);
+                    }
                 }
             }
 
