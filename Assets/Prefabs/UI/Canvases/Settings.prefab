@@ -713,6 +713,8 @@ MonoBehaviour:
   volumeSlider: {fileID: 187696459855174107}
   audioMixer: {fileID: 24100000, guid: 442e9cc52ed96c14b84bd4ecd274cfaa, type: 2}
   affectedCamera: {fileID: 0}
+  marineControls: {fileID: 5610675080946227029}
+  alienControls: {fileID: 2690621614016924244}
 --- !u!222 &6020678527968621537
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6803,6 +6805,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Options.m_Options.Array.data[1].m_Text
       value: Alien
+      objectReference: {fileID: 0}
+    - target: {fileID: 1931279072061792054, guid: 76395c7fe53f1e5438ec4da59c726012,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3680616826216535531}
+    - target: {fileID: 1931279072061792054, guid: 76395c7fe53f1e5438ec4da59c726012,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeControlsView
       objectReference: {fileID: 0}
     - target: {fileID: 7138953854311450652, guid: 76395c7fe53f1e5438ec4da59c726012,
         type: 3}
