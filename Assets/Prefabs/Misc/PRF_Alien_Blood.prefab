@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4649692715526989117}
   - component: {fileID: 2317347621888587568}
   - component: {fileID: 3144422067474635247}
+  - component: {fileID: 3529748759645635854}
   m_Layer: 8
   m_Name: PRF_Alien_Blood
   m_TagString: Untagged
@@ -30,8 +31,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.25017142, y: 0.6, z: 0.5556571}
   m_LocalScale: {x: 1.2571428, y: 1.2571428, z: 1.2571428}
-  m_Children:
-  - {fileID: 2384210463872565611}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -4796,44 +4796,13 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
---- !u!1 &8159462336055454368
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2384210463872565611}
-  - component: {fileID: 8689165069588573839}
-  m_Layer: 0
-  m_Name: Audio_Source
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2384210463872565611
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8159462336055454368}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06127276, y: 9.566296, z: 3.4514327}
-  m_LocalScale: {x: 0.7954546, y: 0.7954546, z: 0.7954546}
-  m_Children: []
-  m_Father: {fileID: 662824685522730590}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &8689165069588573839
+--- !u!82 &3529748759645635854
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8159462336055454368}
+  m_GameObject: {fileID: 3140529894784440787}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 442e9cc52ed96c14b84bd4ecd274cfaa,
