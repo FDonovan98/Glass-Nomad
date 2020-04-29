@@ -7,15 +7,26 @@ using UnityEngine.UI;
 public class AgentUIController : MonoBehaviour
 {
     public AgentController agentController;
+
+    [Header("Health UI")]
     public TextMeshProUGUI healthUIText;
     public Image healthUIImage;
+
+    [Header("Ammo UI")]
     public TextMeshProUGUI ammoUIText;
+
+    [Header("Oxygen UI")]
     public TextMeshProUGUI oxygenUIText;
     public Image oxygenUIImage;
-    public GameObject wallClimbingUISymbol;
-    public GameObject emergencyRegenUISymbol;
     public GameObject LowOxygenUIObject;
     public GameObject oxyIsRegeningObject;
+
+    [Header("Wall Climbing UI")]
+    public GameObject wallClimbingActiveUISymbol;
+    public GameObject wallClimbingInactiveUISymbol;
+
+    [Header("Emergency Regeneration UI")]
+    public GameObject emergencyRegenUISymbol;
 
     private void OnEnable()
     {
@@ -104,9 +115,14 @@ public class AgentUIController : MonoBehaviour
 
 	void UpdateWallClimbingUI()
     {
-        if (wallClimbingUISymbol != null)
+        if (wallClimbingActiveUISymbol != null)
         {
-            wallClimbingUISymbol.SetActive(agentController.isWallClimbing);
+            wallClimbingActiveUISymbol.SetActive(agentController.isWallClimbing);
+        }
+        
+        if (wallClimbingInactiveUISymbol != null)
+        {
+            wallClimbingInactiveUISymbol.SetActive(!agentController.isWallClimbing);
         }
     }
 
