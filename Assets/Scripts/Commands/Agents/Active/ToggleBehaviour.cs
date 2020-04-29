@@ -24,15 +24,8 @@ public class ToggleBehaviour : ActiveCommandObject
     {
         if (Input.GetKeyDown(toggleBehaviour))
         {
+            // The RPC is found in PunRPCs.cs
             agent.GetComponent<PhotonView>().RPC("Toggle", RpcTarget.All, agent.GetComponent<PhotonView>().ViewID);
-            agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
         }
-    }
-
-    [PunRPC]
-    public void Toggle(int playersViewID)
-    {
-        AgentInputHandler agentInputHandler = PhotonNetwork.GetPhotonView(playersViewID).GetComponent<AgentController>();
-        agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
     }
 }
