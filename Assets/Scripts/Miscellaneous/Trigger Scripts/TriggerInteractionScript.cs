@@ -81,11 +81,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             {
                 if (currInteractTime >= interactTime)
                 {
+                    playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
                     photonView.RPC("InteractionComplete", RpcTarget.All);
                     currInteractTime = 0f;
                     interactionComplete = true;
                     currCooldownTime = cooldownTime;
-                    playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
                     return;
                 }
 
