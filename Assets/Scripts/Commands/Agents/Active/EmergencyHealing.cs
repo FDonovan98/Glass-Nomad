@@ -21,18 +21,30 @@ public class EmergencyHealing : ActiveCommandObject
 
         if (agentController.emergencyRegenUsesRemaining > 0 && Input.GetKeyDown(emergencyRegenKeyCode))
         {
-            ActivateEmergencyHealing(agentController);
+            ActivateEmergencyHealing(agentController, agentValues);
+        }
+
+        if (agentController.emergencyRegenActive)
+        {
+            agentController.ChangeStat(ResourceType.Health, -agentValues.emergencyRegenDownTickValue * Time.deltaTime);
+
+            if (agentController.currentHealth < agentValues.maxHealth)
+            {
+                agentController.ChangeStat(ResourceType.EmergencyRegen, false);
+            }
         }
     } 
 
-    void ActivateEmergencyHealing(AgentController agentController)
+    void ActivateEmergencyHealing(AgentController agentController, AgentValues agentValues)
     {
         agentController.ChangeStat(ResourceType.EmergencyRegen, true);
         agentController.ChangeMovementSpeedModifier(agentController.agentValues.emergencyRegenSpeedMultiplier, true);
         agentController.emergencyRegenUsesRemaining--;
 
         // Set agent health.
-        agentController.currentHealth = agentController.agentValues.maxHealth * agentController.agentValues.emergencyRegenMaxHealthModifier;
+        float healthToAdd = agentValues.maxHealth - agentController.currentHealth;
+        healthToAdd += agentValues.maxHealth * agentValues.emergencyRegenMaxHealthModifier - agentValues.maxHealth;
+        agentController.ChangeStat(ResourceType.Health, healthToAdd);
 
         agentController.runCommandOnUpdate += RunCommandOnUpdate;
     }

@@ -100,7 +100,7 @@ public class AgentUIController : MonoBehaviour
 
     void UpdateEmergencyRegenUI()
     {
-        if (emergencyRegenUsedUISymbol != null)
+        if (emergencyRegenUsedUISymbol != null && emergencyRegenUnusedUISymbol != null)
         {
             if (agentController.emergencyRegenUsesRemaining <= 0)
             {
