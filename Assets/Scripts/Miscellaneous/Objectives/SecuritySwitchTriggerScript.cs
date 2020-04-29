@@ -20,7 +20,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     /// <param name="coll"></param>
     private new void OnTriggerStay(Collider coll)
     {
-        if (coll.tag == "Player" && coll.gameObject.layer == 8 && currCooldownTime <= 0)
+        if (coll.tag == "Player" && coll.gameObject.layer == 8 && currCooldownTime <= 0 && coll.GetComponent<PhotonView>().IsMine)
         {
             if (Input.GetKey(inputKey))
             {
