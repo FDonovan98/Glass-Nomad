@@ -32,7 +32,7 @@ public class DoorTriggerScript : TriggerInteractionScript
     protected override void LeftTriggerArea()
     {
         base.LeftTriggerArea();
-        if (isDoorOpen) ChangeDoorState();
+        if (isDoorOpen) photonView.RPC("InteractionComplete", RpcTarget.All);
     }
 
     /// <summary>
