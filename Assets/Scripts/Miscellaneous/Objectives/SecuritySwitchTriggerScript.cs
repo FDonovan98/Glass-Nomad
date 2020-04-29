@@ -11,8 +11,6 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     [SerializeField]
     private Material materialToChangeFrom;
     [SerializeField] private Material materialToChangeTo = null;
-    [SerializeField] private Color colorToChangeTo = Color.clear;
-    private Color prevColor = Color.clear;
 
     /// <summary>
     /// Once the player enters the switch's collider and their holding 'E',
