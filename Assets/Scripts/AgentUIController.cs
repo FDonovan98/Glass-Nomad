@@ -26,6 +26,7 @@ public class AgentUIController : MonoBehaviour
     public GameObject wallClimbingInactiveUISymbol;
 
     [Header("Emergency Regeneration UI")]
+    public GameObject emergencyRegenUnusedUISymbol;
     public GameObject emergencyRegenUsedUISymbol;
 
     private void OnEnable()
@@ -103,7 +104,8 @@ public class AgentUIController : MonoBehaviour
         {
             if (agentController.emergencyRegenUsesRemaining <= 0)
             {
-                emergencyRegenUsedUISymbol.SetActive(agentController.emergencyRegenActive);
+                emergencyRegenUsedUISymbol.SetActive(true);
+                emergencyRegenUnusedUISymbol.SetActive(false);
             }
         }
     }
