@@ -31,6 +31,9 @@ public class Settings : MonoBehaviour
     // The camera that's used for FOV changes.
     [SerializeField] private Camera affectedCamera = null;
 
+    [SerializeField] private GameObject marineControls = null;
+    [SerializeField] private GameObject alienControls = null;
+
     // Retrieves all the available resolutions.
     private Resolution[] resolutions;
 
@@ -153,6 +156,13 @@ public class Settings : MonoBehaviour
         {
             affectedCamera.fieldOfView = fov;
         }
+    }
+
+    public void ChangeControlsView(int sideToView) // 0 = marine, 1 = alien
+    {
+        bool displayMarineControls = sideToView == 0 ? true : false;
+        marineControls.SetActive(displayMarineControls);
+        alienControls.SetActive(!displayMarineControls);
     }
 
     // Remaps one set of values to another.
