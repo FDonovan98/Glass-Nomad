@@ -6,17 +6,27 @@ using UnityEngine.SceneManagement;
 
 public class Spectator : MonoBehaviourPunCallbacks
 {
+    [Header("Spectator Settings")]
     [SerializeField] private KeyCode toggleFreeCamKey = KeyCode.G;
     [SerializeField] private KeyCode backPlayerKey = KeyCode.Q;
     [SerializeField] private KeyCode forwardPlayerKey = KeyCode.E;
     [SerializeField] private float speed = 50f;
     [SerializeField] private float mouseSensitivity = 10f;
+
+    [Header("Objects & Components")]
     [SerializeField] private List<GameObject> gameObjectsToRemove = new List<GameObject>();
     [SerializeField] private List<Component> componentsToRemove = new List<Component>();
-    private List<GameObject> playerList = new List<GameObject>();
+
+    [Header("Pause Menu")]
+    [SerializeField] private GameObject pauseMenu = null;
+    [SerializeField] private KeyCode openMenuKey = KeyCode.Escape;
+    [SerializeField] private KeyCode openMenuKeyInEditor = KeyCode.Comma;
+
     public int playerIndex = 0;
+    private List<GameObject> playerList = new List<GameObject>();
     private Camera cam = null;
     private bool freeCamera = true;
+    private bool inputEnabled = true;
 
     private new void OnEnable()
     {
@@ -68,6 +78,10 @@ public class Spectator : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        CheckIfMenuButtonWasPressed();
+
+        if (!inputEnabled) return;
+
         if (Input.GetKeyDown(toggleFreeCamKey)) ToggleFreeCamera();
         
         if (freeCamera)
@@ -141,5 +155,36 @@ public class Spectator : MonoBehaviourPunCallbacks
         Cursor.visible = true;
         PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene("SCN_Lobby");
+    }
+
+    private void CheckIfMenuButtonWasPressed()
+    {
+        #if UNITY_EDITOR
+            //Press the openMenuKeyInEditor to unlock the cursor. If it's unlocked, lock it again
+            if (Input.GetKeyDown(openMenuKeyInEditor))
+            {
+                ToggleCursorAndMenu();
+            } 
+        #elif UNITY_STANDALONE_WIN
+            //Press the openMenuKey to unlock the cursor. If it's unlocked, lock it again
+            if (Input.GetKeyDown(openMenuKey))
+            {
+                ToggleCursorAndMenu();
+            } 
+        #endif
+    }
+
+    private void ToggleCursorAndMenu()
+    {
+        bool displayMenu = Cursor.lockState == CursorLockMode.Locked ? true : false;
+        Cursor.lockState = displayMenu ? CursorLockMode.None : CursorLockMode.Locked;
+        ToggleMenu(displayMenu);
+    }
+
+    private void ToggleMenu(bool toggle)
+    {
+        pauseMenu.SetActive(toggle);
+        inputEnabled = !toggle;
+        Cursor.visible = toggle;
     }
 }
