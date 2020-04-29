@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
 using TriggerExtensionMethods;
 
@@ -28,7 +29,6 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
             {
                 captionText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Objective Prompt");
                 hintText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Objective Hint");
-                if (debug) Debug.Log(captionText.name);
             }
         }
         catch {
@@ -46,9 +46,30 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     [PunRPC]
     protected override void InteractionComplete()
     {
-        // If we haven't completed the correct objectives, yet, or we are the alien, then don't continue.
-        if (!objectiveValues.AllRequiredObjectivesCompleted() || captionText == null) return;
+        Debug.Log("Interaction Complete: the alien should see this too!");
+
+        /// Need to get local player
+        /// so that we can check if alien and return if true
+        /// else
+        /// set the playerinteracting as the local player
+        /// so that we can use the playerinteracting to access
+        /// the local players objective text etc etc        
+
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (player.GetComponent<PhotonView>().IsMine)
+            {
+                playerInteracting = player;
+            }
+        }
+
+        // playerInteracting = PhotonView.Find();
         
+        // If we haven't completed the correct objectives, yet, or we are the alien, then don't continue.
+        if (!objectiveValues.AllRequiredObjectivesCompleted() || playerInteracting.layer != 8) return;
+        
+        Debug.LogFormat("Interaction Complete: {0}, all of the marines should receieve this.", objectiveValues.name);
+
         objectiveValues.completed = true;
         ObjectiveComplete();
         WriteTextToHud();
@@ -63,6 +84,8 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         {
             Destroy(go);
         }
+
+        playerInteracting = null;
     }
 
     protected virtual void ObjectiveComplete() {}
