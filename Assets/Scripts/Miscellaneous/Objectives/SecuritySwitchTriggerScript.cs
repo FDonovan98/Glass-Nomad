@@ -40,7 +40,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
                     return;
                 }
             }
-            else // if the player is not pressing then reset the switch's state.
+            else if (Input.GetKeyUp(inputKey))// if the player is not pressing then reset the switch's state.
             {
                 LeftTriggerArea();
             }
