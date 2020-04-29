@@ -22,26 +22,21 @@ public class AgentGivesHitFeedback : PassiveCommandObject
         
         GameObject agent = agentInputHandler.gameObject;
 
-        if (agentInputHandler.agentHitSound != null)
-        {
-            AudioSource agentAudioSource = agent.GetComponent<AudioSource>();
-
-            if (agentAudioSource == null)
-            {
-                agentAudioSource = agent.AddComponent(typeof(AudioSource)) as AudioSource;
-            }
-
-            agentAudioSource.PlayOneShot(agentInputHandler.agentHitSound);
-        }
-        else
-        {
-            Debug.LogAssertion(agent.name + " doesn't have a hit feedback sound");
-        }
-
         if (agentInputHandler.agentHitParticles != null)
         {
             Debug.Log("Instantiating hit effects!");
 			GameObject hitEffect = Instantiate(agentInputHandler.agentHitParticles, position, Quaternion.Euler(normal));
+
+            if (agentInputHandler.agentHitSound != null)
+            {   
+                AudioSource audioSource = hitEffect.GetComponent<AudioSource>();
+                audioSource.PlayOneShot(agentInputHandler.agentHitSound);
+            }
+            else
+            {
+                Debug.LogAssertion(agent.name + " doesn't have a hit feedback sound");
+            }
+
             Destroy(hitEffect, 5f);
         }
         else

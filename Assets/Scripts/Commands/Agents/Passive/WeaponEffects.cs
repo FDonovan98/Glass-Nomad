@@ -18,7 +18,7 @@ public class WeaponEffects : PassiveCommandObject
     {
        if (agentInputHandler.currentWeapon.weaponSound != null)
         {
-            AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponent<AudioSource>();
+            AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponentInChildren<AudioSource>();
 
             if (weaponAudioSource == null)
             {
