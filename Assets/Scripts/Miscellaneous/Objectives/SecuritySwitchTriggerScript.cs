@@ -29,8 +29,6 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
                     if (currInteractTime >= interactTime)
                     {
                         photonView.RPC("InteractionComplete", RpcTarget.All);
-                        currInteractTime = 0f;
-                        currCooldownTime = cooldownTime;
                     }
 
                     currInteractTime += Time.deltaTime;
