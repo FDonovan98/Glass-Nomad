@@ -103,7 +103,7 @@ public class AgentUIController : MonoBehaviour
     {
         if (healthUIText != null)
         {
-            healthUIText.text = Mathf.RoundToInt(agentController.currentHealth / agentController.agentValues.maxHealth * 100).ToString();
+            healthUIText.text = Mathf.RoundToInt(agentController.currentHealth / agentController.agentValues.maxHealth * 100).ToString() + "%";
         }
 
         if (healthUIImage != null)
@@ -116,7 +116,7 @@ public class AgentUIController : MonoBehaviour
     {
         if (oxygenUIText != null)
         {
-            oxygenUIText.text = Mathf.RoundToInt(agentController.currentOxygen / agentController.agentValues.maxOxygen * 100).ToString();
+            oxygenUIText.text = Mathf.RoundToInt(agentController.currentOxygen / agentController.agentValues.maxOxygen * 100).ToString() + "%";
         }
 
         if (oxygenUIImage != null)
