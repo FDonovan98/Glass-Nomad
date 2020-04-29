@@ -46,18 +46,22 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             
             if (coll.GetComponent<PhotonView>().IsMine && coll.gameObject.layer == 8)
             {
-                // Luke please stop using getChild it hurts me <3.
-                if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
-                AgentUIController agentUIController = playerInteracting.GetComponentInChildren<AgentUIController>();
-                outerReticle = agentUIController.outerReticule;
-                interactionText = agentUIController.interactionText;
- 
-                interactionText.text = textToDisplay;
+                PopulateVariables();
             }
         }
         catch {
             Debug.LogError("Outer Reticle or Interaction Text has not been set correctly.");
         }
+    }
+
+    protected virtual void PopulateVariables()
+    {
+        if (debug) Debug.Log("PLAYER: " + playerInteracting.name);
+        AgentUIController agentUIController = playerInteracting.GetComponentInChildren<AgentUIController>();
+        outerReticle = agentUIController.outerReticule;
+        interactionText = agentUIController.interactionText;
+
+        interactionText.text = textToDisplay;
     }
 
     /// <summary>

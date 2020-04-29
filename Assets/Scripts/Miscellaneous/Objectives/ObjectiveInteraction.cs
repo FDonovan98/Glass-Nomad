@@ -20,20 +20,25 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     // The time it takes to display each letter.
     protected const float timePerLetter = 0.05f;
 
-    protected override void OnTriggerEnter(Collider coll)
+    protected override void PopulateVariables()
     {
-        base.OnTriggerEnter(coll);
+        base.PopulateVariables();
 
         try {
             if (playerInteracting.GetComponent<PhotonView>().IsMine)
             {
-                captionText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Objective Prompt");
-                hintText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Objective Hint");
+                RetrieveObjectiveUIElements();
             }
         }
         catch {
             Debug.LogError("Caption Text (for Objectives) has not been set correctly.");
         }
+    }
+
+    private void RetrieveObjectiveUIElements()
+    {
+        captionText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Objective Prompt");
+        hintText = playerInteracting.transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Objective Hint");
     }
 
     protected override void OnTriggerStay(Collider coll)
@@ -46,24 +51,19 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
     [PunRPC]
     protected override void InteractionComplete()
     {
-        Debug.Log("Interaction Complete: the alien should see this too!");
-
-        /// Need to get local player
-        /// so that we can check if alien and return if true
-        /// else
-        /// set the playerinteracting as the local player
-        /// so that we can use the playerinteracting to access
-        /// the local players objective text etc etc        
+        Debug.Log("Interaction Complete: the alien should see this too!");     
 
         foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
         {
             if (player.GetComponent<PhotonView>().IsMine)
             {
                 playerInteracting = player;
+                RetrieveObjectiveUIElements();
             }
         }
 
-        // playerInteracting = PhotonView.Find();
+        // Error catching
+        if (playerInteracting == null) return;
         
         // If we haven't completed the correct objectives, yet, or we are the alien, then don't continue.
         if (!objectiveValues.AllRequiredObjectivesCompleted() || playerInteracting.layer != 8) return;
