@@ -12,7 +12,8 @@ public enum ResourceType
     WallClimbing,
     EmergencyRegen,
     LowOxygen,
-    OxygenRegen
+    OxygenRegen, 
+    AlienVision
 }
 
 public class AgentController : AgentInputHandler
@@ -40,6 +41,8 @@ public class AgentController : AgentInputHandler
     public bool isWallClimbing = false;
     [ReadOnly]
     public bool oxygenIsRegening = false;
+    [ReadOnly]
+    public bool alienVisionIsActive = false;
     
     public GameObject[] gameObjectsToDisableForPhoton;
     public Behaviour[] componentsToDisableForPhoton;
@@ -132,6 +135,11 @@ public class AgentController : AgentInputHandler
             {
                 updateUI(ResourceType.EmergencyRegen);
             }
+        }
+
+        if (resourceType == ResourceType.AlienVision)
+        {
+            updateUI(ResourceType.AlienVision);
         }
     }
 

@@ -52,7 +52,6 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
     
     // Harry's totally effective(TM) way of making it work onEnable.
     private List<CancellationTokenSource> cts;
-    private bool currentlyOutlining = false;
     private int Downsample = 0;
     
     #endregion
@@ -73,9 +72,11 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
     {
         if (Input.GetKeyDown(activateOutlining))
         {
-            if (!currentlyOutlining)
+            AgentController agentController = (AgentController)agentInputHandler;
+
+            if (!agentController.alienVisionIsActive)
             {
-                currentlyOutlining = true;
+                agentController.ChangeStat(ResourceType.AlienVision, true);
                 agentInputHandler.ChangeMovementSpeedModifier(moveSpeedDivider, false);
 
                 Renderer[] objectsToOutline = FetchOtherAgentsToOutline(agentInputHandler);
@@ -123,7 +124,7 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
             }
             else
             {
-                currentlyOutlining = false;
+                agentController.ChangeStat(ResourceType.AlienVision, false);
                 agentInputHandler.ChangeMovementSpeedModifier(moveSpeedDivider, true);
 
                 for (int i = 0; i < cts.Count; i++)

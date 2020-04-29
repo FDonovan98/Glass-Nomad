@@ -29,6 +29,10 @@ public class AgentUIController : MonoBehaviour
     public GameObject emergencyRegenUnusedUISymbol;
     public GameObject emergencyRegenUsedUISymbol;
 
+    [Header("Alien Vision UI")]
+    public GameObject alienVisionActiveUI;
+    public GameObject alienVisionInactiveUI;
+
     private void OnEnable()
     {
         agentController.updateUI += UpdateUI;
@@ -86,6 +90,20 @@ public class AgentUIController : MonoBehaviour
         UpdateEmergencyRegenUI();
         UpdateLowOxygenUI();
         UpdateOxygenRegenUI();
+        UpdateAlienVisionUI();
+    }
+
+    void UpdateAlienVisionUI()
+    {
+        if (alienVisionActiveUI != null)
+        {
+            alienVisionActiveUI.SetActive(agentController.alienVisionIsActive);
+        }
+
+        if (alienVisionInactiveUI != null)
+        {
+            alienVisionInactiveUI.SetActive(!agentController.alienVisionIsActive);
+        }
     }
 
     void UpdateOxygenRegenUI()
