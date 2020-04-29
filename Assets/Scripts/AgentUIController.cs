@@ -33,6 +33,10 @@ public class AgentUIController : MonoBehaviour
     public GameObject alienVisionActiveUI;
     public GameObject alienVisionInactiveUI;
 
+    [Header("Objective UI")]
+    public Image outerReticule;
+    public TMP_Text interactionText;
+
     private void OnEnable()
     {
         agentController.updateUI += UpdateUI;
