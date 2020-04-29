@@ -79,5 +79,6 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
         switchManager.SwitchDeactivated();
         interactionComplete = false;
         materialToChange.SetColor("_EmissionColor", prevColor);
+        currInteractTime = 0.0f;
     }
 }
