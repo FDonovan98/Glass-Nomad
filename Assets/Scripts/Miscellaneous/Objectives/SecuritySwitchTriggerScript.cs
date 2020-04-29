@@ -6,7 +6,11 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
 
     // Tells the red switch manager when this switch has been (de)activated.
     [SerializeField] private SecuritySwitchManager switchManager = null;
-    [SerializeField] private Material materialToChange = null;
+    [SerializeField]
+    private Renderer rendererToChangeMaterial;
+    [SerializeField]
+    private Material materialToChangeFrom;
+    [SerializeField] private Material materialToChangeTo = null;
     [SerializeField] private Color colorToChangeTo = Color.clear;
     private Color prevColor = Color.clear;
 
@@ -55,8 +59,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
         if (debug) Debug.Log("Switch activated");
         interactionComplete = true;
         switchManager.SwitchActivated();
-        prevColor = materialToChange.GetColor("_EmissionColor");
-        materialToChange.SetColor("_EmissionColor", colorToChangeTo);
+        rendererToChangeMaterial.material = materialToChangeTo;
     }
 
     /// <summary>
@@ -78,7 +81,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
         if (debug) Debug.Log("Switch deactivated");
         switchManager.SwitchDeactivated();
         interactionComplete = false;
-        materialToChange.SetColor("_EmissionColor", prevColor);
+        rendererToChangeMaterial.material = materialToChangeFrom;
         currInteractTime = 0.0f;
     }
 }
