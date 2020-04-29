@@ -636,6 +636,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dba96bc1f16a077458b708a7e6242340, type: 2}
   - {fileID: 11400000, guid: 96455bb1322b3b2469e24860487b1ec5, type: 2}
   - {fileID: 11400000, guid: ad30c83e1e7fab947bc7f0fc5dcb00b7, type: 2}
+  - {fileID: 11400000, guid: 7bcfb8b50b59b334d8d99eb6287c9d95, type: 2}
   passiveCommands:
   - {fileID: 11400000, guid: 89d67c71b42eab74685203f1c632d43b, type: 2}
   - {fileID: 11400000, guid: 72253c22aa75c6545a95bbab4cf2b3c9, type: 2}
@@ -644,7 +645,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c90bbc2e9bf6d844f8df09008d7ca543, type: 2}
   - {fileID: 11400000, guid: 87040d9a3b5851945884133d18182c3a, type: 2}
   - {fileID: 11400000, guid: c32cad17e695bd248be52fd025d5619a, type: 2}
-  - {fileID: 11400000, guid: 7bcfb8b50b59b334d8d99eb6287c9d95, type: 2}
   isGrounded: 1
   isSprinting: 0
   gravityDirection: {x: 0, y: -1, z: 0}
@@ -692,6 +692,7 @@ MonoBehaviour:
   emergencyRegenActive: 0
   emergencyRegenUsesRemaining: 0
   isWallClimbing: 0
+  oxygenIsRegening: 0
   gameObjectsToDisableForPhoton:
   - {fileID: 949664781912334516}
   componentsToDisableForPhoton:
@@ -853,9 +854,12 @@ MonoBehaviour:
   ammoUIText: {fileID: 0}
   oxygenUIText: {fileID: 0}
   oxygenUIImage: {fileID: 0}
-  wallClimbingUISymbol: {fileID: 2730079538445007342}
-  emergencyRegenUISymbol: {fileID: 7666793781209314621}
   LowOxygenUIObject: {fileID: 0}
+  oxyIsRegeningObject: {fileID: 0}
+  wallClimbingActiveUISymbol: {fileID: 0}
+  wallClimbingInactiveUISymbol: {fileID: 0}
+  emergencyRegenUnusedUISymbol: {fileID: 0}
+  emergencyRegenUsedUISymbol: {fileID: 0}
 --- !u!54 &911693857797475616
 Rigidbody:
   m_ObjectHideFlags: 0
