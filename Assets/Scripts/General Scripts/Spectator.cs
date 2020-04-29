@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Spectator : MonoBehaviourPunCallbacks
 {
@@ -22,6 +22,8 @@ public class Spectator : MonoBehaviourPunCallbacks
     [SerializeField] private KeyCode openMenuKey = KeyCode.Escape;
     [SerializeField] private KeyCode openMenuKeyInEditor = KeyCode.Comma;
 
+    [Header("Other")]
+    [SerializeField] private TMP_Text captionText = null;
     public int playerIndex = 0;
     private List<GameObject> playerList = new List<GameObject>();
     private Camera cam = null;
@@ -30,13 +32,19 @@ public class Spectator : MonoBehaviourPunCallbacks
 
     private new void OnEnable()
     {
-        if (GetComponentInChildren<AgentController>().agentValues.name == "AlienAgentValues") photonView.RPC("SendPlayersToLobby", RpcTarget.All);
+        if (GetComponentInChildren<AgentController>().agentValues.name == "AlienAgentValues")
+        {
+            photonView.RPC("SendPlayersToLobby", RpcTarget.All);
+            return;
+        }
+
         RemoveComponents();
         RemoveGameObjects();
         cam = GetComponentInChildren<Camera>();
         transform.rotation = Quaternion.Euler(Vector3.zero);
         Cursor.lockState = CursorLockMode.Locked;
         GetAlivePlayers();
+        captionText.text = "<- Q    G to toggle follow     E ->";
     }
 
     private void RemoveComponents()
