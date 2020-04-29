@@ -70,6 +70,10 @@ public class CheckIfGrounded : PassiveCommandObject
             }
         }
 
+        if (!foundGround && agentInputHandler.currentLeapCharge > 0)
+        {
+            agentInputHandler.currentLeapCharge = 0.0f;
+        }
         agentInputHandler.isGrounded = foundGround;
         agentInputHandler.groundContactPoint = currentGround;
         allCPs.Clear();
