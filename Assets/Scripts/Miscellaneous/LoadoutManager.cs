@@ -89,8 +89,8 @@ public class LoadoutManager : MonoBehaviour
         playersInLobby.localPlayer.primaryWeapon = primaryItems[primaryDropdown.value];
         playersInLobby.localPlayer.selectedArmour = armourItems[armourDropdown.value];
 
-        if (debug) Debug.LogFormat("New PlayerPref values: {0}, {1}, {2}", primaryDropdown.captionText.text,
-            //secondaryDropdown.captionText.text, armourDropdown.captionText.text);
+        if (debug) Debug.LogFormat("New PlayerPref values: {0}, {1}", primaryDropdown.captionText.text,
+            armourDropdown.captionText.text);
     }
 
     private void SetPlayerPrefs(TMP_Dropdown dropdown, string prefString)
