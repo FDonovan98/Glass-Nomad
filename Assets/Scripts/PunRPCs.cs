@@ -45,4 +45,11 @@ public class PunRPCs : MonoBehaviourPunCallbacks
             Debug.LogWarning(targetAgentInputHandler.gameObject.name + " has no agentInputHandler");
         }
     }
+
+    [PunRPC]
+    public void Toggle(int playersViewID)
+    {
+        AgentInputHandler agentInputHandler = PhotonNetwork.GetPhotonView(playersViewID).GetComponent<AgentController>();
+        agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
+    }
 }
