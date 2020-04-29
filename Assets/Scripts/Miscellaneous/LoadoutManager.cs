@@ -7,7 +7,7 @@ public class LoadoutManager : MonoBehaviour
 {
     [SerializeField] private PlayersInLobby playersInLobby;
     [SerializeField] private TMP_Dropdown primaryDropdown = null;
-    [SerializeField] private TMP_Dropdown secondaryDropdown = null;
+    //[SerializeField] private TMP_Dropdown secondaryDropdown = null;
     [SerializeField] private TMP_Dropdown armourDropdown = null;
     [SerializeField] private bool debug = false;
 
@@ -26,7 +26,7 @@ public class LoadoutManager : MonoBehaviour
         RemoveAlienSpecific();
         
         InitialiseDropdown(primaryDropdown, primaryItemsNames, "Primary");
-        InitialiseDropdown(secondaryDropdown, secondaryItemsNames, "Secondary");
+        //InitialiseDropdown(secondaryDropdown, secondaryItemsNames, "Secondary");
         InitialiseDropdown(armourDropdown, armourItemsNames, "Armour");
 
         UpdatePlayerPrefs();
@@ -64,10 +64,10 @@ public class LoadoutManager : MonoBehaviour
                     primaryItems.Add((Weapon)obj);
                     break;
 
-                case BaseObject.ItemType.Secondary:
-                    secondaryItemsNames.Add(obj.name);
-                    secondaryItems.Add((Weapon)obj);
-                    break;
+                // case BaseObject.ItemType.Secondary:
+                //     secondaryItemsNames.Add(obj.name);
+                //     secondaryItems.Add((Weapon)obj);
+                //     break;
 
                 case BaseObject.ItemType.Armour:
                     armourItemsNames.Add(obj.name);
@@ -83,14 +83,14 @@ public class LoadoutManager : MonoBehaviour
     public void UpdatePlayerPrefs()
     {
         SetPlayerPrefs(primaryDropdown, "Primary");
-        SetPlayerPrefs(secondaryDropdown, "Secondary");
+        //SetPlayerPrefs(secondaryDropdown, "Secondary");
         SetPlayerPrefs(armourDropdown, "Armour");
 
         playersInLobby.localPlayer.primaryWeapon = primaryItems[primaryDropdown.value];
         playersInLobby.localPlayer.selectedArmour = armourItems[armourDropdown.value];
 
         if (debug) Debug.LogFormat("New PlayerPref values: {0}, {1}, {2}", primaryDropdown.captionText.text,
-            secondaryDropdown.captionText.text, armourDropdown.captionText.text);
+            //secondaryDropdown.captionText.text, armourDropdown.captionText.text);
     }
 
     private void SetPlayerPrefs(TMP_Dropdown dropdown, string prefString)
