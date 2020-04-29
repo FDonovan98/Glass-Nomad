@@ -14,7 +14,7 @@ public class GeneratorObjective : ObjectiveInteraction
         {
             if (element.GetComponent<Teleporter>() != null)
             {
-                element.GetComponent<Teleporter>().powered = true;
+                element.GetComponent<Teleporter>().Power();
             }
         }
     }

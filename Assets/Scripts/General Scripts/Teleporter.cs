@@ -4,9 +4,12 @@ using Photon.Pun;
 public class Teleporter : TriggerInteractionScript
 {
 	[Header("Teleporter Interaction")]
-    public bool powered = false;
+    private bool powered = false;
     [SerializeField] private GameObject linkedTeleporter = null; // The destination of the TP.
     [SerializeField] private bool biDirectional = true; // If false, then this TP can ONLY be used TO teleport, and NOT FROM.
+
+    [SerializeField]
+    private Behaviour[] behavioursToEnableWithPower;
 
     private new void OnTriggerStay(Collider coll)
     {
@@ -27,5 +30,15 @@ public class Teleporter : TriggerInteractionScript
         Vector3 spawnLocation = linkedTeleporter.transform.position;
         spawnLocation += new Vector3(0.0f, playerInteracting.GetComponent<Collider>().bounds.extents.y, 0.0f);
         playerInteracting.transform.position = spawnLocation;
+    }
+
+    public void Power()
+    {
+        powered = true;
+        
+        foreach (Behaviour element in behavioursToEnableWithPower)
+        {
+            element.enabled = true;
+        }
     }
 }
