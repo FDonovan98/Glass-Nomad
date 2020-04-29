@@ -10925,6 +10925,7 @@ MonoBehaviour:
   emergencyRegenActive: 0
   emergencyRegenUsesRemaining: 0
   isWallClimbing: 0
+  oxygenIsRegening: 0
   gameObjectsToDisableForPhoton:
   - {fileID: 5923454201242450266}
   componentsToDisableForPhoton:
@@ -11087,9 +11088,12 @@ MonoBehaviour:
   ammoUIText: {fileID: 7948451327162272895}
   oxygenUIText: {fileID: 8403623924487682765}
   oxygenUIImage: {fileID: 5844470157575951150}
-  wallClimbingUISymbol: {fileID: 0}
-  emergencyRegenUISymbol: {fileID: 0}
-  LowOxygenUIObject: {fileID: 4351860215499567795}
+  LowOxygenUIObject: {fileID: 4388519547799661791}
+  oxyIsRegeningObject: {fileID: 4351860215499567795}
+  wallClimbingActiveUISymbol: {fileID: 0}
+  wallClimbingInactiveUISymbol: {fileID: 0}
+  emergencyRegenUnusedUISymbol: {fileID: 0}
+  emergencyRegenUsedUISymbol: {fileID: 0}
 --- !u!65 &1298965412771514008
 BoxCollider:
   m_ObjectHideFlags: 0
