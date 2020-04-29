@@ -11,6 +11,7 @@ public class ChangeResourceOverTime : PassiveCommandObject
     {
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
         agentInputHandler.runCommandOnTriggerStay += RunCommandOnTriggerStay;
+        agentInputHandler.runCommandOnTriggerExit += RunCommandOnTriggerExit;
     }
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
@@ -54,6 +55,36 @@ public class ChangeResourceOverTime : PassiveCommandObject
                 } 
 
                 agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue);
+
+                // Updates UI to flag oxy is regenerating.
+                if (element.resourceType == ResourceType.Oxygen && element.changeValue > 0)
+                {
+                    agentController.oxygenIsRegening = true;
+                    agentController.updateUI(ResourceType.OxygenRegen);
+                }
+            }
+        }
+    }
+
+    void RunCommandOnTriggerExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other)
+    {
+        AgentController agentController = null;
+
+        foreach (TypeAndConstraints element in resourcesToChange)
+        {
+            if (other.gameObject.tag == element.areaTag)
+            {
+                if (agentController == null)
+                {
+                    agentController = (AgentController)agentInputHandler;
+                } 
+
+                // Updates UI to flag oxy is regenerating.
+                if (element.resourceType == ResourceType.Oxygen && element.changeValue > 0)
+                {
+                    agentController.oxygenIsRegening = false;
+                    agentController.updateUI(ResourceType.OxygenRegen);
+                }
             }
         }
     }

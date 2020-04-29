@@ -180,9 +180,6 @@ public class AgentController : AgentInputHandler
 
             if (value > 0)
             {
-                oxygenIsRegening = true;
-                updateUI(ResourceType.OxygenRegen);
-
                 if (lowOxygen && currentOxygen > oxygenWarningAmount)
                 {
                     lowOxygen = false;
@@ -195,9 +192,6 @@ public class AgentController : AgentInputHandler
             }
             else
             {
-                oxygenIsRegening = false;
-                updateUI(ResourceType.OxygenRegen);
-
                 if (currentOxygen == 0.0f)
                 {
                     ChangeStat(ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
