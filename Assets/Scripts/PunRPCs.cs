@@ -3,6 +3,11 @@ using Photon.Pun;
 
 public class PunRPCs : MonoBehaviourPunCallbacks
 {
+    private AgentInputHandler GetInputHandler(int viewId)
+    {
+        return PhotonNetwork.GetPhotonView(viewId).GetComponent<AgentController>();
+    }
+
     [PunRPC]
     public void WallWasHit(Vector3 cameraPos, Vector3 cameraForward, float weaponRange, int weaponDamage)
     {     
@@ -116,8 +121,12 @@ public class PunRPCs : MonoBehaviourPunCallbacks
         }
     }
 
-    private AgentInputHandler GetInputHandler(int viewId)
+    [PunRPC]
+    public void PlayFootstep(int agentsViewID)
     {
-        return PhotonNetwork.GetPhotonView(viewId).GetComponent<AgentController>();
+        AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
+        if (agentInputHandler.footstepSource == null || agentInputHandler.footstepSource.isPlaying) return;
+        agentInputHandler.footstepSource.clip = agentInputHandler.GetRandomFootstepClip();
+        agentInputHandler.footstepSource.Play();
     }
 }
