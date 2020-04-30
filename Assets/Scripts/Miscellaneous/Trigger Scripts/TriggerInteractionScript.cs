@@ -110,8 +110,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 
         if (playerInteracting.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
         {
-            
-
             interactionText.text = textToDisplay;
         }
     }
