@@ -24,6 +24,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject loadoutContainer = null;
     [SerializeField] private GameObject lobbyContainer = null;
     [SerializeField] private GameObject settingsContainer = null;
+    [SerializeField] private GameObject creditsContainer = null;
 
     [SerializeField] private Color playerAlienButtonColor = Color.clear;
     [SerializeField] private Color playerMarineButtonColor = Color.clear;
@@ -268,7 +269,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 #else
         Application.Quit();
 #endif
-    }    
+    }
+
+    public void OnToggleCredits(bool displayCredits)
+    {
+        menuContainer.SetActive(!displayCredits);
+        creditsContainer.SetActive(displayCredits);
+    }
 
     [PunRPC]
     private void MasterClientClickedLoadGame()
