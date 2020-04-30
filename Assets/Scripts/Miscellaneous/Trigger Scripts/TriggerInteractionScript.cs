@@ -108,11 +108,6 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             
             interactionText.text = textToDisplay;
         }
-
-        if (coll.tag == "Player" && interactionComplete)
-        {
-            coll.GetComponent<AgentInputHandler>().allowInput = true;
-        }
     }
 
     /// <summary>
