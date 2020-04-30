@@ -12,8 +12,6 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     private Material materialToChangeFrom;
     [SerializeField] private Material materialToChangeTo = null;
 
-    private bool checkForInput = false;
-
     /// <summary>
     /// Once the player enters the switch's collider and their holding 'E',
     /// the timer is started. If the player successfully holds the switch for

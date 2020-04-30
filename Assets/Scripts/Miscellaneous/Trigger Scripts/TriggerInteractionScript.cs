@@ -21,7 +21,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     [SerializeField] protected string textToDisplay = "Hold E to interact"; // The text to appear when the player has entered the object's collider.
     protected GameObject playerInteracting = null;
 
-    private bool checkForInput = false;
+    protected bool checkForInput = false;
 
     /// <summary>
     /// Constantly decreases the current cooldown time, unless its already 0.
