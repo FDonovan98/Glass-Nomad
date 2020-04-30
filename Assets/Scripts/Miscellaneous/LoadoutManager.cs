@@ -7,16 +7,17 @@ public class LoadoutManager : MonoBehaviour
 {
     [SerializeField] private PlayersInLobby playersInLobby;
     [SerializeField] private TMP_Dropdown primaryDropdown = null;
-    //[SerializeField] private TMP_Dropdown secondaryDropdown = null;
     [SerializeField] private TMP_Dropdown armourDropdown = null;
+    [SerializeField] private TMP_Dropdown materialDropdown = null;
     [SerializeField] private bool debug = false;
 
     private List<string> primaryItemsNames = new List<string>();
-    private List<string> secondaryItemsNames = new List<string>();
     private List<string> armourItemsNames = new List<string>();
+    
+    private List<string> materialItemsNames = new List<string>();
+    private List<Material> materialItems = new List<Material>();
 
     private List<Weapon> primaryItems = new List<Weapon>();
-    private List<Weapon> secondaryItems = new List<Weapon>();
     private List<Armour> armourItems = new List<Armour>();
 
     private void Start()
@@ -26,8 +27,8 @@ public class LoadoutManager : MonoBehaviour
         RemoveAlienSpecific();
         
         InitialiseDropdown(primaryDropdown, primaryItemsNames, "Primary");
-        //InitialiseDropdown(secondaryDropdown, secondaryItemsNames, "Secondary");
         InitialiseDropdown(armourDropdown, armourItemsNames, "Armour");
+        InitialiseDropdown(materialDropdown, materialItemsNames, "Colour");
 
         UpdatePlayerPrefs();
     }
@@ -50,6 +51,9 @@ public class LoadoutManager : MonoBehaviour
         BaseObject[] baseObjects = Resources.LoadAll("Items", typeof(BaseObject)).Cast<BaseObject>().ToArray();
         AddItemsToLists(baseObjects);
 
+        Material[] materials = Resources.LoadAll("Items", typeof(Material)).Cast<Material>().ToArray();
+        AddMaterialsToLists(materials);
+
         if (debug) Debug.Log(baseObjects.Length + " items found in the Resources/Items folder.");
     }
 
@@ -64,11 +68,6 @@ public class LoadoutManager : MonoBehaviour
                     primaryItems.Add((Weapon)obj);
                     break;
 
-                // case BaseObject.ItemType.Secondary:
-                //     secondaryItemsNames.Add(obj.name);
-                //     secondaryItems.Add((Weapon)obj);
-                //     break;
-
                 case BaseObject.ItemType.Armour:
                     armourItemsNames.Add(obj.name);
                     armourItems.Add((Armour)obj);
@@ -80,17 +79,28 @@ public class LoadoutManager : MonoBehaviour
         }
     }
 
+    void AddMaterialsToLists(Material[] materials)
+    {
+        foreach (Material element in materials)
+        {
+            materialItemsNames.Add(element.name);
+            materialItems.Add(element);
+        }
+    }
+
     public void UpdatePlayerPrefs()
     {
         SetPlayerPrefs(primaryDropdown, "Primary");
-        //SetPlayerPrefs(secondaryDropdown, "Secondary");
         SetPlayerPrefs(armourDropdown, "Armour");
+        
+        SetPlayerPrefs(materialDropdown, "Material");
 
         playersInLobby.localPlayer.primaryWeapon = primaryItems[primaryDropdown.value];
         playersInLobby.localPlayer.selectedArmour = armourItems[armourDropdown.value];
 
-        if (debug) Debug.LogFormat("New PlayerPref values: {0}, {1}", primaryDropdown.captionText.text,
-            armourDropdown.captionText.text);
+        playersInLobby.localPlayer.selectedMaterial = materialItems[materialDropdown.value];
+
+        if (debug) Debug.LogFormat("New PlayerPref values: {0}, {1}", primaryDropdown.captionText.text, armourDropdown.captionText.text);
     }
 
     private void SetPlayerPrefs(TMP_Dropdown dropdown, string prefString)

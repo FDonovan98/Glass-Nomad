@@ -6,7 +6,8 @@ public class BaseObject : ScriptableObject
     {
         Primary,
         Secondary,
-        Armour
+        Armour,
+        Material
     }
 
     public ItemType itemType;
