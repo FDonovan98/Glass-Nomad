@@ -32,11 +32,14 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
 
     private new void Update()
     {
-        base.Update();
-
-        if (checkForInput && Input.GetKey(inputKey))
+        if (currCooldownTime > 0)
         {
-            if (!interactionComplete)
+            currCooldownTime -= Time.deltaTime;
+        }
+
+        if (checkForInput)
+        {
+            if (!interactionComplete && Input.GetKey(inputKey))
             {
                 if (currInteractTime >= interactTime)
                 {
@@ -51,11 +54,11 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
                 playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
                 return;
             }
-        }
-        else if (Input.GetKeyUp(inputKey))// if the player is not pressing then reset the switch's state.
-        {
-            LeftTriggerArea();
-            checkForInput = false;
+            else if (Input.GetKeyUp(inputKey))// if the player is not pressing then reset the switch's state.
+            {
+                LeftTriggerArea();
+                checkForInput = false;
+            }
         }
     }
 
