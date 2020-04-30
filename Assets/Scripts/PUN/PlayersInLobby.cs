@@ -90,6 +90,7 @@ public class PlayerInfo
     public bool isAlien;
     public Weapon primaryWeapon;
     public Armour selectedArmour;
+    public Material selectedMaterial;
 
     public PlayerInfo(string playerName, bool alien)
     {
