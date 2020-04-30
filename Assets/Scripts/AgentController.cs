@@ -249,8 +249,11 @@ public class AgentController : AgentInputHandler
     public void AgentHasDied()
     {
         allowInput = false;
-        agent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        agent.GetComponent<Rigidbody>().AddForceAtPosition(RandomForce(150f), transform.position);
+        agentRigidbody.constraints = RigidbodyConstraints.None;
+        agentRigidbody.AddForceAtPosition(RandomForce(150f), transform.position);
+
+        mainAudioSource.PlayOneShot(agentValues.deathNoise);
+
         StartCoroutine(Death(agent));
     }
     
