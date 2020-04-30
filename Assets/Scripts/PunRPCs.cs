@@ -58,13 +58,13 @@ public class PunRPCs : MonoBehaviourPunCallbacks
         AgentController agentController = PhotonNetwork.GetPhotonView(playersViewID).GetComponent<AgentController>();
 
         if (agentController.emergencyRegenActive)
-                {
-                    agentController.emergencyRegenParticleSystems = Instantiate(agentController.emergencyRegenParticleSystem, agentController.agent.transform.position, Quaternion.identity, agentController.agent.transform);
-                }
-                else
-                {
-                    Destroy(agentController.emergencyRegenParticleSystems);
-                }
+        {
+            agentController.emergencyRegenParticleSystems = Instantiate(agentController.emergencyRegenParticleSystem, agentController.agent.transform.position, Quaternion.identity, agentController.agent.transform);
+        }
+        else
+        {
+            Destroy(agentController.emergencyRegenParticleSystems);
+        }
     }
     
     [PunRPC]
