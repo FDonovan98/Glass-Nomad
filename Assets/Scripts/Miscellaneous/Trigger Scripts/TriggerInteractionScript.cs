@@ -110,8 +110,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
 
         if (playerInteracting.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
         {
-            
-
+            checkForInput = true;
             interactionText.text = textToDisplay;
         }
     }
@@ -131,6 +130,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             interactionText.text = "";
             LeftTriggerArea();
             playerInteracting = null;
+            checkForInput = false;
         }
     }
 
@@ -156,6 +156,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         currInteractTime = 0f;
         ReticleProgress.UpdateReticleProgress(0, outerReticle);
         playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+        checkForInput = false;
     }
 }
 
