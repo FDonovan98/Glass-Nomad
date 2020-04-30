@@ -35,6 +35,7 @@ public class ReloadWeapon : ActiveCommandObject
                 agentInputHandler.StartCoroutine(Reload(agentInputHandler.currentWeapon.reloadDuration, agentController));
 
                 agentInputHandler.isReloading = true;
+                agentInputHandler.animationController.SetTrigger("isReloading");
             }
         }
     }

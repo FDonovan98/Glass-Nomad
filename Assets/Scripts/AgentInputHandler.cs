@@ -85,6 +85,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public TMP_Text interactionPromptText = null;
     public Image progressBar = null;
 
+    [Header("Animations")]
+    public Animator animationController;
+
     public GameObject agent;
 
     // Delegates used by commands.
