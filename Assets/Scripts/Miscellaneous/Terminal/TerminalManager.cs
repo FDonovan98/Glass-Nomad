@@ -81,9 +81,11 @@ public class TerminalManager : MonoBehaviour
         }
     }
 
-    private void LogInSuccessful()
+    private async void LogInSuccessful()
     {
-        throw new NotImplementedException();
+        await Task.Delay(TimeSpan.FromSeconds(1f));
+        ToggleElement(logInUI);
+        ToggleElement(mainTerminalUI);
     }
 
     private async void TextScroll(string textToType, TMP_Text textElement, double timePerLetter = 0.1f, double timeToDisappear = 1f)
