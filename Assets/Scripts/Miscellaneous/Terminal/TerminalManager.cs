@@ -30,10 +30,13 @@ public class TerminalManager : MonoBehaviour
     private bool passwordCorrect = false;
 
     [Header("Logs")]
-    [SerializeField] private GameObject[] terminalLogs;
+    [SerializeField] private GameObject[] logTitles;
+    [SerializeField] private GameObject[] logDescriptions;
     [SerializeField] private Color selectedLogColor = Color.white;
     private int currentLogIndex = 0;
-    
+
+    [Header("Other")]
+    [SerializeField] private bool debug = false;
     private bool menuControlsEnabled = false;
 
     // Private Variables
@@ -42,8 +45,11 @@ public class TerminalManager : MonoBehaviour
     {
         PlayAudioClip(startUpSound);
         await Task.Delay(TimeSpan.FromSeconds(3f));
-        fanAudioSource.clip = fanWhirlSound;
-        fanAudioSource.Play(); // ---> play constantly
+        if (fanWhirlSound != null)
+        {
+            fanAudioSource.clip = fanWhirlSound;
+            fanAudioSource.Play(); // ---> play constantly
+        }
 
         // PLAY SCAN LINE ANIMATIONS
 
@@ -87,7 +93,7 @@ public class TerminalManager : MonoBehaviour
         OnKeypressed();
         usernameCorrect = false;
         if (usernameText != correctUsername) return;
-        Debug.Log("Username correct.");
+        if (debug) Debug.Log("Username correct.");
         usernameCorrect = true;
 
         if (passwordCorrect)
@@ -101,7 +107,7 @@ public class TerminalManager : MonoBehaviour
         OnKeypressed();
         passwordCorrect = false;
         if (passwordText != correctPassword) return;
-        Debug.Log("Password correct.");
+        if (debug) Debug.Log("Password correct.");
         passwordCorrect = true;
 
         if (usernameCorrect)
@@ -121,6 +127,8 @@ public class TerminalManager : MonoBehaviour
         ToggleElement(loadingUI);
         ToggleElement(mainTerminalUI);
         menuControlsEnabled = true;
+        ToggleLogSelect(GetNextLog(0));
+        ToggleLogDescription(logDescriptions[currentLogIndex]);
     }
 
     private async void CycleLoadingDots()
@@ -165,8 +173,9 @@ public class TerminalManager : MonoBehaviour
         if (arrowMovement == Vector2.zero) return;
 
         // Deselect the current log
-        ToggleLogSelect(terminalLogs[currentLogIndex]);
-        
+        ToggleLogSelect(logTitles[currentLogIndex]);
+        ToggleLogDescription(logDescriptions[currentLogIndex]);
+
         // Determine arrow movement
         if (arrowMovement == Vector2.up)
         {
@@ -176,25 +185,42 @@ public class TerminalManager : MonoBehaviour
         {
             ToggleLogSelect(GetNextLog(1));
         }
+
+        if (debug) Debug.Log("Current log selected: " + logTitles[currentLogIndex].name);
+
+        ToggleLogDescription(logDescriptions[currentLogIndex]);
     }
 
     private GameObject GetNextLog(int dir)
     {
-        if (dir != 1 || dir != -1) return null;
-        Debug.Log("Current Log Index: " + currentLogIndex);
-        currentLogIndex = (currentLogIndex + dir) % terminalLogs.Length - 1;
-        Debug.Log("New Log Index: " + currentLogIndex);
-        return terminalLogs[currentLogIndex];
+        currentLogIndex += dir;
+        if (currentLogIndex < 0)
+        {
+            currentLogIndex = logTitles.Length - 1;
+        }
+        else if (currentLogIndex > logTitles.Length - 1)
+        {
+            currentLogIndex = 0;
+        }
+
+        return logTitles[currentLogIndex];
     }
 
     private void ToggleLogSelect(GameObject log)
     {
-        if (log.GetComponentInChildren<Image>().color == Color.clear)
+        if (log.GetComponent<Image>().color != selectedLogColor)
         {
-            log.GetComponentInChildren<Image>().color = selectedLogColor;
+            if (debug) Debug.Log("Selecting log: " + log.name);
+            log.GetComponent<Image>().color = selectedLogColor;
             return;
         }
-        log.GetComponentInChildren<Image>().color = Color.clear;
+        if (debug) Debug.Log("Deselecting log: " + log.name);
+        log.GetComponent<Image>().color = Color.clear;
+    }
+
+    private void ToggleLogDescription(GameObject log)
+    {
+        log.SetActive(!log.activeInHierarchy);
     }
 
     private async void TextScroll(string textToType, TMP_Text textElement, double timePerLetter = 0.1f, double timeToDisappear = 1f)
