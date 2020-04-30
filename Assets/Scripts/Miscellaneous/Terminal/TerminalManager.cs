@@ -5,13 +5,32 @@ using UnityEngine;
 
 public class TerminalManager : MonoBehaviour
 {
+    [Header("Audio")]
     [SerializeField] private AudioSource audioSource = null;
     [SerializeField] private AudioClip fanWhirlSound = null;
     [SerializeField] private AudioClip typingSound = null;
 
+    [Header("UI Elements")]
+    [SerializeField] private GameObject logInUI = null;
+    [SerializeField] private GameObject mainTerminalUI = null;
+    
+    [Header("Username")]
+    [SerializeField] private TMP_InputField usernameField = null;
+    [SerializeField] private string correctUsername = null;
+
+    [Header("Password")]
+    [SerializeField] private TMP_InputField passwordField = null;
+    [SerializeField] private string correctPassword = null;
+
+    [Header("Logs")]
+    [SerializeField] private TerminalLog[] terminalLogs;
+    private TerminalLog currentLog = null;
+
+    // Private Variables
+
     private void Start()
     {
-        SpawnFadeFromBlack.Fade(Color.black, Color.clear, 3, this);
+        // fade in from black
         // fan audio whirl
         // enable password ui
         // enable username
@@ -53,5 +72,19 @@ public class TerminalManager : MonoBehaviour
     private void ToggleElement(GameObject elementToToggle)
     {
         elementToToggle.SetActive(!elementToToggle.activeInHierarchy);
+    }
+
+    public void CheckUsernameField(string usernameText)
+    {
+        if (usernameText != correctUsername) return;
+        Debug.Log("Username correct.");
+        // UsernameCorrect();
+    }
+
+    public void CheckPasswordField(string passwordText)
+    {
+        if (passwordText != correctPassword) return;
+        Debug.Log("Password correct.");
+        // PasswordCorrect();
     }
 }
