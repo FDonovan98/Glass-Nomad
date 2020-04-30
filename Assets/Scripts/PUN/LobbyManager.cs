@@ -247,11 +247,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         screenFader.color = Color.black;
 
         // Close room, call the RPC, and change the scene.
-        if (PhotonNetwork.IsMasterClient) ScreenFadeFinished();
+        if (PhotonNetwork.InRoom) if (PhotonNetwork.IsMasterClient) ScreenFadeFinished();
     }
 
     public void OnTerminalClick()
     {
+        StartCoroutine(FadeScreenToBlack());
         SceneManager.LoadScene(terminalSceneName);
     }
 
