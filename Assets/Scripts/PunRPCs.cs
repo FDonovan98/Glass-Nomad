@@ -50,6 +50,18 @@ public class PunRPCs : MonoBehaviourPunCallbacks
     {
         AgentInputHandler agentInputHandler = GetInputHandler(playersViewID);
         agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
+
+        if (agentInputHandler.toggleOnSound != null && agentInputHandler.mainAudioSource != null)
+        {
+            if (agentInputHandler.behaviourToToggle.isActiveAndEnabled)
+            {
+                agentInputHandler.mainAudioSource.PlayOneShot(agentInputHandler.toggleOnSound);
+            }
+            else
+            {
+                agentInputHandler.mainAudioSource.PlayOneShot(agentInputHandler.toggleOffSound);
+            }
+        }
     }
 
     [PunRPC]

@@ -9,10 +9,15 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public AgentController agentController;
     private AgentInputHandler attachedScript;
     public GameObject pauseMenu;
-    public Behaviour behaviourToToggle;
+    public AudioSource mainAudioSource = null;
     public AgentValues agentValues;
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
+
+    [Header("Toggle Behaviour")]
+    public Behaviour behaviourToToggle;
+    public AudioClip toggleOnSound = null;
+    public AudioClip toggleOffSound = null;
 
     [Header("Check If Grounded")]
     public bool isGrounded = true;
