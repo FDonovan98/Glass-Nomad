@@ -10,6 +10,7 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     private AgentInputHandler attachedScript;
     public GameObject pauseMenu;
     public AudioSource mainAudioSource = null;
+    public Renderer agentRenderer = null;
     public AgentValues agentValues;
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
@@ -159,6 +160,14 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
 
         equippedArmour = armour;
         ChangeMovementSpeedModifier(equippedArmour.speedMultiplier, true);
+    }
+
+    public void ChangeMaterial(Material material)
+    {
+        if (agentRenderer != null)
+        {
+            agentRenderer.material = material;
+        }
     }
 
     private void Update()
