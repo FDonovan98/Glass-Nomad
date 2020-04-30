@@ -33,29 +33,32 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             currCooldownTime -= Time.deltaTime;
         }
 
-        if ((checkForInput && Input.GetKey(inputKey))|| inputKey == KeyCode.None)
+        if (checkForInput && playerInteracting != null)
         {
-            if (currInteractTime >= interactTime)
+            if (Input.GetKey(inputKey)|| inputKey == KeyCode.None)
             {
-                playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
-                photonView.RPC("InteractionComplete", RpcTarget.All);
-                currInteractTime = 0f;
-                interactionComplete = true;
-                currCooldownTime = cooldownTime;
+                if (currInteractTime >= interactTime)
+                {
+                    playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+                    photonView.RPC("InteractionComplete", RpcTarget.All);
+                    currInteractTime = 0f;
+                    interactionComplete = true;
+                    currCooldownTime = cooldownTime;
+                    return;
+                }
+
+                currInteractTime += Time.deltaTime;
+                float percentage = (currInteractTime / interactTime) * 100;
+                if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
+
+                ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
+                playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
                 return;
             }
-
-            currInteractTime += Time.deltaTime;
-            float percentage = (currInteractTime / interactTime) * 100;
-            if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
-
-            ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
-            playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
-            return;
-        }
-        else if (Input.GetKeyUp(inputKey))
-        {
-            LeftTriggerArea();
+            else if (Input.GetKeyUp(inputKey))
+            {
+                LeftTriggerArea();
+            }
         }
     }
 
@@ -109,8 +112,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         playerInteracting = coll.gameObject;
 
         if (playerInteracting.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
-        {
-            
+        {  
+            checkForInput = true;
 
             interactionText.text = textToDisplay;
         }
