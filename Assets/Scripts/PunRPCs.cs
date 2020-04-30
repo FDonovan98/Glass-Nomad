@@ -52,4 +52,19 @@ public class PunRPCs : MonoBehaviourPunCallbacks
         AgentInputHandler agentInputHandler = PhotonNetwork.GetPhotonView(playersViewID).GetComponent<AgentController>();
         agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
     }
+
+    [PunRPC]
+    public void EmergencyRegenSmoke(int playersViewID)
+    {
+        AgentController agentController = PhotonNetwork.GetPhotonView(playersViewID).GetComponent<AgentController>();
+
+        if (agentController.emergencyRegenActive)
+                {
+                    agentController.emergencyRegenParticleSystems = Instantiate(agentController.emergencyRegenParticleSystem, agentController.agent.transform.position, Quaternion.identity, agentController.agent.transform);
+                }
+                else
+                {
+                    Destroy(agentController.emergencyRegenParticleSystems);
+                }
+    }
 }

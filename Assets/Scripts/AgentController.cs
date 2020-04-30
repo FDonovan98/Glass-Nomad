@@ -21,6 +21,8 @@ public class AgentController : AgentInputHandler
     public GameObject deathScreen;
     public Color alienVision;
     public bool specialVision = false;
+    public GameObject emergencyRegenParticleSystem;
+    public GameObject emergencyRegenParticleSystems;
 
     [Header("Current Stats")]
     [ReadOnly]
@@ -52,6 +54,7 @@ public class AgentController : AgentInputHandler
 
     private void Awake()
     { 
+        updateUI += TriggerEffectsOnStatChange;
 
         if (agentValues != null)
         {
@@ -86,6 +89,19 @@ public class AgentController : AgentInputHandler
         if (updateUI != null)
         {
             updateUI();
+        }
+    }
+
+    void TriggerEffectsOnStatChange(ResourceType resourceType)
+    {
+        switch (resourceType)
+        {
+            case ResourceType.EmergencyRegen:
+                photonView.RPC("EmergencyRegenSmoke", RpcTarget.All, photonView.ViewID);
+                break;
+
+            default:
+                break;
         }
     }
 
