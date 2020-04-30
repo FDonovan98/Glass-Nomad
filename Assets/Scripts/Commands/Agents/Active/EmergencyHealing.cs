@@ -41,6 +41,9 @@ public class EmergencyHealing : ActiveCommandObject
         agentController.ChangeMovementSpeedModifier(agentController.agentValues.emergencyRegenSpeedMultiplier, true);
         agentController.emergencyRegenUsesRemaining--;
 
+        //Play audio.
+        agentController.mainAudioSource.PlayOneShot(agentController.emergencyRegenAudio);
+
         // Set agent health.
         float healthToAdd = agentValues.maxHealth - agentController.currentHealth;
         healthToAdd += agentValues.maxHealth * agentValues.emergencyRegenMaxHealthModifier - agentValues.maxHealth;

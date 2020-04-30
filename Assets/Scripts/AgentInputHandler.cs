@@ -85,6 +85,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public TMP_Text interactionPromptText = null;
     public Image progressBar = null;
 
+    [Header("Emergency Regeneration")]
+    public AudioClip emergencyRegenAudio;
+
     public GameObject agent;
 
     // Delegates used by commands.
