@@ -79,6 +79,10 @@ public class AgentUIController : MonoBehaviour
                 UpdateOxygenRegenUI();
                 break;
 
+            case ResourceType.AlienVision:
+                UpdateAlienVisionUI();
+                break;
+
             default:
                 Debug.LogWarning(gameObject.name + " tried to update UI of unrecognized type.");
                 break;
