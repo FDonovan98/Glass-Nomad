@@ -54,14 +54,23 @@ public class ChangeResourceOverTime : PassiveCommandObject
                     agentController = (AgentController)agentInputHandler;
                 } 
 
-                agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue);
-
-                // Updates UI to flag oxy is regenerating.
-                if (element.resourceType == ResourceType.Oxygen && element.changeValue > 0)
+                // Oxygen decrease rate scales with movement speed.
+                if (element.resourceType == ResourceType.Oxygen)
                 {
-                    agentController.oxygenIsRegening = true;
-                    agentController.updateUI(ResourceType.OxygenRegen);
+                    agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue * agentInputHandler.moveSpeedMultiplier);
+                    
+                    // Updates UI to flag oxy is regenerating.
+                    if (element.changeValue > 0)
+                    {
+                        agentController.oxygenIsRegening = true;
+                        agentController.updateUI(ResourceType.OxygenRegen);
+                    }
                 }
+                else
+                {
+                    agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue);
+                }
+
             }
         }
     }
