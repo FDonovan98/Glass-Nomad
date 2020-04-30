@@ -11,6 +11,7 @@ public class FireWeapon : ActiveCommandObject
     {
         keyTable.Add("Primary Fire", primaryFire);
     }
+    
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
         if (agentInputHandler.isLocalAgent)
@@ -107,17 +108,19 @@ public class FireWeapon : ActiveCommandObject
             theta *= agentInputHandler.currentRecoilValue * agentInputHandler.currentWeapon.maxADSSpreadAngle;
         }
             
-        float[] rand = 
-        {
-            Random.Range(0.0f, 1.0f),
-            Random.Range(0.0f, 1.0f)
-        };
+        // float[] rand = 
+        // {
+        //     Random.Range(0.0f, 1.0f),
+        //     Random.Range(0.0f, 1.0f)
+        // };
 
-        rand[0] *= theta;
-        rand[1] *= theta;
+        // rand[0] *= theta;
+        // rand[1] *= theta;
 
-        RotateX(ref direction, rand[0]);
-        RotateY(ref direction, rand[1]);
+        // RotateX(ref direction, rand[0]);
+        // RotateY(ref direction, rand[1]);
+        RotateX(ref direction, theta);
+        RotateY(ref direction, theta);
 
         return direction;
     }
