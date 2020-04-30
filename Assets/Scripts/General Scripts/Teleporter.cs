@@ -11,6 +11,9 @@ public class Teleporter : TriggerInteractionScript
     [SerializeField]
     private Behaviour[] behavioursToEnableWithPower;
 
+    [SerializeField]
+    private AudioClip teleportSound = null;
+
     private new void OnTriggerStay(Collider coll)
     {
         if (biDirectional && powered)
@@ -30,6 +33,11 @@ public class Teleporter : TriggerInteractionScript
         Vector3 spawnLocation = linkedTeleporter.transform.position;
         spawnLocation += new Vector3(0.0f, playerInteracting.GetComponent<Collider>().bounds.extents.y, 0.0f);
         playerInteracting.transform.position = spawnLocation;
+
+        if (teleportSound != null)
+        {
+            playerInteracting.GetComponentInChildren<AudioSource>().PlayOneShot(teleportSound);
+        }
     }
 
     public void Power()
