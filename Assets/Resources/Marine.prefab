@@ -23423,7 +23423,7 @@ Transform:
   m_GameObject: {fileID: 5923454201242450266}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.9994586, y: -19.400002, z: -1.0266932}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.455, y: 0.455, z: 0.455}
   m_Children:
   - {fileID: 4490304125024094492}
   - {fileID: 8749036417947830059}
@@ -24310,7 +24310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentController: {fileID: 6918125114942702231}
   pauseMenu: {fileID: 7212598492174180020}
-  behaviourToToggle: {fileID: 786566164578654222}
+  mainAudioSource: {fileID: 0}
   agentValues: {fileID: 11400000, guid: 2619dd74696273d458de85511e14002f, type: 2}
   activeCommands:
   - {fileID: 11400000, guid: bf6fceff59e91274c9906a9d7af26d34, type: 2}
@@ -24332,6 +24332,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c90bbc2e9bf6d844f8df09008d7ca543, type: 2}
   - {fileID: 11400000, guid: ee522f08e3d333243b18b1e5a1648b58, type: 2}
   - {fileID: 11400000, guid: 59534da8ccd2698498146bf751894900, type: 2}
+  behaviourToToggle: {fileID: 786566164578654222}
+  toggleOnSound: {fileID: 0}
+  toggleOffSound: {fileID: 0}
   isGrounded: 1
   isSprinting: 0
   gravityDirection: {x: 0, y: -1, z: 0}
