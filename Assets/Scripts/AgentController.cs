@@ -252,7 +252,10 @@ public class AgentController : AgentInputHandler
         agentRigidbody.constraints = RigidbodyConstraints.None;
         agentRigidbody.AddForceAtPosition(RandomForce(150f), transform.position);
 
-        mainAudioSource.PlayOneShot(agentValues.deathNoise);
+        if (agentValues.deathNoise != null)
+        {
+            mainAudioSource.PlayOneShot(agentValues.deathNoise);
+        }
 
         StartCoroutine(Death(agent));
     }
