@@ -176,14 +176,9 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
                 return;
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(Time.deltaTime));
-            ChangeColourChange(new Color
-            (
-                col.r * (Mathf.Sin(Time.time * flashSpeed) + 1) / 2.0f,
-                col.g * (Mathf.Sin(Time.time * flashSpeed) + 1) / 2.0f,
-                col.b * (Mathf.Sin(Time.time * flashSpeed) + 1) / 2.0f,
-                col.a
-            ));
+            ChangeColourChange(Color.red);
+            
+            await Task.Delay(TimeSpan.FromSeconds(2.0f));      
         }
 
         ChangeColourChange(Color.clear);
