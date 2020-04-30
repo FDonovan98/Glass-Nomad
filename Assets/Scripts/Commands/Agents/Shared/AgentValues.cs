@@ -73,4 +73,7 @@ public class AgentValues : ScriptableObject
     public bool[] lagUIInAxis = {false, false};
     [Range(0.0f, 1.0f)]
     public float[] UICatchupSpeed = {0.5f, 0.5f};
+
+    [Header("Death Noise")]
+    public AudioClip deathNoise;
 }
