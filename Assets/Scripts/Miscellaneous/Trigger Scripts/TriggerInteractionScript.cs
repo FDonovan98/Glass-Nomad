@@ -93,7 +93,10 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         outerReticle = agentUIController.outerReticule;
         interactionText = agentUIController.interactionText;
 
-        interactionText.text = textToDisplay;
+        if (interactionText != null)
+        {
+            interactionText.text = textToDisplay;
+        }
     }
 
     /// <summary>
@@ -115,7 +118,10 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         {  
             checkForInput = true;
 
-            interactionText.text = textToDisplay;
+            if (interactionText != null)
+            {
+                interactionText.text = textToDisplay;
+            }
         }
     }
 
@@ -131,7 +137,10 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         if (coll.GetComponent<PhotonView>().IsMine)
         {
             interactionComplete = false;
-            interactionText.text = "";
+            if (interactionText != null)
+            {
+                interactionText.text = string.Empty;
+            }
             LeftTriggerArea();
             playerInteracting = null;
         }
