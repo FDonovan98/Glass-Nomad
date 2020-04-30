@@ -4,6 +4,7 @@ using Photon.Pun;
 public class DoorTriggerScript : TriggerInteractionScript
 {
     [Header("Door Interaction")]
+    [SerializeField] private AudioSource doorAudioSource = null;
     [SerializeField] private AudioClip doorOpeningSound = null;
     [SerializeField] private AudioClip doorClosingSound = null;
 
@@ -65,7 +66,7 @@ public class DoorTriggerScript : TriggerInteractionScript
     {
         AudioClip clipToPlay = isDoorOpen ? doorOpeningSound : doorClosingSound;
         if (clipToPlay == null) return;
-        GetComponent<AudioSource>().PlayOneShot(clipToPlay);
+        doorAudioSource.PlayOneShot(clipToPlay);
     }
 
     /// <summary>
