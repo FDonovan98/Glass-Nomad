@@ -28,15 +28,13 @@ public class DoorTriggerScript : TriggerInteractionScript
         anim = GetComponent<Animator>();
     }
 
-    /// <summary>
-    /// Overrides the TriggerInteraction method, adding the functionality
-    /// of changing the doors current state.
-    /// </summary>
-    /// <param name="coll"></param>
-    protected override void LeftTriggerArea()
+    new void OnTriggerExit(Collider coll)
     {
-        base.LeftTriggerArea();
-        if (isDoorOpen) photonView.RPC("InteractionComplete", RpcTarget.All);
+        base.OnTriggerExit(coll);
+        if (coll.GetComponent<PhotonView>().IsMine)
+        {
+            if (isDoorOpen) photonView.RPC("InteractionComplete", RpcTarget.All);
+        }
     }
 
     /// <summary>

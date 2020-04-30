@@ -88,6 +88,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [Header("Animations")]
     public Animator animationController;
 
+    [Header("Emergency Regeneration")]
+    public AudioClip emergencyRegenAudio;
+
     public GameObject agent;
 
     // Delegates used by commands.

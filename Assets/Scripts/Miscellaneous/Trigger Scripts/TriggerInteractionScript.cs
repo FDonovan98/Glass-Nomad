@@ -33,7 +33,7 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
             currCooldownTime -= Time.deltaTime;
         }
 
-        if (checkForInput && playerInteracting != null)
+        if (checkForInput && !interactionComplete && playerInteracting != null)
         {
             if (Input.GetKey(inputKey)|| inputKey == KeyCode.None)
             {
