@@ -97,7 +97,10 @@ public class AgentController : AgentInputHandler
         switch (resourceType)
         {
             case ResourceType.EmergencyRegen:
-                photonView.RPC("EmergencyRegenSmoke", RpcTarget.All, photonView.ViewID);
+                if (emergencyRegenParticleSystem != null)
+                {
+                    photonView.RPC("EmergencyRegenSmoke", RpcTarget.All, photonView.ViewID);
+                }
                 break;
 
             default:
@@ -155,6 +158,7 @@ public class AgentController : AgentInputHandler
 
         if (resourceType == ResourceType.AlienVision)
         {
+            alienVisionIsActive = value;
             updateUI(ResourceType.AlienVision);
         }
     }

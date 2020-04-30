@@ -15,14 +15,12 @@ Ben Jones - Designer
 
 Lewis Blackford - Designer
 
-[Dani Tilbey](https://twitter.com/SableFantasia) - Marine & Alien Modeller
+[Dani Tilbey](https://twitter.com/SableFantasia) - Marine Modeller
 
-Craig Hardaker - Artist
+Craig Hardaker - Alien Modeller & Artist
 
 [Ed Pocock](https://www.artstation.com/emscat) - Artist
 
 Finn Morley - Animator
 
 [Jodie Taylor](https://twitter.com/becca_mochi) - Writer
-
-The slime model is a retexture of a model I have used for a previous academic project, for the creativity cards. -Craig.

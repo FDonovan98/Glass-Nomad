@@ -12,6 +12,8 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     private Material materialToChangeFrom;
     [SerializeField] private Material materialToChangeTo = null;
 
+    private bool checkForInput = false;
+
     /// <summary>
     /// Once the player enters the switch's collider and their holding 'E',
     /// the timer is started. If the player successfully holds the switch for
@@ -24,30 +26,38 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
     {
         if (coll.tag == "Player" && coll.gameObject.layer == 8 && currCooldownTime <= 0 && coll.GetComponent<PhotonView>().IsMine)
         {
-            if (Input.GetKey(inputKey))
-            {
-                if (!interactionComplete)
-                {
-                    if (currInteractTime >= interactTime)
-                    {
-                        photonView.RPC("InteractionComplete", RpcTarget.All);
-                    }
-
-                    currInteractTime += Time.deltaTime;
-                    float percentage = (currInteractTime / interactTime) * 100;
-                    if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
-
-                    ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
-                    playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
-                    return;
-                }
-            }
-            else if (Input.GetKeyUp(inputKey))// if the player is not pressing then reset the switch's state.
-            {
-                LeftTriggerArea();
-            }
+            checkForInput = true;
 
             interactionText.text = textToDisplay;
+        }
+    }
+
+    private new void Update()
+    {
+        base.Update();
+
+        if (checkForInput && Input.GetKey(inputKey))
+        {
+            if (!interactionComplete)
+            {
+                if (currInteractTime >= interactTime)
+                {
+                    photonView.RPC("InteractionComplete", RpcTarget.All);
+                }
+
+                currInteractTime += Time.deltaTime;
+                float percentage = (currInteractTime / interactTime) * 100;
+                if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
+
+                ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
+                playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
+                return;
+            }
+        }
+        else if (Input.GetKeyUp(inputKey))// if the player is not pressing then reset the switch's state.
+        {
+            LeftTriggerArea();
+            checkForInput = false;
         }
     }
 
@@ -70,6 +80,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
             photonView.RPC("Deactivate", RpcTarget.All);
         }
         playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+        currInteractTime = 0.0f;
         base.LeftTriggerArea();
     }
 

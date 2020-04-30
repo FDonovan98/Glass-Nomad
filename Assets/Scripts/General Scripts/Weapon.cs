@@ -37,9 +37,6 @@ public class Weapon : BaseObject
     public float upForceStep = 1.0f;
     public float downForceDuration = 2.0f;
 
-    // The maxium amount of bullet spread randomness.
-    public float maxBulletSpread = 10f;
-
     // The sound the weapon makes when you fire.
     public AudioClip weaponSound = null;
 
