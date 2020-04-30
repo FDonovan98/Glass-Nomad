@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 using Photon.Pun;
 
 public class PunRPCs : MonoBehaviourPunCallbacks
@@ -31,7 +30,7 @@ public class PunRPCs : MonoBehaviourPunCallbacks
     [PunRPC]
     public void PlayerWasHit(int hitPlayerViewID, Vector3 hitPos, Vector3 hitNormal, int weaponDamage)
     {
-        AgentInputHandler targetAgentInputHandler = PhotonNetwork.GetPhotonView(hitPlayerViewID).GetComponent<AgentInputHandler>();
+        AgentInputHandler targetAgentInputHandler = GetInputHandler(hitPlayerViewID);
 
         if (targetAgentInputHandler != null)
         {
@@ -49,7 +48,7 @@ public class PunRPCs : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Toggle(int playersViewID)
     {
-        AgentInputHandler agentInputHandler = PhotonNetwork.GetPhotonView(playersViewID).GetComponent<AgentController>();
+        AgentInputHandler agentInputHandler = GetInputHandler(playersViewID);
         agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
     }
 
@@ -66,5 +65,47 @@ public class PunRPCs : MonoBehaviourPunCallbacks
                 {
                     Destroy(agentController.emergencyRegenParticleSystems);
                 }
+    }
+    
+    [PunRPC]
+    public void PlayGunshot(int agentsViewID)
+    {
+        AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
+        Debug.Log("PlayGunshot: Sending to all.");
+        if (agentInputHandler.currentWeapon.weaponSound != null)
+        {
+            AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponentInChildren<AudioSource>();
+
+            if (weaponAudioSource == null)
+            {
+                weaponAudioSource = agentInputHandler.weaponObject.AddComponent(typeof(AudioSource)) as AudioSource;
+            }
+
+            weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.weaponSound);
+        } 
+        else
+        {
+            Debug.LogAssertion(agentInputHandler.currentWeapon.name + " is missing a gunshot sound");
+        }
+    }
+
+    [PunRPC]
+    public void MuzzleFlash(int agentsViewID)
+    {
+        AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
+        Debug.Log("MuzzleFlash: Sending to all.");
+        if (agentInputHandler.weaponMuzzleFlash != null)
+        {
+            agentInputHandler.weaponMuzzleFlash.Play();
+        }
+        else
+        {
+            Debug.LogAssertion(agentInputHandler.currentWeapon.name + " has no muzzle flash");
+        }
+    }
+
+    private AgentInputHandler GetInputHandler(int viewId)
+    {
+        return PhotonNetwork.GetPhotonView(viewId).GetComponent<AgentController>();
     }
 }

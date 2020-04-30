@@ -58,7 +58,6 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
             if (player.GetComponent<PhotonView>().IsMine)
             {
                 playerInteracting = player;
-                RetrieveObjectiveUIElements();
             }
         }
 
@@ -70,6 +69,7 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
         
         Debug.LogFormat("Interaction Complete: {0}, all of the marines should receieve this.", objectiveValues.name);
 
+        RetrieveObjectiveUIElements();
         objectiveValues.completed = true;
         ObjectiveComplete();
         WriteTextToHud();
