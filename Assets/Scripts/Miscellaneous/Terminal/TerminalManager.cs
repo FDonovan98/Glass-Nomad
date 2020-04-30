@@ -9,6 +9,7 @@ public class TerminalManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource = null;
     [SerializeField] private AudioClip fanWhirlSound = null;
     [SerializeField] private AudioClip typingSound = null;
+    [SerializeField] private AudioClip[] keyboardFoleySound;
 
     [Header("UI Elements")]
     [SerializeField] private GameObject logInUI = null;
@@ -17,10 +18,12 @@ public class TerminalManager : MonoBehaviour
     [Header("Username")]
     [SerializeField] private TMP_InputField usernameField = null;
     [SerializeField] private string correctUsername = null;
+    private bool usernameCorrect = false;
 
     [Header("Password")]
     [SerializeField] private TMP_InputField passwordField = null;
     [SerializeField] private string correctPassword = null;
+    private bool passwordCorrect = false;
 
     [Header("Logs")]
     [SerializeField] private TerminalLog[] terminalLogs;
@@ -30,6 +33,7 @@ public class TerminalManager : MonoBehaviour
 
     private void Start()
     {
+        PlayAudioClip(fanWhirlSound);
         // fade in from black
         // fan audio whirl
         // enable password ui
@@ -49,6 +53,37 @@ public class TerminalManager : MonoBehaviour
         // fan whirl down
         // ctr screen off effect
         // load lobby
+    }
+
+    public void CheckUsernameField(string usernameText)
+    {
+        usernameCorrect = false;
+        if (usernameText != correctUsername) return;
+        Debug.Log("Username correct.");
+        usernameCorrect = true;
+
+        if (passwordCorrect)
+        {
+            LogInSuccessful();
+        }
+    }
+
+    public void CheckPasswordField(string passwordText)
+    {
+        passwordCorrect = false;
+        if (passwordText != correctPassword) return;
+        Debug.Log("Password correct.");
+        passwordCorrect = true;
+
+        if (usernameCorrect)
+        {
+            LogInSuccessful();
+        }
+    }
+
+    private void LogInSuccessful()
+    {
+        throw new NotImplementedException();
     }
 
     private async void TextScroll(string textToType, TMP_Text textElement, double timePerLetter = 0.1f, double timeToDisappear = 1f)
@@ -72,19 +107,5 @@ public class TerminalManager : MonoBehaviour
     private void ToggleElement(GameObject elementToToggle)
     {
         elementToToggle.SetActive(!elementToToggle.activeInHierarchy);
-    }
-
-    public void CheckUsernameField(string usernameText)
-    {
-        if (usernameText != correctUsername) return;
-        Debug.Log("Username correct.");
-        // UsernameCorrect();
-    }
-
-    public void CheckPasswordField(string passwordText)
-    {
-        if (passwordText != correctPassword) return;
-        Debug.Log("Password correct.");
-        // PasswordCorrect();
     }
 }
