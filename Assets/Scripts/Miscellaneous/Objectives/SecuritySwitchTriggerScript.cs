@@ -80,6 +80,7 @@ public class SecuritySwitchTriggerScript : TriggerInteractionScript
             photonView.RPC("Deactivate", RpcTarget.All);
         }
         playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+        currInteractTime = 0.0f;
         base.LeftTriggerArea();
     }
 
