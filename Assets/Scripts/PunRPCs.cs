@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 using Photon.Pun;
 
 public class PunRPCs : MonoBehaviourPunCallbacks
@@ -31,7 +30,7 @@ public class PunRPCs : MonoBehaviourPunCallbacks
     [PunRPC]
     public void PlayerWasHit(int hitPlayerViewID, Vector3 hitPos, Vector3 hitNormal, int weaponDamage)
     {
-        AgentInputHandler targetAgentInputHandler = PhotonNetwork.GetPhotonView(hitPlayerViewID).GetComponent<AgentInputHandler>();
+        AgentInputHandler targetAgentInputHandler = GetInputHandler(hitPlayerViewID);
 
         if (targetAgentInputHandler != null)
         {
@@ -49,7 +48,12 @@ public class PunRPCs : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Toggle(int playersViewID)
     {
-        AgentInputHandler agentInputHandler = PhotonNetwork.GetPhotonView(playersViewID).GetComponent<AgentController>();
+        AgentInputHandler agentInputHandler = GetInputHandler(playersViewID);
         agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
+    }
+
+    private AgentInputHandler GetInputHandler(int viewId)
+    {
+        return PhotonNetwork.GetPhotonView(viewId).GetComponent<AgentController>();
     }
 }
