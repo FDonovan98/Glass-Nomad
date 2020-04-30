@@ -21,6 +21,8 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     [SerializeField] protected string textToDisplay = "Hold E to interact"; // The text to appear when the player has entered the object's collider.
     protected GameObject playerInteracting = null;
 
+    private bool checkForInput = false;
+
     /// <summary>
     /// Constantly decreases the current cooldown time, unless its already 0.
     /// </summary>
@@ -29,6 +31,31 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
         if (currCooldownTime > 0)
         {
             currCooldownTime -= Time.deltaTime;
+        }
+
+        if ((checkForInput && Input.GetKey(inputKey))|| inputKey == KeyCode.None)
+        {
+            if (currInteractTime >= interactTime)
+            {
+                playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
+                photonView.RPC("InteractionComplete", RpcTarget.All);
+                currInteractTime = 0f;
+                interactionComplete = true;
+                currCooldownTime = cooldownTime;
+                return;
+            }
+
+            currInteractTime += Time.deltaTime;
+            float percentage = (currInteractTime / interactTime) * 100;
+            if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
+
+            ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
+            playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
+            return;
+        }
+        else if (Input.GetKeyUp(inputKey))
+        {
+            LeftTriggerArea();
         }
     }
 
@@ -40,16 +67,18 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     protected virtual void OnTriggerEnter(Collider coll)
     {
         if (interactionComplete) return;
-        
-        try {
+
+        try
+        {
             playerInteracting = coll.gameObject;
-            
+
             if (coll.GetComponent<PhotonView>().IsMine && coll.gameObject.layer == 8)
             {
                 PopulateVariables();
             }
         }
-        catch {
+        catch
+        {
             Debug.LogError("Outer Reticle or Interaction Text has not been set correctly.");
         }
     }
@@ -78,34 +107,11 @@ public class TriggerInteractionScript : MonoBehaviourPunCallbacks
     {
         if (!coll.GetComponent<PhotonView>().IsMine) return;
         playerInteracting = coll.gameObject;
-        
-        if (playerInteracting.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
-        {            
-            if (Input.GetKey(inputKey) || inputKey == KeyCode.None)
-            {
-                if (currInteractTime >= interactTime)
-                {
-                    playerInteracting.GetComponent<AgentInputHandler>().allowInput = true;
-                    photonView.RPC("InteractionComplete", RpcTarget.All);
-                    currInteractTime = 0f;
-                    interactionComplete = true;
-                    currCooldownTime = cooldownTime;
-                    return;
-                }
 
-                currInteractTime += Time.deltaTime;
-                float percentage = (currInteractTime / interactTime) * 100;
-                if (debug) Debug.LogFormat("Interaction progress: {0}%", percentage);
-                
-                ReticleProgress.UpdateReticleProgress(percentage, outerReticle);
-                playerInteracting.GetComponent<AgentInputHandler>().allowInput = false;
-                return;
-            }
-            else if (Input.GetKeyUp(inputKey))
-            {
-                LeftTriggerArea();
-            }
+        if (playerInteracting.tag == "Player" && currCooldownTime <= 0 && !interactionComplete)
+        {
             
+
             interactionText.text = textToDisplay;
         }
     }
@@ -157,7 +163,7 @@ namespace TriggerExtensionMethods
 {
     public static class Finder
     {
-        public static T FindComponentWithTag<T>(this GameObject parent, string tag)where T:Component
+        public static T FindComponentWithTag<T>(this GameObject parent, string tag) where T : Component
         {
             foreach (Transform t in parent.transform.GetComponentsInChildren<Transform>())
             {
