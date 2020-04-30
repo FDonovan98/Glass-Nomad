@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Photon.Pun;
 
 [CreateAssetMenu(fileName = "DefaultXZMovement", menuName = "Commands/Active/XZ Movement")]
 public class XZMovement : ActiveCommandObject
@@ -37,7 +38,12 @@ public class XZMovement : ActiveCommandObject
             inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime * agentInputHandler.moveSpeedMultiplier;
 
             agentInputHandler.agentRigidbody.velocity += inputMovementVector * agentInputHandler.moveSpeedMultiplier;
-
+            
+            if (inputMovementVector.magnitude > 0)
+            {
+                PhotonView agentsPhotonView = agentInputHandler.GetComponent<PhotonView>();
+                agentsPhotonView.RPC("PlayFootstep", RpcTarget.All, agentsPhotonView.ViewID);
+            }
         }
         else
         {

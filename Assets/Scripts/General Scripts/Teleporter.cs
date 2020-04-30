@@ -12,7 +12,9 @@ public class Teleporter : TriggerInteractionScript
     private Behaviour[] behavioursToEnableWithPower;
 
     [SerializeField]
-    private AudioClip teleportSound = null;
+    private AudioClip audioClip = null;
+    [SerializeField]
+    private AudioSource audioSource = null;
 
     private new void OnTriggerStay(Collider coll)
     {
@@ -34,9 +36,9 @@ public class Teleporter : TriggerInteractionScript
         spawnLocation += new Vector3(0.0f, playerInteracting.GetComponent<Collider>().bounds.extents.y, 0.0f);
         playerInteracting.transform.position = spawnLocation;
 
-        if (teleportSound != null)
+        if (audioClip != null && audioSource != null)
         {
-            playerInteracting.GetComponentInChildren<AudioSource>().PlayOneShot(teleportSound);
+            audioSource.PlayOneShot(audioClip);
         }
     }
 

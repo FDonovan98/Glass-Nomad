@@ -9,11 +9,8 @@ public class SecuritySwitchManager : ObjectiveInteraction
     // The number of switches that are currently activated.
     private int currentSwitchesActivated = 0;
 
-    // The particle effects to start playing once the power has turned on.
-    [SerializeField] private ParticleSystem[] generatorParticleSystems = null;
-
     // The objects that should be emissive once power is turned on.
-    [SerializeField] private GameObject[] emissiveObjects = null;
+    [SerializeField] private GameObject[] objectsToEnable = null;
 
     // The source to play audio from once power is turned on.
     [SerializeField] private AudioSource generatorAudioSource = null;
@@ -56,9 +53,16 @@ public class SecuritySwitchManager : ObjectiveInteraction
     private void PowerOn()
     {
         OpenAllDoors();
-        TurnOnGenerators();
         StartSoundEffect();
-        EnableEmissives();
+        EnableObjects();
+    }
+
+    void EnableObjects()
+    {
+        foreach (GameObject element in objectsToEnable)
+        {
+            element.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -80,18 +84,6 @@ public class SecuritySwitchManager : ObjectiveInteraction
             doorTrigger.LockDoorOpen();
         }
     }
-
-    /// <summary>
-    /// Loops through all the particle systems assigned in the inspector and
-    /// plays them.
-    /// </summary>
-    private void TurnOnGenerators()
-    {
-        foreach (ParticleSystem ps in generatorParticleSystems)
-        {
-            if (ps != null) ps.Play();
-        }
-    }
     
     /// <summary>
     /// Plays the generator sound effect.
@@ -99,18 +91,5 @@ public class SecuritySwitchManager : ObjectiveInteraction
     private void StartSoundEffect()
     {
         generatorAudioSource.PlayOneShot(generatorSound);
-    }
-
-    /// <summary>
-    /// Enables the emissive materials of the emissive objects set in inspector.
-    /// </summary>
-    private void EnableEmissives()
-    {
-        // Enable generator room emission material.
-        foreach (GameObject mat in emissiveObjects)
-        {
-            Debug.Log("Enabling the emission on: " + mat.name + " on " + mat.GetComponent<Renderer>().materials[1].name);
-            mat.GetComponent<Renderer>().materials[1].EnableKeyword("_EMISSION");
-        }
     }
 }

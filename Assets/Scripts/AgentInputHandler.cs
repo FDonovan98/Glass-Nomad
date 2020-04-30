@@ -34,6 +34,8 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     [ReadOnly]
     public float moveSpeedMultiplier = 1.0f;
     public Rigidbody agentRigidbody;
+    public AudioSource footstepSource = null;
+    public AudioClip[] footstepClips;
 
     [Header("Stairs")]
     [ReadOnly]
@@ -233,5 +235,10 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         {
             moveSpeedMultiplier /= value;
         }
+    }
+
+    public AudioClip GetRandomFootstepClip()
+    {
+        return footstepClips[Random.Range(0, footstepClips.Length - 1)];
     }
 }
