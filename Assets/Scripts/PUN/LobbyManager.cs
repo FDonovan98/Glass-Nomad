@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
+using System;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -247,11 +249,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         screenFader.color = Color.black;
 
         // Close room, call the RPC, and change the scene.
-        if (PhotonNetwork.IsMasterClient) ScreenFadeFinished();
+        if (PhotonNetwork.InRoom) if (PhotonNetwork.IsMasterClient) ScreenFadeFinished();
     }
 
-    public void OnTerminalClick()
+    public async void OnTerminalClick()
     {
+        StartCoroutine(FadeScreenToBlack());
+        await Task.Delay(TimeSpan.FromSeconds(1f));
         SceneManager.LoadScene(terminalSceneName);
     }
 
