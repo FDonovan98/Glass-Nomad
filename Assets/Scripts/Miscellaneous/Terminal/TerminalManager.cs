@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TerminalManager : MonoBehaviour
@@ -10,6 +11,7 @@ public class TerminalManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource = null;
     [SerializeField] private AudioSource fanAudioSource = null;
     [SerializeField] private AudioClip startUpSound = null;
+    [SerializeField] private AudioClip logOffSound = null;
     [SerializeField] private AudioClip fanWhirlSound = null;
     [SerializeField] private AudioClip typingSound = null;
     [SerializeField] private AudioClip[] keyboardFoleySounds;
@@ -32,6 +34,7 @@ public class TerminalManager : MonoBehaviour
     [Header("Logs")]
     [SerializeField] private GameObject[] logTitles;
     [SerializeField] private GameObject[] logDescriptions;
+    [SerializeField] private AudioClip[] logAudios;
     [SerializeField] private Color selectedLogColor = Color.white;
     private int currentLogIndex = 0;
 
@@ -79,6 +82,11 @@ public class TerminalManager : MonoBehaviour
     {
         if (audioClip == null) return;
         audioSource.PlayOneShot(audioClip);
+    }
+
+    private void ToggleElement(GameObject elementToToggle)
+    {
+        elementToToggle.SetActive(!elementToToggle.activeInHierarchy);
     }
 
     private void OnKeypressed()
@@ -152,6 +160,10 @@ public class TerminalManager : MonoBehaviour
         if (!menuControlsEnabled) return;
 
         MoveLogSelection(GetArrowInput());
+
+        if (Input.GetKeyDown(KeyCode.Return)) PlayAudioClip(logAudios[currentLogIndex]);
+
+        if (Input.GetKeyDown(KeyCode.Escape)) LogOff();
     }
 
     private Vector3 GetArrowInput()
@@ -223,21 +235,24 @@ public class TerminalManager : MonoBehaviour
         log.SetActive(!log.activeInHierarchy);
     }
 
-    private async void TextScroll(string textToType, TMP_Text textElement, double timePerLetter = 0.1f, double timeToDisappear = 1f)
+    private void LogOff()
     {
-        string currText = "";
-        foreach (Char letter in textToType.ToCharArray())
-        {
-            currText += letter;
-            textElement.text = "<mark=#000000aa>" + currText + "</mark>";
-            await Task.Delay(TimeSpan.FromSeconds(timePerLetter));
-        }
-        await Task.Delay(TimeSpan.FromSeconds(timeToDisappear));
-        textElement.text = "";
+        ToggleElement(mainTerminalUI);
+        PlayAudioClip(logOffSound);
+        // Fade to black
+        SceneManager.LoadScene("SCN_Lobby");
     }
 
-    private void ToggleElement(GameObject elementToToggle)
-    {
-        elementToToggle.SetActive(!elementToToggle.activeInHierarchy);
-    }
+    // private async void TextScroll(string textToType, TMP_Text textElement, double timePerLetter = 0.1f, double timeToDisappear = 1f)
+    // {
+    //     string currText = "";
+    //     foreach (Char letter in textToType.ToCharArray())
+    //     {
+    //         currText += letter;
+    //         textElement.text = "<mark=#000000aa>" + currText + "</mark>";
+    //         await Task.Delay(TimeSpan.FromSeconds(timePerLetter));
+    //     }
+    //     await Task.Delay(TimeSpan.FromSeconds(timeToDisappear));
+    //     textElement.text = "";
+    // }
 }
