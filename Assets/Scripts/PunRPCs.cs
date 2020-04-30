@@ -52,6 +52,43 @@ public class PunRPCs : MonoBehaviourPunCallbacks
         agentInputHandler.behaviourToToggle.enabled = !agentInputHandler.behaviourToToggle.isActiveAndEnabled;
     }
 
+    [PunRPC]
+    public void PlayGunshot(int agentsViewID)
+    {
+        AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
+        Debug.Log("PlayGunshot: Sending to all.");
+        if (agentInputHandler.currentWeapon.weaponSound != null)
+        {
+            AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponentInChildren<AudioSource>();
+
+            if (weaponAudioSource == null)
+            {
+                weaponAudioSource = agentInputHandler.weaponObject.AddComponent(typeof(AudioSource)) as AudioSource;
+            }
+
+            weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.weaponSound);
+        } 
+        else
+        {
+            Debug.LogAssertion(agentInputHandler.currentWeapon.name + " is missing a gunshot sound");
+        }
+    }
+
+    [PunRPC]
+    public void MuzzleFlash(int agentsViewID)
+    {
+        AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
+        Debug.Log("MuzzleFlash: Sending to all.");
+        if (agentInputHandler.weaponMuzzleFlash != null)
+        {
+            agentInputHandler.weaponMuzzleFlash.Play();
+        }
+        else
+        {
+            Debug.LogAssertion(agentInputHandler.currentWeapon.name + " has no muzzle flash");
+        }
+    }
+
     private AgentInputHandler GetInputHandler(int viewId)
     {
         return PhotonNetwork.GetPhotonView(viewId).GetComponent<AgentController>();
