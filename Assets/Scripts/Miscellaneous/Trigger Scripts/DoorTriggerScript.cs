@@ -4,6 +4,9 @@ using Photon.Pun;
 public class DoorTriggerScript : TriggerInteractionScript
 {
     [Header("Door Interaction")]
+    [SerializeField] private AudioClip doorOpeningSound = null;
+    [SerializeField] private AudioClip doorClosingSound = null;
+
     // Plays the animation of the door opening.
     private Animator anim;
 
@@ -43,6 +46,7 @@ public class DoorTriggerScript : TriggerInteractionScript
     protected override void InteractionComplete()
     {
         ChangeDoorState();
+        PlayDoorSound();
     }
 
     /// <summary>
@@ -55,6 +59,13 @@ public class DoorTriggerScript : TriggerInteractionScript
         Debug.Log(isDoorOpen ? "Door opening" : "Door closing");
         anim.SetBool("doorOpen", isDoorOpen);
         interactionComplete = false; // So that we can open the door immediately again
+    }
+
+    public void PlayDoorSound()
+    {
+        AudioClip clipToPlay = isDoorOpen ? doorOpeningSound : doorClosingSound;
+        if (clipToPlay == null) return;
+        GetComponent<AudioSource>().PlayOneShot(clipToPlay);
     }
 
     /// <summary>
