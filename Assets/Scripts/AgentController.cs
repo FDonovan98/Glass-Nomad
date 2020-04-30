@@ -155,6 +155,7 @@ public class AgentController : AgentInputHandler
 
         if (resourceType == ResourceType.AlienVision)
         {
+            alienVisionIsActive = value;
             updateUI(ResourceType.AlienVision);
         }
     }
