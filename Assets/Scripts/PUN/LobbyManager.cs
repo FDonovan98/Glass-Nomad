@@ -4,12 +4,14 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     #region variable-declarations
 
     [SerializeField] private string gameScene = null; // Changes scene when we are join a room.
+    [SerializeField] private string terminalSceneName = null; // Changes scene when we click Terminal.
     [SerializeField] private GameObject playerItemPrefab = null; // Displays the players in the lobby.
     [SerializeField] private GameObject inLobbyPanel = null; // Displays the lobby buttons when you join a room.
     [SerializeField] private Transform playerListPanel = null; // Contains all the playeritem prefabs.
@@ -246,6 +248,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         // Close room, call the RPC, and change the scene.
         if (PhotonNetwork.IsMasterClient) ScreenFadeFinished();
+    }
+
+    public void OnTerminalClick()
+    {
+        SceneManager.LoadScene(terminalSceneName);
     }
 
     public void OnSettingsClick()
