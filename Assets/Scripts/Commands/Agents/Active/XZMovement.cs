@@ -59,6 +59,16 @@ public class XZMovement : ActiveCommandObject
         {
             VelocityDegradation(agentValues.velocityDegradationInAir, inputMovementVector, agentInputHandler);
         }
+
+        //Animation shenanigans
+        //Layer 8 is Marine
+        if (agent.gameObject.layer == 8)
+        {
+            float movementAngle = Vector3.SignedAngle(agentInputHandler.agentRigidbody.velocity, agent.transform.forward, Vector3.down);
+            agentInputHandler.animationController.SetFloat("runningDirection", movementAngle);
+        }
+        float speed = agentInputHandler.agentRigidbody.velocity.magnitude;
+        agentInputHandler.animationController.SetFloat("speed", speed);
     }
 
     Vector3 GetKeyInput(GameObject agent)

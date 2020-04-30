@@ -64,6 +64,8 @@ public class FireWeapon : ActiveCommandObject
 
         AgentController agentController = (AgentController)agentInputHandler;
 
+        agentInputHandler.animationController.SetTrigger("isAttacking");
+
         agentInputHandler.timeSinceLastShot = 0.0f;
 
         agentController.ChangeStat(ResourceType.MagazineAmmo, -1);

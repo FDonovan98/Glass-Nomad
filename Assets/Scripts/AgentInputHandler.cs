@@ -85,6 +85,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public TMP_Text interactionPromptText = null;
     public Image progressBar = null;
 
+    [Header("Animations")]
+    public Animator animationController;
+
     [Header("Emergency Regeneration")]
     public AudioClip emergencyRegenAudio;
 
