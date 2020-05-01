@@ -23,6 +23,9 @@ public class AgentController : AgentInputHandler
     public bool specialVision = false;
     public GameObject emergencyRegenParticleSystem;
     public GameObject emergencyRegenParticleSystems;
+    public AudioClip oxygenWarningAudio = null;
+    public float oxygenWarningDingStartRate = 2.0f;
+    private float timeInLowOxygen = float.MaxValue;
 
     [Header("Current Stats")]
     [ReadOnly]
@@ -100,6 +103,24 @@ public class AgentController : AgentInputHandler
                 if (emergencyRegenParticleSystem != null)
                 {
                     photonView.RPC("EmergencyRegenSmoke", RpcTarget.All, photonView.ViewID);
+                }
+                break;
+
+            case ResourceType.Oxygen:
+                if (lowOxygen && oxygenWarningAudio != null)
+                {
+                    timeInLowOxygen += Time.deltaTime;
+                    float boundryTime = currentOxygen / agentValues.maxOxygen;
+                    boundryTime /= (oxygenWarningAmount / agentValues.maxOxygen);
+                    boundryTime *= oxygenWarningDingStartRate + oxygenWarningAudio.length;
+
+                    Debug.LogWarning("Boundry time: " + boundryTime);
+                    Debug.LogWarning("Time in low oxy: " + timeInLowOxygen);
+                    if (timeInLowOxygen > boundryTime)
+                    {
+                        mainAudioSource.PlayOneShot(oxygenWarningAudio);
+                        timeInLowOxygen = 0.0f;
+                    }
                 }
                 break;
 
@@ -211,6 +232,7 @@ public class AgentController : AgentInputHandler
                 if (lowOxygen && currentOxygen > oxygenWarningAmount)
                 {
                     lowOxygen = false;
+                    timeInLowOxygen = float.MaxValue;
 
                     if (updateUI != null)
                     {

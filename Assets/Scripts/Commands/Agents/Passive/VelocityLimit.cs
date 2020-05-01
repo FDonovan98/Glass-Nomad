@@ -16,7 +16,7 @@ public class VelocityLimit : PassiveCommandObject
             {
                 if (agentInputHandler.isSprinting)
                 {    
-                    if (agentInputHandler.agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed * (agentInputHandler.moveSpeedMultiplier / agentValues.sprintMultiplier))
+                    if (agentInputHandler.agentRigidbody.velocity.magnitude > agentValues.maxSprintSpeed)
                     {
                         LimitVelocity(agentInputHandler, agentValues.maxSprintSpeed, agentValues);
                     }
