@@ -17,7 +17,7 @@ Lewis Blackford - Designer
 
 [Dani Tilbey](https://twitter.com/SableFantasia) - Marine Modeller
 
-Craig Hardaker - Alien Modeller & Artist
+[Craig Hardaker](https://twitter.com/crow_gunner) - Alien Modeller & [Artist](https://www.artstation.com/gunner_crow)
 
 [Ed Pocock](https://www.artstation.com/emscat) - Artist
 
