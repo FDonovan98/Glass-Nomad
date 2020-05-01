@@ -231,11 +231,11 @@ public class TerminalManager : MonoBehaviour
         currentLogIndex += dir;
         if (currentLogIndex < 0)
         {
-            currentLogIndex = logTitles.Length - 1;
+            currentLogIndex = 0;
         }
         else if (currentLogIndex > logTitles.Length - 1)
         {
-            currentLogIndex = 0;
+            currentLogIndex = logTitles.Length - 1;
         }
 
         return logTitles[currentLogIndex];
