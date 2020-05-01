@@ -86,9 +86,10 @@ public class TerminalManager : MonoBehaviour
         // load lobby
     }
 
-    private void PlayAudioClip(AudioClip audioClip)
+    private void PlayAudioClip(AudioClip audioClip, bool shouldStopCurrentAudio = false)
     {
         if (audioClip == null) return;
+        if (shouldStopCurrentAudio) audioSource.Stop();
         audioSource.PlayOneShot(audioClip);
     }
 
@@ -181,7 +182,7 @@ public class TerminalManager : MonoBehaviour
 
         MoveLogSelection(GetArrowInput());
 
-        if (Input.GetKeyDown(KeyCode.Return)) PlayAudioClip(logAudios[currentLogIndex]);
+        if (Input.GetKeyDown(KeyCode.Return)) PlayAudioClip(logAudios[currentLogIndex], true);
 
         if (Input.GetKeyDown(KeyCode.Escape)) LogOff();
     }
