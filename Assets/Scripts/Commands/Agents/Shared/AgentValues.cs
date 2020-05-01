@@ -7,6 +7,7 @@ public class AgentValues : ScriptableObject
     public float moveAcceleration = 100.0f;
     public bool sprintingIsAToggle;
     public float sprintMultiplier = 2.0f;
+    public float footstepDelay = 1.0f;
 
     [Header("Velocity Degradation")]
     public bool reduceVelocityInAir = true;

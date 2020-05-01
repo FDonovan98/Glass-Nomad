@@ -37,6 +37,8 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
     public Rigidbody agentRigidbody;
     public AudioSource footstepSource = null;
     public AudioClip[] footstepClips;
+    [ReadOnly]
+    public float timeSinceFootstep;
 
     [Header("Stairs")]
     [ReadOnly]
