@@ -37,6 +37,7 @@ public class TerminalManager : MonoBehaviour
     [SerializeField] private GameObject[] logTitles;
     [SerializeField] private GameObject[] logDescriptions;
     [SerializeField] private AudioClip[] logAudios;
+    [SerializeField] private AudioClip logSwitchSound = null;
     [SerializeField] private Color selectedLogColor = Color.white;
     [SerializeField] private TMP_Text logIndex = null;
     private int currentLogIndex = 0;
@@ -217,6 +218,8 @@ public class TerminalManager : MonoBehaviour
     private void MoveLogSelection(Vector2 arrowMovement)
     {
         if (arrowMovement == Vector2.zero) return;
+        
+        PlayAudioClip(logSwitchSound);
 
         // Deselect the current log
         ToggleLogSelect(logTitles[currentLogIndex]);
