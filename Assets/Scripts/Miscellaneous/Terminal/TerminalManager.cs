@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TerminalManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class TerminalManager : MonoBehaviour
     [SerializeField] private AudioClip fanWhirlSound = null;
     [SerializeField] private AudioClip typingSound = null;
     [SerializeField] private AudioClip[] keyboardFoleySounds;
-
+    
     [Header("UI Elements")]
     [SerializeField] private GameObject logInUI = null;
     [SerializeField] private GameObject loadingUI = null;
@@ -103,6 +104,12 @@ public class TerminalManager : MonoBehaviour
         if (keyboardClip != null) PlayAudioClip(keyboardClip);
     }
 
+    private void TabPressed()
+    {
+        if (usernameField.isFocused) EventSystem.current.SetSelectedGameObject(passwordField.gameObject);
+        else if (passwordField.isFocused) EventSystem.current.SetSelectedGameObject(usernameField.gameObject);
+    }
+
     public void CheckUsernameField(string usernameText)
     {
         OnKeypressed();
@@ -164,7 +171,13 @@ public class TerminalManager : MonoBehaviour
 
     private void Update()
     {
-        if (!menuControlsEnabled) return;
+        if (!menuControlsEnabled)
+        {
+            if (Input.GetKeyDown(KeyCode.Tab)) TabPressed();
+            return;
+        }
+
+        if (Input.anyKeyDown) OnKeypressed();
 
         MoveLogSelection(GetArrowInput());
 
