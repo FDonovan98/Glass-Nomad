@@ -44,6 +44,11 @@ public class XZMovement : ActiveCommandObject
                 PhotonView agentsPhotonView = agentInputHandler.GetComponent<PhotonView>();
                 agentsPhotonView.RPC("PlayFootstep", RpcTarget.All, agentsPhotonView.ViewID);
             }
+            else if (agentInputHandler.footstepSource.clip != null && agentInputHandler.footstepSource.isPlaying)
+            {
+                PhotonView agentsPhotonView = agentInputHandler.GetComponent<PhotonView>();
+                agentsPhotonView.RPC("CancelFootstep", RpcTarget.All, agentsPhotonView.ViewID);
+            }
         }
         else
         {
