@@ -46,8 +46,8 @@ public class AgentController : AgentInputHandler
     [ReadOnly]
     public bool alienVisionIsActive = false;
     
-    public GameObject[] gameObjectsToDisableForPhoton;
-    public Behaviour[] componentsToDisableForPhoton;
+    public GameObject[] gameObjectsToToggleForPhoton;
+    public Behaviour[] componentsToToggleForPhoton;
 
     public delegate void UpdateUI(ResourceType resourceType = ResourceType.None);
     public UpdateUI updateUI;
@@ -124,13 +124,13 @@ public class AgentController : AgentInputHandler
 
     private void DisableObjectsForPhoton()
     {
-        foreach (GameObject element in gameObjectsToDisableForPhoton)
+        foreach (GameObject element in gameObjectsToToggleForPhoton)
         {
-            element.SetActive(false);   
+            element.SetActive(!element.activeSelf);   
         }
-        foreach (Behaviour element in componentsToDisableForPhoton)
+        foreach (Behaviour element in componentsToToggleForPhoton)
         {
-            element.enabled = false;   
+            element.enabled = !element.isActiveAndEnabled;   
         }
     }
 
