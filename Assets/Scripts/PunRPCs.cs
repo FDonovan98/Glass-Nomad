@@ -128,7 +128,6 @@ public class PunRPCs : MonoBehaviourPunCallbacks
     public void PlayFootstep(int agentsViewID)
     {
         AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
-        if (agentInputHandler.footstepSource == null || agentInputHandler.footstepSource.isPlaying) return;
         agentInputHandler.footstepSource.clip = agentInputHandler.GetRandomFootstepClip();
         agentInputHandler.footstepSource.Play();
     }
