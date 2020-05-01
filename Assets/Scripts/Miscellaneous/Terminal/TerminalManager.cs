@@ -37,6 +37,7 @@ public class TerminalManager : MonoBehaviour
     [SerializeField] private GameObject[] logDescriptions;
     [SerializeField] private AudioClip[] logAudios;
     [SerializeField] private Color selectedLogColor = Color.white;
+    [SerializeField] private TMP_Text logIndex = null;
     private int currentLogIndex = 0;
 
     [Header("Other")]
@@ -222,6 +223,7 @@ public class TerminalManager : MonoBehaviour
         if (debug) Debug.Log("Current log selected: " + logTitles[currentLogIndex].name);
 
         ToggleLogDescription(logDescriptions[currentLogIndex]);
+        logIndex.text = (currentLogIndex + 1).ToString();
     }
 
     private GameObject GetNextLog(int dir)
