@@ -63,7 +63,7 @@ public class TerminalManager : MonoBehaviour
 
         ToggleElement(logInUI);
         EventSystem.current.SetSelectedGameObject(usernameField.gameObject);
-        
+
         if (scanLineAnimator != null)
         {
             scanLineAnimator.enabled = true;
@@ -196,7 +196,14 @@ public class TerminalManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             EnterKeyPressed();
-            PlayAudioClip(logAudios[currentLogIndex], true);
+            if (currentLogIndex < logTitles.Length - 1)
+            {
+                PlayAudioClip(logAudios[currentLogIndex], true);
+            }
+            else
+            {
+                LogOff();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) LogOff();
@@ -276,9 +283,9 @@ public class TerminalManager : MonoBehaviour
 
     private async void LogOff()
     {
-        ToggleElement(mainTerminalUI);
-        PlayAudioClip(logOffSound);
         // Play CRT off animation?
+        PlayAudioClip(logOffSound);
+        ToggleElement(mainTerminalUI);
         // Fade to black
         await Task.Delay(TimeSpan.FromSeconds(3f));
         SceneManager.LoadScene("SCN_Lobby");
