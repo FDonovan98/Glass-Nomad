@@ -1,6 +1,10 @@
-# Yvaga Station
-A Glass Nomad production. Click [here](https://dayluke.itch.io/yvaga-station) to play it!
+<p align="center">
+  <h1 align="center"><a href="https://dayluke.itch.io/yvaga-station">Yvaga Station</a></h1>
+  <p align="center">A Glass Nomad production</p>
+  <img src="https://media.discordapp.net/attachments/647439219282673683/705418188006883418/Capture.PNG">
+</p>
 
+## Meet The Team
 [Harry Donovan](https://twitter.com/AbyssalProduct2) - Team Lead & Programmer 
 
 [Luke Day](https://www.linkedin.com/in/dayluke01) - Lead Programmer & Web Developer
@@ -25,7 +29,7 @@ Finn Morley - Animator
 
 [Jodie Taylor](https://twitter.com/becca_mochi) - Writer
 
-Resources Used:
+## External Resources Used
 
 Layout Key:
 File name in game- File name on website- Creator name
