@@ -285,22 +285,10 @@ public class TerminalManager : MonoBehaviour
     {
         // Play CRT off animation?
         PlayAudioClip(logOffSound);
+        fanAudioSource.Stop();
         ToggleElement(mainTerminalUI);
         // Fade to black
-        await Task.Delay(TimeSpan.FromSeconds(3f));
+        await Task.Delay(TimeSpan.FromSeconds(logOffSound.length + 1f));
         SceneManager.LoadScene("SCN_Lobby");
     }
-
-    // private async void TextScroll(string textToType, TMP_Text textElement, double timePerLetter = 0.1f, double timeToDisappear = 1f)
-    // {
-    //     string currText = "";
-    //     foreach (Char letter in textToType.ToCharArray())
-    //     {
-    //         currText += letter;
-    //         textElement.text = "<mark=#000000aa>" + currText + "</mark>";
-    //         await Task.Delay(TimeSpan.FromSeconds(timePerLetter));
-    //     }
-    //     await Task.Delay(TimeSpan.FromSeconds(timeToDisappear));
-    //     textElement.text = "";
-    // }
 }
