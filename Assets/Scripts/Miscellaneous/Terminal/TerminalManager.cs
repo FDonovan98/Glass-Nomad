@@ -16,6 +16,7 @@ public class TerminalManager : MonoBehaviour
     [SerializeField] private AudioClip fanWhirlSound = null;
     [SerializeField] private AudioClip typingSound = null;
     [SerializeField] private AudioClip[] keyboardFoleySounds;
+    [SerializeField] private AudioClip enterPressedSound = null;
     
     [Header("UI Elements")]
     [SerializeField] private GameObject logInUI = null;
@@ -140,6 +141,11 @@ public class TerminalManager : MonoBehaviour
         }
     }
 
+    public void EnterKeyPressed()
+    {
+        PlayAudioClip(enterPressedSound);
+    }
+
     private async void LogInSuccessful()
     {
         // Disable Log In UI and enable the Loading UI
@@ -182,8 +188,12 @@ public class TerminalManager : MonoBehaviour
         if (Input.anyKeyDown) OnKeypressed();
 
         MoveLogSelection(GetArrowInput());
-
-        if (Input.GetKeyDown(KeyCode.Return)) PlayAudioClip(logAudios[currentLogIndex], true);
+        
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            EnterKeyPressed();
+            PlayAudioClip(logAudios[currentLogIndex], true);
+        }
 
         if (Input.GetKeyDown(KeyCode.Escape)) LogOff();
     }
