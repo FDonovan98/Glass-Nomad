@@ -24342,6 +24342,7 @@ MonoBehaviour:
   footstepClips:
   - {fileID: 8300000, guid: f912d1eb563b68244ac62afbae6838f9, type: 3}
   - {fileID: 8300000, guid: 2cababff90ad040498cf1cd37d3708b4, type: 3}
+  timeSinceFootstep: 0
   lastVelocity: {x: 0, y: 0, z: 0}
   currentWeapon: {fileID: 11400000, guid: f07ed8fadc5211d47885c7f535b3d0f8, type: 2}
   timeSinceLastShot: 0
@@ -24393,6 +24394,7 @@ MonoBehaviour:
   - {fileID: 5923454201242450266}
   - {fileID: 3802083502568776185}
   - {fileID: 5686678364935046341}
+  - {fileID: 9201371442307465479}
   componentsToToggleForPhoton:
   - {fileID: 2616553536615828631}
   - {fileID: 1291293901593554124}
@@ -28866,7 +28868,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100002, guid: ee79a944e5cd5f64f9411f63eb317b76, type: 3}
+  - {fileID: 2100000, guid: f59d38d7fdabd3048a6eec44cfa5365f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -35349,7 +35351,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 889129ea0a4df564c9fa68a0120cda1f, type: 3}
       propertyPath: m_Name
-      value: AR_Low (1)
+      value: a
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 889129ea0a4df564c9fa68a0120cda1f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 889129ea0a4df564c9fa68a0120cda1f, type: 3}
       propertyPath: m_LocalPosition.x

@@ -114,8 +114,6 @@ public class AgentController : AgentInputHandler
                     boundryTime /= (oxygenWarningAmount / agentValues.maxOxygen);
                     boundryTime *= oxygenWarningDingStartRate + oxygenWarningAudio.length;
 
-                    Debug.LogWarning("Boundry time: " + boundryTime);
-                    Debug.LogWarning("Time in low oxy: " + timeInLowOxygen);
                     if (timeInLowOxygen > boundryTime)
                     {
                         mainAudioSource.PlayOneShot(oxygenWarningAudio);
