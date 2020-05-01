@@ -134,6 +134,14 @@ public class PunRPCs : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
+    public void CancelFootstep(int agentsViewID)
+    {
+        AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
+        agentInputHandler.footstepSource.Stop();
+        agentInputHandler.footstepSource.clip = null;
+    }
+
+    [PunRPC]
     public void ChangeMaterial(int agentsViewID, int materialIndex)
     {
         AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
