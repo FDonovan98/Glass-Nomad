@@ -15,7 +15,7 @@ public class TerminalManager : MonoBehaviour
     [SerializeField] private AudioClip logOffSound = null;
     [SerializeField] private AudioClip fanWhirlSound = null;
     [SerializeField] private AudioClip typingSound = null;
-    [SerializeField] private AudioClip[] keyboardFoleySounds;
+    [SerializeField] private AudioClip[] keyboardFoleySounds = null;
     [SerializeField] private AudioClip enterPressedSound = null;
     
     [Header("UI Elements")]
@@ -34,9 +34,9 @@ public class TerminalManager : MonoBehaviour
     private bool passwordCorrect = false;
 
     [Header("Logs")]
-    [SerializeField] private GameObject[] logTitles;
-    [SerializeField] private GameObject[] logDescriptions;
-    [SerializeField] private AudioClip[] logAudios;
+    [SerializeField] private GameObject[] logTitles = null;
+    [SerializeField] private GameObject[] logDescriptions = null;
+    [SerializeField] private AudioClip[] logAudios = null;
     [SerializeField] private AudioClip logSwitchSound = null;
     [SerializeField] private Color selectedLogColor = Color.white;
     [SerializeField] private TMP_Text logIndex = null;
@@ -62,6 +62,7 @@ public class TerminalManager : MonoBehaviour
         }
 
         ToggleElement(logInUI);
+        EventSystem.current.SetSelectedGameObject(usernameField.gameObject);
 
         if (scanLineAnimator != null)
         {
@@ -195,7 +196,14 @@ public class TerminalManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             EnterKeyPressed();
-            PlayAudioClip(logAudios[currentLogIndex], true);
+            if (currentLogIndex < logTitles.Length - 1)
+            {
+                PlayAudioClip(logAudios[currentLogIndex], true);
+            }
+            else
+            {
+                LogOff();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) LogOff();
@@ -275,9 +283,9 @@ public class TerminalManager : MonoBehaviour
 
     private async void LogOff()
     {
-        ToggleElement(mainTerminalUI);
-        PlayAudioClip(logOffSound);
         // Play CRT off animation?
+        PlayAudioClip(logOffSound);
+        ToggleElement(mainTerminalUI);
         // Fade to black
         await Task.Delay(TimeSpan.FromSeconds(3f));
         SceneManager.LoadScene("SCN_Lobby");
