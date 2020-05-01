@@ -41,7 +41,7 @@ public class TerminalManager : MonoBehaviour
     private int currentLogIndex = 0;
 
     [Header("Other")]
-    [SerializeField] private Animation scanLineAnimation;
+    [SerializeField] private Animator scanLineAnimator;
     [SerializeField] private bool debug = false;
     private bool menuControlsEnabled = false;
 
@@ -59,12 +59,12 @@ public class TerminalManager : MonoBehaviour
             fanAudioSource.Play();
         }
 
-        if (scanLineAnimation != null)
-        {
-            scanLineAnimation.Play();
-        }
-
         ToggleElement(logInUI);
+
+        if (scanLineAnimator != null)
+        {
+            scanLineAnimator.enabled = true;
+        }
 
         // fade in from black
         // fan audio whirl
@@ -258,11 +258,13 @@ public class TerminalManager : MonoBehaviour
         log.SetActive(!log.activeInHierarchy);
     }
 
-    private void LogOff()
+    private async void LogOff()
     {
         ToggleElement(mainTerminalUI);
         PlayAudioClip(logOffSound);
+        // Play CRT off animation?
         // Fade to black
+        await Task.Delay(TimeSpan.FromSeconds(3f));
         SceneManager.LoadScene("SCN_Lobby");
     }
 
