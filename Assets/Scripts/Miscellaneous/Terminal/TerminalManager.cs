@@ -39,6 +39,7 @@ public class TerminalManager : MonoBehaviour
     private int currentLogIndex = 0;
 
     [Header("Other")]
+    [SerializeField] private Animation scanLineAnimation;
     [SerializeField] private bool debug = false;
     private bool menuControlsEnabled = false;
 
@@ -47,16 +48,22 @@ public class TerminalManager : MonoBehaviour
     private async void Start()
     {
         PlayAudioClip(startUpSound);
+        
         await Task.Delay(TimeSpan.FromSeconds(3f));
+
         if (fanWhirlSound != null)
         {
             fanAudioSource.clip = fanWhirlSound;
-            fanAudioSource.Play(); // ---> play constantly
+            fanAudioSource.Play();
         }
 
-        // PLAY SCAN LINE ANIMATIONS
+        if (scanLineAnimation != null)
+        {
+            scanLineAnimation.Play();
+        }
 
         ToggleElement(logInUI);
+
         // fade in from black
         // fan audio whirl
         // enable password ui
