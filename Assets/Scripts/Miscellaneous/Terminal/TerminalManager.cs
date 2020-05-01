@@ -143,6 +143,7 @@ public class TerminalManager : MonoBehaviour
 
     public void EnterKeyPressed()
     {
+        if (debug) Debug.Log("Enter");
         PlayAudioClip(enterPressedSound);
     }
 
@@ -182,13 +183,14 @@ public class TerminalManager : MonoBehaviour
         if (!menuControlsEnabled)
         {
             if (Input.GetKeyDown(KeyCode.Tab)) TabPressed();
+            if (Input.GetKeyDown(KeyCode.Return)) EnterKeyPressed(); 
             return;
         }
 
         if (Input.anyKeyDown) OnKeypressed();
 
         MoveLogSelection(GetArrowInput());
-        
+
         if (Input.GetKeyDown(KeyCode.Return))
         {
             EnterKeyPressed();

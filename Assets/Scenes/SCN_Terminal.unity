@@ -3402,6 +3402,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6df8197dc1976104a9ec7016c7ea1775, type: 3}
   - {fileID: 8300000, guid: feab9463a21f3fb48bed3e21dceab6d3, type: 3}
   - {fileID: 8300000, guid: 91068076fa1c03246a3fe276efcbd464, type: 3}
+  enterPressedSound: {fileID: 0}
   logInUI: {fileID: 329225555}
   loadingUI: {fileID: 363046483}
   mainTerminalUI: {fileID: 1985344621}
@@ -5906,7 +5907,18 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1761142781}
+        m_MethodName: EnterKeyPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: TMPro.TMP_InputField+SubmitEvent, Unity.TextMeshPro, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSubmit:
