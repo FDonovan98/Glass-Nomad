@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
             AgentController agentController = marine.GetComponentInChildren<AgentController>();
             agentController.ChangeWeapon(lobbyRoom.localPlayer.primaryWeapon);
             agentController.ChangeArmour(lobbyRoom.localPlayer.selectedArmour);
-            agentController.ChangeMaterial(lobbyRoom.localPlayer.selectedMaterial);
+            agentController.ChangeMaterial(lobbyRoom.localPlayer.selectedMaterial, lobbyRoom.localPlayer.selectedMaterialIndex);
         }
     }
 

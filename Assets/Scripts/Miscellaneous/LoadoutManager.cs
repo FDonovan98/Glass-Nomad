@@ -99,6 +99,7 @@ public class LoadoutManager : MonoBehaviour
         playersInLobby.localPlayer.selectedArmour = armourItems[armourDropdown.value];
 
         playersInLobby.localPlayer.selectedMaterial = materialItems[materialDropdown.value];
+        playersInLobby.localPlayer.selectedMaterialIndex = materialDropdown.value;
 
         if (debug) Debug.LogFormat("New PlayerPref values: {0}, {1}", primaryDropdown.captionText.text, armourDropdown.captionText.text);
     }

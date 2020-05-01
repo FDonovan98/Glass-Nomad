@@ -162,8 +162,9 @@ public class AgentInputHandler : MonoBehaviourPunCallbacks
         ChangeMovementSpeedModifier(equippedArmour.speedMultiplier, true);
     }
 
-    public void ChangeMaterial(Material material)
+    public void ChangeMaterial(Material material, int materialIndex)
     {
+        photonView.RPC("ChangeMaterial", RpcTarget.Others, photonView.ViewID, materialIndex);
         if (agentRenderer != null)
         {
             agentRenderer.material = material;

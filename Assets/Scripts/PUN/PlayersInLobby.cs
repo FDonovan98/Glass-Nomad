@@ -91,6 +91,7 @@ public class PlayerInfo
     public Weapon primaryWeapon;
     public Armour selectedArmour;
     public Material selectedMaterial;
+    public int selectedMaterialIndex;
 
     public PlayerInfo(string playerName, bool alien)
     {

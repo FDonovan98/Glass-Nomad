@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 
+using System.Linq;
+using System.Collections.Generic;
+
 public class PunRPCs : MonoBehaviourPunCallbacks
 {
     private AgentInputHandler GetInputHandler(int viewId)
@@ -128,5 +131,28 @@ public class PunRPCs : MonoBehaviourPunCallbacks
         if (agentInputHandler.footstepSource == null || agentInputHandler.footstepSource.isPlaying) return;
         agentInputHandler.footstepSource.clip = agentInputHandler.GetRandomFootstepClip();
         agentInputHandler.footstepSource.Play();
+    }
+
+    [PunRPC]
+    public void ChangeMaterial(int agentsViewID, int materialIndex)
+    {
+        AgentInputHandler agentInputHandler = GetInputHandler(agentsViewID);
+
+        if (agentInputHandler.agentRenderer != null)
+        {
+            Material[] materials = Resources.LoadAll("Items", typeof(Material)).Cast<Material>().ToArray();
+            List<Material> materialItems = new List<Material>();
+            AddMaterialsToLists(ref materialItems, materials);
+
+            agentInputHandler.agentRenderer.material = materialItems[materialIndex];
+        }
+    }
+
+    void AddMaterialsToLists(ref List<Material> materialItems, Material[] materials)
+    {
+        foreach (Material element in materials)
+        {
+            materialItems.Add(element);
+        }
     }
 }
