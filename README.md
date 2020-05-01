@@ -78,3 +78,6 @@ http://soundbible.com/1133-Beep-Ping.html
 
 Rifle Reload- Rifle Reload Foley
 www.fesliyanstudios.com
+
+Marine Voice Over Lines- Stockton Harris
+www.stocktonharris.com
