@@ -14,7 +14,7 @@ public class FinalObjective : ObjectiveInteraction
     [SerializeField] private float waitTimer = 10f;
 
     // The time the marines have to escape.
-    [SerializeField] private float timer = 30f;
+    [SerializeField] private float timer = 90f;
 
     // The evacuation zone.
     [SerializeField] private EvacZone evacZone = null;

@@ -4,7 +4,7 @@ using UnityEngine;
 public class SecuritySwitchManager : ObjectiveInteraction
 {
     // The number of switches that need to be activated to activate the doors.
-    private int numberOfSwitches = 1;
+    private int numberOfSwitches = 2;
 
     // The number of switches that are currently activated.
     private int currentSwitchesActivated = 0;
