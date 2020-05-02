@@ -4,7 +4,7 @@ using UnityEngine;
 public class SecuritySwitchManager : ObjectiveInteraction
 {
     // The number of switches that need to be activated to activate the doors.
-    private int numberOfSwitches = 2;
+    private int numberOfSwitches = 1;
 
     // The number of switches that are currently activated.
     private int currentSwitchesActivated = 0;
@@ -26,6 +26,7 @@ public class SecuritySwitchManager : ObjectiveInteraction
     public void SwitchActivated()
     {
         currentSwitchesActivated++;
+        Debug.Log("Current number of switches activated: " + currentSwitchesActivated);
         if (currentSwitchesActivated == numberOfSwitches)
         {
             photonView.RPC("InteractionComplete", RpcTarget.All);
@@ -40,8 +41,7 @@ public class SecuritySwitchManager : ObjectiveInteraction
     /// <summary>
     /// Changes the door state of the armoury door, and locks it open.
     /// </summary>
-    [PunRPC]
-    protected override void InteractionComplete()
+    protected override void ObjectiveComplete()
     {
         PowerOn();
     }

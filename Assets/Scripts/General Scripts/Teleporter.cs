@@ -4,7 +4,7 @@ using Photon.Pun;
 public class Teleporter : TriggerInteractionScript
 {
 	[Header("Teleporter Interaction")]
-    private bool powered = false;
+    [SerializeField][ReadOnly] private bool powered = false;
     [SerializeField] private GameObject linkedTeleporter = null; // The destination of the TP.
     [SerializeField] private bool biDirectional = true; // If false, then this TP can ONLY be used TO teleport, and NOT FROM.
 
@@ -33,7 +33,7 @@ public class Teleporter : TriggerInteractionScript
     {
         Debug.Log("teleporting player to: " + linkedTeleporter.transform.position);
         Vector3 spawnLocation = linkedTeleporter.transform.position;
-        spawnLocation += new Vector3(0.0f, playerInteracting.GetComponent<Collider>().bounds.extents.y, 0.0f);
+        spawnLocation += new Vector3(0.0f, playerInteracting.GetComponent<Collider>().bounds.extents.y + 1f, 0.0f);
         playerInteracting.transform.position = spawnLocation;
 
         if (audioClip != null && audioSource != null)

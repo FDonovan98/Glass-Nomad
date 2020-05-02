@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
+using UnityEngine.UI;
 
 public enum ResourceType
 {
@@ -294,6 +296,9 @@ public class AgentController : AgentInputHandler
     {
         yield return new WaitForSeconds(3f);
         
+        deathScreen.GetComponentInChildren<TMP_Text>().text = "You Died";
+        deathScreen.GetComponent<Image>().enabled = true;
+        deathScreen.GetComponentInChildren<Button>().gameObject.SetActive(true);
         deathScreen.SetActive(true);
 
         yield return new WaitForSeconds(3f);

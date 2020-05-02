@@ -4,6 +4,8 @@ using Photon.Pun;
 using TMPro;
 using System;
 using System.Threading.Tasks;
+using TriggerExtensionMethods;
+using UnityEngine.UI;
 
 public class FinalObjective : ObjectiveInteraction
 {
@@ -29,7 +31,15 @@ public class FinalObjective : ObjectiveInteraction
     protected override void InteractionComplete()
     {
         base.InteractionComplete();
-        gameover = playerInteracting.GetComponent<AgentController>().transform.GetChild(2).GetChild(0).GetChild(1).GetComponentInChildren<TMP_Text>();
+
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (player.GetComponent<PhotonView>().IsMine)
+            {
+                playerInteracting = player;
+            }
+        }
+        gameover = playerInteracting.GetComponent<AgentController>().transform.parent.GetChild(1).gameObject.FindComponentWithTag<TMP_Text>("Gameover Text");
     }
 
     protected override void ObjectiveComplete()
@@ -46,9 +56,6 @@ public class FinalObjective : ObjectiveInteraction
     /// <returns>Nothing</returns>
     private async void StartTimer()
     {
-        // NEED A WAY TO TURN THE ALIEN'S OBJECTIVE TEXT ON,
-        // SO THAT THE ALIEN CAN SEE THE COUNTDOWN TOO.
-
         // Wait for text to finish displaying and audio to start playing
         await Task.Delay(TimeSpan.FromSeconds(waitTimer));
 
@@ -65,14 +72,15 @@ public class FinalObjective : ObjectiveInteraction
             }
         }
 
-        StartGameOverSequence();
+        photonView.RPC("StartGameOverSequence", RpcTarget.All);
     }
 
     /// <summary>
     /// Determines which side won the game, and proceeds to display which team won to the HUD.
     /// Then, it switches everyone to the main menu.
     /// </summary>
-    private void StartGameOverSequence()
+    [PunRPC]
+    public void StartGameOverSequence()
     {
         Debug.Log("MARINE COUNT IN EVAC: " + evacZone.numberOfMarinesInEvac);
         if (evacZone.numberOfMarinesInEvac > 0)
@@ -83,7 +91,7 @@ public class FinalObjective : ObjectiveInteraction
         {
             gameover.text = "Alien won!";
         }
-        gameover.gameObject.SetActive(true);
+        gameover.gameObject.transform.parent.GetChild(1).gameObject.SetActive(true);
         SwitchToMainMenu();
     }
 

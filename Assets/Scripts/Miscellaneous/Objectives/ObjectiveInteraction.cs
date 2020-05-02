@@ -61,11 +61,11 @@ public abstract class ObjectiveInteraction : TriggerInteractionScript
             }
         }
 
-        // Error catching
-        if (playerInteracting == null) return;
+        // Error catching and check for alien
+        if (playerInteracting == null || playerInteracting.gameObject.layer != 8) return;
         
-        // If we haven't completed the correct objectives, yet, or we are the alien, then don't continue.
-        if (!objectiveValues.AllRequiredObjectivesCompleted() || playerInteracting.layer != 8) return;
+        // If we haven't completed the correct objectives, yet, then don't continue.
+        if (!objectiveValues.AllRequiredObjectivesCompleted()) return;
         
         Debug.LogFormat("Interaction Complete: {0}, all of the marines should receieve this.", objectiveValues.name);
 

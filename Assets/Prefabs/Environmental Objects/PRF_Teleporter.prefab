@@ -177,9 +177,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3306994449262004602}
   - component: {fileID: 623969408394342913}
+  - component: {fileID: 1822404805060528586}
+  - component: {fileID: 3988692195254968207}
   m_Layer: 0
   m_Name: PRF_Teleporter
-  m_TagString: Untagged
+  m_TagString: NeedsPower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 126
@@ -216,14 +218,50 @@ MonoBehaviour:
   inputKey: 101
   interactTime: 3
   cooldownTime: 2
-  debug: 1
+  debug: 0
   textToDisplay: Hold E to teleport
+  powered: 0
   linkedTeleporter: {fileID: 0}
   biDirectional: 1
   behavioursToEnableWithPower:
   - {fileID: 369068454}
   audioClip: {fileID: 8300000, guid: 9bcf493943c68094f9e84cc148b0e240, type: 3}
   audioSource: {fileID: 965770983879102316}
+--- !u!65 &1822404805060528586
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963860154748826123}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 19.85443, y: 10.310275, z: 19.906704}
+  m_Center: {x: -3.872886, y: 3.534621, z: -2.671411}
+--- !u!114 &3988692195254968207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963860154748826123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2594540455969605090
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,10 +274,9 @@ GameObject:
   - component: {fileID: 6266525020942875047}
   - component: {fileID: 4720359554933860859}
   - component: {fileID: 2033042698892147504}
-  - component: {fileID: 7717329797899181411}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: NeedsPower
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 126
@@ -1799,19 +1836,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!135 &7717329797899181411
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2594540455969605090}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 13.369575
-  m_Center: {x: -10.000001, y: 3.744555, z: 0}
 --- !u!1 &8799750721116241808
 GameObject:
   m_ObjectHideFlags: 0

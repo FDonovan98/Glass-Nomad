@@ -15830,6 +15830,7 @@ GameObject:
   - component: {fileID: 6498711645725316449}
   - component: {fileID: 6498711645723989325}
   - component: {fileID: 6498711645723023245}
+  - component: {fileID: 736056288085498497}
   m_Layer: 0
   m_Name: Second_Floor
   m_TagString: Untagged
@@ -15896,6 +15897,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &736056288085498497
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6498711645724952897}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300002, guid: e1be7e8beb0b2f7498059e0eeadf8752, type: 3}
 --- !u!1 &6498711645724952907
 GameObject:
   m_ObjectHideFlags: 0
@@ -23236,11 +23251,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8056468018354283128, guid: 820591594dcfa124d8a9c5d016d6c22c,
-        type: 3}
-      propertyPath: viewIdField
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 415124, guid: 820591594dcfa124d8a9c5d016d6c22c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.451228
@@ -23285,6 +23295,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8056468018354283128, guid: 820591594dcfa124d8a9c5d016d6c22c,
+        type: 3}
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 141230, guid: 820591594dcfa124d8a9c5d016d6c22c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -23308,26 +23323,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PRF_OxygenRegenZone
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691902339275139836, guid: 55e01b39a9c20d143ae23ff07993c962,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 9.600523
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691902339275139836, guid: 55e01b39a9c20d143ae23ff07993c962,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 10.80115
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691902339275139836, guid: 55e01b39a9c20d143ae23ff07993c962,
-        type: 3}
-      propertyPath: m_Center.x
-      value: 0.22331135
-      objectReference: {fileID: 0}
-    - target: {fileID: 8691902339275139836, guid: 55e01b39a9c20d143ae23ff07993c962,
-        type: 3}
-      propertyPath: m_Center.z
-      value: 0.4005773
       objectReference: {fileID: 0}
     - target: {fileID: 8691902339275139811, guid: 55e01b39a9c20d143ae23ff07993c962,
         type: 3}
@@ -23388,6 +23383,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.x
       value: 33.116753
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691902339275139836, guid: 55e01b39a9c20d143ae23ff07993c962,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 9.600523
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691902339275139836, guid: 55e01b39a9c20d143ae23ff07993c962,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 10.80115
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691902339275139836, guid: 55e01b39a9c20d143ae23ff07993c962,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0.22331135
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691902339275139836, guid: 55e01b39a9c20d143ae23ff07993c962,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 0.4005773
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55e01b39a9c20d143ae23ff07993c962, type: 3}
@@ -27294,16 +27309,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27373,6 +27378,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -29651,16 +29666,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -29730,6 +29735,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -40840,16 +40855,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -40919,6 +40924,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -47222,16 +47237,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -47301,6 +47306,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -51240,16 +51255,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -51325,6 +51330,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1200324742480256302, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_Lightmapping
@@ -58690,16 +58705,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -58769,6 +58774,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -59540,16 +59555,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -59619,6 +59624,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -60453,16 +60468,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -60532,6 +60537,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -62933,16 +62948,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -63012,6 +63017,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -66225,16 +66240,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -66310,6 +66315,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 45f450e9a0b603e4393da42eca2c3ba0, type: 2}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1200324742480256302, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_Lightmapping
@@ -70943,11 +70958,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: door_2
       objectReference: {fileID: 0}
-    - target: {fileID: 8056468018354283128, guid: 820591594dcfa124d8a9c5d016d6c22c,
-        type: 3}
-      propertyPath: viewIdField
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 415124, guid: 820591594dcfa124d8a9c5d016d6c22c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.46
@@ -70990,6 +71000,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 415124, guid: 820591594dcfa124d8a9c5d016d6c22c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8056468018354283128, guid: 820591594dcfa124d8a9c5d016d6c22c,
+        type: 3}
+      propertyPath: viewIdField
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2029878584881214590, guid: 820591594dcfa124d8a9c5d016d6c22c,
@@ -76606,16 +76621,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (10)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -76685,6 +76690,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
@@ -77582,16 +77597,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Floor Light (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1353988644257764957, guid: a8d2660ca615d1a4c9c0496ed034c11d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -77661,6 +77666,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10372859
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656717151168980523, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627325217474569856, guid: a8d2660ca615d1a4c9c0496ed034c11d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2660ca615d1a4c9c0496ed034c11d, type: 3}
